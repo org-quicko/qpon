@@ -1,0 +1,59 @@
+import {
+  PrimaryGeneratedColumn,
+  Entity,
+  CreateDateColumn,
+  UpdateDateColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  OneToMany,
+} from 'typeorm';
+import { campaignStatusEnum } from 'src/enums';
+import { Coupon } from './coupon.entity';
+import { CouponCode } from './coupon-code.entity';
+import { Redemption } from './redemption.entity';
+
+@Entity()
+export class Campaign {
+  @PrimaryGeneratedColumn('uuid', { name: 'campaign_id' })
+  campaignId: string;
+
+  @Column()
+  name: string;
+
+  @Column('numeric')
+  budget: number;
+
+  @Column({ name: 'external_id' })
+  externalId: string;
+
+  @Column('enum', { enum: campaignStatusEnum })
+  status: campaignStatusEnum;
+
+  @CreateDateColumn({
+    type: 'time with time zone',
+    default: () => `now()`,
+    name: 'created_at',
+  })
+  createdAt: Date;
+
+  @UpdateDateColumn({
+    type: 'time with time zone',
+    default: () => `now()`,
+    name: 'updated_at',
+  })
+  updatedAt: Date;
+
+  @ManyToOne(() => Coupon, (coupon) => coupon.campaigns)
+  @JoinColumn({
+    name: 'coupon_id',
+    referencedColumnName: 'couponId',
+  })
+  coupon: Coupon;
+
+  @OneToMany(() => CouponCode, (couponCode) => couponCode.campaign)
+  couponCodes: CouponCode[];
+
+  @OneToMany(() => Redemption, (redemption) => redemption.campaign)
+  redemptions: Redemption[];
+}

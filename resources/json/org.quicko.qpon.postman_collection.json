@@ -1,0 +1,2605 @@
+{
+	"info": {
+		"_postman_id": "a36e4c68-610b-4a2f-8430-43c51d4b94a5",
+		"name": "org.quicko.qpon",
+		"description": "Qpon is a coupon framework built by Quicko. Built in a scalable, multi-tenant thought process, the Qpon framework enables businesses to do campaigns and run offers using the Qpon API.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27391447",
+		"_collection_link": "https://org-quicko.postman.co/workspace/org-quicko-qpon~6db4ed74-4bdb-4241-8569-5c0254e2c30c/collection/27391447-a36e4c68-610b-4a2f-8430-43c51d4b94a5?action=share&source=collection_link&creator=27391447"
+	},
+	"item": [
+		{
+			"name": "Organization",
+			"item": [
+				{
+					"name": "Create organization",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"//@schema\r",
+									"const requestSchema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"@entity\": { \"default\": \"organization\" },\r",
+									"        \"name\": { \"type\": \"string\" },\r",
+									"        \"currency\": { \"type\": \"string\" },\r",
+									"        \"theme_colour\": { \"type\": \"string\" },\r",
+									"        \"slug\": { \"type\": \"string\" },\r",
+									"        \"external_id\": { \"type\": \"string\" }\r",
+									"    }\r",
+									"}\r",
+									"//@endschema"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-username",
+								"value": "{{x-auth-username}}",
+								"description": "Username for identification"
+							},
+							{
+								"key": "x-auth-password",
+								"value": "{{x-auth-password}}",
+								"description": "Password for authentication"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"@entity\": \"org.quicko.qpon.organization\",\r\n    \"name\": \"pro-quicko-qpon-test\",\r\n    \"external_id\": \"org-quicko-qpon-api@quicko.pro\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{quicko_host}}/organizations",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"organizations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch organization",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-username",
+								"value": "{{x-auth-username}}",
+								"description": "Username for identification"
+							},
+							{
+								"key": "x-auth-password",
+								"value": "{{x-auth-password}}",
+								"description": "Password for authentication"
+							}
+						],
+						"url": {
+							"raw": "{{quicko_host}}/organizations/:organization_id",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"organizations",
+								":organization_id"
+							],
+							"variable": [
+								{
+									"key": "organization_id",
+									"value": "{{organization_id}}",
+									"description": "Organization id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch organizations",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-username",
+								"value": "{{x-auth-username}}",
+								"description": "Username for identification"
+							},
+							{
+								"key": "x-auth-password",
+								"value": "{{x-auth-password}}",
+								"description": "Password for authentication"
+							}
+						],
+						"url": {
+							"raw": "{{quicko_host}}/organizations?external_id={{external_id}}&take=10&skip=0",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"organizations"
+							],
+							"query": [
+								{
+									"key": "external_id",
+									"value": "{{external_id}}",
+									"description": "filter to get organizations by external id"
+								},
+								{
+									"key": "take",
+									"value": "10",
+									"description": "Optional page size. Default is 10"
+								},
+								{
+									"key": "skip",
+									"value": "0",
+									"description": "Describe the offset"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update organization",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-auth-username",
+								"value": "{{x-auth-username}}",
+								"description": "Username for identification"
+							},
+							{
+								"key": "x-auth-password",
+								"value": "{{x-auth-password}}",
+								"description": "Password for authentication"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"@entity\": \"org.quicko.qpon.organization\",\r\n    \"name\": \"com-quicko\",\r\n    \"external_id\": \"org-quicko-qpon-api@quicko.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{quicko_host}}/organizations/:organization_id",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"organizations",
+								":organization_id"
+							],
+							"variable": [
+								{
+									"key": "organization_id",
+									"value": "{{organization_id}}",
+									"description": "Organization id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete organization",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-auth-username",
+								"value": "{{x-auth-username}}",
+								"description": "Username for identification"
+							},
+							{
+								"key": "x-auth-password",
+								"value": "{{x-auth-password}}",
+								"description": "Password for authentication"
+							}
+						],
+						"url": {
+							"raw": "{{quicko_host}}/organizations/:organization_id",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"organizations",
+								":organization_id"
+							],
+							"variable": [
+								{
+									"key": "organization_id",
+									"value": "{{organization_id}}",
+									"description": "Organization id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch organization summary",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-username",
+								"value": "{{x-auth-username}}",
+								"description": "Username for identification"
+							},
+							{
+								"key": "x-auth-password",
+								"value": "{{x-auth-password}}",
+								"description": "Password for authentication"
+							}
+						],
+						"url": {
+							"raw": "{{quicko_host}}/organizations/:organization_id/reports?from=&to=",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"organizations",
+								":organization_id",
+								"reports"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": ""
+								},
+								{
+									"key": "to",
+									"value": ""
+								}
+							],
+							"variable": [
+								{
+									"key": "organization_id",
+									"value": "{{organization_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Coupon",
+			"item": [
+				{
+					"name": "Create coupon",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Body matches string\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.environment.set(\"coupon_id\", jsonData.data.id);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"//@schema\r",
+									"const requestSchema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"@entity\": { \"default\": \"coupon\" },\r",
+									"        \"name\": { \"type\": \"string\" },\r",
+									"        \"discount_type\": { \"type\": \"string\", \"enum\": [\"percentage\", \"fixed\"] },\r",
+									"        \"discount_value\": { \"type\": \"number\" },\r",
+									"        \"discount_upto\": { \"type\": \"number\" },\r",
+									"        \"item_constraint\": { \"type\": \"string\", \"enum\": [\"all\", \"specific\"] },\r",
+									"        \"items\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\r",
+									"        \"status\": { \"type\": \"string\", \"enum\": [\"active\", \"inactive\"] }\r",
+									"    }\r",
+									"}\r",
+									"//@endschema"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-username",
+								"value": "{{x-auth-username}}",
+								"description": "Username for identification"
+							},
+							{
+								"key": "x-auth-password",
+								"value": "{{x-auth-password}}",
+								"description": "Password for authentication"
+							},
+							{
+								"key": "x-organization-id",
+								"value": "{{organization_id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"@entity\": \"org.quicko.qpon.coupon\",\r\n    \"name\": \"10% OFF for all MEET users\",\r\n    \"discount_type\": \"percent\",\r\n    \"discount_value\": 10,\r\n    \"item_constraint\": \"specific\",\r\n    \"items\":[\"da0f669f-dfde-4074-a88d-f3eddd932c46\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{quicko_host}}/organizations/:organization_id/coupons",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"organizations",
+								":organization_id",
+								"coupons"
+							],
+							"variable": [
+								{
+									"key": "organization_id",
+									"value": "{{organization_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch coupon",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-username",
+								"value": "{{x-auth-username}}",
+								"description": "Username for identification"
+							},
+							{
+								"key": "x-auth-password",
+								"value": "{{x-auth-password}}",
+								"description": "Password for authentication"
+							},
+							{
+								"key": "x-organization-id",
+								"value": "{{organization_id}}",
+								"description": "Organization id",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{quicko_host}}/organizations/:organization_id/coupons/:coupon_id",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"organizations",
+								":organization_id",
+								"coupons",
+								":coupon_id"
+							],
+							"variable": [
+								{
+									"key": "organization_id",
+									"value": "{{organization_id}}"
+								},
+								{
+									"key": "coupon_id",
+									"value": "{{coupon_id}}",
+									"description": "Coupon id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch coupons",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-username",
+								"value": "{{x-auth-username}}",
+								"description": "Username for identification"
+							},
+							{
+								"key": "x-auth-password",
+								"value": "{{x-auth-password}}",
+								"description": "Password for authentication"
+							},
+							{
+								"key": "x-organization-id",
+								"value": "{{organization_id}}",
+								"description": "Organization id",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{quicko_host}}/organizations/:organization_id/coupons?status=inactive&discount_type=amount&external_item_id=item1&name&take=10&skip=0",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"organizations",
+								":organization_id",
+								"coupons"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "inactive",
+									"description": "Optional filter to get coupons by specified status"
+								},
+								{
+									"key": "discount_type",
+									"value": "amount",
+									"description": "Optional filter to get coupons by specified discount type"
+								},
+								{
+									"key": "external_item_id",
+									"value": "item1",
+									"description": "Optional filter to get coupons by specified item"
+								},
+								{
+									"key": "name",
+									"value": null,
+									"description": "Optional filter to find coupon based on name"
+								},
+								{
+									"key": "take",
+									"value": "10",
+									"description": "Optional page size. Default is 10"
+								},
+								{
+									"key": "skip",
+									"value": "0",
+									"description": "Optional page offset. Default is 0"
+								}
+							],
+							"variable": [
+								{
+									"key": "organization_id",
+									"value": "{{organization_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update coupon",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-auth-username",
+								"value": "{{x-auth-username}}",
+								"description": "Username for identification"
+							},
+							{
+								"key": "x-auth-password",
+								"value": "{{x-auth-password}}",
+								"description": "Password for authentication"
+							},
+							{
+								"key": "x-organization-id",
+								"value": "{{organization_id}}",
+								"description": "Organization id",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"@entity\": \"org.quicko.qpon.coupon\",\r\n    \"name\": \"Renamed coupon\",\r\n    \"item_constraint\": \"all\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{quicko_host}}/organizations/:organization_id/coupons/:coupon_id",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"organizations",
+								":organization_id",
+								"coupons",
+								":coupon_id"
+							],
+							"variable": [
+								{
+									"key": "organization_id",
+									"value": "{{organization_id}}"
+								},
+								{
+									"key": "coupon_id",
+									"value": "{{coupon_id}}",
+									"description": "Coupon id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deactivate coupon",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-username",
+								"value": "{{x-auth-username}}",
+								"description": "Username for identification"
+							},
+							{
+								"key": "x-auth-password",
+								"value": "{{x-auth-password}}",
+								"description": "Password for authentication"
+							},
+							{
+								"key": "x-organization-id",
+								"value": "{{organization_id}}",
+								"description": "Organization id",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{quicko_host}}/organizations/:organization_id/coupons/:coupon_id/deactivate",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"organizations",
+								":organization_id",
+								"coupons",
+								":coupon_id",
+								"deactivate"
+							],
+							"variable": [
+								{
+									"key": "organization_id",
+									"value": "{{organization_id}}"
+								},
+								{
+									"key": "coupon_id",
+									"value": "{{coupon_id}}",
+									"description": "Coupon id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reactivate coupon",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-username",
+								"value": "{{x-auth-username}}",
+								"description": "Username for identification"
+							},
+							{
+								"key": "x-auth-password",
+								"value": "{{x-auth-password}}",
+								"description": "Password for authentication"
+							},
+							{
+								"key": "x-organization-id",
+								"value": "{{organization_id}}",
+								"description": "Organization id",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{quicko_host}}/organizations/:organization_id/coupons/:coupon_id/reactivate",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"organizations",
+								":organization_id",
+								"coupons",
+								":coupon_id",
+								"reactivate"
+							],
+							"variable": [
+								{
+									"key": "organization_id",
+									"value": "{{organization_id}}"
+								},
+								{
+									"key": "coupon_id",
+									"value": "{{coupon_id}}",
+									"description": "Coupon id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete coupon",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{quicko_host}}/organizations/:organization_id/coupons/:coupon_id",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"organizations",
+								":organization_id",
+								"coupons",
+								":coupon_id"
+							],
+							"variable": [
+								{
+									"key": "organization_id",
+									"value": "{{organization_id}}"
+								},
+								{
+									"key": "coupon_id",
+									"value": "{{coupon_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch coupons summary",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-username",
+								"value": "{{x-auth-username}}",
+								"description": "Username for identification"
+							},
+							{
+								"key": "x-auth-password",
+								"value": "{{x-auth-password}}",
+								"description": "Password for authentication"
+							},
+							{
+								"key": "x-organization-id",
+								"value": "{{organization_id}}",
+								"description": "Organization id",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{quicko_host}}/organizations/:organization_id/coupons/summary?coupon_id={{coupon_id}}&take=10&skip=0",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"organizations",
+								":organization_id",
+								"coupons",
+								"summary"
+							],
+							"query": [
+								{
+									"key": "coupon_id",
+									"value": "{{coupon_id}}",
+									"description": "Coupon id"
+								},
+								{
+									"key": "take",
+									"value": "10",
+									"description": "Optional page size. Default is 10"
+								},
+								{
+									"key": "skip",
+									"value": "0",
+									"description": "Optional page offset. Default is 0"
+								}
+							],
+							"variable": [
+								{
+									"key": "organization_id",
+									"value": "{{organization_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Campaign",
+			"item": [
+				{
+					"name": "Create campaign",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Body matches string\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.environment.set(\"campaign_id\", jsonData.data.id);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"//@schema\r",
+									"const requestSchema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"@entity\": { \"default\": \"campaign\" },\r",
+									"        \"name\": { \"type\": \"string\" },\r",
+									"        \"budget\": { \"type\": \"number\" },\r",
+									"        \"external_id\": { \"type\": \"string\" },\r",
+									"        \"campaign-status\": { \"type\": \"string\", \"enum\": [\"active\", \"inactive\", \"exhausted\"] }\r",
+									"    }\r",
+									"}\r",
+									"//@endschema"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-username",
+								"value": "{{x-auth-username}}",
+								"description": "Username for identification"
+							},
+							{
+								"key": "x-auth-password",
+								"value": "{{x-auth-password}}",
+								"description": "Password for authentication"
+							},
+							{
+								"key": "x-organization-id",
+								"value": "{{organization_id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"@entity\": \"org.quicko.qpon.campaign\",\r\n    \"name\": \"Test QPON SET\",\r\n    \"budget\": 50000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{quicko_host}}/coupons/:coupon_id/campaigns",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"coupons",
+								":coupon_id",
+								"campaigns"
+							],
+							"variable": [
+								{
+									"key": "coupon_id",
+									"value": "{{coupon_id}}",
+									"description": "Coupon id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch campaign",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-username",
+								"value": "{{x-auth-username}}",
+								"description": "Username for identification"
+							},
+							{
+								"key": "x-auth-password",
+								"value": "{{x-auth-password}}",
+								"description": "Password for authentication"
+							},
+							{
+								"key": "x-organization-id",
+								"value": "{{organization_id}}",
+								"description": "Organization id",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{quicko_host}}/coupons/:coupon_id/campaigns/:campaign_id",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"coupons",
+								":coupon_id",
+								"campaigns",
+								":campaign_id"
+							],
+							"variable": [
+								{
+									"key": "coupon_id",
+									"value": "{{coupon_id}}",
+									"description": "Coupon id"
+								},
+								{
+									"key": "campaign_id",
+									"value": "{{campaign_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch campaigns",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-username",
+								"value": "{{x-auth-username}}",
+								"description": "Username for identification"
+							},
+							{
+								"key": "x-auth-password",
+								"value": "{{x-auth-password}}",
+								"description": "Password for authentication"
+							},
+							{
+								"key": "x-organization-id",
+								"value": "{{organization_id}}",
+								"description": "Organization id",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{quicko_host}}/coupons/:coupon_id/campaigns?status=active&budgeted=true&take=10&skip=0",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"coupons",
+								":coupon_id",
+								"campaigns"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "active",
+									"description": "Optional filter to get coupon sets by specified status"
+								},
+								{
+									"key": "budgeted",
+									"value": "true",
+									"description": "Optional filter to get coupon sets with budget"
+								},
+								{
+									"key": "take",
+									"value": "10",
+									"description": "Optional page size. Default is 10"
+								},
+								{
+									"key": "skip",
+									"value": "0",
+									"description": "Optional page offset. Default is 0"
+								}
+							],
+							"variable": [
+								{
+									"key": "coupon_id",
+									"value": "4a4e1a61-0c9c-4941-9b83-534d1fe78226",
+									"description": "Coupon id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update campaign",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_key}}",
+								"description": "API key for identification"
+							},
+							{
+								"key": "authorization",
+								"value": "{{access_token}}",
+								"description": "JWT access token"
+							},
+							{
+								"key": "x-api-version",
+								"value": "{{version}}",
+								"description": "API version"
+							},
+							{
+								"key": "x-organization-id",
+								"value": "{{organization_id}}",
+								"description": "Organization id"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"@entity\": \"org.quicko.qpon.campaign\",\r\n    \"id\": \"{{campaign_id}}\",\r\n    \"name\": \"AY 2024-2025 ITR Filing\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{quicko_host}}/coupons/:coupon_id/campaigns/:campaign_id",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"coupons",
+								":coupon_id",
+								"campaigns",
+								":campaign_id"
+							],
+							"variable": [
+								{
+									"key": "coupon_id",
+									"value": "{{coupon_id}}",
+									"description": "Coupon id"
+								},
+								{
+									"key": "campaign_id",
+									"value": "{{campaign_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deactivate campaign",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{access_token}}",
+								"description": "JWT access token"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{api_key}}",
+								"description": "API key for identification"
+							},
+							{
+								"key": "x-api-version",
+								"value": "{{version}}",
+								"description": "API version"
+							},
+							{
+								"key": "x-organization-id",
+								"value": "{{organization_id}}",
+								"description": "Organization id"
+							}
+						],
+						"url": {
+							"raw": "{{quicko_host}}/coupons/:coupon_id/campaigns/:campaign_id/deactivate",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"coupons",
+								":coupon_id",
+								"campaigns",
+								":campaign_id",
+								"deactivate"
+							],
+							"variable": [
+								{
+									"key": "coupon_id",
+									"value": "{{coupon_id}}",
+									"description": "Coupon id"
+								},
+								{
+									"key": "campaign_id",
+									"value": "{{campaign_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reactivate campaign",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{access_token}}",
+								"description": "JWT access token"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{api_key}}",
+								"description": "API key for identification"
+							},
+							{
+								"key": "x-api-version",
+								"value": "{{version}}",
+								"description": "API version"
+							},
+							{
+								"key": "x-organization-id",
+								"value": "{{organization_id}}",
+								"description": "Organization id"
+							}
+						],
+						"url": {
+							"raw": "{{quicko_host}}/coupons/:coupon_id/campaigns/:campaign_id/reactivate",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"coupons",
+								":coupon_id",
+								"campaigns",
+								":campaign_id",
+								"reactivate"
+							],
+							"variable": [
+								{
+									"key": "coupon_id",
+									"value": "{{coupon_id}}",
+									"description": "Coupon id"
+								},
+								{
+									"key": "campaign_id",
+									"value": "{{campaign_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete campaign",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{quicko_host}}/coupons/:coupon_id/campaigns/:campaign_id",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"coupons",
+								":coupon_id",
+								"campaigns",
+								":campaign_id"
+							],
+							"variable": [
+								{
+									"key": "coupon_id",
+									"value": "{{coupon_id}}"
+								},
+								{
+									"key": "campaign_id",
+									"value": "{{campaign_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch campaign summary",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{access_token}}",
+								"description": "JWT access token"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{api_key}}",
+								"description": "API key for identification"
+							},
+							{
+								"key": "x-api-version",
+								"value": "{{version}}",
+								"description": "API version"
+							},
+							{
+								"key": "x-organization-id",
+								"value": "{{organization_id}}",
+								"description": "Organization id"
+							}
+						],
+						"url": {
+							"raw": "{{quicko_host}}/campaigns/summary?campaign_id={{campaign_id}}&take=10&skip=0",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"campaigns",
+								"summary"
+							],
+							"query": [
+								{
+									"key": "campaign_id",
+									"value": "{{campaign_id}}"
+								},
+								{
+									"key": "take",
+									"value": "10",
+									"description": "Optional page size. Default is 10"
+								},
+								{
+									"key": "skip",
+									"value": "0",
+									"description": "Optional page offset. Default is 0"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Coupon Code",
+			"item": [
+				{
+					"name": "Create coupon code",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"//@schema\r",
+									"const requestSchema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"@entity\": { \"default\": \"coupon-code\" },\r",
+									"        \"code\": { \"type\": \"string\" },\r",
+									"        \"description\": { \"type\": \"string\" },\r",
+									"        \"max_redemptions\": { \"type\": \"number\" },\r",
+									"        \"minimum_amount\": { \"type\": \"number\" },\r",
+									"        \"visibility\": { \"type\": \"string\", \"enum\": [\"public\", \"private\"] },\r",
+									"        \"duration_type\": { \"type\": \"string\", \"enum\": [\"limited\", \"recurring\", \"forever\"] },\r",
+									"        \"expires_at\": { \"type\": \"string\" },\r",
+									"        \"expires_after_billing_cycle\": { \"type\": \"number\" },\r",
+									"        \"redemption_count\": { \"type\": \"number\" },\r",
+									"        \"coupon-code-status\": { \"type\": \"string\", \"enum\": [\"active\", \"inactive\", \"expired\", \"redeemed\"] }\r",
+									"\r",
+									"    }\r",
+									"}\r",
+									"//@endschema"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-username",
+								"value": "{{x-auth-username}}",
+								"description": "Username for identification"
+							},
+							{
+								"key": "x-auth-password",
+								"value": "{{x-auth-password}}",
+								"description": "Password for authentication"
+							},
+							{
+								"key": "x-organization-id",
+								"value": "{{organization_id}}",
+								"description": "Organization id",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"@entity\": \"org.quicko.qpon.coupon_code\",\r\n    \"code\": \"SARthaktest10\",\r\n    \"visibility\": \"public\",\r\n    \"duration_type\": \"forever\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{quicko_host}}/coupons/:coupon_id/campaigns/:campaign_id/coupon-codes",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"coupons",
+								":coupon_id",
+								"campaigns",
+								":campaign_id",
+								"coupon-codes"
+							],
+							"variable": [
+								{
+									"key": "coupon_id",
+									"value": "{{coupon_id}}",
+									"description": "Coupon id"
+								},
+								{
+									"key": "campaign_id",
+									"value": "{{campaign_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch coupon code",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-username",
+								"value": "{{x-auth-username}}",
+								"description": "Username for identification"
+							},
+							{
+								"key": "x-auth-password",
+								"value": "{{x-auth-password}}",
+								"description": "Password for authentication"
+							},
+							{
+								"key": "x-organization-id",
+								"value": "{{organization_id}}",
+								"description": "Organization id",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{quicko_host}}/coupons/:coupon_id/campaigns/:campaign_id/coupon-codes/:coupon_code_id",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"coupons",
+								":coupon_id",
+								"campaigns",
+								":campaign_id",
+								"coupon-codes",
+								":coupon_code_id"
+							],
+							"variable": [
+								{
+									"key": "coupon_id",
+									"value": "{{coupon_id}}",
+									"description": "Coupon id"
+								},
+								{
+									"key": "campaign_id",
+									"value": "{{campaign_id}}"
+								},
+								{
+									"key": "coupon_code_id",
+									"value": "{{coupon_code_id}}",
+									"description": "Coupon code id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch coupon codes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_key}}",
+								"description": "API key for identification"
+							},
+							{
+								"key": "authorization",
+								"value": "{{access_token}}",
+								"description": "JWT access token"
+							},
+							{
+								"key": "x-api-version",
+								"value": "{{version}}",
+								"description": "API version"
+							},
+							{
+								"key": "x-organization-id",
+								"value": "{{organization_id}}",
+								"description": "Organization id"
+							}
+						],
+						"url": {
+							"raw": "{{quicko_host}}/coupons/:coupon_id/campaigns/:campaign_id/coupon-codes?status=inactive&visibility=private&external_id=customer@gmail.com&duration_type=recurring&take=10&skip=0",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"coupons",
+								":coupon_id",
+								"campaigns",
+								":campaign_id",
+								"coupon-codes"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "inactive",
+									"description": "Optional filter to get coupon codes by specified status"
+								},
+								{
+									"key": "visibility",
+									"value": "private",
+									"description": "Optional filter to get coupon codes as per specified visibility"
+								},
+								{
+									"key": "external_id",
+									"value": "customer@gmail.com",
+									"description": "Option filter to get customer specific coupon codes"
+								},
+								{
+									"key": "duration_type",
+									"value": "recurring",
+									"description": "Optional filter to get coupon codes by specified duration type"
+								},
+								{
+									"key": "take",
+									"value": "10",
+									"description": "Optional page size. Default is 10"
+								},
+								{
+									"key": "skip",
+									"value": "0",
+									"description": "Optional page offset. Default is 0"
+								}
+							],
+							"variable": [
+								{
+									"key": "coupon_id",
+									"value": "56da8763-0a95-47ec-92f5-d8a2446d8a9c",
+									"description": "Coupon id"
+								},
+								{
+									"key": "campaign_id",
+									"value": "6e67d7cb-4fe0-4209-afe6-02ce07b5875a",
+									"description": "Coupon set id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch coupon codes by code",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{access_token}}",
+								"description": "JWT access token",
+								"disabled": true
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{api_key}}",
+								"description": "API key for identification",
+								"disabled": true
+							},
+							{
+								"key": "x-api-version",
+								"value": "{{version}}",
+								"description": "API version",
+								"disabled": true
+							},
+							{
+								"key": "x-organization-id",
+								"value": "493c41aa-0311-4728-a2e0-3f051ca7bc8f",
+								"description": "Organization id"
+							},
+							{
+								"key": "x-accept-type",
+								"value": "application/json;format=paginated-list",
+								"description": "To get response in sheet json format",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-accept-type",
+								"value": "application/json;format=sheet-json",
+								"description": "To get response in paginated list format",
+								"type": "text"
+							},
+							{
+								"key": "x-auth-username",
+								"value": "{{x-auth-username}}",
+								"type": "text"
+							},
+							{
+								"key": "x-auth-password",
+								"value": "{{x-auth-password}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{quicko_host}}/coupon-codes?code=INDMONEY20&status=inactive&customer_id=customer@gmail.com&take=10&skip=0",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"coupon-codes"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "INDMONEY20"
+								},
+								{
+									"key": "status",
+									"value": "inactive",
+									"description": "Optional filter to get coupon codes by specified status"
+								},
+								{
+									"key": "customer_id",
+									"value": "customer@gmail.com",
+									"description": "Option filter to get customer specific coupon codes"
+								},
+								{
+									"key": "take",
+									"value": "10",
+									"description": "Optional page size. Default is 10"
+								},
+								{
+									"key": "skip",
+									"value": "0",
+									"description": "Optional page offset. Default is 0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update coupon code",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_key}}",
+								"description": "API key for identification"
+							},
+							{
+								"key": "authorization",
+								"value": "{{access_token}}",
+								"description": "JWT access token"
+							},
+							{
+								"key": "x-api-version",
+								"value": "{{version}}",
+								"description": "API version"
+							},
+							{
+								"key": "x-organization-id",
+								"value": "{{organization_id}}",
+								"description": "Organization id"
+							},
+							{
+								"key": "x-auth-username",
+								"value": "{{x-auth-username}}",
+								"description": "Username for identification"
+							},
+							{
+								"key": "x-auth-password",
+								"value": "{{x-auth-password}}",
+								"description": "Password for authentication"
+							},
+							{
+								"key": "x-organization-id",
+								"value": "{{organization_id}}",
+								"description": "Organization id",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"@entity\": \"org.quicko.qpon.coupon_code\",\r\n    \"description\": \"₹300 discount, 1000 customers only\",\r\n    \"visibility\": \"private\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{quicko_host}}/coupons/:coupon_id/campaigns/:campaign_id/coupon-codes/:coupon_code_id",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"coupons",
+								":coupon_id",
+								"campaigns",
+								":campaign_id",
+								"coupon-codes",
+								":coupon_code_id"
+							],
+							"variable": [
+								{
+									"key": "coupon_id",
+									"value": "{{coupon_id}}",
+									"description": "Coupon id"
+								},
+								{
+									"key": "campaign_id",
+									"value": "{{campaign_id}}",
+									"description": "Coupon set id"
+								},
+								{
+									"key": "coupon_code_id",
+									"value": "{{coupon_code_id}}",
+									"description": "Coupon code id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deactivate coupon code",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_key}}",
+								"description": "API key for identification"
+							},
+							{
+								"key": "authorization",
+								"value": "{{access_token}}",
+								"description": "JWT access token"
+							},
+							{
+								"key": "x-api-version",
+								"value": "{{version}}",
+								"description": "API version"
+							},
+							{
+								"key": "x-organization-id",
+								"value": "{{organization_id}}",
+								"description": "Organization id"
+							},
+							{
+								"key": "x-auth-username",
+								"value": "{{x-auth-username}}",
+								"description": "Username for identification"
+							},
+							{
+								"key": "x-auth-password",
+								"value": "{{x-auth-password}}",
+								"description": "Password for authentication"
+							},
+							{
+								"key": "x-organization-id",
+								"value": "{{organization_id}}",
+								"description": "Organization id",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{quicko_host}}/coupons/:coupon_id/campaigns/:campaign_id/coupon-codes/:coupon_code_id/deactivate",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"coupons",
+								":coupon_id",
+								"campaigns",
+								":campaign_id",
+								"coupon-codes",
+								":coupon_code_id",
+								"deactivate"
+							],
+							"variable": [
+								{
+									"key": "coupon_id",
+									"value": "{{coupon_id}}",
+									"description": "Coupon id"
+								},
+								{
+									"key": "campaign_id",
+									"value": "{{campaign_id}}",
+									"description": "Coupon set id"
+								},
+								{
+									"key": "coupon_code_id",
+									"value": "{{coupon_code_id}}",
+									"description": "Coupon code id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reactivate coupon code",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_key}}",
+								"description": "API key for identification"
+							},
+							{
+								"key": "authorization",
+								"value": "{{access_token}}",
+								"description": "JWT access token"
+							},
+							{
+								"key": "x-api-version",
+								"value": "{{version}}",
+								"description": "API version"
+							},
+							{
+								"key": "x-organization-id",
+								"value": "{{organization_id}}",
+								"description": "Organization id"
+							},
+							{
+								"key": "x-auth-username",
+								"value": "{{x-auth-username}}",
+								"description": "Username for identification"
+							},
+							{
+								"key": "x-auth-password",
+								"value": "{{x-auth-password}}",
+								"description": "Password for authentication"
+							}
+						],
+						"url": {
+							"raw": "{{quicko_host}}/coupons/:coupon_id/campaigns/:campaign_id/coupon-codes/:coupon_code_id/reactivate",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"coupons",
+								":coupon_id",
+								"campaigns",
+								":campaign_id",
+								"coupon-codes",
+								":coupon_code_id",
+								"reactivate"
+							],
+							"variable": [
+								{
+									"key": "coupon_id",
+									"value": "{{coupon_id}}",
+									"description": "Coupon id"
+								},
+								{
+									"key": "campaign_id",
+									"value": "{{campaign_id}}",
+									"description": "Coupon set id"
+								},
+								{
+									"key": "coupon_code_id",
+									"value": "{{coupon_code_id}}",
+									"description": "Coupon code id"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Offers",
+			"item": [
+				{
+					"name": "Fetch offers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-username",
+								"value": "{{x-auth-username}}",
+								"description": "Username for identification"
+							},
+							{
+								"key": "x-auth-password",
+								"value": "{{x-auth-password}}",
+								"description": "Password for authentication"
+							},
+							{
+								"key": "x-organization-id",
+								"value": "{{organization_id}}",
+								"description": "Organization id",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{quicko_host}}/offers?external_item_id=5126317000000116190&external_customer_id=vishvajit@quicko.com&sort=desc&discount_type=percent&skip=0&take=10",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"offers"
+							],
+							"query": [
+								{
+									"key": "external_item_id",
+									"value": "5126317000000116190"
+								},
+								{
+									"key": "external_customer_id",
+									"value": "vishvajit@quicko.com",
+									"description": "Optional filter to get customer specific coupon codes"
+								},
+								{
+									"key": "sort",
+									"value": "desc",
+									"description": "Optional filter to sort ascending or descending"
+								},
+								{
+									"key": "discount_type",
+									"value": "percent"
+								},
+								{
+									"key": "skip",
+									"value": "0",
+									"description": "Optional page offset. Default is 0"
+								},
+								{
+									"key": "take",
+									"value": "10",
+									"description": "Optional page size. Default is 10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch offer",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-username",
+								"value": "{{x-auth-username}}",
+								"description": "Username for identification"
+							},
+							{
+								"key": "x-auth-password",
+								"value": "{{x-auth-password}}",
+								"description": "Password for authentication"
+							},
+							{
+								"key": "x-organization-id",
+								"value": "{{organization_id}}",
+								"description": "Organization id",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{quicko_host}}/offer?external_id=quickoall01&code=BAJAJFIN10&item_id=all",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"offer"
+							],
+							"query": [
+								{
+									"key": "external_id",
+									"value": "quickoall01",
+									"description": "Optional filter to get customer specific offer"
+								},
+								{
+									"key": "code",
+									"value": "BAJAJFIN10"
+								},
+								{
+									"key": "item_id",
+									"value": "all"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Redemptions",
+			"item": [
+				{
+					"name": "Redeem coupon code",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-username",
+								"value": "{{x-auth-username}}",
+								"description": "Username for identification"
+							},
+							{
+								"key": "x-auth-password",
+								"value": "{{x-auth-password}}",
+								"description": "Password for authentication"
+							},
+							{
+								"key": "x-organization-id",
+								"value": "{{organization_id}}",
+								"description": "Organization id",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"@entity\": \"org.quicko.qpon.redemption\",\r\n    \"code\": \"FIRSTITR\",\r\n    \"redemption_amount\": 250\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{quicko_host}}/coupon-codes/redeem",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"coupon-codes",
+								"redeem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch redemptions",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{api_key}}",
+								"description": "API key for identification"
+							},
+							{
+								"key": "authorization",
+								"value": "{{access_token}}",
+								"description": "JWT access token"
+							},
+							{
+								"key": "x-api-version",
+								"value": "{{version}}",
+								"description": "API version"
+							},
+							{
+								"key": "x-organization-id",
+								"value": "{{organization_id}}",
+								"description": "Organization id"
+							}
+						],
+						"url": {
+							"raw": "{{quicko_host}}/redemptions?coupon_id={{coupon_id}}&campaign_id={{campaign_id}}&coupon_code_id={{coupon_code_id}}&from=1716364274000&to=1716531482000&skip=0&take=10",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"redemptions"
+							],
+							"query": [
+								{
+									"key": "coupon_id",
+									"value": "{{coupon_id}}",
+									"description": "Option filter to get redemptions for a coupon"
+								},
+								{
+									"key": "campaign_id",
+									"value": "{{campaign_id}}",
+									"description": "Option filter to get redemptions for a campaign"
+								},
+								{
+									"key": "coupon_code_id",
+									"value": "{{coupon_code_id}}",
+									"description": "Option filter to get redemptions for a coupon code"
+								},
+								{
+									"key": "from",
+									"value": "1716364274000",
+									"description": "Option filter to get redemptions redeemed from time in EPOCH"
+								},
+								{
+									"key": "to",
+									"value": "1716531482000",
+									"description": "Option filter to get redemptions redeemed to time in EPOCH"
+								},
+								{
+									"key": "skip",
+									"value": "0",
+									"description": "Optional page offset. Default is 0"
+								},
+								{
+									"key": "take",
+									"value": "10",
+									"description": "Optional page size. Default is 10"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Items",
+			"item": [
+				{
+					"name": "Create item",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"//@schema\r",
+									"const requestSchema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"@entity\": { \"default\": \"item\" },\r",
+									"        \"name\": { \"type\": \"string\" },\r",
+									"        \"description\": { \"type\": \"string\" },\r",
+									"        \"custom_fields\": { \"type\": \"object\", \"properties\": {\r",
+									"            \"key\": { \"type\": \"string\" },\r",
+									"            \"value\": { \"type\": \"string\" }\r",
+									"        }}\r",
+									"    }\r",
+									"}\r",
+									"//@endschema"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"\",\r\n    \"description\": \"\",\r\n    \"custom_fields\": {\r\n        \"price\": 100\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{quicko_host}}/:organization_id/items",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								":organization_id",
+								"items"
+							],
+							"variable": [
+								{
+									"key": "organization_id",
+									"value": "{{organization_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch items",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{quicko_host}}/:organization_id/items?skip=0&take=10&name=test",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								":organization_id",
+								"items"
+							],
+							"query": [
+								{
+									"key": "skip",
+									"value": "0",
+									"description": "Optional page offset. Default is 0"
+								},
+								{
+									"key": "take",
+									"value": "10",
+									"description": "Optional page size. Default is 10"
+								},
+								{
+									"key": "name",
+									"value": "test"
+								}
+							],
+							"variable": [
+								{
+									"key": "organization_id",
+									"value": "{{organization_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update item",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"test description\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{quicko_host}}/:organization_id/items/:item_id",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								":organization_id",
+								"items",
+								":item_id"
+							],
+							"variable": [
+								{
+									"key": "organization_id",
+									"value": "{{organization_id}}"
+								},
+								{
+									"key": "item_id",
+									"value": "{{item_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete item",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{quicko_host}}/:organization_id/items/:item_id",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								":organization_id",
+								"items",
+								":item_id"
+							],
+							"variable": [
+								{
+									"key": "organization_id",
+									"value": "{{organization_id}}"
+								},
+								{
+									"key": "item_id",
+									"value": "{{item_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch item",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{quicko_host}}/:organization_id/items/:item_id",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								":organization_id",
+								"items",
+								":item_id"
+							],
+							"variable": [
+								{
+									"key": "organization_id",
+									"value": "{{organization_id}}"
+								},
+								{
+									"key": "item_id",
+									"value": "{{item_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Customers",
+			"item": [
+				{
+					"name": "Create customer",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"//@schema\r",
+									"const requestSchema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"@entity\": { \"default\": \"customer\" },\r",
+									"        \"name\": { \"type\": \"string\" },\r",
+									"        \"email\": { \"type\": \"string\", \"format\": \"email\" },\r",
+									"        \"phone\": { \"type\": \"string\" },\r",
+									"        \"external_id\": { \"type\": \"string\" }\r",
+									"    }\r",
+									"}\r",
+									"//@endschema"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Dan Brown\",\r\n    \"email\": \"dan@test.com\",\r\n    \"phone\": \"+916540747496\",\r\n    \"external_id\": \"nihgydljad9wy327\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{quicko_host}}/:organization_id/customers",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								":organization_id",
+								"customers"
+							],
+							"variable": [
+								{
+									"key": "organization_id",
+									"value": "{{organization_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch customers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{quicko_host}}/:organization_id/customers?skip=0&take=10",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								":organization_id",
+								"customers"
+							],
+							"query": [
+								{
+									"key": "skip",
+									"value": "0",
+									"description": "Optional page offset. Default is 0"
+								},
+								{
+									"key": "take",
+									"value": "10",
+									"description": "Optional page size. Default is 10"
+								}
+							],
+							"variable": [
+								{
+									"key": "organization_id",
+									"value": "{{organization_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update customer",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"dan@brown.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{quicko_host}}/:organization_id/customers/:customer_id",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								":organization_id",
+								"customers",
+								":customer_id"
+							],
+							"variable": [
+								{
+									"key": "organization_id",
+									"value": "{{organization_id}}"
+								},
+								{
+									"key": "customer_id",
+									"value": "{{customer_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete customer",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{quicko_host}}/:organization_id/customers/:customer_id",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								":organization_id",
+								"customers",
+								":customer_id"
+							],
+							"variable": [
+								{
+									"key": "organization_id",
+									"value": "{{organization_id}}"
+								},
+								{
+									"key": "customer_id",
+									"value": "{{customer_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Create user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"//@schema\r",
+									"const requestSchema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"@entity\": { \"default\": \"user\" },\r",
+									"        \"name\": { \"type\": \"string\" },\r",
+									"        \"email\": { \"type\": \"string\", \"format\": \"email\" },\r",
+									"        \"password\": { \"type\": \"string\" }\r",
+									"    }\r",
+									"}\r",
+									"//@endschema"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"\",\r\n    \"email\": \"\",\r\n    \"password\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{quicko_host}}/organizations/:organization_id/users",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"organizations",
+								":organization_id",
+								"users"
+							],
+							"variable": [
+								{
+									"key": "organization_id",
+									"value": "{{organization_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{quicko_host}}/organizations/:organization_id/users",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"organizations",
+								":organization_id",
+								"users"
+							],
+							"variable": [
+								{
+									"key": "organization_id",
+									"value": "{{organization_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{quicko_host}}/organizations/:organization_id/users/:user_id",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"organizations",
+								":organization_id",
+								"users",
+								":user_id"
+							],
+							"variable": [
+								{
+									"key": "organization_id",
+									"value": "{{organization_id}}"
+								},
+								{
+									"key": "user_id",
+									"value": "{{user_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{quicko_host}}/organizations/:organization_id/users/:user_id",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"organizations",
+								":organization_id",
+								"users",
+								":user_id"
+							],
+							"variable": [
+								{
+									"key": "organization_id",
+									"value": "{{organization_id}}"
+								},
+								{
+									"key": "user_id",
+									"value": "{{user_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
