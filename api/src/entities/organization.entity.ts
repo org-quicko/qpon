@@ -23,7 +23,7 @@ export class Organization {
   @Column()
   currency: string;
 
-  @Column()
+  @Column({ unique: true })
   slug: string;
 
   @Column({ name: 'theme_colour' })

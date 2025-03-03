@@ -8,7 +8,7 @@ export class LoggerService implements OnModuleInit {
 
   private loggerName = 'logger';
 
-  protected async onModuleInit() {
+  async onModuleInit() {
     this.logger = await this.getLogger();
   }
 

@@ -10,20 +10,29 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { OrganizationService } from '../services/organization.service';
-import { OrganizationDto } from '../dtos';
+import { CreateOrganizationDto, UpdateOrganizationDto } from '../dtos';
+import { LoggerService } from 'src/services/logger.service';
 
 @ApiTags('Organization')
 @Controller('/organizations')
 export class OrganizationController {
-  constructor(private readonly organizationService: OrganizationService) {}
+  constructor(
+    private readonly organizationService: OrganizationService,
+    private logger: LoggerService,
+  ) {}
 
   /**
    * Create organization
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
   @Post()
-  async createOrganization(@Body() body: OrganizationDto) {
-    return this.organizationService.createOrganization(body);
+  async createOrganization(@Body() body: CreateOrganizationDto) {
+    this.logger.info('START: createOrganization controller');
+
+    const result = await this.organizationService.createOrganization(body);
+
+    this.logger.info('END: createOrganization controller');
+    return { message: 'Successfully created organization', result };
   }
 
   /**
@@ -36,7 +45,16 @@ export class OrganizationController {
     @Query('take') take?: number,
     @Query('skip') skip?: number,
   ) {
-    return this.organizationService.fetchOrganizations(externalId, take, skip);
+    this.logger.info('START: fetchOrganizations controller');
+
+    const result = await this.organizationService.fetchOrganizations({
+      externalId,
+      skip,
+      take,
+    });
+
+    this.logger.info('END: fetchOrganizations controller');
+    return { message: 'Succesfully fetched organizations', result };
   }
 
   /**
@@ -45,7 +63,13 @@ export class OrganizationController {
   @ApiResponse({ status: 200, description: 'Successful response' })
   @Get(':organization_id')
   async fetchOrganization(@Param('organization_id') organizationId: string) {
-    return this.organizationService.fetchOrganization(organizationId);
+    this.logger.info('START: fetchOrganization controller');
+
+    const result =
+      await this.organizationService.fetchOrganization(organizationId);
+
+    this.logger.info('END: fetchOrganization controller');
+    return { message: 'Successfully fetched organization', result };
   }
 
   /**
@@ -55,9 +79,17 @@ export class OrganizationController {
   @Patch(':organization_id')
   async updateOrganization(
     @Param('organization_id') organizationId: string,
-    @Body() body: any,
+    @Body() body: UpdateOrganizationDto,
   ) {
-    return this.organizationService.updateOrganization(organizationId, body);
+    this.logger.info('START: updateOrganization controller');
+
+    const result = await this.organizationService.updateOrganization(
+      organizationId,
+      body,
+    );
+
+    this.logger.info('END: updateOrganization controller');
+    return { message: 'Successfully updated organization', result };
   }
 
   /**
@@ -66,7 +98,13 @@ export class OrganizationController {
   @ApiResponse({ status: 200, description: 'Successful response' })
   @Delete(':organization_id')
   async deleteOrganization(@Param('organization_id') organizationId: string) {
-    return this.organizationService.deleteOrganization(organizationId);
+    this.logger.info('START: deleteOrganization controller');
+
+    const result =
+      await this.organizationService.deleteOrganization(organizationId);
+
+    this.logger.info('END: deleteOrganization controller');
+    return { message: 'Successfully deleted organization', result };
   }
 
   /**

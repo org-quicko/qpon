@@ -1,64 +1,68 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { Expose, Transform } from 'class-transformer';
-import { IsString, IsNumber, IsArray, ValidateNested, IsEnum, IsDate, IsUUID, IsOptional } from 'class-validator';
+import { IsString, IsDate, IsOptional } from 'class-validator';
 
 export class OrganizationDto {
-    @Expose({ name: 'organization_id' })
-    @Transform(({ value }) => value, { toClassOnly: true })
-    @IsUUID()
-    organizationId: string;
+  @Expose({ name: 'organization_id' })
+  @Transform(({ value }) => value, { toClassOnly: true })
+  organizationId: string;
 
-    @IsString()
-    name: string;
+  @IsString()
+  name: string;
 
-    @IsString()
-    currency: string;
+  @IsOptional()
+  @IsString()
+  currency: string;
 
-    @Expose({ name: 'theme_colour' })
-    @Transform(({ value }) => value, { toClassOnly: true })
-    @IsString()
-    themeColour: string;
+  @IsOptional()
+  @Expose({ name: 'theme_colour' })
+  @Transform(({ value }) => value, { toClassOnly: true })
+  @IsString()
+  themeColour: string;
 
-    @IsString()
-    slug: string;
+  @IsString()
+  slug: string;
 
-    @Expose({ name: 'external_id' })
-    @Transform(({ value }) => value, { toClassOnly: true })
-    @IsString()
-    externalId: string;
+  @IsOptional()
+  @Expose({ name: 'external_id' })
+  @Transform(({ value }) => value, { toClassOnly: true })
+  @IsString()
+  externalId: string;
 
-    @Expose({name: 'created_at'})
-    @Transform(({ value }) => value, { toClassOnly: true })
-    @IsDate()
-    createdAt: Date;
+  @Expose({ name: 'created_at' })
+  @Transform(({ value }) => value, { toClassOnly: true })
+  @IsDate()
+  createdAt: Date;
 
-    @Expose({name: 'updated_at'})
-    @Transform(({ value }) => value, { toClassOnly: true })
-    @IsDate()
-    updatedAt: Date;
+  @Expose({ name: 'updated_at' })
+  @Transform(({ value }) => value, { toClassOnly: true })
+  @IsDate()
+  updatedAt: Date;
 }
 
 export class CreateOrganizationDto {
-    @IsString()
-    name: string;
+  @IsString()
+  name: string;
 
-    @IsString()
-    currency: string;
+  @IsOptional()
+  @IsString()
+  currency: string;
 
-    @Expose({ name: 'theme_colour' })
-    @Transform(({ value }) => value, { toClassOnly: true })
-    @IsString()
-    themeColour: string;
+  @IsOptional()
+  @Expose({ name: 'theme_colour' })
+  @Transform(({ value }) => value, { toClassOnly: true })
+  @IsString()
+  themeColour: string;
 
-    @IsString()
-    slug: string;
+  @IsOptional()
+  @IsString()
+  slug: string;
 
-    @Expose({ name: 'external_id' })
-    @Transform(({ value }) => value, { toClassOnly: true })
-    @IsString()
-    externalId: string;
-
+  @IsOptional()
+  @Expose({ name: 'external_id' })
+  @Transform(({ value }) => value, { toClassOnly: true })
+  @IsString()
+  externalId: string;
 }
 
 export class UpdateOrganizationDto extends PartialType(CreateOrganizationDto) {}
-

@@ -1,14 +1,21 @@
 import { Module } from '@nestjs/common';
-import { OrganizationService } from '../services/organization.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { OrganizationService } from '../services/organization.service';
 import { OrganizationController } from '../controllers/organization.controller';
 import { Organization } from '../entities/organization.entity';
-import { OrganizationUser } from 'src/entities/organization-user.entity';
-import { OrganizationSummaryMv } from 'src/entities/organization-summary.view';
+import { OrganizationUser } from '../entities/organization-user.entity';
+import { OrganizationSummaryMv } from '../entities/organization-summary.view';
+import { OrganizationConverter } from '../converters/organization.converter';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Organization, OrganizationUser, OrganizationSummaryMv])],
+  imports: [
+    TypeOrmModule.forFeature([
+      Organization,
+      OrganizationUser,
+      OrganizationSummaryMv,
+    ]),
+  ],
   controllers: [OrganizationController],
-  providers: [OrganizationService],
+  providers: [OrganizationService, OrganizationConverter],
 })
 export class OrganizationModule {}
