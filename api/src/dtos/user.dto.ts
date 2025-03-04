@@ -1,44 +1,71 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { Expose, Transform } from 'class-transformer';
-import { IsString, IsNumber, IsArray, ValidateNested, IsEnum, IsDate, IsUUID, IsOptional } from 'class-validator';
+import {
+  IsString,
+  IsEnum,
+  IsDate,
+  IsUUID,
+  IsOptional,
+  IsBoolean,
+} from 'class-validator';
+import { roleEnum } from 'src/enums';
 
 export class UserDto {
-    @Expose({ name: 'user_id' })
-    @Transform(({ value }) => value, { toClassOnly: true })
-    @IsUUID()
-    userId: string;
+  @Expose({ name: 'user_id' })
+  @Transform(({ value }) => value, { toClassOnly: true })
+  @IsUUID()
+  userId: string;
 
-    @IsString()
-    name: string;
+  @IsString()
+  name: string;
 
-    @IsString()
-    email: string;
+  @IsString()
+  email: string;
 
-    @IsString()
-    password: string;
+  @IsString()
+  password: string;
 
-    @Expose({name: 'created_at'})
-    @Transform(({ value }) => value, { toClassOnly: true })
-    @IsDate()
-    createdAt: Date;
+  @IsBoolean()
+  isSuperAdmin: boolean;
 
-    @Expose({name: 'updated_at'})
-    @Transform(({ value }) => value, { toClassOnly: true })
-    @IsDate()
-    updatedAt: Date;
+  @IsOptional()
+  @IsEnum(roleEnum)
+  role: roleEnum;
+
+  @IsOptional()
+  @Expose({ name: 'last_accessed_at' })
+  @Transform(({ value }) => value, { toClassOnly: true })
+  @IsDate()
+  lastAccessedAt: Date;
+
+  @Expose({ name: 'created_at' })
+  @Transform(({ value }) => value, { toClassOnly: true })
+  @IsDate()
+  createdAt: Date;
+
+  @Expose({ name: 'updated_at' })
+  @Transform(({ value }) => value, { toClassOnly: true })
+  @IsDate()
+  updatedAt: Date;
 }
 
 export class CreateUserDto {
-    @IsString()
-    name: string;
+  @IsString()
+  name: string;
 
-    @IsString()
-    email: string;
+  @IsString()
+  email: string;
 
-    @IsString()
-    password: string;
+  @IsString()
+  password: string;
 
+  @IsOptional()
+  @IsBoolean()
+  isSuperAdmin: boolean;
+
+  @IsOptional()
+  @IsEnum(roleEnum)
+  role: roleEnum;
 }
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {}
-

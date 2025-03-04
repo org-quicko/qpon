@@ -12,6 +12,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoggerModule } from './modules/logger.module';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './guards/auth.guard';
+import { AuthModule } from './modules/auth.module';
 
 @Module({
   imports: [
@@ -27,6 +30,7 @@ import { LoggerModule } from './modules/logger.module';
       logging: true,
     }),
     LoggerModule,
+    AuthModule,
     OrganizationModule,
     CouponModule,
     CampaignModule,
@@ -38,6 +42,12 @@ import { LoggerModule } from './modules/logger.module';
     UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
 export class AppModule {}

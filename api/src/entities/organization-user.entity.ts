@@ -19,8 +19,14 @@ export class OrganizationUser {
   @PrimaryColumn({ name: 'user_id' })
   userId: string;
 
-  @Column()
+  @Column('enum', { nullable: true, enum: roleEnum })
   role: roleEnum;
+
+  @Column('time with time zone', {
+    name: 'last_accessed_at',
+    default: () => `now()`,
+  })
+  lastAccessedAt: Date;
 
   @CreateDateColumn({
     type: 'time with time zone',
@@ -46,7 +52,10 @@ export class OrganizationUser {
   })
   organization: Organization;
 
-  @ManyToOne(() => User, (user) => user.organizationUser)
+  @ManyToOne(() => User, (user) => user.organizationUser, {
+    onDelete: 'CASCADE',
+    cascade: true,
+  })
   @JoinColumn({
     name: 'user_id',
     referencedColumnName: 'userId',

@@ -6,26 +6,38 @@ import {
   Patch,
   Body,
   Param,
+  Query,
 } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { UserService } from '../services/user.service';
-import { UserDto } from '../dtos';
+import { CreateUserDto, UpdateUserDto } from '../dtos';
+import { LoggerService } from '../services/logger.service';
+import { Public } from '../decorators/public.decorator';
 
 @ApiTags('User')
 @Controller('/organizations/:organization_id/users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private logger: LoggerService,
+  ) {}
 
   /**
    * Create user
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Public()
   @Post()
   async createUser(
     @Param('organization_id') organizationId: string,
-    @Body() body: UserDto,
+    @Body() body: CreateUserDto,
   ) {
-    return this.userService.createUser(organizationId, body);
+    this.logger.info('START: createUser controller');
+
+    const result = await this.userService.createUser(organizationId, body);
+
+    this.logger.info('END: createUser controller');
+    return { message: 'Successfully created user', result };
   }
 
   /**
@@ -33,8 +45,22 @@ export class UserController {
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
   @Get()
-  async fetchUsers(@Param('organization_id') organizationId: string) {
-    return this.userService.fetchUsers(organizationId);
+  async fetchUsers(
+    @Param('organization_id') organizationId: string,
+    @Query('external_id') externalId?: string,
+    @Query('take') take?: number,
+    @Query('skip') skip?: number,
+  ) {
+    this.logger.info('START: fetchUsers controller');
+
+    const result = await this.userService.fetchUsers(organizationId, {
+      externalId,
+      skip,
+      take,
+    });
+
+    this.logger.info('END: fetchUsers controller');
+    return { message: 'Successfully fetched users', result };
   }
 
   /**
@@ -45,9 +71,18 @@ export class UserController {
   async updateUser(
     @Param('organization_id') organizationId: string,
     @Param('user_id') userId: string,
-    @Body() body: any,
+    @Body() body: UpdateUserDto,
   ) {
-    return this.userService.updateUser(organizationId, userId, body);
+    this.logger.info('START: updateUser controller');
+
+    const result = await this.userService.updateUser(
+      organizationId,
+      userId,
+      body,
+    );
+
+    this.logger.info('END: updateUser controller');
+    return { message: 'Successfully updated user', result };
   }
 
   /**
@@ -59,6 +94,11 @@ export class UserController {
     @Param('organization_id') organizationId: string,
     @Param('user_id') userId: string,
   ) {
-    return this.userService.deleteUser(organizationId, userId);
+    this.logger.info('START: deleteUser controller');
+
+    const result = await this.userService.deleteUser(organizationId, userId);
+
+    this.logger.info('END: deleteUser controller');
+    return { message: 'Successfully deleted user', result };
   }
 }

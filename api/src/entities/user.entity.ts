@@ -7,7 +7,7 @@ import {
   BeforeInsert,
   OneToMany,
 } from 'typeorm';
-import bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcryptjs';
 import { SALT_ROUNDS } from '../constants';
 import { OrganizationUser } from './organization-user.entity';
 
@@ -24,6 +24,9 @@ export class User {
 
   @Column()
   password: string;
+
+  @Column('boolean', { name: 'is_super_admin', default: false })
+  isSuperAdmin: boolean;
 
   @CreateDateColumn({
     type: 'time with time zone',

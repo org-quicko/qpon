@@ -11,7 +11,8 @@ import {
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { OrganizationService } from '../services/organization.service';
 import { CreateOrganizationDto, UpdateOrganizationDto } from '../dtos';
-import { LoggerService } from 'src/services/logger.service';
+import { LoggerService } from '../services/logger.service';
+import { Public } from '../decorators/public.decorator';
 
 @ApiTags('Organization')
 @Controller('/organizations')
@@ -25,6 +26,7 @@ export class OrganizationController {
    * Create organization
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Public()
   @Post()
   async createOrganization(@Body() body: CreateOrganizationDto) {
     this.logger.info('START: createOrganization controller');
