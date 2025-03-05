@@ -1,5 +1,4 @@
 import {
-  Body,
   ConflictException,
   HttpException,
   HttpStatus,
@@ -29,7 +28,7 @@ export class UserService {
   /**
    * Create user
    */
-  async createUser(organizationId: string, @Body() body: CreateUserDto) {
+  async createUser(organizationId: string, body: CreateUserDto) {
     this.logger.info('START: createUser service');
     try {
       const existingUser = await this.fetchUserByEmail(body.email);

@@ -1,5 +1,5 @@
 
-import { Body, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CouponCode } from '../entities/coupon-code.entity';
@@ -18,7 +18,7 @@ constructor(
   /**
    * Create coupon code
    */
-  async createCouponCode(couponId: string, campaignId: string, @Body() body: CouponCodeDto) {
+  async createCouponCode(couponId: string, campaignId: string, body: CouponCodeDto) {
     throw new Error('Method not implemented.');
   }
 
@@ -39,7 +39,7 @@ constructor(
   /**
    * Update coupon code
    */
-  async updateCouponCode(couponId: string, campaignId: string, couponCodeId: string, @Body() body: any) {
+  async updateCouponCode(couponId: string, campaignId: string, couponCodeId: string, body: any) {
     throw new Error('Method not implemented.');
   }
 

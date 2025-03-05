@@ -1,5 +1,5 @@
 
-import { Body, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Campaign } from '../entities/campaign.entity';
@@ -18,7 +18,7 @@ constructor(
   /**
    * Create campaign
    */
-  async createCampaign(couponId: string, @Body() body: CampaignDto) {
+  async createCampaign(couponId: string, body: CampaignDto) {
     throw new Error('Method not implemented.');
   }
 
@@ -39,7 +39,7 @@ constructor(
   /**
    * Update campaign
    */
-  async updateCampaign(couponId: string, campaignId: string, @Body() body: any) {
+  async updateCampaign(couponId: string, campaignId: string, body: any) {
     throw new Error('Method not implemented.');
   }
 

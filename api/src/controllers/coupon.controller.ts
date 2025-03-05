@@ -10,12 +10,17 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { CouponService } from '../services/coupon.service';
-import { CouponDto } from '../dtos';
+import { CreateCouponDto, UpdateCouponDto } from '../dtos';
+import { LoggerService } from '../services/logger.service';
+import { discountTypeEnum, statusEnum } from 'src/enums';
 
 @ApiTags('Coupon')
 @Controller('/organizations/:organization_id/coupons')
 export class CouponController {
-  constructor(private readonly couponService: CouponService) {}
+  constructor(
+    private readonly couponService: CouponService,
+    private logger: LoggerService,
+  ) {}
 
   /**
    * Create coupon
@@ -24,9 +29,14 @@ export class CouponController {
   @Post()
   async createCoupon(
     @Param('organization_id') organizationId: string,
-    @Body() body: CouponDto,
+    @Body() body: CreateCouponDto,
   ) {
-    return this.couponService.createCoupon(organizationId, body);
+    this.logger.info('START: createCoupon controller');
+
+    const result = await this.couponService.createCoupon(organizationId, body);
+
+    this.logger.info('END: createCoupon controller');
+    return { message: 'Successfully created coupon', result };
   }
 
   /**
@@ -36,22 +46,42 @@ export class CouponController {
   @Get()
   async fetchCoupons(
     @Param('organization_id') organizationId: string,
-    @Query('status') status?: string,
-    @Query('discount_type') discountType?: string,
+    @Query('status') status?: statusEnum,
+    @Query('discount_type') discountType?: discountTypeEnum,
     @Query('external_item_id') externalItemId?: string,
     @Query('name') name?: string,
     @Query('take') take?: number,
     @Query('skip') skip?: number,
   ) {
-    return this.couponService.fetchCoupons(
+    this.logger.info('START: fetchCoupons controller');
+
+    const result = await this.couponService.fetchCoupons(
       organizationId,
-      status,
-      discountType,
-      externalItemId,
-      name,
-      take,
+      {
+        name,
+        status,
+        discountType,
+        couponItems: {
+          item: {
+            externalId: externalItemId,
+          },
+        },
+      },
       skip,
+      take,
     );
+    // const result = await this.couponService.fetchCoupons(
+    //   organizationId,
+    //   status,
+    //   discountType,
+    //   externalItemId,
+    //   name,
+    //   take,
+    //   skip,
+    // );
+
+    this.logger.info('END: fetchCoupons controller');
+    return { message: 'Successfully fetched coupons', result };
   }
 
   /**
@@ -59,11 +89,13 @@ export class CouponController {
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
   @Get(':coupon_id')
-  async fetchCoupon(
-    @Param('organization_id') organizationId: string,
-    @Param('coupon_id') couponId: string,
-  ) {
-    return this.couponService.fetchCoupon(organizationId, couponId);
+  async fetchCoupon(@Param('coupon_id') couponId: string) {
+    this.logger.info('START: fetchCoupon controller');
+
+    const result = await this.couponService.fetchCoupon(couponId);
+
+    this.logger.info('END: fetchCoupon controller');
+    return { message: 'Successfully fetched coupon', result };
   }
 
   /**
@@ -74,9 +106,18 @@ export class CouponController {
   async updateCoupon(
     @Param('organization_id') organizationId: string,
     @Param('coupon_id') couponId: string,
-    @Body() body: any,
+    @Body() body: UpdateCouponDto,
   ) {
-    return this.couponService.updateCoupon(organizationId, couponId, body);
+    this.logger.info('START: updateCoupon controller');
+
+    const result = await this.couponService.updateCoupon(
+      organizationId,
+      couponId,
+      body,
+    );
+
+    this.logger.info('END: updateCoupon controller');
+    return { message: 'Successfully updated coupon', result };
   }
 
   /**
@@ -84,11 +125,13 @@ export class CouponController {
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
   @Delete(':coupon_id')
-  async deleteCoupon(
-    @Param('organization_id') organizationId: string,
-    @Param('coupon_id') couponId: string,
-  ) {
-    return this.couponService.deleteCoupon(organizationId, couponId);
+  async deleteCoupon(@Param('coupon_id') couponId: string) {
+    this.logger.info('START: deleteCoupon controller');
+
+    const result = await this.couponService.deleteCoupon(couponId);
+
+    this.logger.info('END: deleteCoupon controller');
+    return { message: 'Successfully deleted coupon', result };
   }
 
   /**
@@ -96,11 +139,13 @@ export class CouponController {
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
   @Post(':coupon_id/deactivate')
-  async deactivateCoupon(
-    @Param('organization_id') organizationId: string,
-    @Param('coupon_id') couponId: string,
-  ) {
-    return this.couponService.deactivateCoupon(organizationId, couponId);
+  async deactivateCoupon(@Param('coupon_id') couponId: string) {
+    this.logger.info('START: deactivateCoupon controller');
+
+    await this.couponService.deactivateCoupon(couponId);
+
+    this.logger.info('END: deactivateCoupon controller');
+    return { message: 'Successfully deactivated coupon' };
   }
 
   /**
@@ -112,7 +157,12 @@ export class CouponController {
     @Param('organization_id') organizationId: string,
     @Param('coupon_id') couponId: string,
   ) {
-    return this.couponService.reactivateCoupon(organizationId, couponId);
+    this.logger.info('START: reactivateCoupon controller');
+
+    await this.couponService.reactivateCoupon(couponId);
+
+    this.logger.info('END: reactivateCoupon controller');
+    return { message: 'Successfully reactivated coupon' };
   }
 
   /**

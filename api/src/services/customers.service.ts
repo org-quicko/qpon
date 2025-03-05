@@ -1,4 +1,4 @@
-import { Body, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Customer } from '../entities/customer.entity';
@@ -14,7 +14,7 @@ export class CustomersService {
   /**
    * Create customer
    */
-  async createCustomer(organizationId: string, @Body() body: CustomerDto) {
+  async createCustomer(organizationId: string, body: CustomerDto) {
     throw new Error('Method not implemented.');
   }
 
@@ -31,7 +31,7 @@ export class CustomersService {
   async updateCustomer(
     organizationId: string,
     customerId: string,
-    @Body() body: any,
+    body: any,
   ) {
     throw new Error('Method not implemented.');
   }

@@ -1,5 +1,5 @@
 
-import { Body, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Item } from '../entities/item.entity';
@@ -18,7 +18,7 @@ constructor(
   /**
    * Create item
    */
-  async createItem(organizationId: string, @Body() body: ItemDto) {
+  async createItem(organizationId: string, body: ItemDto) {
     throw new Error('Method not implemented.');
   }
 
@@ -32,7 +32,7 @@ constructor(
   /**
    * Update item
    */
-  async updateItem(organizationId: string, itemId: string, @Body() body: any) {
+  async updateItem(organizationId: string, itemId: string, body: any) {
     throw new Error('Method not implemented.');
   }
 

@@ -2,7 +2,6 @@ import { discountTypeEnum } from '../enums/discountType.enum';
 import { itemConstraintEnum } from '../enums/itemConstraint.enum';
 import { statusEnum } from '../enums/status.enum';
 
-import { PartialType } from '@nestjs/mapped-types';
 import { Expose, Transform } from 'class-transformer';
 import {
   IsString,
@@ -11,7 +10,9 @@ import {
   IsEnum,
   IsDate,
   IsUUID,
+  IsOptional,
 } from 'class-validator';
+import { ItemDto } from './item.dto';
 
 export class CouponDto {
   @Expose({ name: 'coupon_id' })
@@ -42,7 +43,8 @@ export class CouponDto {
   @IsEnum(itemConstraintEnum)
   itemConstraint: itemConstraintEnum;
 
-  items: string[];
+  @IsArray()
+  items: ItemDto[];
 
   @IsEnum(statusEnum)
   status: statusEnum;
@@ -72,6 +74,7 @@ export class CreateCouponDto {
   @IsNumber()
   discountValue: number;
 
+  @IsOptional()
   @Expose({ name: 'discount_upto' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsNumber()
@@ -82,12 +85,31 @@ export class CreateCouponDto {
   @IsEnum(itemConstraintEnum)
   itemConstraint: itemConstraintEnum;
 
+  @IsOptional()
   @IsArray()
   @IsString({ each: true })
   items: string[];
-
-  @IsEnum(statusEnum)
-  status: statusEnum;
 }
 
-export class UpdateCouponDto extends PartialType(CreateCouponDto) {}
+export class UpdateCouponDto {
+  @IsOptional()
+  @IsString()
+  name: string;
+
+  @IsOptional()
+  @Expose({ name: 'discount_upto' })
+  @Transform(({ value }) => value, { toClassOnly: true })
+  @IsNumber()
+  discountUpto: number;
+
+  @IsOptional()
+  @Expose({ name: 'item_constraint' })
+  @Transform(({ value }) => value, { toClassOnly: true })
+  @IsEnum(itemConstraintEnum)
+  itemConstraint: itemConstraintEnum;
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  items: string[];
+}

@@ -23,9 +23,15 @@ export class ItemDto {
   @IsString()
   description: string;
 
+  @IsOptional()
   @Expose({ name: 'custom_fields' })
   @Transform(({ value }) => value, { toClassOnly: true })
   customFields: any;
+
+  @IsOptional()
+  @Expose({ name: 'external_id' })
+  @Transform(({ value }) => value, { toClassOnly: true })
+  externalId: string;
 
   @Expose({ name: 'created_at' })
   @Transform(({ value }) => value, { toClassOnly: true })
@@ -45,9 +51,15 @@ export class CreateItemDto {
   @IsString()
   description: string;
 
+  @IsOptional()
   @Expose({ name: 'custom_fields' })
   @Transform(({ value }) => value, { toClassOnly: true })
   customFields: any;
+
+  @IsOptional()
+  @Expose({ name: 'external_id' })
+  @Transform(({ value }) => value, { toClassOnly: true })
+  externalId: string;
 }
 
 export class UpdateItemDto extends PartialType(CreateItemDto) {}

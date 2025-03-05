@@ -1,5 +1,4 @@
 import {
-  Body,
   HttpException,
   HttpStatus,
   Injectable,
@@ -25,10 +24,10 @@ export class OrganizationService {
   /**
    * Create organization
    */
-  async createOrganization(@Body() body: CreateOrganizationDto) {
+  async createOrganization(body: CreateOrganizationDto) {
     this.logger.info('START: createOrganization service');
     try {
-      const organizationEntity = await this.organizationRepository.create({
+      const organizationEntity = this.organizationRepository.create({
         name: body.name,
         currency: body?.currency,
         themeColour: body.themeColour ? body.themeColour : 'default theme',
@@ -144,7 +143,7 @@ export class OrganizationService {
    */
   async updateOrganization(
     organizationId: string,
-    @Body() body: UpdateOrganizationDto,
+    body: UpdateOrganizationDto,
   ) {
     this.logger.info('START: updateOrganization service');
     try {

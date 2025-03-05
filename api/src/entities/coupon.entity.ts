@@ -23,7 +23,11 @@ export class Coupon {
   @Column()
   name: string;
 
-  @Column('enum', { name: 'item_constraint', enum: itemConstraintEnum })
+  @Column('enum', {
+    name: 'item_constraint',
+    enum: itemConstraintEnum,
+    default: itemConstraintEnum.ALL,
+  })
   itemConstraint: itemConstraintEnum;
 
   @Column('enum', { name: 'discount_type', enum: discountTypeEnum })
@@ -35,7 +39,7 @@ export class Coupon {
   @Column('numeric', { name: 'discount_upto' })
   discountUpto: number;
 
-  @Column('enum', { enum: statusEnum })
+  @Column('enum', { enum: statusEnum, default: statusEnum.ACTIVE })
   status: statusEnum;
 
   @CreateDateColumn({

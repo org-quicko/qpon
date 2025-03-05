@@ -1,5 +1,5 @@
 
-import { Body, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Redemption } from '../entities/redemption.entity';
@@ -16,7 +16,7 @@ constructor(
   /**
    * Redeem coupon code
    */
-  async redeemCouponCode(@Body() body: any) {
+  async redeemCouponCode(body: any) {
     throw new Error('Method not implemented.');
   }
 
