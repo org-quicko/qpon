@@ -11,7 +11,6 @@ export class UserConverter {
     userDto.userId = user.userId;
     userDto.name = user.name;
     userDto.email = user.email;
-    userDto.isSuperAdmin = user.isSuperAdmin;
     userDto.createdAt = user.createdAt;
     userDto.updatedAt = user.updatedAt;
 

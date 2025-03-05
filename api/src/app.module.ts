@@ -15,6 +15,7 @@ import { LoggerModule } from './modules/logger.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './guards/auth.guard';
 import { AuthModule } from './modules/auth.module';
+import { CouponItemModule } from './modules/coupon-item.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { AuthModule } from './modules/auth.module';
     ItemsModule,
     CustomersModule,
     UserModule,
+    CouponItemModule,
   ],
   controllers: [AppController],
   providers: [

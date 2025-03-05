@@ -1,14 +1,7 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { Expose, Transform } from 'class-transformer';
-import {
-  IsString,
-  IsEnum,
-  IsDate,
-  IsUUID,
-  IsOptional,
-  IsBoolean,
-} from 'class-validator';
-import { roleEnum } from 'src/enums';
+import { IsString, IsEnum, IsDate, IsUUID, IsOptional } from 'class-validator';
+import { roleEnum } from '../enums';
 
 export class UserDto {
   @Expose({ name: 'user_id' })
@@ -24,9 +17,6 @@ export class UserDto {
 
   @IsString()
   password: string;
-
-  @IsBoolean()
-  isSuperAdmin: boolean;
 
   @IsOptional()
   @IsEnum(roleEnum)
@@ -58,10 +48,6 @@ export class CreateUserDto {
 
   @IsString()
   password: string;
-
-  @IsOptional()
-  @IsBoolean()
-  isSuperAdmin: boolean;
 
   @IsOptional()
   @IsEnum(roleEnum)

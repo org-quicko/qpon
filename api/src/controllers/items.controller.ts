@@ -10,12 +10,16 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { ItemsService } from '../services/items.service';
-import { ItemDto } from '../dtos';
+import { CreateItemDto, UpdateItemDto } from '../dtos';
+import { LoggerService } from '../services/logger.service';
 
 @ApiTags('Items')
-@Controller('/:organization_id/items')
+@Controller('/organizations/:organization_id/items')
 export class ItemsController {
-  constructor(private readonly itemsService: ItemsService) {}
+  constructor(
+    private readonly itemsService: ItemsService,
+    private logger: LoggerService,
+  ) {}
 
   /**
    * Create item
@@ -24,9 +28,14 @@ export class ItemsController {
   @Post()
   async createItem(
     @Param('organization_id') organizationId: string,
-    @Body() body: ItemDto,
+    @Body() body: CreateItemDto,
   ) {
-    return this.itemsService.createItem(organizationId, body);
+    this.logger.info('START: createItem controller');
+
+    const result = await this.itemsService.createItem(organizationId, body);
+
+    this.logger.info('END: createItem controller');
+    return { message: 'Successfully created item', result };
   }
 
   /**
@@ -39,8 +48,36 @@ export class ItemsController {
     @Query('skip') skip?: number,
     @Query('take') take?: number,
     @Query('name') name?: string,
+    @Query('external_id') externalId?: string,
   ) {
-    return this.itemsService.fetchItems(organizationId, skip, take, name);
+    this.logger.info('START: fetchItems controller');
+
+    const result = await this.itemsService.fetchItems(
+      organizationId,
+      skip,
+      take,
+      {
+        name,
+        externalId,
+      },
+    );
+
+    this.logger.info('END: fetchItems controller');
+    return { message: 'Successfully fetched items', result };
+  }
+
+  /**
+   * Fetch item
+   */
+  @ApiResponse({ status: 200, description: 'Successful response' })
+  @Get(':item_id')
+  async fetchItem(@Param('item_id') itemId: string) {
+    this.logger.info('START: fetchItem controller');
+
+    const result = await this.itemsService.fetchItem(itemId);
+
+    this.logger.info('END: fetchItem controller');
+    return { message: 'Successfully fetched item', result };
   }
 
   /**
@@ -49,11 +86,15 @@ export class ItemsController {
   @ApiResponse({ status: 200, description: 'Successful response' })
   @Patch(':item_id')
   async updateItem(
-    @Param('organization_id') organizationId: string,
     @Param('item_id') itemId: string,
-    @Body() body: any,
+    @Body() body: UpdateItemDto,
   ) {
-    return this.itemsService.updateItem(organizationId, itemId, body);
+    this.logger.info('START: updateItem controller');
+
+    const result = await this.itemsService.updateItem(itemId, body);
+
+    this.logger.info('END: updateItem controller');
+    return { message: 'Successfully updated item', result };
   }
 
   /**
@@ -61,22 +102,12 @@ export class ItemsController {
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
   @Delete(':item_id')
-  async deleteItem(
-    @Param('organization_id') organizationId: string,
-    @Param('item_id') itemId: string,
-  ) {
-    return this.itemsService.deleteItem(organizationId, itemId);
-  }
+  async deleteItem(@Param('item_id') itemId: string) {
+    this.logger.info('START: deleteItem controller');
 
-  /**
-   * Fetch item
-   */
-  @ApiResponse({ status: 200, description: 'Successful response' })
-  @Get(':item_id')
-  async fetchItem(
-    @Param('organization_id') organizationId: string,
-    @Param('item_id') itemId: string,
-  ) {
-    return this.itemsService.fetchItem(organizationId, itemId);
+    const result = await this.itemsService.deleteItem(itemId);
+
+    this.logger.info('END: deleteItem controller');
+    return { message: 'Successfully deleted item', result };
   }
 }

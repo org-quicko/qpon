@@ -7,21 +7,14 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, FindOptionsWhere, In, Like, Repository } from 'typeorm';
+import { DataSource, FindOptionsWhere, Like, Repository } from 'typeorm';
 import { Coupon } from '../entities/coupon.entity';
 import { CreateCouponDto, UpdateCouponDto } from '../dtos';
 import { LoggerService } from './logger.service';
-import { CouponItem } from '../entities/coupon-item.entity';
-import { Item } from '../entities/item.entity';
-import {
-  campaignStatusEnum,
-  couponCodeStatusEnum,
-  discountTypeEnum,
-  itemConstraintEnum,
-  statusEnum,
-} from '../enums';
+import { campaignStatusEnum, couponCodeStatusEnum, statusEnum } from '../enums';
 import { CouponConverter } from '../converters/coupon.converter';
-import { QueryOptionsInterface } from 'src/interfaces/queryOptions.interface';
+import { Campaign } from '../entities/campaign.entity';
+import { CouponCode } from '../entities/coupon-code.entity';
 
 @Injectable()
 export class CouponService {
@@ -41,20 +34,11 @@ export class CouponService {
 
     return this.datasource.transaction(async (manager) => {
       try {
-        if (
-          (body.discountType === discountTypeEnum.FIXED &&
-            body.discountValue <= 0) ||
-          (body.discountType === discountTypeEnum.PERCENTAGE &&
-            body.discountValue > 0) ||
-          (body.itemConstraint == itemConstraintEnum.SPECIFIC &&
-            body.items.length == 0)
-        ) {
+        if (body.discountType && body.discountValue <= 0) {
           throw new BadRequestException('Invalid body');
         }
 
         const couponRepository = manager.getRepository(Coupon);
-        const couponItemRepository = manager.getRepository(CouponItem);
-        const itemRepository = manager.getRepository(Item);
 
         const existingCoupon = await couponRepository.findOne({
           where: {
@@ -69,17 +53,6 @@ export class CouponService {
           );
         }
 
-        const items = await itemRepository.find({
-          where: {
-            itemId: In(body.items),
-          },
-        });
-
-        if (items.length !== body.items.length) {
-          this.logger.warn('Some items were not found', body.items);
-          throw new BadRequestException('Some items were not found');
-        }
-
         const couponEntity = couponRepository.create({
           name: body.name,
           itemConstraint: body.itemConstraint,
@@ -92,15 +65,6 @@ export class CouponService {
         });
 
         const savedCoupon = await manager.save(couponEntity);
-
-        const couponItems = items.map((item) => {
-          couponItemRepository.create({
-            coupon: savedCoupon,
-            item,
-          });
-        });
-
-        await manager.save(couponItems);
 
         this.logger.info('END: createCoupon service');
         return this.couponConverter.convert(savedCoupon);
@@ -127,9 +91,9 @@ export class CouponService {
    */
   async fetchCoupons(
     organizationId: string,
-    whereOptions: FindOptionsWhere<Coupon> = {},
-    skip?: number,
+    skip: number = 0,
     take: number = 10,
+    whereOptions: FindOptionsWhere<Coupon> = {},
   ) {
     this.logger.info('START: fetchCoupons service');
     try {
@@ -144,7 +108,7 @@ export class CouponService {
         take,
       });
 
-      if (!coupons) {
+      if (!coupons || coupons.length == 0) {
         this.logger.warn('Coupons not found');
         throw new NotFoundException('Coupons not found');
       }
@@ -153,6 +117,10 @@ export class CouponService {
       return coupons.map((coupon) => this.couponConverter.convert(coupon));
     } catch (error) {
       this.logger.error(`Error in fetchCoupons: ${error.message}`, error);
+
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
 
       throw new HttpException(
         'Failed to fetch coupons',
@@ -210,8 +178,6 @@ export class CouponService {
     return this.datasource.transaction(async (manager) => {
       try {
         const couponRepository = manager.getRepository(Coupon);
-        const itemRepository = manager.getRepository(Item);
-        const couponItemRepository = manager.getRepository(CouponItem);
 
         // Find the coupon
         const existingCoupon = await couponRepository.findOne({
@@ -239,49 +205,6 @@ export class CouponService {
           existingCoupon.discountUpto = body.discountUpto;
         }
 
-        if (body.items) {
-          // Extract current item IDs from the database
-          const existingItemIds = existingCoupon.couponItems.map(
-            (ci) => ci.item.itemId,
-          );
-
-          // Check if item IDs in request are different from existing ones
-          const itemIdsChanged =
-            body.items.length !== existingItemIds.length ||
-            body.items.some((id) => !existingItemIds.includes(id));
-
-          if (itemIdsChanged) {
-            // Remove all existing CouponItems for this coupon
-            await couponItemRepository.delete({
-              coupon: { couponId: couponId },
-            });
-
-            // Fetch new items from the database
-            const newItems = await itemRepository.find({
-              where: {
-                itemId: In(body.items),
-              },
-            });
-
-            if (newItems.length !== body.items.length) {
-              this.logger.warn('Some items were not found');
-              throw new BadRequestException('Some items were not found');
-            }
-
-            // Create new CouponItem records
-            const newCouponItems = newItems.map((item) =>
-              couponItemRepository.create({
-                coupon: existingCoupon,
-                item: item,
-              }),
-            );
-
-            // Save new CouponItems
-            await manager.save(newCouponItems);
-          }
-        }
-
-        // Save the updated coupon
         const updatedCoupon = await manager.save(existingCoupon);
 
         this.logger.info('END: updateCoupon service');
@@ -369,34 +292,51 @@ export class CouponService {
    */
   async deactivateCoupon(couponId: string) {
     this.logger.info('START: deactivateCoupon service');
-    try {
-      const coupon = await this.couponRepository.findOne({
-        where: {
-          couponId,
-        },
-      });
+    return this.datasource.transaction(async (manager) => {
+      try {
+        const couponRepository = manager.getRepository(Coupon);
 
-      if (!coupon) {
-        this.logger.warn('Coupon not found', couponId);
-        throw new NotFoundException('Coupon not found');
+        const coupon = await couponRepository.findOne({
+          where: {
+            couponId,
+          },
+        });
+
+        if (!coupon) {
+          this.logger.warn('Coupon not found', couponId);
+          throw new NotFoundException('Coupon not found');
+        }
+
+        await couponRepository.update(couponId, {
+          status: statusEnum.INACTIVE,
+        });
+
+        await manager.update(
+          Campaign,
+          { coupon: { couponId } },
+          { status: campaignStatusEnum.INACTIVE },
+        );
+
+        await manager.update(
+          CouponCode,
+          { coupon: { couponId } },
+          { status: couponCodeStatusEnum.INACTIVE },
+        );
+
+        this.logger.info('END: deactivateCoupon service');
+      } catch (error) {
+        this.logger.error(`Error in deactivateCoupon: ${error.message}`, error);
+
+        if (error instanceof NotFoundException) {
+          throw error;
+        }
+
+        throw new HttpException(
+          'Failed to deactivate coupon',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
       }
-
-      await this.couponRepository.update(couponId, {
-        status: statusEnum.INACTIVE,
-      });
-      this.logger.info('END: deactivateCoupon service');
-    } catch (error) {
-      this.logger.error(`Error in deactivateCoupon: ${error.message}`, error);
-
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-
-      throw new HttpException(
-        'Failed to deactivate coupon',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    });
   }
 
   /**

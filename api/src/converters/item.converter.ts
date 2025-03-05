@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { ItemDto } from 'src/dtos';
-import { Item } from 'src/entities/item.entity';
+import { ItemDto } from '../dtos';
+import { Item } from '../entities/item.entity';
 
 @Injectable()
 export class ItemConverter {

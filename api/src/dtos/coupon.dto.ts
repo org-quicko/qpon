@@ -6,13 +6,12 @@ import { Expose, Transform } from 'class-transformer';
 import {
   IsString,
   IsNumber,
-  IsArray,
   IsEnum,
   IsDate,
   IsUUID,
   IsOptional,
+  IsArray,
 } from 'class-validator';
-import { ItemDto } from './item.dto';
 
 export class CouponDto {
   @Expose({ name: 'coupon_id' })
@@ -42,9 +41,6 @@ export class CouponDto {
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsEnum(itemConstraintEnum)
   itemConstraint: itemConstraintEnum;
-
-  @IsArray()
-  items: ItemDto[];
 
   @IsEnum(statusEnum)
   status: statusEnum;
@@ -84,11 +80,6 @@ export class CreateCouponDto {
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsEnum(itemConstraintEnum)
   itemConstraint: itemConstraintEnum;
-
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  items: string[];
 }
 
 export class UpdateCouponDto {
@@ -107,9 +98,4 @@ export class UpdateCouponDto {
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsEnum(itemConstraintEnum)
   itemConstraint: itemConstraintEnum;
-
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  items: string[];
 }

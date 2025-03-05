@@ -36,7 +36,7 @@ export class Coupon {
   @Column('numeric', { name: 'discount_value' })
   discountValue: number;
 
-  @Column('numeric', { name: 'discount_upto' })
+  @Column('numeric', { name: 'discount_upto', nullable: true })
   discountUpto: number;
 
   @Column('enum', { enum: statusEnum, default: statusEnum.ACTIVE })

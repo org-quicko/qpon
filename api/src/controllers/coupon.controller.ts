@@ -12,7 +12,7 @@ import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { CouponService } from '../services/coupon.service';
 import { CreateCouponDto, UpdateCouponDto } from '../dtos';
 import { LoggerService } from '../services/logger.service';
-import { discountTypeEnum, statusEnum } from 'src/enums';
+import { discountTypeEnum, statusEnum } from '../enums';
 
 @ApiTags('Coupon')
 @Controller('/organizations/:organization_id/coupons')
@@ -57,6 +57,8 @@ export class CouponController {
 
     const result = await this.couponService.fetchCoupons(
       organizationId,
+      skip,
+      take,
       {
         name,
         status,
@@ -67,18 +69,7 @@ export class CouponController {
           },
         },
       },
-      skip,
-      take,
     );
-    // const result = await this.couponService.fetchCoupons(
-    //   organizationId,
-    //   status,
-    //   discountType,
-    //   externalItemId,
-    //   name,
-    //   take,
-    //   skip,
-    // );
 
     this.logger.info('END: fetchCoupons controller');
     return { message: 'Successfully fetched coupons', result };

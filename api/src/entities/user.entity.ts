@@ -10,6 +10,7 @@ import {
 import * as bcrypt from 'bcryptjs';
 import { SALT_ROUNDS } from '../constants';
 import { OrganizationUser } from './organization-user.entity';
+import { roleEnum } from '../enums';
 
 @Entity()
 export class User {
@@ -25,8 +26,8 @@ export class User {
   @Column()
   password: string;
 
-  @Column('boolean', { name: 'is_super_admin', default: false })
-  isSuperAdmin: boolean;
+  @Column('enum', { enum: roleEnum })
+  role: roleEnum;
 
   @CreateDateColumn({
     type: 'time with time zone',

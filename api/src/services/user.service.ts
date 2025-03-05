@@ -42,7 +42,7 @@ export class UserService {
         name: body.name,
         email: body.email,
         password: body.password,
-        isSuperAdmin: body?.isSuperAdmin,
+        role: body.role,
       });
       const savedUser = await this.userRepository.save(user);
       const orgUserEntity = this.organizationUserRepository.create({

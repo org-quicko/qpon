@@ -9,7 +9,7 @@ import * as bcrypt from 'bcryptjs';
 import { UserService } from './user.service';
 import { LoggerService } from './logger.service';
 import { LoginCredentialDto } from '../dtos';
-import { User } from 'src/entities/user.entity';
+import { User } from '../entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -62,7 +62,7 @@ export class AuthService {
     const tokenPayload = {
       sub: user.userId,
       email: user.email,
-      isSuperAdmin: user.isSuperAdmin,
+      userRole: user.role,
     };
 
     const accessToken = await this.jwtService.signAsync(tokenPayload);

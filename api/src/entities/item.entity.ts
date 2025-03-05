@@ -19,13 +19,13 @@ export class Item {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   description: string;
 
-  @Column('jsonb', { name: 'custom_fields' })
+  @Column('jsonb', { name: 'custom_fields', nullable: true })
   customFields: object;
 
-  @Column({ name: 'external_id' })
+  @Column({ name: 'external_id', nullable: true })
   externalId: string;
 
   @CreateDateColumn({

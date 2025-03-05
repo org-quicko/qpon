@@ -6,3 +6,4 @@ export * from './item.dto';
 export * from './customer.dto';
 export * from './user.dto';
 export * from './auth.dto';
+export * from './coupon-item.dto';

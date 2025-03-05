@@ -1,15 +1,6 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { Expose, Transform } from 'class-transformer';
-import {
-  IsString,
-  IsNumber,
-  IsArray,
-  ValidateNested,
-  IsEnum,
-  IsDate,
-  IsUUID,
-  IsOptional,
-} from 'class-validator';
+import { IsString, IsDate, IsUUID, IsOptional } from 'class-validator';
 
 export class ItemDto {
   @Expose({ name: 'item_id' })
@@ -48,6 +39,7 @@ export class CreateItemDto {
   @IsString()
   name: string;
 
+  @IsOptional()
   @IsString()
   description: string;
 
