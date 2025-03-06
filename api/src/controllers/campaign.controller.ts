@@ -2,7 +2,6 @@ import {
   Controller,
   Get,
   Post,
-  Delete,
   Patch,
   Body,
   Param,
@@ -10,114 +9,130 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { CampaignService } from '../services/campaign.service';
-import { CampaignDto } from '../dtos';
+import { CreateCampaignDto, UpdateCampaignDto } from '../dtos';
+import { LoggerService } from '../services/logger.service';
+import { campaignStatusEnum } from 'src/enums';
 
 @ApiTags('Campaign')
-@Controller('')
+@Controller('coupons/:coupon_id/campaigns')
 export class CampaignController {
-  constructor(private readonly campaignService: CampaignService) {}
+  constructor(
+    private readonly campaignService: CampaignService,
+    private logger: LoggerService,
+  ) {}
 
   /**
    * Create campaign
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
-  @Post('coupons/:coupon_id/campaigns')
+  @Post()
   async createCampaign(
     @Param('coupon_id') couponId: string,
-    @Body() body: CampaignDto,
+    @Body() body: CreateCampaignDto,
   ) {
-    return this.campaignService.createCampaign(couponId, body);
+    this.logger.info('START: createCampaign controller');
+
+    const result = await this.campaignService.createCampaign(couponId, body);
+
+    this.logger.info('END: createCampaign controller');
+    return { message: 'Successfully created campaign', result };
   }
 
   /**
    * Fetch campaigns
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
-  @Get('coupons/:coupon_id/campaigns')
+  @Get()
   async fetchCampaigns(
     @Param('coupon_id') couponId: string,
-    @Query('status') status?: string,
+    @Query('status') status?: campaignStatusEnum,
     @Query('budgeted') budgeted?: boolean,
     @Query('take') take?: number,
     @Query('skip') skip?: number,
   ) {
-    return this.campaignService.fetchCampaigns(
+    this.logger.info('START: fetchCampaigns controller');
+
+    const result = await this.campaignService.fetchCampaigns(
       couponId,
       status,
       budgeted,
       take,
       skip,
     );
+
+    this.logger.info('END: fetchCampaigns controller');
+    return { message: 'Successfully fetched campaigns', result };
   }
 
   /**
    * Fetch campaign
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
-  @Get('coupons/:coupon_id/campaigns/:campaign_id')
-  async fetchCampaign(
-    @Param('coupon_id') couponId: string,
-    @Param('campaign_id') campaignId: string,
-  ) {
-    return this.campaignService.fetchCampaign(couponId, campaignId);
+  @Get(':campaign_id')
+  async fetchCampaign(@Param('campaign_id') campaignId: string) {
+    this.logger.info('START: fetchCampaign controller');
+
+    const result = await this.campaignService.fetchCampaign(campaignId);
+
+    this.logger.info('END: fetchCampaign controller');
+    return { message: 'Successfully fetched a campaign', result };
   }
 
   /**
    * Update campaign
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
-  @Patch('coupons/:coupon_id/campaigns/:campaign_id')
+  @Patch(':campaign_id')
   async updateCampaign(
-    @Param('coupon_id') couponId: string,
     @Param('campaign_id') campaignId: string,
-    @Body() body: any,
+    @Body() body: UpdateCampaignDto,
   ) {
-    return this.campaignService.updateCampaign(couponId, campaignId, body);
-  }
+    this.logger.info('START: updateCampaign controller');
 
-  /**
-   * Delete campaign
-   */
-  @ApiResponse({ status: 200, description: 'Successful response' })
-  @Delete('coupons/:coupon_id/campaigns/:campaign_id')
-  async deleteCampaign(
-    @Param('coupon_id') couponId: string,
-    @Param('campaign_id') campaignId: string,
-  ) {
-    return this.campaignService.deleteCampaign(couponId, campaignId);
+    const result = await this.campaignService.updateCampaign(campaignId, body);
+
+    this.logger.info('END: updateCampaign controller');
+    return { message: 'Successfully updated campaign', result };
   }
 
   /**
    * Deactivate campaign
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
-  @Post('coupons/:coupon_id/campaigns/:campaign_id/deactivate')
+  @Post(':campaign_id/deactivate')
   async deactivateCampaign(
     @Param('coupon_id') couponId: string,
     @Param('campaign_id') campaignId: string,
   ) {
-    return this.campaignService.deactivateCampaign(couponId, campaignId);
+    this.logger.info('START: deactivateCampaign controller');
+
+    await this.campaignService.deactivateCampaign(campaignId);
+
+    this.logger.info('END: deactivateCampaign controller');
+    return { message: 'Successfully deactivated the campaign' };
   }
 
   /**
    * Reactivate campaign
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
-  @Post('coupons/:coupon_id/campaigns/:campaign_id/reactivate')
-  async reactivateCampaign(
-    @Param('coupon_id') couponId: string,
-    @Param('campaign_id') campaignId: string,
-  ) {
-    return this.campaignService.reactivateCampaign(couponId, campaignId);
+  @Post(':campaign_id/reactivate')
+  async reactivateCampaign(@Param('campaign_id') campaignId: string) {
+    this.logger.info('START: reactivateCampaign controller');
+
+    await this.campaignService.reactivateCampaign(campaignId);
+
+    this.logger.info('END: reactivateCampaign controller');
+    return { message: 'Successfully reactivated campaign' };
   }
 
   /**
    * Fetch campaign summary
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
-  @Get('campaigns/summary')
+  @Get('summary')
   async fetchCampaignSummary(
-    @Query('campaign_id') campaignId?: string,
+    @Param('campaign_id') campaignId?: string,
     @Query('take') take?: number,
     @Query('skip') skip?: number,
   ) {

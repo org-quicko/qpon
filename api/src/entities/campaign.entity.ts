@@ -21,13 +21,16 @@ export class Campaign {
   @Column()
   name: string;
 
-  @Column('numeric')
+  @Column('numeric', { nullable: true })
   budget: number;
 
-  @Column({ name: 'external_id' })
+  @Column({ name: 'external_id', nullable: true })
   externalId: string;
 
-  @Column('enum', { enum: campaignStatusEnum })
+  @Column('enum', {
+    enum: campaignStatusEnum,
+    default: campaignStatusEnum.ACTIVE,
+  })
   status: campaignStatusEnum;
 
   @CreateDateColumn({

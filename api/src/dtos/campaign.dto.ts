@@ -20,18 +20,18 @@ export class CampaignDto {
   @IsString()
   name: string;
 
+  @IsOptional()
   @IsNumber()
   budget: number;
 
   @Expose({ name: 'external_id' })
   @Transform(({ value }) => value, { toClassOnly: true })
+  @IsOptional()
   @IsString()
   externalId: string;
 
-  @Expose({ name: 'campaign-status' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsEnum(campaignStatusEnum)
-  campaignStatus: campaignStatusEnum;
+  status: campaignStatusEnum;
 
   @Expose({ name: 'created_at' })
   @Transform(({ value }) => value, { toClassOnly: true })
@@ -48,6 +48,7 @@ export class CreateCampaignDto {
   @IsString()
   name: string;
 
+  @IsOptional()
   @IsNumber()
   budget: number;
 
