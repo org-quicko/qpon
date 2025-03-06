@@ -1,6 +1,6 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
-import { OffersService } from '../services/offers.service';
+import { OffersService } from '../services/offer.service';
 import {} from '../dtos';
 
 @ApiTags('Offers')

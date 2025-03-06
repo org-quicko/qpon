@@ -1,8 +1,8 @@
 import { UserModule } from './modules/user.module';
-import { CustomersModule } from './modules/customers.module';
-import { ItemsModule } from './modules/items.module';
-import { RedemptionsModule } from './modules/redemptions.module';
-import { OffersModule } from './modules/offers.module';
+import { CustomersModule } from './modules/customer.module';
+import { ItemsModule } from './modules/itemsmodule';
+import { RedemptionsModule } from './modules/redemption.module';
+import { OffersModule } from './modules/offer.module';
 import { CouponCodeModule } from './modules/coupon-code.module';
 import { CampaignModule } from './modules/campaign.module';
 import { CouponModule } from './modules/coupon.module';

@@ -9,7 +9,7 @@ import { CouponItem } from '../entities/coupon-item.entity';
 import { DataSource, FindOptionsWhere, Repository } from 'typeorm';
 import { LoggerService } from './logger.service';
 import { Coupon } from '../entities/coupon.entity';
-import { ItemsService } from './items.service';
+import { ItemsService } from './item.service';
 import { CouponItemConverter } from '../converters/coupon-item.converter';
 import { CreateCouponItemDto, UpdateCouponItemDto } from '../dtos';
 import { Item } from 'src/entities/item.entity';

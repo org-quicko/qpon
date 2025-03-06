@@ -5,7 +5,7 @@ import { CouponItemConverter } from '../converters/coupon-item.converter';
 import { CouponItem } from '../entities/coupon-item.entity';
 import { Item } from '../entities/item.entity';
 import { CouponItemService } from '../services/coupon-item.service';
-import { ItemsService } from '../services/items.service';
+import { ItemsService } from '../services/item.service';
 import { ItemConverter } from 'src/converters/item.converter';
 
 @Module({

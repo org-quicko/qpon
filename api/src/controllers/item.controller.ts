@@ -9,7 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
-import { ItemsService } from '../services/items.service';
+import { ItemsService } from '../services/item.service';
 import { CreateItemDto, UpdateItemDto } from '../dtos';
 import { LoggerService } from '../services/logger.service';
 

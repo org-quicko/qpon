@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { CustomersService } from '../services/customers.service';
+import { CustomersService } from '../services/customer.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CustomersController } from '../controllers/customers.controller';
+import { CustomersController } from '../controllers/customer.controller';
 import { Customer } from '../entities/customer.entity';
 
 @Module({

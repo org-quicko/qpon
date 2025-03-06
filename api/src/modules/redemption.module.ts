@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { RedemptionsService } from '../services/redemptions.service';
+import { RedemptionsService } from '../services/redemption.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { RedemptionsController } from '../controllers/redemptions.controller';
+import { RedemptionsController } from '../controllers/redemption.controller';
 import { Redemption } from '../entities/redemption.entity';
 
 @Module({

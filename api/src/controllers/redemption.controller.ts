@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Query } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
-import { RedemptionsService } from '../services/redemptions.service';
+import { RedemptionsService } from '../services/redemption.service';
 import {} from '../dtos';
 
 @ApiTags('Redemptions')
