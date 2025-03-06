@@ -7,6 +7,7 @@ import {
   JoinColumn,
   OneToMany,
   ManyToOne,
+  Index,
 } from 'typeorm';
 import { Organization } from './organization.entity';
 import { CustomerCouponCode } from './customer-coupon-code.entity';
@@ -20,13 +21,14 @@ export class Customer {
   @Column()
   name: string;
 
+  @Index()
   @Column()
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   phone: string;
 
-  @Column({ name: 'external_id' })
+  @Column({ name: 'external_id', nullable: true })
   externalId: string;
 
   @CreateDateColumn({
@@ -43,7 +45,7 @@ export class Customer {
   })
   updatedAt: Date;
 
-  @ManyToOne(() => Organization)
+  @ManyToOne(() => Organization, { onDelete: 'CASCADE', cascade: ['remove'] })
   @JoinColumn({
     name: 'organization_id',
     referencedColumnName: 'organizationId',

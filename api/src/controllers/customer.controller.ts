@@ -10,12 +10,16 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { CustomersService } from '../services/customer.service';
-import { CustomerDto } from '../dtos';
+import { CreateCustomerDto, UpdateCustomerDto } from '../dtos';
+import { LoggerService } from 'src/services/logger.service';
 
 @ApiTags('Customers')
 @Controller('/:organization_id/customers')
 export class CustomersController {
-  constructor(private readonly customersService: CustomersService) {}
+  constructor(
+    private readonly customersService: CustomersService,
+    private logger: LoggerService,
+  ) {}
 
   /**
    * Create customer
@@ -24,9 +28,17 @@ export class CustomersController {
   @Post()
   async createCustomer(
     @Param('organization_id') organizationId: string,
-    @Body() body: CustomerDto,
+    @Body() body: CreateCustomerDto,
   ) {
-    return this.customersService.createCustomer(organizationId, body);
+    this.logger.info('START: createCustomer controller');
+
+    const result = await this.customersService.createCustomer(
+      organizationId,
+      body,
+    );
+
+    this.logger.info('END: createCustomer controller');
+    return { message: 'Successfully created customer', result };
   }
 
   /**
@@ -36,10 +48,23 @@ export class CustomersController {
   @Get()
   async fetchCustomers(
     @Param('organization_id') organizationId: string,
+    @Query('email') email?: string,
     @Query('skip') skip?: number,
     @Query('take') take?: number,
   ) {
-    return this.customersService.fetchCustomers(organizationId, skip, take);
+    this.logger.info('START: fetchCustomers controller');
+
+    const result = await this.customersService.fetchCustomers(
+      organizationId,
+      skip,
+      take,
+      {
+        email,
+      },
+    );
+
+    this.logger.info('END: fetchCustomers controller');
+    return { message: 'Successfully fetched customers', result };
   }
 
   /**
@@ -50,13 +75,18 @@ export class CustomersController {
   async updateCustomer(
     @Param('organization_id') organizationId: string,
     @Param('customer_id') customerId: string,
-    @Body() body: any,
+    @Body() body: UpdateCustomerDto,
   ) {
-    return this.customersService.updateCustomer(
+    this.logger.info('START: updateCustomer controller');
+
+    const result = await this.customersService.updateCustomer(
       organizationId,
       customerId,
       body,
     );
+
+    this.logger.info('END: updateCustomer controller');
+    return { message: 'Successfully updated customer', result };
   }
 
   /**
@@ -68,6 +98,14 @@ export class CustomersController {
     @Param('organization_id') organizationId: string,
     @Param('customer_id') customerId: string,
   ) {
-    return this.customersService.deleteCustomer(organizationId, customerId);
+    this.logger.info('START: deleteCustomer controller');
+
+    const result = await this.customersService.deleteCustomer(
+      organizationId,
+      customerId,
+    );
+
+    this.logger.info('END: deleteCustomer controller');
+    return { message: 'Successfully deleted customer', result };
   }
 }
