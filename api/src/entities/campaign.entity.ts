@@ -47,14 +47,20 @@ export class Campaign {
   })
   updatedAt: Date;
 
-  @ManyToOne(() => Coupon, (coupon) => coupon.campaigns)
+  @ManyToOne(() => Coupon, (coupon) => coupon.campaigns, {
+    onDelete: 'CASCADE',
+    cascade: ['remove'],
+  })
   @JoinColumn({
     name: 'coupon_id',
     referencedColumnName: 'couponId',
   })
   coupon: Coupon;
 
-  @OneToMany(() => CouponCode, (couponCode) => couponCode.campaign)
+  @OneToMany(() => CouponCode, (couponCode) => couponCode.campaign, {
+    onDelete: 'CASCADE',
+    cascade: ['remove'],
+  })
   couponCodes: CouponCode[];
 
   @OneToMany(() => Redemption, (redemption) => redemption.campaign)
