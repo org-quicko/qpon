@@ -239,6 +239,9 @@ export class CouponService {
           couponCodes: true,
           campaigns: true,
         },
+        where: {
+          couponId,
+        },
       });
 
       if (!coupon) {

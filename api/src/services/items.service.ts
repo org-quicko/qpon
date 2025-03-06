@@ -201,6 +201,9 @@ export class ItemsService {
         throw new NotFoundException('Item not found');
       }
 
+      await this.itemsRepository.delete(itemId);
+
+      this.logger.info('END: deleteItem service');
       return this.itemConverter.convert(item);
     } catch (error) {
       this.logger.error(`Error in deleteItem: ${error.message}`, error);
