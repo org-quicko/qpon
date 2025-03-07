@@ -6,15 +6,26 @@ import {
   Body,
   Param,
   Query,
+  Header,
+  Headers,
 } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { CouponCodeService } from '../services/coupon-code.service';
-import { CouponCodeDto } from '../dtos';
+import { CreateCouponCodeDto, UpdateCouponCodeDto } from '../dtos';
+import { LoggerService } from '../services/logger.service';
+import {
+  couponCodeStatusEnum,
+  durationTypeEnum,
+  visibilityEnum,
+} from 'src/enums';
 
 @ApiTags('Coupon Code')
 @Controller('')
 export class CouponCodeController {
-  constructor(private readonly couponCodeService: CouponCodeService) {}
+  constructor(
+    private readonly couponCodeService: CouponCodeService,
+    private logger: LoggerService,
+  ) {}
 
   /**
    * Create coupon code
@@ -24,9 +35,18 @@ export class CouponCodeController {
   async createCouponCode(
     @Param('coupon_id') couponId: string,
     @Param('campaign_id') campaignId: string,
-    @Body() body: CouponCodeDto,
+    @Body() body: CreateCouponCodeDto,
   ) {
-    return this.couponCodeService.createCouponCode(couponId, campaignId, body);
+    this.logger.info('START: createCouponCode controller');
+
+    const result = await this.couponCodeService.createCouponCode(
+      couponId,
+      campaignId,
+      body,
+    );
+
+    this.logger.info('END: createCouponCode controller');
+    return { message: 'Successfully created coupon code', result };
   }
 
   /**
@@ -37,23 +57,34 @@ export class CouponCodeController {
   async fetchCouponCodes(
     @Param('coupon_id') couponId: string,
     @Param('campaign_id') campaignId: string,
-    @Query('status') status?: string,
-    @Query('visibility') visibility?: string,
+    @Query('status') status?: couponCodeStatusEnum,
+    @Query('visibility') visibility?: visibilityEnum,
     @Query('external_id') externalId?: string,
-    @Query('duration_type') durationType?: string,
+    @Query('duration_type') durationType?: durationTypeEnum,
     @Query('take') take?: number,
     @Query('skip') skip?: number,
   ) {
-    return this.couponCodeService.fetchCouponCodes(
+    this.logger.info('START: fetchCouponCodes controller');
+
+    const result = await this.couponCodeService.fetchCouponCodes(
       couponId,
       campaignId,
-      status,
-      visibility,
-      externalId,
-      durationType,
       take,
       skip,
+      {
+        status,
+        visibility,
+        durationType,
+        customerCouponCodes: {
+          customer: {
+            externalId,
+          },
+        },
+      },
     );
+
+    this.logger.info('END: fetchCouponCodes controller');
+    return { message: 'Successfully fetched coupon codes', result };
   }
 
   /**
@@ -66,11 +97,16 @@ export class CouponCodeController {
     @Param('campaign_id') campaignId: string,
     @Param('coupon_code_id') couponCodeId: string,
   ) {
-    return this.couponCodeService.fetchCouponCode(
+    this.logger.info('START: fetchCouponCode controller');
+
+    const result = await this.couponCodeService.fetchCouponCode(
       couponId,
       campaignId,
       couponCodeId,
     );
+
+    this.logger.info('END: fetchCouponCode controller');
+    return { message: 'Successfully fetched coupon code', result };
   }
 
   /**
@@ -84,35 +120,71 @@ export class CouponCodeController {
     @Param('coupon_id') couponId: string,
     @Param('campaign_id') campaignId: string,
     @Param('coupon_code_id') couponCodeId: string,
-    @Body() body: any,
+    @Body() body: UpdateCouponCodeDto,
   ) {
-    return this.couponCodeService.updateCouponCode(
+    this.logger.info('START: updateCouponCode controller');
+
+    const result = await this.couponCodeService.updateCouponCode(
       couponId,
       campaignId,
       couponCodeId,
       body,
     );
+
+    this.logger.info('END: updateConponCode controller');
+    return { message: 'Successfully updated coupon code', result };
   }
 
   /**
    * Fetch coupon codes by code
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
-  @Get('coupon-codes')
+  @Get('/organizations/:organization_id/coupon-codes')
   async fetchCouponCodesByCode(
+    @Headers('x-accept-type') acceptType: string,
+    @Param('organization_id') organizationId: string,
     @Query('code') code?: string,
-    @Query('status') status?: string,
+    @Query('status') status?: couponCodeStatusEnum,
     @Query('customer_id') customerId?: string,
     @Query('take') take?: number,
     @Query('skip') skip?: number,
   ) {
-    return this.couponCodeService.fetchCouponCodesByCode(
-      code,
-      status,
-      customerId,
-      take,
-      skip,
-    );
+    this.logger.info('START: fetchCouponCodesByCode controller');
+    let result;
+    if (acceptType == 'application/json;format=sheet-json') {
+      result = await this.couponCodeService.fetchCouponCodesByCodeSheet(
+        organizationId,
+        {
+          code,
+          status,
+          customerCouponCodes: {
+            customer: {
+              externalId: customerId,
+            },
+          },
+        },
+        take,
+        skip,
+      );
+    } else {
+      result = await this.couponCodeService.fetchCouponCodesByCode(
+        organizationId,
+        {
+          code,
+          status,
+          customerCouponCodes: {
+            customer: {
+              externalId: customerId,
+            },
+          },
+        },
+        take,
+        skip,
+      );
+    }
+
+    this.logger.info('END: fetchCouponCodesByCode controller');
+    return { message: 'Successfully fetched coupon codes by code', result };
   }
 
   /**
@@ -127,11 +199,16 @@ export class CouponCodeController {
     @Param('campaign_id') campaignId: string,
     @Param('coupon_code_id') couponCodeId: string,
   ) {
-    return this.couponCodeService.deactivateCouponCode(
+    this.logger.info('START: deactivateCouponCode controller');
+
+    await this.couponCodeService.deactivateCouponCode(
       couponId,
       campaignId,
       couponCodeId,
     );
+
+    this.logger.info('END: deactivateCouponCode controller');
+    return { message: 'Successfully deactivated the coupon code' };
   }
 
   /**
@@ -146,10 +223,15 @@ export class CouponCodeController {
     @Param('campaign_id') campaignId: string,
     @Param('coupon_code_id') couponCodeId: string,
   ) {
-    return this.couponCodeService.reactivateCouponCode(
+    this.logger.info('START: reactivateCouponCode controller');
+
+    await this.couponCodeService.reactivateCouponCode(
       couponId,
       campaignId,
       couponCodeId,
     );
+
+    this.logger.info('END: reactivateCouponCode controller');
+    return { message: 'Successfully reactivated the coupon code' };
   }
 }

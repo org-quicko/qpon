@@ -18,6 +18,9 @@ export class TransformInterceptor<T> implements NestInterceptor<T, Response> {
     context: ExecutionContext,
     next: CallHandler,
   ): Observable<Response> {
+    const request = context.switchToHttp().getRequest();
+    const acceptHeader = request.headers['x-accept-type']?.toLowerCase(); // Normalize to lowercase
+
     const skipTransform = this.reflector.getAllAndOverride<boolean>(
       SKIP_TRANSFORM_KEY,
       [context.getHandler(), context.getClass()],
@@ -32,10 +35,13 @@ export class TransformInterceptor<T> implements NestInterceptor<T, Response> {
         const response = {
           code: context.switchToHttp().getResponse().statusCode,
           message: data.message,
-          data: this.convertToSnakeCase(data.result),
+          data: data.result,
         };
 
-        return this.convertToSnakeCase(response);
+        // If accept type is **not** sheet-json, convert response to snake_case
+        return acceptHeader === 'application/json;format=sheet-json'
+          ? response
+          : this.convertToSnakeCase(response);
       }),
     );
   }

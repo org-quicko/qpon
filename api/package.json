@@ -18,7 +18,10 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "install-snapshot": "npm --userconfig ~/npmrc/snapshot.npmrc install"
+    "install-snapshot": "npm --userconfig ~/npmrc/snapshot.npmrc install",
+    "generate": "npm run generateSchema && npm run generateObjects",
+    "generateSchema": "excel-to-schema --input ./resources/excel/coupon_code_workbook.xlsx --output ./generated/schemas/coupon_code_workbook.json",
+    "generateObjects": "schema-to-objects --input ./generated/schemas/coupon_code_workbook.json --output ./generated/sources"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -48,6 +51,7 @@
     "@nestjs/testing": "^11.0.1",
     "@org.quicko/openapi-to-nestjs-generator": "^1.0.0-SNAPSHOT",
     "@org.quicko/postman-to-openapi-generator": "^1.0.0-SNAPSHOT",
+    "@org.quicko/sheet-generator": "^6.0.4-SNAPSHOT",
     "@swc/cli": "^0.6.0",
     "@swc/core": "^1.10.7",
     "@types/bcryptjs": "^2.4.6",

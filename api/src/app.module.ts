@@ -1,6 +1,6 @@
 import { UserModule } from './modules/user.module';
 import { CustomersModule } from './modules/customer.module';
-import { ItemsModule } from './modules/itemsmodule';
+import { ItemsModule } from './modules/item.module';
 import { RedemptionsModule } from './modules/redemption.module';
 import { OffersModule } from './modules/offer.module';
 import { CouponCodeModule } from './modules/coupon-code.module';

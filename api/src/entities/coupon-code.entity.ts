@@ -27,17 +27,20 @@ export class CouponCode {
   @Column()
   code: string;
 
-  @Column()
+  @Column({ nullable: true })
   description: string;
 
   @Column('enum', { name: 'customer_constraint', enum: customerConstraintEnum })
   customerConstraint: customerConstraintEnum;
 
-  @Column({ name: 'max_redemptions' })
+  @Column({ name: 'max_redemptions', nullable: true })
   maxRedemptions: number;
 
-  @Column('numeric', { name: 'minimum_amount' })
+  @Column('numeric', { name: 'minimum_amount', nullable: true })
   minimumAmount: number;
+
+  @Column({ name: 'max_redemption_per_customer', nullable: true })
+  maxRedemptionPerCustomer: number;
 
   @Column('enum', { enum: visibilityEnum })
   visibility: visibilityEnum;
@@ -45,16 +48,16 @@ export class CouponCode {
   @Column('enum', { name: 'duration_type', enum: durationTypeEnum })
   durationType: durationTypeEnum;
 
-  @Column('time with time zone', { name: 'expires_at' })
+  @Column('time with time zone', { name: 'expires_at', nullable: true })
   expiresAt: Date;
 
-  @Column({ name: 'expires_after_billing_cycle' })
-  expiresAfterBillingCycle: number;
-
-  @Column({ name: 'redemption_count' })
+  @Column({ name: 'redemption_count', default: 0 })
   redemptionCount: number;
 
-  @Column('enum', { enum: couponCodeStatusEnum })
+  @Column('enum', {
+    enum: couponCodeStatusEnum,
+    default: couponCodeStatusEnum.ACTIVE,
+  })
   status: couponCodeStatusEnum;
 
   @CreateDateColumn({
