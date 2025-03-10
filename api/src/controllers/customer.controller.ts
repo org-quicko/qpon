@@ -14,7 +14,7 @@ import { CreateCustomerDto, UpdateCustomerDto } from '../dtos';
 import { LoggerService } from 'src/services/logger.service';
 
 @ApiTags('Customers')
-@Controller('/:organization_id/customers')
+@Controller('/organizations/:organization_id/customers')
 export class CustomersController {
   constructor(
     private readonly customersService: CustomersService,

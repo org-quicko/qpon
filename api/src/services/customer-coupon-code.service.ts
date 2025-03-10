@@ -11,11 +11,10 @@ import { LoggerService } from './logger.service';
 import {
   CreateCustomerCouponCodeDto,
   UpdateCustomerCouponCodeDto,
-} from 'src/dtos/customer-coupon-code.dto';
-import { CouponCode } from 'src/entities/coupon-code.entity';
+} from '../dtos/customer-coupon-code.dto';
+import { CouponCode } from '../entities/coupon-code.entity';
 import { CustomersService } from './customer.service';
-import { CustomerCouponCodeConverter } from 'src/converters/customer-coupon-code.converter';
-import { BadRequestException } from '@org.quicko/core';
+import { CustomerCouponCodeConverter } from '../converters/customer-coupon-code.converter';
 
 @Injectable()
 export class CustomerCouponCodeService {
