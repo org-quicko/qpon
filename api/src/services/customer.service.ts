@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   HttpException,
   HttpStatus,
@@ -6,7 +7,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsWhere, Repository } from 'typeorm';
+import { EntityManager, FindOptionsWhere, In, Repository } from 'typeorm';
 import { Customer } from '../entities/customer.entity';
 import { CreateCustomerDto, UpdateCustomerDto } from '../dtos';
 import { LoggerService } from './logger.service';
@@ -202,6 +203,40 @@ export class CustomersService {
         'Failed to delete customer',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
+    }
+  }
+
+  async validateCustomersExist(customers: string[], manager: EntityManager) {
+    this.logger.info('START: validateCustomersExist service');
+    try {
+      const customersRepository = manager.getRepository(Customer);
+      const existingCustomers = await customersRepository.find({
+        where: { customerId: In(customers) },
+      });
+
+      const existingCustomerIds = existingCustomers.map(
+        (customer) => customer.customerId,
+      );
+
+      const missingCustomerIds = customers.filter(
+        (id) => !existingCustomerIds.includes(id),
+      );
+      if (missingCustomerIds.length > 0) {
+        this.logger.warn('Some customers does not exist');
+        throw new BadRequestException(
+          `Customer with IDs ${missingCustomerIds.join(', ')} do not exist.`,
+        );
+      }
+
+      this.logger.info('END: validateCustomersExist service');
+      return existingCustomers;
+    } catch (error) {
+      this.logger.error(
+        `Error in validateCustomersExist: ${error.message}`,
+        error,
+      );
+
+      throw error;
     }
   }
 }

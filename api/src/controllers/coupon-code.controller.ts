@@ -6,7 +6,6 @@ import {
   Body,
   Param,
   Query,
-  Header,
   Headers,
 } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';

@@ -48,8 +48,6 @@ export class CouponCodeService {
         },
       });
 
-      console.log(existingCodes);
-
       if (existingCodes && existingCodes.length > 0) {
         this.logger.warn('Existing code with active status exists', {
           couponId,

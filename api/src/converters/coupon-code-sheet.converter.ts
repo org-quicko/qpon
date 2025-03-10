@@ -32,12 +32,9 @@ export class CouponCodeSheetConverter {
       couponCodeRow.setCustomerConstraint(couponCode.customerConstraint);
       couponCodeRow.setVisibility(couponCode.visibility);
       couponCodeRow.setDurationType(couponCode.durationType);
-
-      // if (couponCode.expiresAt) {
       couponCodeRow.setExpiresAt(
         couponCode.expiresAt ? couponCode.expiresAt.toString() : null,
       );
-      // }
       couponCodeRow.setCreatedAt(couponCode.createdAt.toString());
       couponCodeRow.setUpdatedAt(couponCode.updatedAt.toString());
       couponCodeTable.addRow(couponCodeRow);
