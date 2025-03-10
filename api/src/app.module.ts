@@ -17,6 +17,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { AuthModule } from './modules/auth.module';
 import { CouponItemModule } from './modules/coupon-item.module';
 import { CustomerCouponCodeModule } from './modules/customer-coupon-code.module';
+import { ApiKeyModule } from './modules/api-key.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { CustomerCouponCodeModule } from './modules/customer-coupon-code.module'
       logging: true,
     }),
     LoggerModule,
+    ApiKeyModule,
     AuthModule,
     OrganizationModule,
     CouponModule,
