@@ -7,7 +7,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsWhere, In, Like, Repository } from 'typeorm';
+import { EntityManager, FindOptionsWhere, In, Like, Repository } from 'typeorm';
 import { Item } from '../entities/item.entity';
 import { CreateItemDto, UpdateItemDto } from '../dtos';
 import { LoggerService } from './logger.service';
@@ -219,10 +219,12 @@ export class ItemsService {
     }
   }
 
-  async validateItemsExist(items: string[]) {
+  async validateItemsExist(items: string[], manager: EntityManager) {
     this.logger.info('START: validateItemsExist service');
     try {
-      const existingItems = await this.itemsRepository.find({
+      const itemsRepository = manager.getRepository(Item);
+
+      const existingItems = await itemsRepository.find({
         where: { itemId: In(items) },
       });
 
@@ -243,14 +245,7 @@ export class ItemsService {
     } catch (error) {
       this.logger.error(`Error in validateItemsExist: ${error.message}`, error);
 
-      if (error instanceof BadRequestException) {
-        throw error;
-      }
-
-      throw new HttpException(
-        'Failed to validate items',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw error;
     }
   }
 }

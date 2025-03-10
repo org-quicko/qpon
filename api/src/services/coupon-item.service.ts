@@ -44,6 +44,7 @@ export class CouponItemService {
 
         const existingItems = await this.itemService.validateItemsExist(
           body.items,
+          manager,
         );
 
         const couponItems = existingItems.map((item) => {
@@ -57,6 +58,10 @@ export class CouponItemService {
       });
     } catch (error) {
       this.logger.error(`Error in addItems: ${error.message}`, error);
+
+      if (error.name == 'BadRequestException') {
+        throw error;
+      }
 
       throw new HttpException(
         'Failed to add items to coupon',
@@ -133,6 +138,7 @@ export class CouponItemService {
 
         const existingItems = await this.itemService.validateItemsExist(
           body.items!,
+          manager,
         );
 
         await manager.delete(CouponItem, { coupon: { couponId } });
@@ -148,7 +154,10 @@ export class CouponItemService {
       } catch (error) {
         this.logger.error(`Error in updateItems: ${error.message}`, error);
 
-        if (error instanceof NotFoundException) {
+        if (
+          error instanceof NotFoundException ||
+          error.name == 'BadRequestException'
+        ) {
           throw error;
         }
 
