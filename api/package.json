@@ -18,10 +18,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "install-snapshot": "npm --userconfig ~/npmrc/snapshot.npmrc install",
-    "generate": "npm run generateSchema && npm run generateObjects",
-    "generateSchema": "excel-to-schema --input ./resources/excel/coupon_code_workbook.xlsx --output ./generated/schemas/coupon_code_workbook.json",
-    "generateObjects": "schema-to-objects --input ./generated/schemas/coupon_code_workbook.json --output ./generated/sources"
+    "install-snapshot": "npm --userconfig ~/npmrc/snapshot.npmrc install"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",

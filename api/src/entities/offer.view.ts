@@ -1,47 +1,88 @@
-import { discountTypeEnum, itemConstraintEnum } from 'src/enums';
 import {
-  Column,
+  couponCodeStatusEnum,
+  customerConstraintEnum,
+  discountTypeEnum,
+  itemConstraintEnum,
+  visibilityEnum,
+} from 'src/enums';
+import {
   CreateDateColumn,
-  PrimaryColumn,
   UpdateDateColumn,
+  ViewColumn,
   ViewEntity,
 } from 'typeorm';
 
 @ViewEntity({
   name: 'offer',
   expression: `
-    SELECT 
+    SELECT
+        c.organization_id,
         c.coupon_id,
         cc.code,
         c.discount_type,
         c.discount_value,
         c.item_constraint,
+        cc.customer_constraint,
         cc.minimum_amount,
+        cc.visibility,
         cc.expires_at,
+        ct.item_id,
+        t.external_id AS external_item_id,
+        cust.external_id AS external_customer_id,
+        ccc.customer_id,
+        cc.status AS coupon_code_status,
         now() as created_at,
         now() as updated_at
     FROM coupon c
-    JOIN coupon_code cc ON c.coupon_id = cc.coupon_id;
+    LEFT JOIN coupon_code cc ON c.coupon_id = cc.coupon_id
+    LEFT JOIN coupon_item ct ON c.coupon_id = ct.coupon_id
+    LEFT JOIN item t ON ct.item_id = t.item_id
+    LEFT JOIN customer_coupon_code ccc on ccc.coupon_code_id = cc.coupon_code_id
+    LEFT JOIN customer cust ON cust.customer_id = ccc.customer_id;
     `,
 })
 export class Offer {
-  @PrimaryColumn({ name: 'coupon_id' })
+  @ViewColumn({ name: 'coupon_id' })
   couponId: string;
 
-  @Column()
+  @ViewColumn({ name: 'organization_id' })
+  organizationId: string;
+
+  @ViewColumn()
   code: string;
 
-  @Column('enum', { name: 'discount_type', enum: discountTypeEnum })
+  @ViewColumn({ name: 'discount_type' })
   discountType: discountTypeEnum;
 
-  @Column('numeric', { name: 'discount_value' })
+  @ViewColumn({ name: 'discount_value' })
   discountValue: number;
 
-  @Column('enum', { name: 'item_constraint', enum: itemConstraintEnum })
+  @ViewColumn({ name: 'item_constraint' })
   itemConstraint: itemConstraintEnum;
 
-  @Column('numeric', { name: 'minimum_amount' })
+  @ViewColumn({ name: 'customer_constraint' })
+  customerConstraint: customerConstraintEnum;
+
+  @ViewColumn({ name: 'minimum_amount' })
   minimumAmount: number;
+
+  @ViewColumn()
+  visibility: visibilityEnum;
+
+  @ViewColumn({ name: 'item_id' })
+  itemId: string;
+
+  @ViewColumn({ name: 'customer_id' })
+  customerId: string;
+
+  @ViewColumn({ name: 'external_item_id' })
+  externalItemId: string;
+
+  @ViewColumn({ name: 'external_customer_id' })
+  externalCustomerId: string;
+
+  @ViewColumn({ name: 'coupon_code_status' })
+  couponCodeStatus: couponCodeStatusEnum;
 
   @CreateDateColumn({
     type: 'time with time zone',

@@ -7,13 +7,14 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsWhere, Repository } from 'typeorm';
+import { DataSource, FindOptionsWhere, Repository } from 'typeorm';
 import { CouponCode } from '../entities/coupon-code.entity';
 import { CreateCouponCodeDto, UpdateCouponCodeDto } from '../dtos';
 import { LoggerService } from './logger.service';
 import { couponCodeStatusEnum } from '../enums';
 import { CouponCodeConverter } from '../converters/coupon-code.converter';
 import { CouponCodeSheetConverter } from '../converters/coupon-code-sheet.converter';
+import { Campaign } from 'src/entities/campaign.entity';
 
 @Injectable()
 export class CouponCodeService {
@@ -23,6 +24,7 @@ export class CouponCodeService {
     private couponCodeConverter: CouponCodeConverter,
     private couponCodeSheetConverter: CouponCodeSheetConverter,
     private logger: LoggerService,
+    private datasource: DataSource,
   ) {}
 
   /**
@@ -34,63 +36,84 @@ export class CouponCodeService {
     body: CreateCouponCodeDto,
   ) {
     this.logger.info('START: createCouponCode service');
-    try {
-      const existingCodes = await this.couponCodeRepository.find({
-        where: {
-          code: body.code,
-          status: couponCodeStatusEnum.ACTIVE,
-          coupon: {
-            couponId,
+    return this.datasource.transaction(async (manager) => {
+      try {
+        const validCampaign = await manager.findOne(Campaign, {
+          where: {
+            campaignId,
+            coupon: { couponId },
           },
+        });
+
+        if (!validCampaign) {
+          this.logger.warn('Coupon is not linked to the given campaign', {
+            couponId,
+            campaignId,
+          });
+          throw new ConflictException(
+            `Coupon ${couponId} is not associated with campaign ${campaignId}`,
+          );
+        }
+
+        const existingCodes = await manager.find(CouponCode, {
+          where: {
+            code: body.code,
+            status: couponCodeStatusEnum.ACTIVE,
+            coupon: {
+              couponId,
+            },
+            campaign: {
+              campaignId,
+            },
+          },
+        });
+
+        if (existingCodes && existingCodes.length > 0) {
+          this.logger.warn('Existing code with active status exists', {
+            couponId,
+            campaignId,
+          });
+          throw new ConflictException('Existing code with active status found');
+        }
+
+        const couponCodeEntity = manager.create(CouponCode, {
+          code: body.code,
+          description: body.description,
+          customerConstraint: body.customerConstraint,
+          maxRedemptions: body.maxRedemptions,
+          minimumAmount: body.minimumAmount,
+          visibility: body.visibility,
+          durationType: body.durationType,
+          expiresAt: body.expiresAt,
+          maxRedemptionPerCustomer: body.maxRedemptionPerCustomer,
           campaign: {
             campaignId,
           },
-        },
-      });
-
-      if (existingCodes && existingCodes.length > 0) {
-        this.logger.warn('Existing code with active status exists', {
-          couponId,
-          campaignId,
+          coupon: {
+            couponId,
+          },
         });
-        throw new ConflictException('Existing code with active status found');
+
+        const savedCouponCode = await manager.save(
+          CouponCode,
+          couponCodeEntity,
+        );
+
+        this.logger.info('END: createCouponCode service');
+        return this.couponCodeConverter.convert(savedCouponCode);
+      } catch (error) {
+        this.logger.error(`Error in createCouponCode: ${error.message}`, error);
+
+        if (error instanceof ConflictException) {
+          throw error;
+        }
+
+        throw new HttpException(
+          'Failed to create coupon code',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
       }
-
-      const couponCodeEntity = this.couponCodeRepository.create({
-        code: body.code,
-        description: body.description,
-        customerConstraint: body.customerConstraint,
-        maxRedemptions: body.maxRedemptions,
-        minimumAmount: body.minimumAmount,
-        visibility: body.visibility,
-        durationType: body.durationType,
-        expiresAt: body.expiresAt,
-        maxRedemptionPerCustomer: body.maxRedemptionPerCustomer,
-        campaign: {
-          campaignId,
-        },
-        coupon: {
-          couponId,
-        },
-      });
-
-      const savedCouponCode =
-        await this.couponCodeRepository.save(couponCodeEntity);
-
-      this.logger.info('END: createCouponCode service');
-      return this.couponCodeConverter.convert(savedCouponCode);
-    } catch (error) {
-      this.logger.error(`Error in createCouponCode: ${error.message}`, error);
-
-      if (error instanceof ConflictException) {
-        throw error;
-      }
-
-      throw new HttpException(
-        'Failed to create coupon code',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    });
   }
   /**
    * Fetch coupon codes

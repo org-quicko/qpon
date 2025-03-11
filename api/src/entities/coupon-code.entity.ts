@@ -42,7 +42,7 @@ export class CouponCode {
   @Column({ name: 'max_redemption_per_customer', nullable: true })
   maxRedemptionPerCustomer: number;
 
-  @Column('enum', { enum: visibilityEnum })
+  @Column('enum', { enum: visibilityEnum, default: visibilityEnum.PUBLIC })
   visibility: visibilityEnum;
 
   @Column('enum', { name: 'duration_type', enum: durationTypeEnum })
