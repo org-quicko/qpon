@@ -66,6 +66,13 @@ export class CouponService {
 
         const savedCoupon = await manager.save(couponEntity);
 
+        const campaignEntity = manager.create(Campaign, {
+          name: 'default',
+          coupon: savedCoupon,
+        });
+
+        await manager.save(Campaign, campaignEntity);
+
         this.logger.info('END: createCoupon service');
         return this.couponConverter.convert(savedCoupon);
       } catch (error) {
