@@ -12,6 +12,7 @@ import { Campaign } from './campaign.entity';
 import { Coupon } from './coupon.entity';
 import { Organization } from './organization.entity';
 import { Customer } from './customer.entity';
+import { Item } from './item.entity';
 
 @Entity()
 export class Redemption {
@@ -21,18 +22,18 @@ export class Redemption {
   @Column('numeric')
   amount: number;
 
-  @Column({ name: 'external_id' })
+  @Column({ name: 'external_id', nullable: true })
   externalId: string;
 
   @CreateDateColumn({
-    type: 'time with time zone',
+    type: 'timestamp with time zone',
     default: () => `now()`,
     name: 'created_at',
   })
   createdAt: Date;
 
   @UpdateDateColumn({
-    type: 'time with time zone',
+    type: 'timestamp with time zone',
     default: () => `now()`,
     name: 'updated_at',
   })
@@ -65,6 +66,13 @@ export class Redemption {
     referencedColumnName: 'customerId',
   })
   customer: Customer;
+
+  @ManyToOne(() => Item, (item) => item.redemptions)
+  @JoinColumn({
+    name: 'item_id',
+    referencedColumnName: 'itemId',
+  })
+  item: Item;
 
   @ManyToOne(() => Organization, (organization) => organization.redemptions)
   @JoinColumn({

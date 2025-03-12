@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { Organization } from './organization.entity';
 import { CouponItem } from './coupon-item.entity';
+import { Redemption } from './redemption.entity';
 
 @Entity()
 export class Item {
@@ -51,4 +52,7 @@ export class Item {
 
   @OneToMany(() => CouponItem, (couponItem) => couponItem.item)
   couponItems: CouponItem[];
+
+  @OneToMany(() => Redemption, (redemption) => redemption.item)
+  redemptions: Redemption[];
 }

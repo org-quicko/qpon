@@ -1,29 +1,344 @@
-
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  GoneException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import {
+  DataSource,
+  EntityManager,
+  FindOptionsWhere,
+  Repository,
+} from 'typeorm';
+import { ConflictException } from '@org.quicko/core';
 import { Redemption } from '../entities/redemption.entity';
+import { LoggerService } from './logger.service';
+import { CreateRedemptionDto } from '../dtos/redemption.dto';
+import { CouponCode } from '../entities/coupon-code.entity';
+import {
+  couponCodeStatusEnum,
+  customerConstraintEnum,
+  durationTypeEnum,
+  itemConstraintEnum,
+} from '../enums';
+import { Customer } from '../entities/customer.entity';
+import { CustomerCouponCode } from '../entities/customer-coupon-code.entity';
+import { Coupon } from '../entities/coupon.entity';
+import { Item } from '../entities/item.entity';
+import { CouponItem } from '../entities/coupon-item.entity';
+import { Campaign } from '../entities/campaign.entity';
+import { CampaignSummaryMv } from '../entities/campaign-summary.view';
+import { RedemptionSheetConverter } from '../converters/redemption-sheet.converter';
 
 @Injectable()
 export class RedemptionsService {
-  
-constructor(
-    @InjectRepository(Redemption) 
-    private readonly redemptionsRepository: Repository<Redemption>
-) {}
-
+  constructor(
+    @InjectRepository(Redemption)
+    private readonly redemptionsRepository: Repository<Redemption>,
+    private redemptionSheetConverter: RedemptionSheetConverter,
+    private logger: LoggerService,
+    private datasource: DataSource,
+  ) {}
 
   /**
    * Redeem coupon code
    */
-  async redeemCouponCode(body: any) {
-    throw new Error('Method not implemented.');
+  async redeemCouponCode(organizationId: string, body: CreateRedemptionDto) {
+    this.logger.info('START: redeemCouponCode service');
+    return this.datasource.transaction(async (manager) => {
+      try {
+        const couponCode = await manager.findOne(CouponCode, {
+          relations: {
+            coupon: true,
+            campaign: true,
+          },
+          where: {
+            code: body.code,
+            status: couponCodeStatusEnum.ACTIVE,
+            organization: {
+              organizationId,
+            },
+          },
+        });
+
+        if (!couponCode) {
+          this.logger.warn('Coupon code not found', { code: body.code });
+          throw new NotFoundException('Coupon code not found');
+        }
+
+        this.validateCouponCode(couponCode);
+
+        const customerId = await this.validateCustomer(
+          manager,
+          body.externalCustomerId,
+          couponCode,
+        );
+
+        const itemId = await this.validateItem(
+          manager,
+          body.externalItemId,
+          couponCode.coupon,
+        );
+
+        await this.validateCampaignBudget(manager, couponCode.campaign);
+
+        await manager.increment(
+          CouponCode,
+          { couponCodeId: couponCode.couponCodeId },
+          'redemptionCount',
+          1,
+        );
+
+        await this.checkCouponCodeRedemptions(manager, couponCode);
+
+        const savedRedemption = this.saveRedemption(
+          manager,
+          couponCode,
+          organizationId,
+          customerId,
+          itemId,
+          body.amount,
+          body.externalId,
+        );
+
+        this.logger.info('END: redeemCouponCode service');
+        return savedRedemption;
+      } catch (error) {
+        this.logger.error(`Error in redeemCouponCode: ${error.message}`, error);
+
+        if (
+          error instanceof NotFoundException ||
+          error instanceof BadRequestException ||
+          error instanceof GoneException ||
+          error instanceof ConflictException
+        ) {
+          throw error;
+        }
+
+        throw new HttpException(
+          'Failed to redeem coupon code',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
+    });
   }
 
   /**
    * Fetch redemptions
    */
-  async fetchRedemptions(couponId?: string, campaignId?: string, couponCodeId?: string, from?: number, to?: number, skip?: number, take?: number) {
-    throw new Error('Method not implemented.');
+  async fetchRedemptions(
+    organizationId,
+    from?: number,
+    to?: number,
+    whereOptions: FindOptionsWhere<Redemption> = {},
+    skip: number = 0,
+    take: number = 10,
+  ) {
+    this.logger.info('START: fetchRedemptions service');
+    try {
+      const redemptions = await this.redemptionsRepository.find({
+        relations: {
+          couponCode: true,
+        },
+        where: {
+          organization: {
+            organizationId,
+          },
+          ...whereOptions,
+        },
+        skip,
+        take,
+      });
+
+      if (!redemptions) {
+        this.logger.warn('Redemptions not found');
+        throw new NotFoundException('Redemptions not found');
+      }
+
+      this.logger.info('END: fetchRedemptions service');
+      return this.redemptionSheetConverter.convert(redemptions, organizationId);
+    } catch (error) {
+      this.logger.error(`Error in fetchRedemptions: ${error.message}`, error);
+
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+
+      throw new HttpException(
+        'Failed to fetch redemptions',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  private validateCouponCode(couponCode: CouponCode) {
+    if (
+      couponCode.durationType == durationTypeEnum.LIMITED &&
+      couponCode.expiresAt < new Date()
+    ) {
+      this.logger.warn('Coupon code is expired', { code: couponCode.code });
+      throw new GoneException('Coupon code is expired');
+    }
+  }
+
+  private async validateCustomer(
+    manager: EntityManager,
+    externalCustomerId: string,
+    couponCode: CouponCode,
+  ) {
+    const customer = await manager.findOne(Customer, {
+      where: { externalId: externalCustomerId },
+    });
+
+    if (!customer) {
+      this.logger.warn('Customer not found', { externalCustomerId });
+      throw new NotFoundException('Customer not found');
+    }
+
+    if (couponCode.customerConstraint == customerConstraintEnum.SPECIFIC) {
+      const customerCouponCode = await manager.findOne(CustomerCouponCode, {
+        where: {
+          customer: {
+            customerId: customer.customerId,
+          },
+          couponCodeId: couponCode.couponCodeId,
+        },
+      });
+
+      if (!customerCouponCode) {
+        this.logger.warn('Customer is not eligible for this coupon');
+        throw new BadRequestException('Customer is not eligible');
+      }
+    }
+
+    return customer.customerId;
+  }
+
+  private async validateItem(
+    manager: EntityManager,
+    externalItemId: string,
+    coupon: Coupon,
+  ) {
+    const item = await manager.findOne(Item, {
+      where: {
+        externalId: externalItemId,
+      },
+    });
+
+    if (!item) {
+      this.logger.warn('Item not found');
+      throw new NotFoundException('Item not found');
+    }
+
+    if (coupon.itemConstraint === itemConstraintEnum.SPECIFIC) {
+      const couponItem = await manager.findOne(CouponItem, {
+        where: {
+          coupon: {
+            couponId: coupon.couponId,
+          },
+          item: {
+            itemId: item.itemId,
+          },
+        },
+      });
+
+      if (!couponItem) {
+        this.logger.warn('Item not eligible');
+        throw new BadRequestException('Item not eligible');
+      }
+    }
+
+    return item.itemId;
+  }
+
+  private async incrementRedemptionCount(
+    manager: EntityManager,
+    couponCode: CouponCode,
+  ) {
+    await manager.increment(
+      CouponCode,
+      couponCode.couponCodeId,
+      'redemption_count',
+      1,
+    );
+  }
+
+  private async checkCouponCodeRedemptions(
+    manager: EntityManager,
+    couponCode: CouponCode,
+  ) {
+    const updatedCouponCode = await manager.findOne(CouponCode, {
+      relations: { coupon: true, campaign: true },
+      where: { couponCodeId: couponCode.couponCodeId },
+    });
+
+    if (
+      updatedCouponCode?.maxRedemptions &&
+      updatedCouponCode.maxRedemptions < updatedCouponCode.redemptionCount
+    ) {
+      this.logger.warn('Coupon code is fully redeemed', {
+        code: updatedCouponCode.code,
+      });
+      await manager.update(CouponCode, updatedCouponCode.couponCodeId, {
+        status: couponCodeStatusEnum.REDEEMED,
+      });
+      throw new ConflictException('Coupon code is fully redemmed');
+    }
+  }
+
+  private async validateCampaignBudget(
+    manager: EntityManager,
+    campaign: Campaign,
+  ) {
+    const campaign_summary = await manager.findOne(CampaignSummaryMv, {
+      where: {
+        campaignId: campaign.campaignId,
+      },
+    });
+
+    if (campaign_summary!.totalRedemptionAmount > campaign.budget) {
+      this.logger.warn('Campaign budget excedded', {
+        campaignId: campaign.campaignId,
+      });
+      throw new ConflictException('Campaign budget excedded');
+    }
+  }
+
+  private async saveRedemption(
+    manager: EntityManager,
+    couponCode: CouponCode,
+    organizationId: string,
+    customerId: string,
+    itemId: string,
+    amount: number,
+    externalId?: string,
+  ) {
+    const redemptionEntity = manager.create(Redemption, {
+      organization: {
+        organizationId,
+      },
+      coupon: {
+        couponId: couponCode.coupon.couponId,
+      },
+      campaign: {
+        campaignId: couponCode.campaign.campaignId,
+      },
+      couponCode: {
+        couponCodeId: couponCode.couponCodeId,
+      },
+      amount: amount,
+      externalId: externalId,
+      customer: {
+        customerId,
+      },
+      item: {
+        itemId,
+      },
+    });
+
+    return manager.save(Redemption, redemptionEntity);
   }
 }

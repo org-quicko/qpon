@@ -18,7 +18,6 @@ export class CustomerDto {
   @IsString()
   phone: string;
 
-  @IsOptional()
   @Expose({ name: 'external_id' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsString()

@@ -18,6 +18,7 @@ import { Campaign } from './campaign.entity';
 import { Coupon } from './coupon.entity';
 import { CustomerCouponCode } from './customer-coupon-code.entity';
 import { Redemption } from './redemption.entity';
+import { Organization } from './organization.entity';
 
 @Entity({ name: 'coupon_code' })
 export class CouponCode {
@@ -90,6 +91,13 @@ export class CouponCode {
     referencedColumnName: 'couponId',
   })
   coupon: Coupon;
+
+  @ManyToOne(() => Organization, (organization) => organization.couponCodes)
+  @JoinColumn({
+    name: 'organization_id',
+    referencedColumnName: 'organizationId',
+  })
+  organization: Organization;
 
   @OneToMany(
     () => CustomerCouponCode,

@@ -19,7 +19,6 @@ export class ItemDto {
   @Transform(({ value }) => value, { toClassOnly: true })
   customFields: any;
 
-  @IsOptional()
   @Expose({ name: 'external_id' })
   @Transform(({ value }) => value, { toClassOnly: true })
   externalId: string;

@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
-import { RedemptionsService } from '../services/redemption.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { RedemptionsService } from '../services/redemption.service';
 import { RedemptionsController } from '../controllers/redemption.controller';
 import { Redemption } from '../entities/redemption.entity';
+import { RedemptionSheetConverter } from '../converters/redemption-sheet.converter';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Redemption])],
   controllers: [RedemptionsController],
-  providers: [RedemptionsService],
+  providers: [RedemptionsService, RedemptionSheetConverter],
 })
 export class RedemptionsModule {}
