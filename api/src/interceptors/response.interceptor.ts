@@ -47,6 +47,10 @@ export class TransformInterceptor<T> implements NestInterceptor<T, Response> {
   }
 
   private convertToSnakeCase(obj: any): any {
+    if (obj instanceof Date) {
+      return obj;
+    }
+
     if (Array.isArray(obj)) {
       return obj.map((item) => this.convertToSnakeCase(item));
     } else if (obj !== null && typeof obj === 'object') {

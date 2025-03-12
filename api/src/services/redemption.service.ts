@@ -299,7 +299,10 @@ export class RedemptionsService {
       },
     });
 
-    if (campaign_summary!.totalRedemptionAmount > campaign.budget) {
+    if (
+      campaign.budget &&
+      campaign_summary!.totalRedemptionAmount > campaign.budget
+    ) {
       this.logger.warn('Campaign budget excedded', {
         campaignId: campaign.campaignId,
       });

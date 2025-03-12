@@ -3,34 +3,43 @@ import { Column, PrimaryColumn, ViewEntity } from 'typeorm';
 @ViewEntity({
   name: 'coupon_summary_mv',
   expression: `
+    SELECT 
+        c.coupon_id,
+        COALESCE(r.total_redemption_count, 0) AS total_redemption_count,
+        COALESCE(r.total_redemption_amount, 0) AS total_redemption_amount,
+        COALESCE(cc.active_coupon_code_count, 0) AS active_coupon_code_count,
+        COALESCE(cc.redeemed_coupon_code_count, 0) AS redeemed_coupon_code_count,
+        COALESCE(camp.active_campaign_count, 0) AS active_campaign_count,
+        COALESCE(camp.total_campaign_count, 0) AS total_campaign_count,
+        COALESCE(camp.budget, 0) AS budget,
+        now() AS created_at,
+        now() AS updated_at
+    FROM coupon c
+    LEFT JOIN (
         SELECT 
-            c.coupon_id,
-            COALESCE(count(r.redemption_id), 0::bigint) AS total_redemption_count,
-            COALESCE(sum(r.amount), 0::numeric) AS total_redemption_amount,
-            COALESCE(sum(
-                CASE
-                    WHEN cc.status::text = 'active'::text THEN 1
-                    ELSE 0
-                END), 0::bigint) AS active_coupon_code_count,
-            COALESCE(sum(
-                CASE
-                    WHEN cc.status::text = 'redeemed'::text THEN 1
-                    ELSE 0
-                END), 0::bigint) AS redeemed_coupon_code_count,
-            COALESCE(sum(
-                CASE
-                    WHEN camp.status::text = 'active'::text THEN 1
-                    ELSE 0
-                END), 0::bigint) AS active_campaign_count,
-            COALESCE(count(camp.campaign_id), 0::bigint) AS total_campaign_count,
-            COALESCE(sum(camp.budget), 0::numeric) AS budget,
-            now() AS created_at,
-            now() AS updated_at
-        FROM coupon c
-        LEFT JOIN coupon_code cc ON c.coupon_id = cc.coupon_id
-        LEFT JOIN campaign camp ON c.coupon_id = camp.coupon_id
-        LEFT JOIN redemption r ON c.coupon_id = r.coupon_id
-        GROUP BY c.coupon_id;
+            coupon_id,
+            COUNT(redemption_id) AS total_redemption_count,
+            SUM(amount) AS total_redemption_amount
+        FROM redemption
+        GROUP BY coupon_id
+    ) r ON c.coupon_id = r.coupon_id
+    LEFT JOIN (
+        SELECT 
+            coupon_id,
+            SUM(CASE WHEN status = 'active' THEN 1 ELSE 0 END) AS active_coupon_code_count,
+            SUM(CASE WHEN status = 'redeemed' THEN 1 ELSE 0 END) AS redeemed_coupon_code_count
+        FROM coupon_code
+        GROUP BY coupon_id
+    ) cc ON c.coupon_id = cc.coupon_id
+    LEFT JOIN (
+        SELECT 
+            coupon_id,
+            SUM(CASE WHEN status = 'active' THEN 1 ELSE 0 END) AS active_campaign_count,
+            COUNT(campaign_id) AS total_campaign_count,
+            SUM(budget) AS budget
+        FROM campaign
+        GROUP BY coupon_id
+    ) camp ON c.coupon_id = camp.coupon_id;
     `,
   materialized: true,
 })
