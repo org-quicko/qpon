@@ -93,14 +93,14 @@ export class Offer {
   expiresAt: Date;
 
   @CreateDateColumn({
-    type: 'time with time zone',
+    type: 'timestamp with time zone',
     default: () => `now()`,
     name: 'created_at',
   })
   createdAt: Date;
 
   @UpdateDateColumn({
-    type: 'time with time zone',
+    type: 'timestamp with time zone',
     default: () => `now()`,
     name: 'updated_at',
   })

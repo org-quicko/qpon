@@ -49,7 +49,7 @@ export class CouponCode {
   @Column('enum', { name: 'duration_type', enum: durationTypeEnum })
   durationType: durationTypeEnum;
 
-  @Column('time with time zone', { name: 'expires_at', nullable: true })
+  @Column('timestamp with time zone', { name: 'expires_at', nullable: true })
   expiresAt: Date;
 
   @Column({ name: 'redemption_count', default: 0 })
@@ -62,14 +62,14 @@ export class CouponCode {
   status: couponCodeStatusEnum;
 
   @CreateDateColumn({
-    type: 'time with time zone',
+    type: 'timestamp with time zone',
     default: () => `now()`,
     name: 'created_at',
   })
   createdAt: Date;
 
   @UpdateDateColumn({
-    type: 'time with time zone',
+    type: 'timestamp with time zone',
     default: () => `now()`,
     name: 'updated_at',
   })

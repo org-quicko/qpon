@@ -59,9 +59,15 @@ export class CouponSummaryMv {
   @Column('numeric')
   budget: number;
 
-  @Column('time with time zone', { name: 'created_at', default: () => `now()` })
+  @Column('timestamp with time zone', {
+    name: 'created_at',
+    default: () => `now()`,
+  })
   createdAt: Date;
 
-  @Column('time with time zone', { name: 'updated_at', default: () => `now()` })
+  @Column('timestamp with time zone', {
+    name: 'updated_at',
+    default: () => `now()`,
+  })
   updatedAt: Date;
 }

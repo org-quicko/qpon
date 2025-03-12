@@ -22,21 +22,21 @@ export class OrganizationUser {
   @Column('enum', { nullable: true, enum: roleEnum })
   role: roleEnum;
 
-  @Column('time with time zone', {
+  @Column('timestamp with time zone', {
     name: 'last_accessed_at',
     default: () => `now()`,
   })
   lastAccessedAt: Date;
 
   @CreateDateColumn({
-    type: 'time with time zone',
+    type: 'timestamp with time zone',
     default: () => `now()`,
     name: 'created_at',
   })
   createdAt: Date;
 
   @UpdateDateColumn({
-    type: 'time with time zone',
+    type: 'timestamp with time zone',
     default: () => `now()`,
     name: 'updated_at',
   })
