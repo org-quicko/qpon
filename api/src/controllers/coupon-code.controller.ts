@@ -19,7 +19,7 @@ import {
 } from 'src/enums';
 
 @ApiTags('Coupon Code')
-@Controller('')
+@Controller('organizations/:organization_id')
 export class CouponCodeController {
   constructor(
     private readonly couponCodeService: CouponCodeService,
@@ -32,6 +32,7 @@ export class CouponCodeController {
   @ApiResponse({ status: 200, description: 'Successful response' })
   @Post('coupons/:coupon_id/campaigns/:campaign_id/coupon-codes')
   async createCouponCode(
+    @Param('organization_id') organizationId: string,
     @Param('coupon_id') couponId: string,
     @Param('campaign_id') campaignId: string,
     @Body() body: CreateCouponCodeDto,
@@ -39,6 +40,7 @@ export class CouponCodeController {
     this.logger.info('START: createCouponCode controller');
 
     const result = await this.couponCodeService.createCouponCode(
+      organizationId,
       couponId,
       campaignId,
       body,
@@ -54,6 +56,7 @@ export class CouponCodeController {
   @ApiResponse({ status: 200, description: 'Successful response' })
   @Get('coupons/:coupon_id/campaigns/:campaign_id/coupon-codes')
   async fetchCouponCodes(
+    @Param('organization_id') organizationId: string,
     @Param('coupon_id') couponId: string,
     @Param('campaign_id') campaignId: string,
     @Query('status') status?: couponCodeStatusEnum,
@@ -66,6 +69,7 @@ export class CouponCodeController {
     this.logger.info('START: fetchCouponCodes controller');
 
     const result = await this.couponCodeService.fetchCouponCodes(
+      organizationId,
       couponId,
       campaignId,
       take,
@@ -92,6 +96,7 @@ export class CouponCodeController {
   @ApiResponse({ status: 200, description: 'Successful response' })
   @Get('coupons/:coupon_id/campaigns/:campaign_id/coupon-codes/:coupon_code_id')
   async fetchCouponCode(
+    @Param('organization_id') organizationId: string,
     @Param('coupon_id') couponId: string,
     @Param('campaign_id') campaignId: string,
     @Param('coupon_code_id') couponCodeId: string,
@@ -99,6 +104,7 @@ export class CouponCodeController {
     this.logger.info('START: fetchCouponCode controller');
 
     const result = await this.couponCodeService.fetchCouponCode(
+      organizationId,
       couponId,
       campaignId,
       couponCodeId,
@@ -116,6 +122,7 @@ export class CouponCodeController {
     'coupons/:coupon_id/campaigns/:campaign_id/coupon-codes/:coupon_code_id',
   )
   async updateCouponCode(
+    @Param('organization_id') organizationId: string,
     @Param('coupon_id') couponId: string,
     @Param('campaign_id') campaignId: string,
     @Param('coupon_code_id') couponCodeId: string,
@@ -124,6 +131,7 @@ export class CouponCodeController {
     this.logger.info('START: updateCouponCode controller');
 
     const result = await this.couponCodeService.updateCouponCode(
+      organizationId,
       couponId,
       campaignId,
       couponCodeId,
@@ -138,7 +146,7 @@ export class CouponCodeController {
    * Fetch coupon codes by code
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
-  @Get('/organizations/:organization_id/coupon-codes')
+  @Get('coupon-codes')
   async fetchCouponCodesByCode(
     @Headers('x-accept-type') acceptType: string,
     @Param('organization_id') organizationId: string,
@@ -194,6 +202,7 @@ export class CouponCodeController {
     'coupons/:coupon_id/campaigns/:campaign_id/coupon-codes/:coupon_code_id/deactivate',
   )
   async deactivateCouponCode(
+    @Param('organization_id') organizationId: string,
     @Param('coupon_id') couponId: string,
     @Param('campaign_id') campaignId: string,
     @Param('coupon_code_id') couponCodeId: string,
@@ -201,6 +210,7 @@ export class CouponCodeController {
     this.logger.info('START: deactivateCouponCode controller');
 
     await this.couponCodeService.deactivateCouponCode(
+      organizationId,
       couponId,
       campaignId,
       couponCodeId,
@@ -218,6 +228,7 @@ export class CouponCodeController {
     'coupons/:coupon_id/campaigns/:campaign_id/coupon-codes/:coupon_code_id/reactivate',
   )
   async reactivateCouponCode(
+    @Param('organization_id') organizationId: string,
     @Param('coupon_id') couponId: string,
     @Param('campaign_id') campaignId: string,
     @Param('coupon_code_id') couponCodeId: string,
@@ -225,6 +236,7 @@ export class CouponCodeController {
     this.logger.info('START: reactivateCouponCode controller');
 
     await this.couponCodeService.reactivateCouponCode(
+      organizationId,
       couponId,
       campaignId,
       couponCodeId,

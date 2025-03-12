@@ -31,6 +31,7 @@ export class CouponCodeService {
    * Create coupon code
    */
   async createCouponCode(
+    organizationId,
     couponId: string,
     campaignId: string,
     body: CreateCouponCodeDto,
@@ -92,6 +93,9 @@ export class CouponCodeService {
           coupon: {
             couponId,
           },
+          organization: {
+            organizationId,
+          },
         });
 
         const savedCouponCode = await manager.save(
@@ -119,6 +123,7 @@ export class CouponCodeService {
    * Fetch coupon codes
    */
   async fetchCouponCodes(
+    organizationId: string,
     couponId: string,
     campaignId: string,
     take: number = 10,
@@ -129,6 +134,9 @@ export class CouponCodeService {
     try {
       const couponCodes = await this.couponCodeRepository.find({
         where: {
+          organization: {
+            organizationId,
+          },
           campaign: {
             campaignId,
           },
@@ -168,6 +176,7 @@ export class CouponCodeService {
    * Fetch coupon code
    */
   async fetchCouponCode(
+    organizationId: string,
     couponId: string,
     campaignId: string,
     couponCodeId: string,
@@ -182,6 +191,9 @@ export class CouponCodeService {
           },
           coupon: {
             couponId,
+          },
+          organization: {
+            organizationId,
           },
         },
       });
@@ -211,6 +223,7 @@ export class CouponCodeService {
    * Update coupon code
    */
   async updateCouponCode(
+    organizationId: string,
     couponId: string,
     campaignId: string,
     couponCodeId: string,
@@ -226,6 +239,9 @@ export class CouponCodeService {
           },
           coupon: {
             couponId,
+          },
+          organization: {
+            organizationId,
           },
         },
       });
@@ -379,6 +395,7 @@ export class CouponCodeService {
    * Deactivate coupon code
    */
   async deactivateCouponCode(
+    organizationId: string,
     couponId: string,
     campaignId: string,
     couponCodeId: string,
@@ -393,6 +410,9 @@ export class CouponCodeService {
         },
         coupon: {
           couponId,
+        },
+        organization: {
+          organizationId,
         },
       },
     });
@@ -426,6 +446,7 @@ export class CouponCodeService {
    * Reactivate coupon code
    */
   async reactivateCouponCode(
+    organizationId: string,
     couponId: string,
     campaignId: string,
     couponCodeId: string,
@@ -440,6 +461,9 @@ export class CouponCodeService {
         },
         coupon: {
           couponId,
+        },
+        organization: {
+          organizationId,
         },
       },
     });
