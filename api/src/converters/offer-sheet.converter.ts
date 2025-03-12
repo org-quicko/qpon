@@ -1,0 +1,46 @@
+import { Injectable } from '@nestjs/common';
+import { JSONObject } from '@org.quicko/core';
+import {
+  OfferRow,
+  OfferSheet,
+  OfferTable,
+  OfferWorkbook,
+} from 'generated/sources';
+import { Offer } from '../entities/offer.view';
+import { offerDescriptionBuilder } from '../utils/offer-description.builder';
+import { offerTitleBuilder } from '../utils/offer-title.builder';
+
+@Injectable()
+export class OfferSheetConverter {
+  convert(offers: Offer[], organizationId: string): OfferWorkbook {
+    const offerTable = new OfferTable();
+    offers.map((offer) => {
+      const offerRow = new OfferRow([]);
+      const title = offerTitleBuilder(offer);
+      const description = offerDescriptionBuilder(offer);
+
+      offerRow.setTitle(title);
+      offerRow.setDescription(description);
+      offerRow.setCouponCode(offer.code);
+      offerRow.setDiscountType(offer.discountType);
+      offerRow.setDiscountValue(offer.discountValue);
+      offerRow.setItemConstraint(offer.itemConstraint);
+      offerRow.setMinimumAmount(offer.minimumAmount);
+      offerRow.setCustomerId(offer.customerId);
+      offerRow.setCampaignExternalId(offer.externalCampaignId);
+      offerRow.setVisibility(offer.visibility);
+      offerTable.addRow(offerRow);
+    });
+
+    const offerSheet = new OfferSheet();
+    offerSheet.addOfferTable(offerTable);
+
+    const offerWorkbook = new OfferWorkbook();
+    offerWorkbook.addOfferSheet(offerSheet);
+    offerWorkbook.metadata = new JSONObject({
+      organization_id: organizationId,
+    });
+
+    return offerWorkbook;
+  }
+}

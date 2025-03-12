@@ -8,13 +8,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { Offer } from '../entities/offer.view';
 import { LoggerService } from './logger.service';
-import { discountTypeEnum, sortOrderEnum } from 'src/enums';
+import { discountTypeEnum, sortOrderEnum } from '../enums';
+import { OfferSheetConverter } from '../converters/offer-sheet.converter';
 
 @Injectable()
 export class OffersService {
   constructor(
     @InjectRepository(Offer)
     private readonly offersRepository: Repository<Offer>,
+    private offerSheetConverter: OfferSheetConverter,
     private logger: LoggerService,
   ) {}
 
@@ -74,7 +76,7 @@ export class OffersService {
       }
 
       this.logger.info('END: fetchOffers service');
-      return offers;
+      return this.offerSheetConverter.convert(offers, organizationId);
     } catch (error) {
       this.logger.error(`Error in fetchOffers: ${error.message}`, error);
 
@@ -119,15 +121,15 @@ export class OffersService {
         query.andWhere(`offer.customer_constraint = 'all'`);
       }
 
-      const offer = await query.getOne();
+      const offers = await query.getOne();
 
-      if (!offer) {
+      if (!offers) {
         this.logger.warn('Offer not found');
         throw new NotFoundException('Offer not found');
       }
 
       this.logger.info('END: fetchOffer service');
-      return offer;
+      return this.offerSheetConverter.convert([offers], organizationId);
     } catch (error) {
       this.logger.error(`Error in fetchOffer: ${error.message}`, error);
 
