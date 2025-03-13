@@ -18,6 +18,10 @@ import { AuthModule } from './modules/auth.module';
 import { CouponItemModule } from './modules/coupon-item.module';
 import { CustomerCouponCodeModule } from './modules/customer-coupon-code.module';
 import { ApiKeyModule } from './modules/api-key.module';
+import { RedemptionSubscriber } from './subscribers/redemption.subscriber';
+import { CampaignSubscriber } from './subscribers/campaign.subscriber';
+import { CouponSubscriber } from './subscribers/coupon.subscriber';
+import { OrganizationSubscriber } from './subscribers/organization.subscriber';
 
 @Module({
   imports: [
@@ -29,6 +33,12 @@ import { ApiKeyModule } from './modules/api-key.module';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       autoLoadEntities: true,
+      subscribers: [
+        RedemptionSubscriber,
+        CampaignSubscriber,
+        CouponSubscriber,
+        OrganizationSubscriber,
+      ],
       synchronize: true,
       logging: true,
     }),
