@@ -13,7 +13,7 @@ import { Column, PrimaryColumn, ViewEntity } from 'typeorm';
         COALESCE(ca.inactive_campaign_count, 0) AS inactive_campaign_count,
         COALESCE(cc.active_coupon_code_count, 0) AS active_coupon_code_count,
         now() AS created_at,
-        now() AS updated_at
+        clock_timestamp() AS updated_at
     FROM organization o
     -- Aggregate redemption data
     LEFT JOIN (

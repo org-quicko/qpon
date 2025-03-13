@@ -11,13 +11,18 @@ import { CreateOrganizationDto, UpdateOrganizationDto } from '../dtos';
 import { LoggerService } from './logger.service';
 import { OrganizationConverter } from '../converters/organization.converter';
 import { QueryOptionsInterface } from '../interfaces/queryOptions.interface';
+import { OrganizationSummaryMv } from '../entities/organization-summary.view';
+import { OrganizationSummarySheetConverter } from '../converters/organization-summary-sheet.converter';
 
 @Injectable()
 export class OrganizationService {
   constructor(
     @InjectRepository(Organization)
     private readonly organizationRepository: Repository<Organization>,
+    @InjectRepository(OrganizationSummaryMv)
+    private readonly organizationSummaryMvRepository: Repository<OrganizationSummaryMv>,
     private organizationConverter: OrganizationConverter,
+    private organizationSummarySheetConverter: OrganizationSummarySheetConverter,
     private logger: LoggerService,
   ) {}
 
@@ -217,11 +222,37 @@ export class OrganizationService {
   /**
    * Fetch organization summary
    */
-  async fetchOrganizationSummary(
-    organizationId: string,
-    from?: string,
-    to?: string,
-  ) {
-    throw new Error('Method not implemented.');
+  async fetchOrganizationSummary(organizationId: string) {
+    this.logger.info('START: fetchOrganizationSummary service');
+    try {
+      const organizationSummary =
+        await this.organizationSummaryMvRepository.findOne({
+          where: {
+            organizationId,
+          },
+        });
+
+      if (!organizationSummary) {
+        this.logger.warn('Unable to find summary for this organization');
+        throw new NotFoundException(
+          'Unable to find summary for this organization',
+        );
+      }
+
+      this.logger.info('END: fetchOrganizationSummary service');
+      return this.organizationSummarySheetConverter.convert(
+        organizationSummary,
+      );
+    } catch (error) {
+      this.logger.error(
+        `Error in fetchOrganizationSummary: ${error.message}`,
+        error,
+      );
+
+      throw new HttpException(
+        'Failed to fetch organization summary',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

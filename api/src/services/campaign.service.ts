@@ -12,13 +12,18 @@ import { LoggerService } from './logger.service';
 import { CampaignConverter } from '../converters/campaign.converter';
 import { campaignStatusEnum, couponCodeStatusEnum } from 'src/enums';
 import { CouponCode } from 'src/entities/coupon-code.entity';
+import { CampaignSummaryMv } from '../entities/campaign-summary.view';
+import { CampaignSummarySheetConverter } from '../converters/campaign-summary-sheet.converter';
 
 @Injectable()
 export class CampaignService {
   constructor(
     @InjectRepository(Campaign)
     private readonly campaignRepository: Repository<Campaign>,
+    @InjectRepository(CampaignSummaryMv)
+    private readonly campaignSummaryMvRepository: Repository<CampaignSummaryMv>,
     private campaignConverter: CampaignConverter,
+    private campaignSummarySheetConverter: CampaignSummarySheetConverter,
     private logger: LoggerService,
     private datasource: DataSource,
   ) {}
@@ -269,10 +274,39 @@ export class CampaignService {
    * Fetch campaign summary
    */
   async fetchCampaignSummary(
-    campaignId?: string,
-    take?: number,
-    skip?: number,
+    couponId: string,
+    whereOptions: FindOptionsWhere<CampaignSummaryMv> = {},
+    skip: number = 0,
+    take: number = 10,
   ) {
-    throw new Error('Method not implemented.');
+    this.logger.info('START: fetchCampaignSummary service');
+    try {
+      const campaignSummaryMv = await this.campaignSummaryMvRepository.find({
+        where: {
+          couponId,
+          ...whereOptions,
+        },
+        skip,
+        take,
+      });
+
+      if (!campaignSummaryMv || campaignSummaryMv.length == 0) {
+        this.logger.warn('Unable to find campaign summary');
+        throw new NotFoundException('Unable to find campaign summary');
+      }
+
+      this.logger.info('END: fetchCampaignSummary service');
+      return this.campaignSummarySheetConverter.convert(campaignSummaryMv);
+    } catch (error) {
+      this.logger.error(
+        `Error in fetchCampaignSummary: ${error.message}`,
+        error,
+      );
+
+      throw new HttpException(
+        'Failed to fetch campaign summary',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

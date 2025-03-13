@@ -15,13 +15,18 @@ import { campaignStatusEnum, couponCodeStatusEnum, statusEnum } from '../enums';
 import { CouponConverter } from '../converters/coupon.converter';
 import { Campaign } from '../entities/campaign.entity';
 import { CouponCode } from '../entities/coupon-code.entity';
+import { CouponSummarySheetConverter } from '../converters/coupon-summary-sheet.converter';
+import { CouponSummaryMv } from '../entities/coupon-summary.view';
 
 @Injectable()
 export class CouponService {
   constructor(
     @InjectRepository(Coupon)
     private readonly couponRepository: Repository<Coupon>,
+    @InjectRepository(CouponSummaryMv)
+    private readonly couponSummaryMvRepository: Repository<CouponSummaryMv>,
     private couponConverter: CouponConverter,
+    private couponSummarySheetConverter: CouponSummarySheetConverter,
     private logger: LoggerService,
     private datasource: DataSource,
   ) {}
@@ -387,12 +392,40 @@ export class CouponService {
   /**
    * Fetch coupons summary
    */
-  async fetchCouponsSummary(
+  async fetchCouponSummary(
     organizationId: string,
-    couponId?: string,
-    take?: number,
-    skip?: number,
+    whereOptions: FindOptionsWhere<CouponSummaryMv> = {},
+    skip: number = 0,
+    take: number = 10,
   ) {
-    throw new Error('Method not implemented.');
+    this.logger.info('START: fetchCouponSummary service');
+    try {
+      const couponSummaries = await this.couponSummaryMvRepository.find({
+        where: {
+          organizationId,
+          ...whereOptions,
+        },
+        skip,
+        take,
+      });
+
+      if (!couponSummaries || couponSummaries.length == 0) {
+        this.logger.warn('Unable to find summary for coupon');
+        throw new NotFoundException('Coupon summary not found');
+      }
+
+      this.logger.info('END: fetchCouponSummary service');
+      return this.couponSummarySheetConverter.convert(
+        couponSummaries,
+        organizationId,
+      );
+    } catch (error) {
+      this.logger.error(`Error in fetchCouponSummary: ${error.message}`, error);
+
+      throw new HttpException(
+        'Failed to fetch coupon summary',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

@@ -65,6 +65,30 @@ export class CampaignController {
   }
 
   /**
+   * Fetch campaign summary
+   */
+  @ApiResponse({ status: 200, description: 'Successful response' })
+  @Get('summary')
+  async fetchCampaignSummary(
+    @Param('coupon_id') couponId: string,
+    @Param('campaign_id') campaignId: string,
+    @Query('take') take?: number,
+    @Query('skip') skip?: number,
+  ) {
+    this.logger.info('START: fetchCampaignSummary controller');
+
+    const result = await this.campaignService.fetchCampaignSummary(
+      couponId,
+      { campaignId },
+      take,
+      skip,
+    );
+
+    this.logger.info('END: fetchCampaignSummary controller');
+    return { message: 'Successfully fetched campaign summary', result };
+  }
+
+  /**
    * Fetch campaign
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
@@ -124,18 +148,5 @@ export class CampaignController {
 
     this.logger.info('END: reactivateCampaign controller');
     return { message: 'Successfully reactivated campaign' };
-  }
-
-  /**
-   * Fetch campaign summary
-   */
-  @ApiResponse({ status: 200, description: 'Successful response' })
-  @Get('summary')
-  async fetchCampaignSummary(
-    @Param('campaign_id') campaignId?: string,
-    @Query('take') take?: number,
-    @Query('skip') skip?: number,
-  ) {
-    return this.campaignService.fetchCampaignSummary(campaignId, take, skip);
   }
 }

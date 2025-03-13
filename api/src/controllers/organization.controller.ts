@@ -60,6 +60,23 @@ export class OrganizationController {
   }
 
   /**
+   * Fetch organization summary
+   */
+  @ApiResponse({ status: 200, description: 'Successful response' })
+  @Get(':organization_id/summary')
+  async fetchOrganizationSummary(
+    @Param('organization_id') organizationId: string,
+  ) {
+    this.logger.info('START: fetchOrganizationSummary controller');
+
+    const result =
+      await this.organizationService.fetchOrganizationSummary(organizationId);
+
+    this.logger.info('END: fetchOrganizationSummary controller');
+    return { message: 'Successfully fetched organization summary', result };
+  }
+
+  /**
    * Fetch organization
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
@@ -107,22 +124,5 @@ export class OrganizationController {
 
     this.logger.info('END: deleteOrganization controller');
     return { message: 'Successfully deleted organization', result };
-  }
-
-  /**
-   * Fetch organization summary
-   */
-  @ApiResponse({ status: 200, description: 'Successful response' })
-  @Get(':organization_id/reports')
-  async fetchOrganizationSummary(
-    @Param('organization_id') organizationId: string,
-    @Query('from') from?: string,
-    @Query('to') to?: string,
-  ) {
-    return this.organizationService.fetchOrganizationSummary(
-      organizationId,
-      from,
-      to,
-    );
   }
 }

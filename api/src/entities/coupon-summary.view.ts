@@ -1,19 +1,20 @@
-import { Column, PrimaryColumn, ViewEntity } from 'typeorm';
+import { Index, ViewColumn, ViewEntity } from 'typeorm';
 
 @ViewEntity({
   name: 'coupon_summary_mv',
   expression: `
-    SELECT 
-        c.coupon_id,
-        COALESCE(r.total_redemption_count, 0) AS total_redemption_count,
-        COALESCE(r.total_redemption_amount, 0) AS total_redemption_amount,
-        COALESCE(cc.active_coupon_code_count, 0) AS active_coupon_code_count,
-        COALESCE(cc.redeemed_coupon_code_count, 0) AS redeemed_coupon_code_count,
-        COALESCE(camp.active_campaign_count, 0) AS active_campaign_count,
-        COALESCE(camp.total_campaign_count, 0) AS total_campaign_count,
-        COALESCE(camp.budget, 0) AS budget,
-        now() AS created_at,
-        now() AS updated_at
+   SELECT
+      c.organization_id,
+      c.coupon_id,
+      COALESCE(r.total_redemption_count, 0) AS total_redemption_count,
+      COALESCE(r.total_redemption_amount, 0) AS total_redemption_amount,
+      COALESCE(cc.active_coupon_code_count, 0) AS active_coupon_code_count,
+      COALESCE(cc.redeemed_coupon_code_count, 0) AS redeemed_coupon_code_count,
+      COALESCE(camp.active_campaign_count, 0) AS active_campaign_count,
+      COALESCE(camp.total_campaign_count, 0) AS total_campaign_count,
+      COALESCE(camp.budget, 0) AS budget,
+      now() AS created_at,
+      clock_timestamp() AS updated_at
     FROM coupon c
     LEFT JOIN (
         SELECT 
@@ -44,39 +45,38 @@ import { Column, PrimaryColumn, ViewEntity } from 'typeorm';
   materialized: true,
 })
 export class CouponSummaryMv {
-  @PrimaryColumn({ name: 'coupon_id' })
+  @Index()
+  @ViewColumn({ name: 'organization_id' })
+  organizationId: string;
+
+  @Index()
+  @ViewColumn({ name: 'coupon_id' })
   couponId: string;
 
-  @Column('bigint', { name: 'total_redemption_count' })
+  @ViewColumn({ name: 'total_redemption_count' })
   totalRedemptionCount: number;
 
-  @Column('numeric', { name: 'total_redemption_amount' })
+  @ViewColumn({ name: 'total_redemption_amount' })
   totalRedemptionAmount: number;
 
-  @Column('bigint', { name: 'active_coupon_code_count' })
+  @ViewColumn({ name: 'active_coupon_code_count' })
   activeCouponCodeCount: number;
 
-  @Column('bigint', { name: 'redeemed_coupon_code_count' })
+  @ViewColumn({ name: 'redeemed_coupon_code_count' })
   redeemedCouponCodeCount: number;
 
-  @Column('bigint', { name: 'active_campaign_count' })
+  @ViewColumn({ name: 'active_campaign_count' })
   activeCampaignCount: number;
 
-  @Column('bigint', { name: 'total_campaign_count' })
+  @ViewColumn({ name: 'total_campaign_count' })
   totalCampaignCount: number;
 
-  @Column('numeric')
+  @ViewColumn()
   budget: number;
 
-  @Column('timestamp with time zone', {
-    name: 'created_at',
-    default: () => `now()`,
-  })
+  @ViewColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @Column('timestamp with time zone', {
-    name: 'updated_at',
-    default: () => `now()`,
-  })
+  @ViewColumn({ name: 'updated_at' })
   updatedAt: Date;
 }

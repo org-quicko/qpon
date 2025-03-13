@@ -7,10 +7,16 @@ import { CouponItem } from '../entities/coupon-item.entity';
 import { CouponSummaryMv } from '../entities/coupon-summary.view';
 import { CouponConverter } from '../converters/coupon.converter';
 import { ItemConverter } from '../converters/item.converter';
+import { CouponSummarySheetConverter } from '../converters/coupon-summary-sheet.converter';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Coupon, CouponItem, CouponSummaryMv])],
   controllers: [CouponController],
-  providers: [CouponService, CouponConverter, ItemConverter],
+  providers: [
+    CouponService,
+    CouponConverter,
+    ItemConverter,
+    CouponSummarySheetConverter,
+  ],
 })
 export class CouponModule {}

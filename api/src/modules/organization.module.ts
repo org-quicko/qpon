@@ -6,6 +6,7 @@ import { Organization } from '../entities/organization.entity';
 import { OrganizationUser } from '../entities/organization-user.entity';
 import { OrganizationSummaryMv } from '../entities/organization-summary.view';
 import { OrganizationConverter } from '../converters/organization.converter';
+import { OrganizationSummarySheetConverter } from '../converters/organization-summary-sheet.converter';
 
 @Module({
   imports: [
@@ -16,6 +17,10 @@ import { OrganizationConverter } from '../converters/organization.converter';
     ]),
   ],
   controllers: [OrganizationController],
-  providers: [OrganizationService, OrganizationConverter],
+  providers: [
+    OrganizationService,
+    OrganizationConverter,
+    OrganizationSummarySheetConverter,
+  ],
 })
 export class OrganizationModule {}

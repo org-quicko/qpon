@@ -76,6 +76,30 @@ export class CouponController {
   }
 
   /**
+   * Fetch coupons summary
+   */
+  @ApiResponse({ status: 200, description: 'Successful response' })
+  @Get('/summary')
+  async fetchCouponSummary(
+    @Param('organization_id') organizationId: string,
+    @Query('coupon_id') couponId?: string,
+    @Query('skip') skip?: number,
+    @Query('take') take?: number,
+  ) {
+    this.logger.info('START: fetchCouponSummary controller');
+
+    const result = await this.couponService.fetchCouponSummary(
+      organizationId,
+      { couponId },
+      skip,
+      take,
+    );
+
+    this.logger.info('END: fetchCouponSummary controller');
+    return { message: 'Successfully fetched organization summary', result };
+  }
+
+  /**
    * Fetch coupon
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
@@ -154,24 +178,5 @@ export class CouponController {
 
     this.logger.info('END: reactivateCoupon controller');
     return { message: 'Successfully reactivated coupon' };
-  }
-
-  /**
-   * Fetch coupons summary
-   */
-  @ApiResponse({ status: 200, description: 'Successful response' })
-  @Get('summary')
-  async fetchCouponsSummary(
-    @Param('organization_id') organizationId: string,
-    @Query('coupon_id') couponId?: string,
-    @Query('take') take?: number,
-    @Query('skip') skip?: number,
-  ) {
-    return this.couponService.fetchCouponsSummary(
-      organizationId,
-      couponId,
-      take,
-      skip,
-    );
   }
 }
