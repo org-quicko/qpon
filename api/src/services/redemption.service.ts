@@ -147,12 +147,19 @@ export class RedemptionsService {
       const redemptions = await this.redemptionsRepository.find({
         relations: {
           couponCode: true,
+          customer: true,
         },
         where: {
           organization: {
             organizationId,
           },
           ...whereOptions,
+        },
+        select: {
+          customer: {
+            name: true,
+            email: true,
+          },
         },
         skip,
         take,

@@ -82,6 +82,7 @@ export class RedemptionsController {
     @Query('coupon_id') couponId?: string,
     @Query('campaign_id') campaignId?: string,
     @Query('coupon_code_id') couponCodeId?: string,
+    @Query('customer_email') customerEmail?: string,
     @Query('from') from?: string,
     @Query('to') to?: string,
     @Query('skip') skip?: number,
@@ -106,6 +107,9 @@ export class RedemptionsController {
         },
         couponCode: {
           couponCodeId,
+        },
+        customer: {
+          email: customerEmail,
         },
         ...dateFilter,
       },

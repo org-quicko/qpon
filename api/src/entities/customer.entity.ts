@@ -25,6 +25,9 @@ export class Customer {
   @Column()
   email: string;
 
+  @Column({ name: 'isd_code', nullable: true })
+  isdCode: string;
+
   @Column({ nullable: true })
   phone: string;
 
