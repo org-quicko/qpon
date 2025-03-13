@@ -8,12 +8,14 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
+  Between,
   DataSource,
   EntityManager,
   FindOptionsWhere,
   Repository,
 } from 'typeorm';
 import { ConflictException } from '@org.quicko/core';
+import * as XLSX from 'xlsx';
 import { Redemption } from '../entities/redemption.entity';
 import { LoggerService } from './logger.service';
 import { CreateRedemptionDto } from '../dtos/redemption.dto';
@@ -23,6 +25,7 @@ import {
   customerConstraintEnum,
   durationTypeEnum,
   itemConstraintEnum,
+  timePeriodEnum,
 } from '../enums';
 import { Customer } from '../entities/customer.entity';
 import { CustomerCouponCode } from '../entities/customer-coupon-code.entity';
@@ -32,6 +35,9 @@ import { CouponItem } from '../entities/coupon-item.entity';
 import { Campaign } from '../entities/campaign.entity';
 import { CampaignSummaryMv } from '../entities/campaign-summary.view';
 import { RedemptionSheetConverter } from '../converters/redemption-sheet.converter';
+import { getStartEndDate } from '../utils/date.utils';
+import { RedemptionReportSheetConverter } from '../converters/redemption-report-sheet.converter';
+import { RedemptionReportWorkbook } from 'generated/sources';
 
 @Injectable()
 export class RedemptionsService {
@@ -39,6 +45,7 @@ export class RedemptionsService {
     @InjectRepository(Redemption)
     private readonly redemptionsRepository: Repository<Redemption>,
     private redemptionSheetConverter: RedemptionSheetConverter,
+    private redemptionReportSheetConverter: RedemptionReportSheetConverter,
     private logger: LoggerService,
     private datasource: DataSource,
   ) {}
@@ -131,8 +138,6 @@ export class RedemptionsService {
    */
   async fetchRedemptions(
     organizationId,
-    from?: number,
-    to?: number,
     whereOptions: FindOptionsWhere<Redemption> = {},
     skip: number = 0,
     take: number = 10,
@@ -343,5 +348,88 @@ export class RedemptionsService {
     });
 
     return manager.save(Redemption, redemptionEntity);
+  }
+
+  async generateRedemptionsReport(
+    organizationId: string,
+    from?: string,
+    to?: string,
+    timePeriod?: timePeriodEnum,
+  ) {
+    this.logger.info('START: generateRedemptionsReport service');
+    try {
+      if (!from && !to && !timePeriod) {
+        this.logger.warn('Time period not configured for report');
+        throw new BadRequestException('Time period not configured for report');
+      }
+      const { parsedStartDate, parsedEndDate } = getStartEndDate(
+        from,
+        to,
+        timePeriod,
+      );
+
+      const redemptions = await this.redemptionsRepository.find({
+        relations: {
+          couponCode: true,
+          item: true,
+          customer: true,
+          campaign: true,
+          coupon: true,
+        },
+        where: {
+          organization: {
+            organizationId,
+          },
+          createdAt: Between(parsedStartDate, parsedEndDate),
+        },
+      });
+
+      const redemptionReportWorkbook =
+        this.redemptionReportSheetConverter.convert(redemptions);
+
+      const redemptionReportTable = redemptionReportWorkbook
+        .getRedemptionReportSheet()
+        .getRedemptionReportTable();
+
+      const workbook = RedemptionReportWorkbook.toXlsx();
+
+      const redemptionReportSheet: any[] = [redemptionReportTable.getHeader()];
+
+      redemptionReportTable.getRows().map((row) => {
+        redemptionReportSheet.push(row);
+      });
+
+      const redemptionReportSummarySheet = XLSX.utils.aoa_to_sheet(
+        redemptionReportSheet,
+      );
+
+      XLSX.utils.book_append_sheet(
+        workbook,
+        redemptionReportSummarySheet,
+        'Redemptions',
+      );
+
+      const fileBuffer = await XLSX.write(workbook, {
+        type: 'buffer',
+        bookType: 'xlsx',
+      });
+
+      this.logger.info('END: generateRedemptionsReport service');
+      return fileBuffer;
+    } catch (error) {
+      this.logger.error(
+        `Error in fetchRedemptionsForReport: ${error.message}`,
+        error,
+      );
+
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+
+      throw new HttpException(
+        'Failed to fetch redemptions for report',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

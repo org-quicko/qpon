@@ -8,3 +8,4 @@ export * from './couponCodeStatus.enum';
 export * from './role.enum';
 export * from './customerConstraint.enum';
 export * from './sortOrder.enum';
+export * from './timePeriod.enum';
