@@ -33,6 +33,8 @@ import { CouponCodeService } from './coupon-code.service';
 import { CampaignService } from './campaign.service';
 import { CouponService } from './coupon.service';
 import { ApiKeyService } from './api-key.service';
+import { CustomerCouponCodeService } from './customer-coupon-code.service';
+import { CouponItemService } from './coupon-item.service';
 
 export const actions = [
   'manage',
@@ -81,6 +83,8 @@ export class AuthorizationService {
     private couponService: CouponService,
     private campaignService: CampaignService,
     private couponCodeService: CouponCodeService,
+    private customerCouponCodeService: CustomerCouponCodeService,
+    private couponItemService: CouponItemService,
     private customerService: CustomersService,
     private itemService: ItemsService,
     private apiKeyService: ApiKeyService,
@@ -135,24 +139,16 @@ export class AuthorizationService {
 
           allow('update', User, { userId: user.userId });
 
-          //TODO: permissions for customercouponcode, couponitem
+          allow('manage', CustomerCouponCode, [
+            'couponCode.organization.organizationId',
+          ]);
+
+          allow('manage', CouponItem, ['coupon.organization.organizationId']);
 
           break;
         case roleEnum.EDITOR:
           allow(
             'manage',
-            [Coupon, Campaign, CouponCode, Customer, Item, Redemption],
-            {
-              organization: { organizationId: organizationId },
-            },
-          );
-
-          allow('manage', User, { userId: user.userId });
-
-          break;
-        case roleEnum.VIEWER:
-          allow(
-            'read',
             [Coupon, Campaign, CouponCode, Customer, Item, Redemption],
             {
               organization: { organizationId: organizationId },
@@ -166,6 +162,42 @@ export class AuthorizationService {
               organizationId,
             },
           );
+
+          allow('read', ApiKey, {
+            organization: { organizationId: organizationId },
+          });
+
+          allow('manage', CustomerCouponCode, [
+            'couponCode.organization.organizationId',
+          ]);
+
+          allow('manage', CouponItem, ['coupon.organization.organizationId']);
+
+          allow('manage', User, { userId: user.userId });
+
+          break;
+        case roleEnum.VIEWER:
+          allow(
+            'read',
+            [Coupon, Campaign, CouponCode, Customer, Item, Redemption, ApiKey],
+            {
+              organization: { organizationId: organizationId },
+            },
+          );
+
+          allow(
+            'read',
+            [CouponSummaryMv, CampaignSummaryMv, OrganizationSummaryMv, Offer],
+            {
+              organizationId,
+            },
+          );
+
+          allow('read', CustomerCouponCode, [
+            'couponCode.organization.organizationId',
+          ]);
+
+          allow('read', CouponItem, ['coupon.organization.organizationId']);
 
           allow('manage', User, { userId: user.userId });
           break;
@@ -319,6 +351,32 @@ export class AuthorizationService {
               `Error. Must provide an Organization ID for performing action on ${subject.name}`,
             );
           }
+        } else if (subject === CustomerCouponCode) {
+          if (action === 'read' || action === 'create') return subject;
+
+          if (
+            !subjectCouponCodeId ||
+            !subjectCustomerId ||
+            !subjectCampaignId
+          ) {
+            throw new BadRequestException(
+              `Error. Must provide an Customer ID, Coupon Code ID and Campaign ID for performing action on CustomerCouponCode`,
+            );
+          }
+          return this.customerCouponCodeService.fetchCustomers(
+            subjectCustomerId,
+            subjectCampaignId,
+            subjectCouponCodeId,
+          );
+        } else if (subject == CouponItem) {
+          if (action === 'read' || action === 'create') return subject;
+
+          if (!subjectItemId || !subjectCouponId) {
+            throw new BadRequestException(
+              `Error. Must provide an Coupon ID for performing action on CouponItem`,
+            );
+          }
+          return this.couponItemService.fetchItems(subjectCouponId);
         } else {
           return subject;
         }

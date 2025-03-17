@@ -12,6 +12,8 @@ import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { CustomersService } from '../services/customer.service';
 import { CreateCustomerDto, UpdateCustomerDto } from '../dtos';
 import { LoggerService } from 'src/services/logger.service';
+import { Permissions } from '../decorators/permission.decorator';
+import { Customer } from '../entities/customer.entity';
 
 @ApiTags('Customers')
 @Controller('/organizations/:organization_id/customers')
@@ -25,6 +27,7 @@ export class CustomersController {
    * Create customer
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('create', Customer)
   @Post()
   async createCustomer(
     @Param('organization_id') organizationId: string,
@@ -45,6 +48,7 @@ export class CustomersController {
    * Fetch customers
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('read', Customer)
   @Get()
   async fetchCustomers(
     @Param('organization_id') organizationId: string,
@@ -71,6 +75,7 @@ export class CustomersController {
    * Update customer
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('update', Customer)
   @Patch(':customer_id')
   async updateCustomer(
     @Param('organization_id') organizationId: string,
@@ -93,6 +98,7 @@ export class CustomersController {
    * Delete customer
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('delete', Customer)
   @Delete(':customer_id')
   async deleteCustomer(
     @Param('organization_id') organizationId: string,

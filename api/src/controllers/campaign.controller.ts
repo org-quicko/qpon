@@ -12,6 +12,9 @@ import { CampaignService } from '../services/campaign.service';
 import { CreateCampaignDto, UpdateCampaignDto } from '../dtos';
 import { LoggerService } from '../services/logger.service';
 import { campaignStatusEnum } from 'src/enums';
+import { Permissions } from '../decorators/permission.decorator';
+import { Campaign } from '../entities/campaign.entity';
+import { CampaignSummaryMv } from '../entities/campaign-summary.view';
 
 @ApiTags('Campaign')
 @Controller('coupons/:coupon_id/campaigns')
@@ -25,6 +28,7 @@ export class CampaignController {
    * Create campaign
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('create', Campaign)
   @Post()
   async createCampaign(
     @Param('coupon_id') couponId: string,
@@ -42,6 +46,7 @@ export class CampaignController {
    * Fetch campaigns
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('read', Campaign)
   @Get()
   async fetchCampaigns(
     @Param('coupon_id') couponId: string,
@@ -68,6 +73,7 @@ export class CampaignController {
    * Fetch campaign summary
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('read', CampaignSummaryMv)
   @Get('summary')
   async fetchCampaignSummary(
     @Param('coupon_id') couponId: string,
@@ -92,6 +98,7 @@ export class CampaignController {
    * Fetch campaign
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('read', Campaign)
   @Get(':campaign_id')
   async fetchCampaign(@Param('campaign_id') campaignId: string) {
     this.logger.info('START: fetchCampaign controller');
@@ -106,6 +113,7 @@ export class CampaignController {
    * Update campaign
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('update', Campaign)
   @Patch(':campaign_id')
   async updateCampaign(
     @Param('campaign_id') campaignId: string,
@@ -123,6 +131,7 @@ export class CampaignController {
    * Deactivate campaign
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('update', Campaign)
   @Post(':campaign_id/deactivate')
   async deactivateCampaign(
     @Param('coupon_id') couponId: string,
@@ -140,6 +149,7 @@ export class CampaignController {
    * Reactivate campaign
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('update', Campaign)
   @Post(':campaign_id/reactivate')
   async reactivateCampaign(@Param('campaign_id') campaignId: string) {
     this.logger.info('START: reactivateCampaign controller');

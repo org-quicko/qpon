@@ -17,6 +17,8 @@ import {
   durationTypeEnum,
   visibilityEnum,
 } from 'src/enums';
+import { Permissions } from '../decorators/permission.decorator';
+import { CouponCode } from '../entities/coupon-code.entity';
 
 @ApiTags('Coupon Code')
 @Controller('organizations/:organization_id')
@@ -30,6 +32,7 @@ export class CouponCodeController {
    * Create coupon code
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('create', CouponCode)
   @Post('coupons/:coupon_id/campaigns/:campaign_id/coupon-codes')
   async createCouponCode(
     @Param('organization_id') organizationId: string,
@@ -54,6 +57,7 @@ export class CouponCodeController {
    * Fetch coupon codes
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('read', CouponCode)
   @Get('coupons/:coupon_id/campaigns/:campaign_id/coupon-codes')
   async fetchCouponCodes(
     @Param('organization_id') organizationId: string,
@@ -94,6 +98,7 @@ export class CouponCodeController {
    * Fetch coupon code
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('read', CouponCode)
   @Get('coupons/:coupon_id/campaigns/:campaign_id/coupon-codes/:coupon_code_id')
   async fetchCouponCode(
     @Param('organization_id') organizationId: string,
@@ -118,6 +123,7 @@ export class CouponCodeController {
    * Update coupon code
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('update', CouponCode)
   @Patch(
     'coupons/:coupon_id/campaigns/:campaign_id/coupon-codes/:coupon_code_id',
   )
@@ -146,6 +152,7 @@ export class CouponCodeController {
    * Fetch coupon codes by code
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('read', CouponCode)
   @Get('coupon-codes')
   async fetchCouponCodesByCode(
     @Headers('x-accept-type') acceptType: string,
@@ -198,6 +205,7 @@ export class CouponCodeController {
    * Deactivate coupon code
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('update', CouponCode)
   @Post(
     'coupons/:coupon_id/campaigns/:campaign_id/coupon-codes/:coupon_code_id/deactivate',
   )
@@ -224,6 +232,7 @@ export class CouponCodeController {
    * Reactivate coupon code
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('update', CouponCode)
   @Post(
     'coupons/:coupon_id/campaigns/:campaign_id/coupon-codes/:coupon_code_id/reactivate',
   )

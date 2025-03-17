@@ -12,6 +12,8 @@ import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { ItemsService } from '../services/item.service';
 import { CreateItemDto, UpdateItemDto } from '../dtos';
 import { LoggerService } from '../services/logger.service';
+import { Permissions } from '../decorators/permission.decorator';
+import { Item } from '../entities/item.entity';
 
 @ApiTags('Items')
 @Controller('/organizations/:organization_id/items')
@@ -25,6 +27,7 @@ export class ItemsController {
    * Create item
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('create', Item)
   @Post()
   async createItem(
     @Param('organization_id') organizationId: string,
@@ -42,6 +45,7 @@ export class ItemsController {
    * Fetch items
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('read', Item)
   @Get()
   async fetchItems(
     @Param('organization_id') organizationId: string,
@@ -70,6 +74,7 @@ export class ItemsController {
    * Fetch item
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('read', Item)
   @Get(':item_id')
   async fetchItem(@Param('item_id') itemId: string) {
     this.logger.info('START: fetchItem controller');
@@ -84,6 +89,7 @@ export class ItemsController {
    * Update item
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('update', Item)
   @Patch(':item_id')
   async updateItem(
     @Param('item_id') itemId: string,
@@ -101,6 +107,7 @@ export class ItemsController {
    * Delete item
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('delete', Item)
   @Delete(':item_id')
   async deleteItem(@Param('item_id') itemId: string) {
     this.logger.info('START: deleteItem controller');

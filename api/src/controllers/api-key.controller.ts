@@ -2,6 +2,8 @@ import { Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LoggerService } from '../services/logger.service';
 import { ApiKeyService } from '../services/api-key.service';
+import { Permissions } from '../decorators/permission.decorator';
+import { ApiKey } from '../entities/api-key.entity';
 
 @ApiTags('Items')
 @Controller('/organizations/:organization_id/api-keys')
@@ -15,6 +17,7 @@ export class ApiKeyController {
    * Create api key
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('create', ApiKey)
   @Post()
   async createApiKey(@Param('organization_id') organizationId: string) {
     this.logger.info('START: createApiKey controller');
@@ -29,6 +32,7 @@ export class ApiKeyController {
    * Fetch api key
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('read', ApiKey)
   @Get()
   async fetchApiKey(@Param('organization_id') organizationId: string) {
     this.logger.info('START: fetchApiKey controller');

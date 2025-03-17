@@ -15,6 +15,8 @@ import {
   CreateCustomerCouponCodeDto,
   UpdateCustomerCouponCodeDto,
 } from 'src/dtos/customer-coupon-code.dto';
+import { Permissions } from '../decorators/permission.decorator';
+import { CustomerCouponCode } from '../entities/customer-coupon-code.entity';
 
 @ApiTags('Customer coupon code')
 @Controller(
@@ -30,6 +32,7 @@ export class CustomerCouponCodeController {
    * Add customers to coupon code
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('create', CustomerCouponCode)
   @Post()
   async addCustomers(
     @Param('coupon_id') couponId: string,
@@ -54,6 +57,7 @@ export class CustomerCouponCodeController {
    * Fetch customers for a coupon code
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('read', CustomerCouponCode)
   @Get()
   async fetchCustomers(
     @Param('coupon_id') couponId: string,
@@ -83,6 +87,7 @@ export class CustomerCouponCodeController {
    * Update customers
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('update', CustomerCouponCode)
   @Patch()
   async updateCustomers(
     @Param('coupon_id') couponId: string,
@@ -110,6 +115,7 @@ export class CustomerCouponCodeController {
    * Remove a customer from coupon code
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('delete', CustomerCouponCode)
   @Delete(':customer_id')
   async removeCustomer(
     @Param('coupon_id') couponId: string,

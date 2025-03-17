@@ -13,6 +13,8 @@ import { UserService } from '../services/user.service';
 import { CreateUserDto, UpdateUserDto } from '../dtos';
 import { LoggerService } from '../services/logger.service';
 import { Public } from '../decorators/public.decorator';
+import { Permissions } from '../decorators/permission.decorator';
+import { User } from '../entities/user.entity';
 
 @ApiTags('User')
 @Controller('/organizations/:organization_id/users')
@@ -44,6 +46,7 @@ export class UserController {
    * Fetch users
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('read', User)
   @Get()
   async fetchUsers(
     @Param('organization_id') organizationId: string,
@@ -67,6 +70,7 @@ export class UserController {
    * Update user
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('update', User)
   @Patch(':user_id')
   async updateUser(
     @Param('organization_id') organizationId: string,
@@ -89,6 +93,7 @@ export class UserController {
    * Delete user
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('remove_user', User)
   @Delete(':user_id')
   async deleteUser(
     @Param('organization_id') organizationId: string,

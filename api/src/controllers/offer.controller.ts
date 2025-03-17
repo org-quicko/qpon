@@ -1,9 +1,10 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { OffersService } from '../services/offer.service';
-import {} from '../dtos';
 import { discountTypeEnum, sortOrderEnum } from 'src/enums';
 import { LoggerService } from '../services/logger.service';
+import { Permissions } from '../decorators/permission.decorator';
+import { Offer } from '../entities/offer.view';
 
 @ApiTags('Offers')
 @Controller('/organizations/:organization_id')
@@ -17,6 +18,7 @@ export class OffersController {
    * Fetch offers
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('read', Offer)
   @Get('offers')
   async fetchOffers(
     @Param('organization_id') organizationId: string,
@@ -47,6 +49,7 @@ export class OffersController {
    * Fetch offer
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('read', Offer)
   @Get('offer')
   async fetchOffer(
     @Param('organization_id') organizationId: string,

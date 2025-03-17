@@ -12,6 +12,8 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LoggerService } from '../services/logger.service';
 import { CouponItemService } from '../services/coupon-item.service';
 import { CreateCouponItemDto, UpdateCouponItemDto } from '../dtos';
+import { Permissions } from '../decorators/permission.decorator';
+import { CouponItem } from '../entities/coupon-item.entity';
 
 @ApiTags('Coupon')
 @Controller('/organizations/:organization_id/coupons/:coupon_id/items')
@@ -25,6 +27,7 @@ export class CouponItemController {
    * Add items to coupon
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('create', CouponItem)
   @Post()
   async addItems(
     @Param('coupon_id') couponId: string,
@@ -42,6 +45,7 @@ export class CouponItemController {
    * Fetch items for a coupon
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('read', CouponItem)
   @Get()
   async fetchItems(
     @Param('coupon_id') couponId: string,
@@ -68,6 +72,7 @@ export class CouponItemController {
    * Update items in coupon item
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('update', CouponItem)
   @Patch()
   async updateItems(
     @Param('coupon_id') couponId: string,
@@ -85,6 +90,7 @@ export class CouponItemController {
    * Remove an item from coupon
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('delete', CouponItem)
   @Delete(':item_id')
   async removeItem(
     @Param('coupon_id') couponId: string,

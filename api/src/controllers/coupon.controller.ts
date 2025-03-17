@@ -13,6 +13,9 @@ import { CouponService } from '../services/coupon.service';
 import { CreateCouponDto, UpdateCouponDto } from '../dtos';
 import { LoggerService } from '../services/logger.service';
 import { discountTypeEnum, statusEnum } from '../enums';
+import { Permissions } from '../decorators/permission.decorator';
+import { Coupon } from '../entities/coupon.entity';
+import { CouponSummaryMv } from '../entities/coupon-summary.view';
 
 @ApiTags('Coupon')
 @Controller('/organizations/:organization_id/coupons')
@@ -26,6 +29,7 @@ export class CouponController {
    * Create coupon
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('create', Coupon)
   @Post()
   async createCoupon(
     @Param('organization_id') organizationId: string,
@@ -43,6 +47,7 @@ export class CouponController {
    * Fetch coupons
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('read', Coupon)
   @Get()
   async fetchCoupons(
     @Param('organization_id') organizationId: string,
@@ -79,6 +84,7 @@ export class CouponController {
    * Fetch coupons summary
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('read', CouponSummaryMv)
   @Get('/summary')
   async fetchCouponSummary(
     @Param('organization_id') organizationId: string,
@@ -103,6 +109,7 @@ export class CouponController {
    * Fetch coupon
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('read', Coupon)
   @Get(':coupon_id')
   async fetchCoupon(@Param('coupon_id') couponId: string) {
     this.logger.info('START: fetchCoupon controller');
@@ -117,6 +124,7 @@ export class CouponController {
    * Update coupon
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('update', Coupon)
   @Patch(':coupon_id')
   async updateCoupon(
     @Param('organization_id') organizationId: string,
@@ -139,6 +147,7 @@ export class CouponController {
    * Delete coupon
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('delete', Coupon)
   @Delete(':coupon_id')
   async deleteCoupon(@Param('coupon_id') couponId: string) {
     this.logger.info('START: deleteCoupon controller');
@@ -153,6 +162,7 @@ export class CouponController {
    * Deactivate coupon
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('update', Coupon)
   @Post(':coupon_id/deactivate')
   async deactivateCoupon(@Param('coupon_id') couponId: string) {
     this.logger.info('START: deactivateCoupon controller');
@@ -167,6 +177,7 @@ export class CouponController {
    * Reactivate coupon
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('update', Coupon)
   @Post(':coupon_id/reactivate')
   async reactivateCoupon(
     @Param('organization_id') organizationId: string,

@@ -10,6 +10,8 @@ import { getStartEndDate } from '../utils/date.utils';
 import { timePeriodEnum } from '../enums';
 import { getReportFileName } from '../utils/reportFileName.util';
 import { SkipTransform } from '../decorators/skipTransform.decorator';
+import { Permissions } from 'src/decorators/permission.decorator';
+import { Redemption } from 'src/entities/redemption.entity';
 
 @ApiTags('Redemptions')
 @Controller('organizations/:organization_id')
@@ -41,6 +43,7 @@ export class RedemptionsController {
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
   @SkipTransform()
+  @Permissions('read', Redemption)
   @Get('redemptions/reports')
   async generateRedemptionReport(
     @Res() res: Response,
@@ -52,7 +55,7 @@ export class RedemptionsController {
     @Query('to') to?: string,
     @Query('time_period') timePeriod?: timePeriodEnum,
   ) {
-    this.logger.info('START: fetchRedemptions controller');
+    this.logger.info('START: generateRedemptionReport controller');
 
     const buffer = await this.redemptionsService.generateRedemptionsReport(
       organizationId,
@@ -63,7 +66,7 @@ export class RedemptionsController {
 
     const fileName = getReportFileName('Redemption');
 
-    this.logger.info('END: fetchRedemptions controller');
+    this.logger.info('END: generateRedemptionReport controller');
     res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
     res.setHeader(
       'Content-Type',
@@ -76,6 +79,7 @@ export class RedemptionsController {
    * Fetch redemptions
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('read', Redemption)
   @Get('redemptions')
   async fetchRedemptions(
     @Param('organization_id') organizationId: string,
