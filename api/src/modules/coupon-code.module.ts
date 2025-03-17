@@ -10,5 +10,6 @@ import { CouponCodeSheetConverter } from '../converters/coupon-code-sheet.conver
   imports: [TypeOrmModule.forFeature([CouponCode])],
   controllers: [CouponCodeController],
   providers: [CouponCodeService, CouponCodeConverter, CouponCodeSheetConverter],
+  exports: [CouponCodeService],
 })
 export class CouponCodeModule {}

@@ -9,5 +9,6 @@ import { ItemConverter } from '../converters/item.converter';
   imports: [TypeOrmModule.forFeature([Item])],
   controllers: [ItemsController],
   providers: [ItemsService, ItemConverter],
+  exports: [ItemsService],
 })
 export class ItemsModule {}

@@ -13,6 +13,9 @@ import { OrganizationService } from '../services/organization.service';
 import { CreateOrganizationDto, UpdateOrganizationDto } from '../dtos';
 import { LoggerService } from '../services/logger.service';
 import { Public } from '../decorators/public.decorator';
+import { Permissions } from 'src/decorators/permission.decorator';
+import { Organization } from 'src/entities/organization.entity';
+import { OrganizationSummaryMv } from 'src/entities/organization-summary.view';
 
 @ApiTags('Organization')
 @Controller('/organizations')
@@ -41,6 +44,7 @@ export class OrganizationController {
    * Fetch organizations
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('read_all', Organization)
   @Get()
   async fetchOrganizations(
     @Query('external_id') externalId?: string,
@@ -63,6 +67,7 @@ export class OrganizationController {
    * Fetch organization summary
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('read', OrganizationSummaryMv)
   @Get(':organization_id/summary')
   async fetchOrganizationSummary(
     @Param('organization_id') organizationId: string,
@@ -80,6 +85,7 @@ export class OrganizationController {
    * Fetch organization
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('read', Organization)
   @Get(':organization_id')
   async fetchOrganization(@Param('organization_id') organizationId: string) {
     this.logger.info('START: fetchOrganization controller');
@@ -95,6 +101,7 @@ export class OrganizationController {
    * Update organization
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('update', Organization)
   @Patch(':organization_id')
   async updateOrganization(
     @Param('organization_id') organizationId: string,
@@ -115,6 +122,7 @@ export class OrganizationController {
    * Delete organization
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('delete', Organization)
   @Delete(':organization_id')
   async deleteOrganization(@Param('organization_id') organizationId: string) {
     this.logger.info('START: deleteOrganization controller');

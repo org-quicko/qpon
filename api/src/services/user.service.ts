@@ -6,7 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
 import { CreateUserDto, UpdateUserDto } from '../dtos';
 import { LoggerService } from './logger.service';
@@ -242,6 +242,32 @@ export class UserService {
       return user;
     } catch (error) {
       this.logger.error(`Error in fetchUsersbyEmail: ${error.message}`, error);
+    }
+  }
+
+  /**
+   * Fetch user
+   */
+  async fetchUser(whereOptions: FindOptionsWhere<User> = {}) {
+    this.logger.info('START: fetchUser service');
+    try {
+      const user = await this.userRepository.findOne({
+        relations: {
+          organizationUser: true,
+        },
+        where: {
+          ...whereOptions,
+        },
+      });
+
+      if (!user) {
+        this.logger.warn('User not found');
+      }
+
+      this.logger.info('END: fetchUser service');
+      return user;
+    } catch (error) {
+      this.logger.error(`Error in fetchUser: ${error.message}`, error);
     }
   }
 }

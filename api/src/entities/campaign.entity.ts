@@ -12,6 +12,7 @@ import { campaignStatusEnum } from 'src/enums';
 import { Coupon } from './coupon.entity';
 import { CouponCode } from './coupon-code.entity';
 import { Redemption } from './redemption.entity';
+import { Organization } from './organization.entity';
 
 @Entity()
 export class Campaign {
@@ -56,6 +57,16 @@ export class Campaign {
     referencedColumnName: 'couponId',
   })
   coupon: Coupon;
+
+  @ManyToOne(() => Organization, (organization) => organization.campaigns, {
+    onDelete: 'CASCADE',
+    cascade: ['remove'],
+  })
+  @JoinColumn({
+    name: 'organization_id',
+    referencedColumnName: 'organizationId',
+  })
+  organization: Organization;
 
   @OneToMany(() => CouponCode, (couponCode) => couponCode.campaign, {
     onDelete: 'CASCADE',

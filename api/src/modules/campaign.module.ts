@@ -15,5 +15,6 @@ import { CampaignSummarySheetConverter } from '../converters/campaign-summary-sh
     CampaignConverter,
     CampaignSummarySheetConverter,
   ],
+  exports: [CampaignService],
 })
 export class CampaignModule {}

@@ -18,5 +18,6 @@ import { CouponSummarySheetConverter } from '../converters/coupon-summary-sheet.
     ItemConverter,
     CouponSummarySheetConverter,
   ],
+  exports: [CouponService],
 })
 export class CouponModule {}

@@ -239,4 +239,37 @@ export class CustomersService {
       throw error;
     }
   }
+
+  async fetchCustomer(organizationId: string, customerId: string) {
+    this.logger.info('START: fetchCustomer service');
+    try {
+      const customer = await this.customersRepository.findOne({
+        where: {
+          customerId,
+          organization: {
+            organizationId,
+          },
+        },
+      });
+
+      if (!customer) {
+        this.logger.warn('Customer not found');
+        throw new NotFoundException('Customer not found');
+      }
+
+      this.logger.info('END: fetchCustomer service');
+      return customer;
+    } catch (error) {
+      this.logger.error(`Error in fetchCustomer: ${error.message}`, error);
+
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+
+      throw new HttpException(
+        'Failed to fetch customer',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }

@@ -12,6 +12,7 @@ import { Item } from './item.entity';
 import { Customer } from './customer.entity';
 import { Redemption } from './redemption.entity';
 import { CouponCode } from './coupon-code.entity';
+import { Campaign } from './campaign.entity';
 
 @Entity()
 export class Organization {
@@ -55,6 +56,9 @@ export class Organization {
 
   @OneToMany(() => Coupon, (coupon) => coupon.organization)
   coupons: Coupon[];
+
+  @OneToMany(() => Campaign, (campaign) => campaign.organization)
+  campaigns: Campaign[];
 
   @OneToMany(() => Item, (item) => item.organization)
   items: Item[];

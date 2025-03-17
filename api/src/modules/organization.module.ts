@@ -22,5 +22,6 @@ import { OrganizationSummarySheetConverter } from '../converters/organization-su
     OrganizationConverter,
     OrganizationSummarySheetConverter,
   ],
+  exports: [OrganizationService],
 })
 export class OrganizationModule {}

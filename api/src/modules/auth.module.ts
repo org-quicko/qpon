@@ -1,12 +1,28 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
 import { AuthController } from '../controllers/auth.controller';
 import { UserModule } from './user.module';
 import { JwtModule } from '@nestjs/jwt';
+import { AuthorizationService } from '../services/authorization.service';
+import { OrganizationModule } from './organization.module';
+import { CouponModule } from './coupon.module';
+import { CampaignModule } from './campaign.module';
+import { CouponCodeModule } from './coupon-code.module';
+import { ApiKeyModule } from './api-key.module';
+import { CustomersModule } from './customer.module';
+import { ItemsModule } from './item.module';
 
+@Global()
 @Module({
   imports: [
     UserModule,
+    OrganizationModule,
+    CouponModule,
+    CampaignModule,
+    CouponCodeModule,
+    ApiKeyModule,
+    CustomersModule,
+    ItemsModule,
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,
@@ -14,7 +30,7 @@ import { JwtModule } from '@nestjs/jwt';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
-  exports: [AuthService],
+  providers: [AuthService, AuthorizationService],
+  exports: [AuthService, AuthorizationService],
 })
 export class AuthModule {}

@@ -22,6 +22,7 @@ import { RedemptionSubscriber } from './subscribers/redemption.subscriber';
 import { CampaignSubscriber } from './subscribers/campaign.subscriber';
 import { CouponSubscriber } from './subscribers/coupon.subscriber';
 import { OrganizationSubscriber } from './subscribers/organization.subscriber';
+import { PermissionGuard } from './guards/permission.guard';
 
 @Module({
   imports: [
@@ -63,6 +64,10 @@ import { OrganizationSubscriber } from './subscribers/organization.subscriber';
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: PermissionGuard,
     },
   ],
 })
