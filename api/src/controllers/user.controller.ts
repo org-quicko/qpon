@@ -44,6 +44,7 @@ export class UserController {
    * Create user
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('invite_user', User)
   @Post('/organizations/:organization_id/users')
   async createUser(
     @Param('organization_id') organizationId: string,
@@ -61,7 +62,7 @@ export class UserController {
    * Fetch users
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
-  @Permissions('read', User)
+  @Permissions('read_all', User)
   @Get('/organizations/:organization_id/users')
   async fetchUsers(
     @Param('organization_id') organizationId: string,

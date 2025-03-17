@@ -113,9 +113,11 @@ export class AuthorizationService {
     for (const [organizationId, role] of Object.entries(userPermissions)) {
       switch (role) {
         case roleEnum.ADMIN || roleEnum.SUPER_ADMIN:
-          allow(['invite_user', 'read_all'], [OrganizationUser, Organization], {
+          allow('read_all', [OrganizationUser, Organization], {
             organizationId: organizationId,
           });
+
+          allow('invite_user', User);
 
           allow(['change_role', 'remove_user', 'read_all'], OrganizationUser, {
             organizationId: organizationId,
@@ -177,11 +179,13 @@ export class AuthorizationService {
 
           break;
         case roleEnum.VIEWER:
+          allow('read_all', User);
+
           allow(
             'read',
             [Coupon, Campaign, CouponCode, Customer, Item, Redemption, ApiKey],
             {
-              organization: { organizationId: organizationId },
+              organization: { organizationId },
             },
           );
 
@@ -199,7 +203,9 @@ export class AuthorizationService {
 
           allow('read', CouponItem, ['coupon.organization.organizationId']);
 
-          allow('manage', User, { userId: user.userId });
+          allow('read', ApiKey, ['organization.organizationId']);
+
+          allow(['read', 'update', 'delete'], User, { userId: user.userId });
           break;
         default:
           break;
@@ -354,24 +360,20 @@ export class AuthorizationService {
         } else if (subject === CustomerCouponCode) {
           if (action === 'read' || action === 'create') return subject;
 
-          if (
-            !subjectCouponCodeId ||
-            !subjectCustomerId ||
-            !subjectCampaignId
-          ) {
+          if (!subjectCouponCodeId || !subjectCouponId || !subjectCampaignId) {
             throw new BadRequestException(
-              `Error. Must provide an Customer ID, Coupon Code ID and Campaign ID for performing action on CustomerCouponCode`,
+              `Error. Must provide an Coupon Code ID, Coupon Code ID and Campaign ID for performing action on CustomerCouponCode`,
             );
           }
           return this.customerCouponCodeService.fetchCustomers(
-            subjectCustomerId,
+            subjectCouponId,
             subjectCampaignId,
             subjectCouponCodeId,
           );
         } else if (subject == CouponItem) {
           if (action === 'read' || action === 'create') return subject;
 
-          if (!subjectItemId || !subjectCouponId) {
+          if (!subjectCouponId) {
             throw new BadRequestException(
               `Error. Must provide an Coupon ID for performing action on CouponItem`,
             );

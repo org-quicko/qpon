@@ -102,6 +102,7 @@ export class CustomerCouponCodeService {
       const customers = await this.customerCouponCodeRepository.find({
         relations: {
           customer: true,
+          couponCode: true,
         },
         where: {
           couponCode: {

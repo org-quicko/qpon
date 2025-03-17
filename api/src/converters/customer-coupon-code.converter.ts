@@ -10,7 +10,8 @@ export class CustomerCouponCodeConverter {
   convert(customerCouponCodes: CustomerCouponCode[]): CustomerCouponCodeDto {
     const customerCouponCodeDto = new CustomerCouponCodeDto();
 
-    customerCouponCodeDto.couponCodeId = customerCouponCodes[0].couponCode.couponCodeId;
+    customerCouponCodeDto.couponCodeId =
+      customerCouponCodes[0].couponCode.couponCodeId;
 
     customerCouponCodeDto.customers = customerCouponCodes.map(
       (customerCouponCode) => {
