@@ -27,6 +27,30 @@ export class ApiKeyService {
       const key = crypto.randomBytes(16).toString('hex');
       const secret = crypto.randomBytes(32).toString('hex');
 
+      const existingApiKey = await this.apiKeyRepository.findOne({
+        where: {
+          organization: {
+            organizationId,
+          },
+        },
+      });
+
+      if (existingApiKey) {
+        await this.apiKeyRepository.update(existingApiKey.apiKeyId, {
+          key,
+          secret,
+        });
+
+        const updatedApiKey = await this.apiKeyRepository.findOne({
+          where: {
+            apiKeyId: existingApiKey.apiKeyId,
+          },
+        });
+
+        this.logger.info('END: createApiKey service');
+        return this.apiKeyConverter.convert(updatedApiKey!, secret);
+      }
+
       const apiKeyEntity = this.apiKeyRepository.create({
         key,
         secret,
