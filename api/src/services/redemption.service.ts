@@ -5,6 +5,7 @@ import {
   HttpStatus,
   Injectable,
   NotFoundException,
+  ConflictException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
@@ -14,7 +15,6 @@ import {
   FindOptionsWhere,
   Repository,
 } from 'typeorm';
-import { ConflictException } from '@org.quicko/core';
 import * as XLSX from 'xlsx';
 import { Redemption } from '../entities/redemption.entity';
 import { LoggerService } from './logger.service';
@@ -99,7 +99,7 @@ export class RedemptionsService {
           1,
         );
 
-        await this.checkCouponCodeRedemptions(manager, couponCode);
+        await this.checkCouponCodeRedemptions(manager, couponCode, customerId);
 
         const savedRedemption = this.saveRedemption(
           manager,
@@ -266,21 +266,10 @@ export class RedemptionsService {
     return item.itemId;
   }
 
-  private async incrementRedemptionCount(
-    manager: EntityManager,
-    couponCode: CouponCode,
-  ) {
-    await manager.increment(
-      CouponCode,
-      couponCode.couponCodeId,
-      'redemption_count',
-      1,
-    );
-  }
-
   private async checkCouponCodeRedemptions(
     manager: EntityManager,
     couponCode: CouponCode,
+    customerId: string,
   ) {
     const updatedCouponCode = await manager.findOne(CouponCode, {
       relations: { coupon: true, campaign: true },
@@ -298,6 +287,28 @@ export class RedemptionsService {
         status: couponCodeStatusEnum.REDEEMED,
       });
       throw new ConflictException('Coupon code is fully redemmed');
+    }
+
+    if (updatedCouponCode?.maxRedemptionPerCustomer) {
+      const customerRedemptions = await manager.find(Redemption, {
+        where: {
+          couponCode: {
+            couponCodeId: couponCode.couponCodeId,
+          },
+          customer: {
+            customerId,
+          },
+        },
+      });
+
+      if (
+        customerRedemptions.length >= updatedCouponCode.maxRedemptionPerCustomer
+      ) {
+        this.logger.warn('Customer has already redeemed this coupon code');
+        throw new ConflictException(
+          'Customer has already redeemed this coupon code',
+        );
+      }
     }
   }
 
