@@ -17,7 +17,7 @@ import { Permissions } from '../decorators/permission.decorator';
 import { User } from '../entities/user.entity';
 
 @ApiTags('User')
-@Controller('/organizations/:organization_id/users')
+@Controller()
 export class UserController {
   constructor(
     private readonly userService: UserService,
@@ -25,11 +25,25 @@ export class UserController {
   ) {}
 
   /**
-   * Create user
+   * Create super admin
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
   @Public()
-  @Post()
+  @Post('/users')
+  async createSuperAdmin(@Body() body: CreateUserDto) {
+    this.logger.info('START: createSuperAdmin controller');
+
+    const result = await this.userService.createSuperAdmin(body);
+
+    this.logger.info('END: createSuperAdmin controller');
+    return { message: 'Successfully created super admin', result };
+  }
+
+  /**
+   * Create user
+   */
+  @ApiResponse({ status: 200, description: 'Successful response' })
+  @Post('/organizations/:organization_id/users')
   async createUser(
     @Param('organization_id') organizationId: string,
     @Body() body: CreateUserDto,
@@ -47,7 +61,7 @@ export class UserController {
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
   @Permissions('read', User)
-  @Get()
+  @Get('/organizations/:organization_id/users')
   async fetchUsers(
     @Param('organization_id') organizationId: string,
     @Query('external_id') externalId?: string,
@@ -71,7 +85,7 @@ export class UserController {
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
   @Permissions('update', User)
-  @Patch(':user_id')
+  @Patch('/organizations/:organization_id/users/:user_id')
   async updateUser(
     @Param('organization_id') organizationId: string,
     @Param('user_id') userId: string,
@@ -94,7 +108,7 @@ export class UserController {
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
   @Permissions('remove_user', User)
-  @Delete(':user_id')
+  @Delete('/organizations/:organization_id/users/:user_id')
   async deleteUser(
     @Param('organization_id') organizationId: string,
     @Param('user_id') userId: string,

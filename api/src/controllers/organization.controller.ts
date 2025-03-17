@@ -12,7 +12,6 @@ import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { OrganizationService } from '../services/organization.service';
 import { CreateOrganizationDto, UpdateOrganizationDto } from '../dtos';
 import { LoggerService } from '../services/logger.service';
-import { Public } from '../decorators/public.decorator';
 import { Permissions } from 'src/decorators/permission.decorator';
 import { Organization } from 'src/entities/organization.entity';
 import { OrganizationSummaryMv } from 'src/entities/organization-summary.view';
@@ -29,7 +28,7 @@ export class OrganizationController {
    * Create organization
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
-  @Public()
+  @Permissions('create', Organization)
   @Post()
   async createOrganization(@Body() body: CreateOrganizationDto) {
     this.logger.info('START: createOrganization controller');

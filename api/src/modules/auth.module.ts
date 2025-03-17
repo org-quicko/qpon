@@ -11,6 +11,8 @@ import { CouponCodeModule } from './coupon-code.module';
 import { ApiKeyModule } from './api-key.module';
 import { CustomersModule } from './customer.module';
 import { ItemsModule } from './item.module';
+import { CustomerCouponCodeModule } from './customer-coupon-code.module';
+import { CouponItemModule } from './coupon-item.module';
 
 @Global()
 @Module({
@@ -23,6 +25,8 @@ import { ItemsModule } from './item.module';
     ApiKeyModule,
     CustomersModule,
     ItemsModule,
+    CustomerCouponCodeModule,
+    CouponItemModule,
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,

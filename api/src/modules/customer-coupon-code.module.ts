@@ -17,5 +17,6 @@ import { Customer } from '../entities/customer.entity';
     CustomerCouponCodeConverter,
     CustomerConverter,
   ],
+  exports: [CustomerCouponCodeService],
 })
 export class CustomerCouponCodeModule {}

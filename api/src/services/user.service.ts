@@ -13,6 +13,7 @@ import { LoggerService } from './logger.service';
 import { UserConverter } from '../converters/user.converter';
 import { OrganizationUser } from '../entities/organization-user.entity';
 import { QueryOptionsInterface } from '../interfaces/queryOptions.interface';
+import { roleEnum } from '../enums';
 
 @Injectable()
 export class UserService {
@@ -268,6 +269,47 @@ export class UserService {
       return user;
     } catch (error) {
       this.logger.error(`Error in fetchUser: ${error.message}`, error);
+    }
+  }
+
+  async createSuperAdmin(body: CreateUserDto) {
+    this.logger.info('START: createSuperAdmin service');
+    try {
+      const existingUser = await this.userRepository.findOne({
+        where: {
+          role: roleEnum.SUPER_ADMIN,
+        },
+      });
+
+      if (existingUser) {
+        this.logger.warn('Super Admin already exists');
+        throw new ConflictException('Super Admin already exists');
+      }
+
+      const user = this.userRepository.create({
+        name: body.name,
+        email: body.email,
+        password: body.password,
+        role: roleEnum.SUPER_ADMIN,
+      });
+      const savedUser = await this.userRepository.save(user);
+
+      this.logger.info('END: createSuperAdmin service');
+      return this.userConverter.convert(savedUser);
+    } catch (error) {
+      this.logger.error(`Error in createSuperAdmin: ${error.message}`, error);
+
+      if (error instanceof ConflictException) {
+        throw error;
+      }
+
+      throw new HttpException(
+        'Failed to create super admin',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        {
+          cause: error.message,
+        },
+      );
     }
   }
 }
