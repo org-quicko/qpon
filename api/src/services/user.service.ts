@@ -8,7 +8,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
-import { CreateUserDto, UpdateUserDto } from '../dtos';
+import { CreateUserDto, UpdateUserDto, UpdateUserRoleDto } from '../dtos';
 import { LoggerService } from './logger.service';
 import { UserConverter } from '../converters/user.converter';
 import { OrganizationUser } from '../entities/organization-user.entity';
@@ -43,7 +43,6 @@ export class UserService {
         name: body.name,
         email: body.email,
         password: body.password,
-        role: body.role,
       });
       const savedUser = await this.userRepository.save(user);
       const orgUserEntity = this.organizationUserRepository.create({
@@ -171,6 +170,74 @@ export class UserService {
       return this.userConverter.convert(savedUser!);
     } catch (error) {
       this.logger.error(`Error in updateUser: ${error.message}`, error);
+
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+
+      throw new HttpException(
+        'Failed to update user',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  /**
+   * Update user role
+   */
+  async updateUserRole(
+    organizationId: string,
+    userId: string,
+    body: UpdateUserRoleDto,
+  ) {
+    this.logger.info('START: updateUserRole service');
+    try {
+      const user = await this.userRepository.findOne({
+        where: {
+          userId,
+          organizationUser: {
+            organization: {
+              organizationId,
+            },
+          },
+        },
+      });
+
+      if (!user) {
+        this.logger.warn('User not found');
+        throw new NotFoundException('User not found');
+      }
+
+      await this.organizationUserRepository.update(
+        {
+          organization: {
+            organizationId,
+          },
+          user: {
+            userId,
+          },
+        },
+        body,
+      );
+
+      const updatedOrgUser = await this.organizationUserRepository.findOne({
+        relations: {
+          user: true,
+        },
+        where: {
+          organization: {
+            organizationId,
+          },
+          user: {
+            userId,
+          },
+        },
+      });
+
+      this.logger.info('END: updateUserRole service');
+      return this.userConverter.convert(updatedOrgUser!.user, updatedOrgUser!);
+    } catch (error) {
+      this.logger.error(`Error in updateUserRole: ${error.message}`, error);
 
       if (error instanceof NotFoundException) {
         throw error;

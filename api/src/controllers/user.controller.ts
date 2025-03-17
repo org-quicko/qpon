@@ -10,11 +10,12 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { UserService } from '../services/user.service';
-import { CreateUserDto, UpdateUserDto } from '../dtos';
+import { CreateUserDto, UpdateUserDto, UpdateUserRoleDto } from '../dtos';
 import { LoggerService } from '../services/logger.service';
 import { Public } from '../decorators/public.decorator';
 import { Permissions } from '../decorators/permission.decorator';
 import { User } from '../entities/user.entity';
+import { OrganizationUser } from '../entities/organization-user.entity';
 
 @ApiTags('User')
 @Controller()
@@ -78,6 +79,29 @@ export class UserController {
 
     this.logger.info('END: fetchUsers controller');
     return { message: 'Successfully fetched users', result };
+  }
+
+  /**
+   * Update user role
+   */
+  @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('change_role', OrganizationUser)
+  @Patch('/organizations/:organization_id/users/:user_id/role')
+  async updateUserRole(
+    @Param('organization_id') organizationId: string,
+    @Param('user_id') userId: string,
+    @Body() body: UpdateUserRoleDto,
+  ) {
+    this.logger.info('START: updateUserRole controller');
+
+    const result = await this.userService.updateUserRole(
+      organizationId,
+      userId,
+      body,
+    );
+
+    this.logger.info('END: updateUserRole controller');
+    return { message: 'Successfully updated user', result };
   }
 
   /**

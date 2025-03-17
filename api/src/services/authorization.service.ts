@@ -173,7 +173,7 @@ export class AuthorizationService {
 
           allow('manage', CouponItem, ['coupon.organization.organizationId']);
 
-          allow('manage', User, { userId: user.userId });
+          allow(['read', 'update', 'delete'], User, { userId: user.userId });
 
           break;
         case roleEnum.VIEWER:
