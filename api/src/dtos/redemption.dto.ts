@@ -5,8 +5,13 @@ export class CreateRedemptionDto {
   @IsString()
   code: string;
 
+  @Expose({ name: 'base_order_value' })
+  @Transform(({ value }) => value, { toClassOnly: true })
   @IsNumber()
-  amount: number;
+  baseOrderValue: number;
+
+  @IsNumber()
+  discount: number;
 
   @Expose({ name: 'external_customer_id' })
   @Transform(({ value }) => value, { toClassOnly: true })

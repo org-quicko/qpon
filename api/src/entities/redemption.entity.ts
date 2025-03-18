@@ -19,8 +19,11 @@ export class Redemption {
   @PrimaryGeneratedColumn('uuid', { name: 'redemption_id' })
   redemptionId: string;
 
+  @Column({ name: 'base_order_value', type: 'numeric' })
+  baseOrderValue: number;
+
   @Column('numeric')
-  amount: number;
+  discount: number;
 
   @Column({ name: 'external_id', nullable: true })
   externalId: string;

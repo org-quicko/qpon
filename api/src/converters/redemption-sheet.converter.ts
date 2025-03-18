@@ -21,7 +21,8 @@ export class RedemptionSheetConverter {
       redemptionRow.setRedemptionId(redemption.redemptionId);
       redemptionRow.setCouponCodeId(redemption.couponCode.couponCodeId);
       redemptionRow.setCouponCode(redemption.couponCode.code);
-      redemptionRow.setDiscount(redemption.amount);
+      redemptionRow.setBaseOrderValue(redemption.baseOrderValue);
+      redemptionRow.setDiscount(redemption.discount);
       redemptionRow.setCustomerName(redemption.customer.name);
       redemptionRow.setCustomerEmail(redemption.customer.email);
       redemptionRow.setRedeemedAt(redemption.createdAt.toISOString());

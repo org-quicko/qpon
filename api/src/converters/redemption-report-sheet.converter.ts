@@ -22,7 +22,7 @@ export class RedemptionReportSheetConverter {
       redemptionReportRow.setCampaignName(redemption.campaign.name);
       redemptionReportRow.setCouponId(redemption.coupon.couponId);
       redemptionReportRow.setCouponName(redemption.coupon.name);
-      redemptionReportRow.setDiscountAmount(redemption.amount);
+      redemptionReportRow.setDiscountAmount(redemption.discount);
       redemptionReportRow.setExternalItemId(redemption.item.externalId);
       redemptionReportRow.setItemName(redemption.item.name);
       redemptionReportRow.setCustomerName(redemption.customer.name);

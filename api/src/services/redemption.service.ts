@@ -107,7 +107,8 @@ export class RedemptionsService {
           organizationId,
           customerId,
           itemId,
-          body.amount,
+          body.baseOrderValue,
+          body.discount,
           body.externalId,
         );
 
@@ -339,7 +340,8 @@ export class RedemptionsService {
     organizationId: string,
     customerId: string,
     itemId: string,
-    amount: number,
+    baseOrderValue: number,
+    discount: number,
     externalId?: string,
   ) {
     const redemptionEntity = manager.create(Redemption, {
@@ -355,7 +357,8 @@ export class RedemptionsService {
       couponCode: {
         couponCodeId: couponCode.couponCodeId,
       },
-      amount: amount,
+      baseOrderValue,
+      discount,
       externalId: externalId,
       customer: {
         customerId,
