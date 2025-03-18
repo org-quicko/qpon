@@ -6,17 +6,30 @@ export const offerDescriptionBuilder = (offer: Offer): string => {
 
   if (offer.discountType == discountTypeEnum.PERCENTAGE) {
     if (offer.expiresAt && offer.minimumAmount > 0) {
-      description = `Get ${offer.discountValue}% off on your purchases above ${offer.minimumAmount}, offer valid till ${offer.expiresAt.toISOString()}`;
+      if (offer.discountUpto > 0) {
+        description = `Get ${offer.discountValue}% off on purchases above ₹${offer.minimumAmount}, with a maximum discount of ₹${offer.discountUpto}. Offer valid till ${offer.expiresAt.toISOString()}.`;
+      } else {
+        description = `Get ${offer.discountValue}% off on purchases above ₹${offer.minimumAmount}. Offer valid till ${offer.expiresAt.toISOString()}.`;
+      }
     } else if (offer.minimumAmount > 0) {
-      description = `Get ${offer.discountValue}% off on your purchases above ₹${offer.minimumAmount}`;
+      if (offer.discountUpto > 0) {
+        description = `Get ${offer.discountValue}% off on purchases above ₹${offer.minimumAmount}, upto ₹${offer.discountUpto} maximum discount.`;
+      } else {
+        description = `Get ${offer.discountValue}% off on purchases above ₹${offer.minimumAmount}.`;
+      }
     } else if (offer.expiresAt) {
-      description = `Get ${offer.discountValue}% off on your purchases, offer valid till ${offer.expiresAt.toISOString()}`;
+      description = `Get ${offer.discountValue}% off on purchases. Offer valid till ${offer.expiresAt.toISOString()}.`;
     } else {
-      description = `Get ${offer.discountValue}% off on your purchases`;
+      console.log(offer.discountUpto);
+      if (offer.discountUpto > 0) {
+        description = `Get ${offer.discountValue}% off on purchases, upto ₹${offer.discountUpto} maximum discount.`;
+      } else {
+        description = `Get ${offer.discountValue}% off on purchases.`;
+      }
     }
   } else {
     if (offer.expiresAt && offer.minimumAmount > 0) {
-      description = `Get ₹${offer.discountValue} off on your purchases above ${offer.minimumAmount}, offer valid till ${offer.expiresAt.toISOString()}`;
+      description = `Get ₹${offer.discountValue} off on your purchases above ₹${offer.minimumAmount}, offer valid till ${offer.expiresAt.toISOString()}`;
     } else if (offer.minimumAmount > 0) {
       description = `Get ₹${offer.discountValue} off on your purchases above ₹${offer.minimumAmount}`;
     } else if (offer.expiresAt) {

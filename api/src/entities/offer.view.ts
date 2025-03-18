@@ -5,12 +5,7 @@ import {
   itemConstraintEnum,
   visibilityEnum,
 } from 'src/enums';
-import {
-  CreateDateColumn,
-  UpdateDateColumn,
-  ViewColumn,
-  ViewEntity,
-} from 'typeorm';
+import { ViewColumn, ViewEntity } from 'typeorm';
 
 @ViewEntity({
   name: 'offer',
@@ -21,6 +16,7 @@ import {
         cc.code,
         c.discount_type,
         c.discount_value,
+        c.discount_upto,
         c.item_constraint,
         cc.customer_constraint,
         cc.minimum_amount,
@@ -33,7 +29,7 @@ import {
         camp.external_id AS external_campaign_id,
         cc.status AS coupon_code_status,
         now() as created_at,
-        now() as updated_at
+        clock_timestamp() as updated_at
     FROM coupon c
     LEFT JOIN campaign camp ON camp.coupon_id = c.coupon_id
     LEFT JOIN coupon_code cc ON c.coupon_id = cc.coupon_id
@@ -58,6 +54,9 @@ export class Offer {
 
   @ViewColumn({ name: 'discount_value' })
   discountValue: number;
+
+  @ViewColumn({ name: 'discount_upto' })
+  discountUpto: number;
 
   @ViewColumn({ name: 'item_constraint' })
   itemConstraint: itemConstraintEnum;
@@ -92,17 +91,9 @@ export class Offer {
   @ViewColumn({ name: 'expires_at' })
   expiresAt: Date;
 
-  @CreateDateColumn({
-    type: 'timestamp with time zone',
-    default: () => `now()`,
-    name: 'created_at',
-  })
+  @ViewColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn({
-    type: 'timestamp with time zone',
-    default: () => `now()`,
-    name: 'updated_at',
-  })
+  @ViewColumn({ name: 'updated_at' })
   updatedAt: Date;
 }
