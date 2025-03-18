@@ -99,7 +99,12 @@ export class RedemptionsService {
           1,
         );
 
-        await this.checkCouponCodeRedemptions(manager, couponCode, customerId);
+        await this.checkCouponCodeRedemptions(
+          manager,
+          couponCode,
+          customerId,
+          body.baseOrderValue,
+        );
 
         const savedRedemption = this.saveRedemption(
           manager,
@@ -271,11 +276,24 @@ export class RedemptionsService {
     manager: EntityManager,
     couponCode: CouponCode,
     customerId: string,
+    baseOrderValue: number,
   ) {
     const updatedCouponCode = await manager.findOne(CouponCode, {
       relations: { coupon: true, campaign: true },
       where: { couponCodeId: couponCode.couponCodeId },
     });
+
+    if (
+      updatedCouponCode?.minimumAmount &&
+      baseOrderValue < updatedCouponCode.minimumAmount
+    ) {
+      this.logger.warn(
+        `Coupon code eligible for amount greater than ${updatedCouponCode?.minimumAmount}`,
+      );
+      throw new BadRequestException(
+        `Coupon code eligible for amount greater than ${updatedCouponCode?.minimumAmount}`,
+      );
+    }
 
     if (
       updatedCouponCode?.maxRedemptions &&
