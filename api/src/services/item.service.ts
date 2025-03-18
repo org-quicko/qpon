@@ -7,11 +7,20 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, FindOptionsWhere, In, Like, Repository } from 'typeorm';
+import {
+  DataSource,
+  EntityManager,
+  FindOptionsWhere,
+  In,
+  Like,
+  Repository,
+} from 'typeorm';
 import { Item } from '../entities/item.entity';
 import { CreateItemDto, UpdateItemDto } from '../dtos';
 import { LoggerService } from './logger.service';
 import { ItemConverter } from '../converters/item.converter';
+import { statusEnum } from '../enums';
+import { CouponItem } from '../entities/coupon-item.entity';
 
 @Injectable()
 export class ItemsService {
@@ -20,6 +29,7 @@ export class ItemsService {
     private readonly itemsRepository: Repository<Item>,
     private itemConverter: ItemConverter,
     private logger: LoggerService,
+    private datasource: DataSource,
   ) {}
 
   /**
@@ -83,6 +93,7 @@ export class ItemsService {
           organization: {
             organizationId,
           },
+          status: statusEnum.ACTIVE,
           ...whereOptions,
         },
         skip,
@@ -119,6 +130,7 @@ export class ItemsService {
       const item = await this.itemsRepository.findOne({
         where: {
           itemId,
+          status: statusEnum.ACTIVE,
         },
       });
 
@@ -155,6 +167,7 @@ export class ItemsService {
         },
         where: {
           itemId,
+          status: statusEnum.ACTIVE,
         },
       });
 
@@ -191,6 +204,7 @@ export class ItemsService {
       const item = await this.itemsRepository.findOne({
         where: {
           itemId,
+          status: statusEnum.ACTIVE,
         },
       });
 
@@ -228,34 +242,62 @@ export class ItemsService {
    */
   async deleteItem(itemId: string) {
     this.logger.info('START: deleteItem service');
-    try {
-      const item = await this.itemsRepository.findOne({
-        where: {
-          itemId,
-        },
-      });
+    return this.datasource.transaction(async (manager) => {
+      try {
+        const item = await manager.findOne(Item, {
+          where: {
+            itemId,
+            status: statusEnum.ACTIVE,
+          },
+        });
 
-      if (!item) {
-        this.logger.warn('Item not found', itemId);
-        throw new NotFoundException('Item not found');
+        if (!item) {
+          this.logger.warn('Item not found', itemId);
+          throw new NotFoundException('Item not found');
+        }
+
+        const couponItems = await manager.find(CouponItem, {
+          where: {
+            item: {
+              itemId,
+            },
+          },
+        });
+
+        if (couponItems) {
+          await Promise.all(
+            couponItems.map(async (couponItem) => {
+              await manager.delete(CouponItem, {
+                coupon: {
+                  couponId: couponItem.couponId,
+                },
+                item: {
+                  itemId: couponItem.itemId,
+                },
+              });
+            }),
+          );
+        }
+
+        await manager.update(Item, itemId, {
+          status: statusEnum.INACTIVE,
+        });
+
+        this.logger.info('END: deleteItem service');
+        return this.itemConverter.convert(item);
+      } catch (error) {
+        this.logger.error(`Error in deleteItem: ${error.message}`, error);
+
+        if (error instanceof NotFoundException) {
+          throw error;
+        }
+
+        throw new HttpException(
+          'Failed to delete item',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
       }
-
-      await this.itemsRepository.delete(itemId);
-
-      this.logger.info('END: deleteItem service');
-      return this.itemConverter.convert(item);
-    } catch (error) {
-      this.logger.error(`Error in deleteItem: ${error.message}`, error);
-
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-
-      throw new HttpException(
-        'Failed to delete item',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    });
   }
 
   async validateItemsExist(items: string[], manager: EntityManager) {
@@ -264,7 +306,7 @@ export class ItemsService {
       const itemsRepository = manager.getRepository(Item);
 
       const existingItems = await itemsRepository.find({
-        where: { itemId: In(items) },
+        where: { itemId: In(items), status: statusEnum.ACTIVE },
       });
 
       const existingItemIds = existingItems.map((item) => item.itemId);

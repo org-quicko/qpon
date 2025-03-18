@@ -12,6 +12,7 @@ import {
 import { Organization } from './organization.entity';
 import { CustomerCouponCode } from './customer-coupon-code.entity';
 import { Redemption } from './redemption.entity';
+import { statusEnum } from '../enums';
 
 @Entity()
 export class Customer {
@@ -33,6 +34,9 @@ export class Customer {
 
   @Column({ name: 'external_id', nullable: true })
   externalId: string;
+
+  @Column({ type: 'enum', enum: statusEnum, default: statusEnum.ACTIVE })
+  status: statusEnum;
 
   @CreateDateColumn({
     type: 'timestamp with time zone',

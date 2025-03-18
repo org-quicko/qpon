@@ -7,11 +7,19 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, FindOptionsWhere, In, Repository } from 'typeorm';
+import {
+  DataSource,
+  EntityManager,
+  FindOptionsWhere,
+  In,
+  Repository,
+} from 'typeorm';
 import { Customer } from '../entities/customer.entity';
 import { CreateCustomerDto, UpdateCustomerDto } from '../dtos';
 import { LoggerService } from './logger.service';
 import { CustomerConverter } from 'src/converters/customer.converter';
+import { statusEnum } from '../enums';
+import { CustomerCouponCode } from 'src/entities/customer-coupon-code.entity';
 
 @Injectable()
 export class CustomersService {
@@ -20,6 +28,7 @@ export class CustomersService {
     private readonly customersRepository: Repository<Customer>,
     private customerConverter: CustomerConverter,
     private logger: LoggerService,
+    private datasource: DataSource,
   ) {}
 
   /**
@@ -88,6 +97,7 @@ export class CustomersService {
           organization: {
             organizationId,
           },
+          status: statusEnum.ACTIVE,
           ...whereOptions,
         },
         skip,
@@ -133,6 +143,7 @@ export class CustomersService {
           organization: {
             organizationId,
           },
+          status: statusEnum.ACTIVE,
         },
       });
 
@@ -173,37 +184,65 @@ export class CustomersService {
    */
   async deleteCustomer(organizationId: string, customerId: string) {
     this.logger.info('START: deleteCustomer service');
-    try {
-      const customer = await this.customersRepository.findOne({
-        where: {
-          customerId,
-          organization: {
-            organizationId,
+    return this.datasource.transaction(async (manager) => {
+      try {
+        const customer = await manager.findOne(Customer, {
+          where: {
+            customerId,
+            organization: {
+              organizationId,
+            },
+            status: statusEnum.ACTIVE,
           },
-        },
-      });
+        });
 
-      if (!customer) {
-        this.logger.warn('Customer not found', customerId);
-        throw new NotFoundException('Customer not found');
+        if (!customer) {
+          this.logger.warn('Customer not found', customerId);
+          throw new NotFoundException('Customer not found');
+        }
+
+        const customerCouponCodes = await manager.find(CustomerCouponCode, {
+          where: {
+            customer: {
+              customerId,
+            },
+          },
+        });
+
+        if (customerCouponCodes) {
+          await Promise.all(
+            customerCouponCodes.map(async (customerCouponCode) => {
+              await manager.delete(CustomerCouponCode, {
+                customer: {
+                  customerId: customerCouponCode.customerId,
+                },
+                couponCode: {
+                  couponCodeId: customerCouponCode.couponCodeId,
+                },
+              });
+            }),
+          );
+        }
+
+        await manager.update(Customer, customerId, {
+          status: statusEnum.INACTIVE,
+        });
+
+        this.logger.info('END: deleteCustomer service');
+        return this.customerConverter.convert(customer);
+      } catch (error) {
+        this.logger.error(`Error in deleteCustomer`, error);
+
+        if (error instanceof NotFoundException) {
+          throw error;
+        }
+
+        throw new HttpException(
+          'Failed to delete customer',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
       }
-
-      await this.customersRepository.delete(customerId);
-
-      this.logger.info('END: deleteCustomer service');
-      return this.customerConverter.convert(customer);
-    } catch (error) {
-      this.logger.error(`Error in deleteCustomer`, error);
-
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-
-      throw new HttpException(
-        'Failed to delete customer',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    });
   }
 
   async validateCustomersExist(customers: string[], manager: EntityManager) {
@@ -211,7 +250,7 @@ export class CustomersService {
     try {
       const customersRepository = manager.getRepository(Customer);
       const existingCustomers = await customersRepository.find({
-        where: { customerId: In(customers) },
+        where: { customerId: In(customers), status: statusEnum.ACTIVE },
       });
 
       const existingCustomerIds = existingCustomers.map(
@@ -249,6 +288,7 @@ export class CustomersService {
           organization: {
             organizationId,
           },
+          status: statusEnum.ACTIVE,
         },
       });
 
