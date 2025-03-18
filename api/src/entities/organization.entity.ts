@@ -19,14 +19,11 @@ export class Organization {
   @PrimaryGeneratedColumn('uuid', { name: 'organization_id' })
   organizationId: string;
 
-  @Column()
+  @Column({ unique: true })
   name: string;
 
   @Column()
   currency: string;
-
-  @Column({ unique: true })
-  slug: string;
 
   @Column({ name: 'theme_colour' })
   themeColour: string;

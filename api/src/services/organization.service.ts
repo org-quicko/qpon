@@ -35,10 +35,7 @@ export class OrganizationService {
       const organizationEntity = this.organizationRepository.create({
         name: body.name,
         currency: body?.currency,
-        themeColour: body.themeColour ? body.themeColour : 'default theme',
-        slug: body.slug
-          ? body.slug
-          : body.name.toLowerCase().replace(/[^a-z0-9]/g, ''),
+        themeColour: body.themeColour,
         externalId: body?.externalId,
       });
 
@@ -118,7 +115,7 @@ export class OrganizationService {
    * Fetch organization
    */
   async fetchOrganization(organizationId: string) {
-    this.logger.info('START: getchOrganization service');
+    this.logger.info('START: fetchOrganization service');
     try {
       const organization = await this.organizationRepository.findOne({
         where: {
@@ -135,6 +132,10 @@ export class OrganizationService {
       return this.organizationConverter.convert(organization);
     } catch (error) {
       this.logger.error(`Error in fetchOrganization: ${error.message}`, error);
+
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
 
       throw new HttpException(
         'Failed to fetch organization',
@@ -180,6 +181,10 @@ export class OrganizationService {
       return this.organizationConverter.convert(updatedOrganization);
     } catch (error) {
       this.logger.error(`Error in updateOrganization: ${error.message}`, error);
+
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
 
       throw new HttpException(
         'Failed to update organization',

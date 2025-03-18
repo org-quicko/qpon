@@ -5,6 +5,9 @@ import {
   ExecutionContext,
   ForbiddenException,
   BadRequestException,
+  NotFoundException,
+  ConflictException,
+  GoneException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ForbiddenError } from '@casl/ability';
@@ -74,7 +77,12 @@ export class PermissionGuard implements CanActivate {
 
       return true;
     } catch (error) {
-      if (error instanceof BadRequestException) {
+      if (
+        error instanceof BadRequestException ||
+        error instanceof NotFoundException ||
+        error instanceof ConflictException ||
+        error instanceof GoneException
+      ) {
         this.logger.warn(error.message);
         throw error;
       } else if (error instanceof Error) {
