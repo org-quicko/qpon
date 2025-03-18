@@ -144,6 +144,45 @@ export class ItemsService {
   }
 
   /**
+   * Fetch item for validation
+   */
+  async fetchItemForValidation(itemId: string) {
+    this.logger.info('START: fetchItemForValidation service');
+    try {
+      const item = await this.itemsRepository.findOne({
+        relations: {
+          organization: true,
+        },
+        where: {
+          itemId,
+        },
+      });
+
+      if (!item) {
+        this.logger.warn('Item not found', itemId);
+        throw new NotFoundException('Item not found');
+      }
+
+      this.logger.info('END: fetchItemForValidation service');
+      return item;
+    } catch (error) {
+      this.logger.error(
+        `Error in fetchItemForValidation: ${error.message}`,
+        error,
+      );
+
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+
+      throw new HttpException(
+        'Failed to fetch item',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  /**
    * Update item
    */
   async updateItem(itemId: string, body: UpdateItemDto) {

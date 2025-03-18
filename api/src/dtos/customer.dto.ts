@@ -15,6 +15,12 @@ export class CustomerDto {
   email: string;
 
   @IsOptional()
+  @Expose({ name: 'isd_code' })
+  @Transform(({ value }) => value, { toClassOnly: true })
+  @IsString()
+  isdCode: string;
+
+  @IsOptional()
   @IsString()
   phone: string;
 
@@ -45,7 +51,6 @@ export class CreateCustomerDto {
   @IsString()
   phone: string;
 
-  @IsOptional()
   @Expose({ name: 'external_id' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsString()

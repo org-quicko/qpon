@@ -48,7 +48,7 @@ export class CustomersController {
    * Fetch customers
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
-  @Permissions('read', Customer)
+  @Permissions('read_all', Customer)
   @Get()
   async fetchCustomers(
     @Param('organization_id') organizationId: string,

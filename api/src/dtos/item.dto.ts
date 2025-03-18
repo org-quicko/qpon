@@ -47,9 +47,9 @@ export class CreateItemDto {
   @Transform(({ value }) => value, { toClassOnly: true })
   customFields: any;
 
-  @IsOptional()
   @Expose({ name: 'external_id' })
   @Transform(({ value }) => value, { toClassOnly: true })
+  @IsString()
   externalId: string;
 }
 

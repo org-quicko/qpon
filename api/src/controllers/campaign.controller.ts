@@ -46,7 +46,7 @@ export class CampaignController {
    * Fetch campaigns
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
-  @Permissions('read', Campaign)
+  @Permissions('read_all', Campaign)
   @Get()
   async fetchCampaigns(
     @Param('coupon_id') couponId: string,

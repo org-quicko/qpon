@@ -149,6 +149,45 @@ export class CampaignService {
   }
 
   /**
+   * Fetch campaign for validation
+   */
+  async fetchCampaignForValidation(campaignId: string) {
+    this.logger.info('START: fetchCampaignForValidation service');
+    try {
+      const campaign = await this.campaignRepository.findOne({
+        relations: {
+          organization: true,
+        },
+        where: {
+          campaignId,
+        },
+      });
+
+      if (!campaign) {
+        this.logger.warn('Campaign not found', campaignId);
+        throw new NotFoundException('Campaign not found');
+      }
+
+      this.logger.info('END: fetchCampaignForValidation service');
+      return campaign;
+    } catch (error) {
+      this.logger.error(
+        `Error in fetchCampaignForValidation: ${error.message}`,
+        error,
+      );
+
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+
+      throw new HttpException(
+        'Failed to fetch campaign',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  /**
    * Update campaign
    */
   async updateCampaign(campaignId: string, body: UpdateCampaignDto) {

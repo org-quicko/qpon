@@ -220,6 +220,59 @@ export class CouponCodeService {
   }
 
   /**
+   * Fetch coupon code for validation
+   */
+  async fetchCouponCodeForValidation(
+    organizationId: string,
+    couponId: string,
+    campaignId: string,
+    couponCodeId: string,
+  ) {
+    this.logger.info('START: fetchCouponCodeForValidation service');
+    try {
+      const couponCode = await this.couponCodeRepository.findOne({
+        relations: {
+          organization: true,
+        },
+        where: {
+          couponCodeId,
+          campaign: {
+            campaignId,
+          },
+          coupon: {
+            couponId,
+          },
+          organization: {
+            organizationId,
+          },
+        },
+      });
+
+      if (!couponCode) {
+        this.logger.warn('Coupon code not found', { couponCodeId });
+        throw new NotFoundException('Coupon code not found');
+      }
+
+      this.logger.info('END: fetchCouponCodeForValidation service');
+      return couponCode;
+    } catch (error) {
+      this.logger.error(
+        `Error in fetchCouponCodeForValidation: ${error.message}`,
+        error,
+      );
+
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+
+      throw new HttpException(
+        'Failed to fetch coupon code',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  /**
    * Update coupon code
    */
   async updateCouponCode(

@@ -112,23 +112,24 @@ export class AuthorizationService {
 
     for (const [organizationId, role] of Object.entries(userPermissions)) {
       switch (role) {
-        case roleEnum.ADMIN || roleEnum.SUPER_ADMIN:
-          allow('read_all', [OrganizationUser, Organization], {
+        case roleEnum.SUPER_ADMIN:
+          allow('manage', 'all');
+          break;
+        case roleEnum.ADMIN:
+          allow('read', Organization, {
             organizationId: organizationId,
           });
 
-          allow('invite_user', User);
+          allow(['invite_user', 'read_all', 'read', 'remove_user'], User);
 
-          allow(['change_role', 'remove_user', 'read_all'], OrganizationUser, {
+          allow(['change_role', 'read_all'], OrganizationUser, {
             organizationId: organizationId,
           });
 
           allow(
             'manage',
             [Coupon, Campaign, CouponCode, Customer, Item, Redemption, ApiKey],
-            {
-              organization: { organizationId: organizationId },
-            },
+            ['organization.organizationId'],
           );
 
           allow(
@@ -139,7 +140,7 @@ export class AuthorizationService {
             },
           );
 
-          allow('update', User, { userId: user.userId });
+          allow(['read', 'update', 'delete'], User, { userId: user.userId });
 
           allow('manage', CustomerCouponCode, [
             'couponCode.organization.organizationId',
@@ -149,12 +150,16 @@ export class AuthorizationService {
 
           break;
         case roleEnum.EDITOR:
+          allow('read', Organization, {
+            organizationId,
+          });
+
+          allow('read_all', User);
+
           allow(
             'manage',
             [Coupon, Campaign, CouponCode, Customer, Item, Redemption],
-            {
-              organization: { organizationId: organizationId },
-            },
+            ['organization.organizationId'],
           );
 
           allow(
@@ -165,9 +170,7 @@ export class AuthorizationService {
             },
           );
 
-          allow('read', ApiKey, {
-            organization: { organizationId: organizationId },
-          });
+          allow('read', ApiKey, ['organization.organizationId']);
 
           allow('manage', CustomerCouponCode, [
             'couponCode.organization.organizationId',
@@ -182,11 +185,9 @@ export class AuthorizationService {
           allow('read_all', User);
 
           allow(
-            'read',
+            ['read', 'read_all'],
             [Coupon, Campaign, CouponCode, Customer, Item, Redemption, ApiKey],
-            {
-              organization: { organizationId },
-            },
+            ['organization.organizationId'],
           );
 
           allow(
@@ -202,8 +203,6 @@ export class AuthorizationService {
           ]);
 
           allow('read', CouponItem, ['coupon.organization.organizationId']);
-
-          allow('read', ApiKey, ['organization.organizationId']);
 
           allow(['read', 'update', 'delete'], User, { userId: user.userId });
           break;
@@ -238,17 +237,18 @@ export class AuthorizationService {
         const subjectItemId = request.params.item_id as string;
 
         if (subject === User) {
-          if (action === 'read' || action === 'update') {
-            if (!subjectUserId) {
-              throw new BadRequestException(
-                `Error. Must provide a User ID for performing action on object`,
-              );
-            }
-            return this.userService.fetchUser({ userId: subjectUserId });
+          if (action === 'read' || action === 'create' || action == 'read_all')
+            return subject;
+
+          if (!subjectUserId) {
+            throw new BadRequestException(
+              `Error. Must provide a User ID for performing action on object`,
+            );
           }
-          return subject;
+          return this.userService.fetchUser({ userId: subjectUserId });
         } else if (subject === OrganizationUser) {
-          if (action === 'read_all' || action === 'create') return subject;
+          if (action === 'read_all' || action === 'create' || action == 'read')
+            return subject;
 
           if (!subjectOrganizationId || !subjectUserId) {
             throw new BadRequestException(
@@ -276,25 +276,30 @@ export class AuthorizationService {
             subjectOrganizationId,
           );
         } else if (subject === Coupon) {
-          if (action === 'read' || action === 'create') return subject;
+          if (action === 'read' || action === 'create' || action == 'read_all')
+            return subject;
 
           if (!subjectCouponId) {
             throw new BadRequestException(
               `Error. Must provide an Coupon ID for performing action on Coupon`,
             );
           }
-          return this.couponService.fetchCoupon(subjectCouponId);
+          return this.couponService.fetchCouponForValidation(subjectCouponId);
         } else if (subject === Campaign) {
-          if (action === 'read' || action === 'create') return subject;
+          if (action === 'read' || action === 'create' || action == 'read_all')
+            return subject;
 
           if (!subjectCampaignId) {
             throw new BadRequestException(
               `Error. Must provide an Campaign ID for performing action on Campaign`,
             );
           }
-          return this.campaignService.fetchCampaign(subjectCampaignId);
+          return this.campaignService.fetchCampaignForValidation(
+            subjectCampaignId,
+          );
         } else if (subject === CouponCode) {
-          if (action === 'read' || action === 'create') return subject;
+          if (action === 'read' || action === 'create' || action == 'read_all')
+            return subject;
 
           if (
             !subjectCouponCodeId ||
@@ -306,7 +311,7 @@ export class AuthorizationService {
               `Error. Must provide an Organization ID, Coupon ID, Campaign ID and Coupon code ID for performing action on CouponCode`,
             );
           }
-          return this.couponCodeService.fetchCouponCode(
+          return this.couponCodeService.fetchCouponCodeForValidation(
             subjectOrganizationId,
             subjectCouponId,
             subjectCampaignId,
@@ -325,18 +330,19 @@ export class AuthorizationService {
             subjectCustomerId,
           );
         } else if (subject === Item) {
-          if (action === 'read' || action === 'create') return subject;
+          if (action === 'read' || action === 'create' || action == 'read_all')
+            return subject;
 
           if (!subjectItemId) {
             throw new BadRequestException(
               `Error. Must provide an Item ID for performing action on Item`,
             );
           }
-          return this.itemService.fetchItem(subjectItemId);
+          return this.itemService.fetchItemForValidation(subjectItemId);
         } else if (subject === Redemption) {
           return subject;
         } else if (subject === ApiKey) {
-          if (action === 'create') return subject;
+          if (action === 'create' || action == 'read') return subject;
 
           if (!subjectOrganizationId) {
             throw new BadRequestException(
@@ -365,7 +371,7 @@ export class AuthorizationService {
               `Error. Must provide an Coupon Code ID, Coupon Code ID and Campaign ID for performing action on CustomerCouponCode`,
             );
           }
-          return this.customerCouponCodeService.fetchCustomers(
+          return this.customerCouponCodeService.fetchCustomerForValidation(
             subjectCouponId,
             subjectCampaignId,
             subjectCouponCodeId,
@@ -378,7 +384,7 @@ export class AuthorizationService {
               `Error. Must provide an Coupon ID for performing action on CouponItem`,
             );
           }
-          return this.couponItemService.fetchItems(subjectCouponId);
+          return this.couponItemService.fetchItemForValidation(subjectCouponId);
         } else {
           return subject;
         }

@@ -10,6 +10,7 @@ export class CustomerConverter {
     customerDto.customerId = customer.customerId;
     customerDto.name = customer.name;
     customerDto.email = customer.email;
+    customerDto.isdCode = customer.isdCode;
     customerDto.phone = customer.phone;
     customerDto.externalId = customer.externalId;
     customerDto.createdAt = customer.createdAt;

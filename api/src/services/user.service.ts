@@ -94,6 +94,9 @@ export class UserService {
       }
 
       const users = await this.userRepository.find({
+        relations: {
+          organizationUser: true,
+        },
         where: {
           organizationUser: {
             organization: {
@@ -112,7 +115,14 @@ export class UserService {
         );
       }
 
-      return users.map((user) => this.userConverter.convert(user));
+      return users.map((user) =>
+        this.userConverter.convert(
+          user,
+          user.organizationUser.filter(
+            (orgUser) => orgUser.organizationId == organizationId,
+          )[0],
+        ),
+      );
     } catch (error) {
       this.logger.error(`Error in fetchUsers: ${error.message}`, error);
 

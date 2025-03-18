@@ -428,4 +428,41 @@ export class CouponService {
       );
     }
   }
+
+  /**
+   * Fetch coupon
+   */
+  async fetchCouponForValidation(couponId: string) {
+    this.logger.info('START: fetchCoupon service');
+    try {
+      const coupon = await this.couponRepository.findOne({
+        where: {
+          couponId,
+        },
+        relations: {
+          couponItems: true,
+          organization: true,
+        },
+      });
+
+      if (!coupon) {
+        this.logger.warn('Coupon not found');
+        throw new NotFoundException('Coupon not found');
+      }
+
+      this.logger.info('END: fetchCoupon service');
+      return coupon;
+    } catch (error) {
+      this.logger.error(`Error in fetchCoupon: ${error.message}`, error);
+
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+
+      throw new HttpException(
+        'Failed to fetch coupon',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }

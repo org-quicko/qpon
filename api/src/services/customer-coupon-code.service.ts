@@ -150,6 +150,57 @@ export class CustomerCouponCodeService {
     }
   }
 
+  async fetchCustomerForValidation(
+    couponId: string,
+    campaignId: string,
+    couponCodeId: string,
+  ) {
+    this.logger.info('START: fetchCustomerForValidation service');
+    try {
+      const customers = await this.customerCouponCodeRepository.findOne({
+        relations: {
+          customer: true,
+          couponCode: {
+            organization: true,
+          },
+        },
+        where: {
+          couponCode: {
+            couponCodeId,
+            campaign: {
+              campaignId,
+            },
+            coupon: {
+              couponId,
+            },
+          },
+        },
+      });
+
+      if (!customers) {
+        this.logger.info('Customers not found');
+        throw new NotFoundException('Customers not found for this coupon code');
+      }
+
+      this.logger.info('END: fetchCustomerForValidation service');
+      return customers;
+    } catch (error) {
+      this.logger.error(
+        `Error in fetchCustomerForValidation: ${error.message}`,
+        error,
+      );
+
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+
+      throw new HttpException(
+        'Failed to fetch customers',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   async updateCustomers(
     couponId: string,
     campaignId: string,

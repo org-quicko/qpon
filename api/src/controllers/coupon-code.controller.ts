@@ -57,7 +57,7 @@ export class CouponCodeController {
    * Fetch coupon codes
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
-  @Permissions('read', CouponCode)
+  @Permissions('read_all', CouponCode)
   @Get('coupons/:coupon_id/campaigns/:campaign_id/coupon-codes')
   async fetchCouponCodes(
     @Param('organization_id') organizationId: string,

@@ -125,6 +125,46 @@ export class CouponItemService {
     }
   }
 
+  async fetchItemForValidation(couponId: string) {
+    this.logger.info('START: fetchItemForValidation service');
+    try {
+      const couponItems = await this.couponItemRepository.findOne({
+        relations: {
+          coupon: {
+            organization: true,
+          },
+        },
+        where: {
+          coupon: {
+            couponId,
+          },
+        },
+      });
+
+      if (!couponItems) {
+        this.logger.warn('No items found for this coupon', couponId);
+        throw new NotFoundException('Items not found for coupon');
+      }
+
+      this.logger.info('END: fetchItemForValidation service');
+      return couponItems;
+    } catch (error) {
+      this.logger.error(
+        `Error in fetchItemForValidation: ${error.message}`,
+        error,
+      );
+
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+
+      throw new HttpException(
+        'Failed to fetch items for coupon',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   async updateItems(couponId: string, body: UpdateCouponItemDto) {
     this.logger.info('START: updateItems service');
     return this.datasource.transaction(async (manager) => {

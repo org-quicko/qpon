@@ -45,7 +45,7 @@ export class ItemsController {
    * Fetch items
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
-  @Permissions('read', Item)
+  @Permissions('read_all', Item)
   @Get()
   async fetchItems(
     @Param('organization_id') organizationId: string,
