@@ -27,7 +27,9 @@ export class RedemptionReportSheetConverter {
       redemptionReportRow.setItemName(redemption.item.name);
       redemptionReportRow.setCustomerName(redemption.customer.name);
       redemptionReportRow.setCustomerEmail(redemption.customer.email);
-      redemptionReportRow.setCustomerPhone(redemption.customer.phone);
+      redemptionReportRow.setCustomerPhone(
+        `${redemption.customer.isdCode} ${redemption.customer.phone}`,
+      );
       redemptionReportRow.setExternalCustomerId(redemption.customer.externalId);
       redemptionReportRow.setRedeemedAt(formatDate(redemption.createdAt));
       redemptionReportTable.addRow(redemptionReportRow);
