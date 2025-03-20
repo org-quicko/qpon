@@ -1,0 +1,16 @@
+@use "@angular/material" as mat;
+
+@mixin mat-overrides {
+  //   @include mat.list-overrides(
+  //       (
+  //         list-item-leading-icon-color: var(--sys-on-surface),
+  //         list-item-one-line-container-height: 56px
+  //       )
+  // );
+
+  @include mat.table-overrides(
+    (
+      row-item-outline-color: #C6C5D0
+    )
+  )
+}

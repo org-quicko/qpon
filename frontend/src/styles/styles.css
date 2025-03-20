@@ -1,0 +1,51 @@
+@import "tailwindcss";
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: "General Sans", sans-serif;
+}
+
+.mat-sidenav {
+  background-color: white !important;
+}
+
+.mdc-list-item.mdc-list-item--with-one-line {
+  --mdc-list-list-item-one-line-container-height: 56px;
+}
+
+.mdc-list-item--with-leading-icon .mdc-list-item__start {
+  gap: 12px !important;
+}
+
+.mat-mdc-outlined-button .mat-mdc-button-touch-target {
+  width: 111px !important;
+  height: 40px !important;
+}
+
+.mat-mdc-button .mat-mdc-button-touch-target {
+  height: 40px !important;
+}
+
+.mat-icon-button {
+  height: 18px !important;
+  width: 18px !important;
+  font-size: 18px !important;
+}
+
+.mat-drawer-inner-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+.mat-drawer-inner-container {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
