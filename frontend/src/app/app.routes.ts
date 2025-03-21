@@ -39,6 +39,7 @@ export const routes: Routes = [
             path: 'home',
             component: HomeComponent,
             children: [
+              { path: 'home', pathMatch: 'full', redirectTo: 'dashboard' },
               { path: 'dashboard', component: DashboardComponent },
               { path: 'customers', component: CustomersComponent },
               {
