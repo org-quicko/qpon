@@ -1,41 +1,93 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './workspace/home/home.component';
-import { ItemsComponent } from './workspace/home/items/items.component';
-import { CustomersComponent } from './workspace/home/customers/customers.component';
-import { ReportsComponent } from './workspace/home/reports/reports.component';
-import { CouponsComponent } from './workspace/home/coupons/coupons.component';
-import { DashboardComponent } from './workspace/home/dashboard/dashboard.component';
+import { AuthGuard } from './guards/auth.guard';
+import { LoginComponent } from './auth/login/login.component';
+import { OrganizationsComponent } from './organizations/organizations.component';
+import { OrganizationResolver } from './resolvers/organization.resolver';
+import { OrganizationHomeComponent } from './organization-home/organization-home.component';
+import { DashboardComponent } from './components/home/dashboard/dashboard.component';
+import { CustomersComponent } from './components/home/customers/customers.component';
+import { ItemsComponent } from './components/home/items/items.component';
+import { ReportsComponent } from './components/home/reports/reports.component';
+import { CouponsComponent } from './components/home/coupons/coupons.component';
+import { CouponEditComponent } from './components/coupons/coupon-edit/coupon-edit.component';
+import { CouponCreateComponent } from './components/coupons/coupon-create/coupon-create.component';
+import { CampaignCreateComponent } from './components/campaigns/campaign-create/campaign-create.component';
+import { CampaignEditComponent } from './components/campaigns/campaign-edit/campaign-edit.component';
+import { ItemsEditComponent } from './components/items/items-edit/items-edit.component';
+import { ItemsCreateComponent } from './components/items/items-create/items-create.component';
+import { CustomersCreateComponent } from './components/customers/customers-create/customers-create.component';
+import { CustomersEditComponent } from './components/customers/customers-edit/customers-edit.component';
+import { HomeComponent } from './components/home/home.component';
 
 export const routes: Routes = [
+  { path: 'login', component: LoginComponent },
   {
     path: '',
-    component: HomeComponent,
+    canActivate: [AuthGuard],
     children: [
       {
-        path: '',
-        pathMatch: 'full',
-        redirectTo: 'dashboard'
+        path: 'organizations',
+        component: OrganizationsComponent,
+        resolve: { organizations: 'true' },
+        children: [{ path: 'create', component: OrganizationHomeComponent }],
       },
       {
-        path: 'dashboard',
-        component: DashboardComponent
+        path: ':organization_id',
+        resolve: { organization: OrganizationResolver },
+        children: [
+          {
+            path: 'home',
+            component: HomeComponent,
+            children: [
+              { path: 'dashboard', component: DashboardComponent },
+              { path: 'customers', component: CustomersComponent },
+              {
+                path: 'items',
+                children: [
+                  { path: '', component: ItemsComponent },
+                  { path: ':item_id', component: ItemsEditComponent },
+                ],
+              },
+              { path: 'reports', component: ReportsComponent },
+              {
+                path: 'coupons',
+                children: [
+                  { path: '', component: CouponsComponent },
+                  { path: ':coupon_id', component: CouponEditComponent },
+                ],
+              },
+            ],
+          },
+          {
+            path: 'coupons',
+            children: [
+              { path: 'create', component: CouponCreateComponent },
+              { path: 'edit/:coupon_id', component: CouponEditComponent },
+            ],
+          },
+          {
+            path: 'campaigns',
+            children: [
+              { path: 'create', component: CampaignCreateComponent },
+              { path: 'edit/:campaign_id', component: CampaignEditComponent },
+            ],
+          },
+          {
+            path: 'customers',
+            children: [
+              { path: 'create', component: CustomersCreateComponent },
+              { path: 'edit/:customer_id', component: CustomersEditComponent },
+            ],
+          },
+          {
+            path: 'items',
+            children: [
+              { path: 'create', component: ItemsCreateComponent },
+              { path: 'edit/:item_id', component: ItemsEditComponent },
+            ],
+          },
+        ],
       },
-      {
-        path: 'items',
-        component: ItemsComponent
-      },
-      {
-        path: 'customers',
-        component: CustomersComponent
-      },
-      {
-        path: 'coupons',
-        component: CouponsComponent
-      },
-      {
-        path: 'reports',
-        component: ReportsComponent
-      }
-    ]
+    ],
   },
 ];

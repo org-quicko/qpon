@@ -1,0 +1,116 @@
+<mat-sidenav-container class="h-screen bg-white fixed" >
+  <mat-sidenav opened mode="side" class="!w-[272px]" disableClose>
+    <div class="pt-[32px] pr-[16px] pl-[16px] pb-[24px]">
+      <mat-nav-list class="cursor-pointer">
+        <a
+          routerLink="./dashboard"
+          routerLinkActive
+          #dashboard="routerLinkActive"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+        <mat-list-item [activated]="dashboard.isActive">
+          <mat-icon
+            matListItemIcon
+            class="material-symbols-outlined text-on-surface"
+          >
+            dashboard_2
+          </mat-icon>
+          <div
+            matListItemTitle
+            class="font-sans font-medium text-[14px] leading-[20px]"
+          >
+            Dashboard
+          </div>
+        </mat-list-item>
+        </a>
+        <a
+          routerLink="./customers"
+          routerLinkActive
+          #customers="routerLinkActive"
+          class="pt-[32px] px-[16px] pb-[24px]"
+        >
+          <mat-list-item [activated]="customers.isActive">
+            <mat-icon
+              matListItemIcon
+              class="material-symbols-outlined text-on-surface"
+            >
+              group
+            </mat-icon>
+            <div
+              matListItemTitle
+              class="font-sans font-medium text-[14px] leading-[20px]"
+            >
+              Customers
+            </div>
+          </mat-list-item>
+        </a>
+        <a
+          routerLink="./items"
+          routerLinkActive
+          #items="routerLinkActive"
+          class="pt-[32px] px-[16px] pb-[24px]"
+        >
+          <mat-list-item [activated]="items.isActive">
+            <mat-icon
+              matListItemIcon
+              class="material-symbols-outlined text-on-surface"
+            >
+              category
+            </mat-icon>
+            <div
+              matListItemTitle
+              class="font-sans font-medium text-[14px] leading-[20px]"
+            >
+              Catalogue
+            </div>
+          </mat-list-item>
+        </a>
+        <a
+          routerLink="./coupons"
+          routerLinkActive
+          #coupons="routerLinkActive"
+          class="pt-[32px] px-[16px] pb-[24px]"
+        >
+          <mat-list-item [activated]="coupons.isActive">
+            <mat-icon
+              matListItemIcon
+              class="material-symbols-outlined text-on-surface"
+            >
+              local_activity
+            </mat-icon>
+            <div
+              matListItemTitle
+              class="font-sans font-medium text-[14px] leading-[20px]"
+            >
+              Coupons
+            </div>
+          </mat-list-item>
+        </a>
+        <a
+          routerLink="./reports"
+          routerLinkActive
+          #reports="routerLinkActive"
+          class="pt-[32px] px-[16px] pb-[24px]"
+        >
+          <mat-list-item [activated]="reports.isActive">
+            <mat-icon
+              matListItemIcon
+              class="material-symbols-outlined text-on-surface"
+            >
+              article
+            </mat-icon>
+            <div
+              matListItemTitle
+              class="font-sans font-medium text-[14px] leading-[20px]"
+            >
+              Reports
+            </div>
+          </mat-list-item>
+        </a>
+      </mat-nav-list>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content class=" bg-white">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
