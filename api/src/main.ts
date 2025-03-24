@@ -35,6 +35,8 @@ async function bootstrap() {
     new TransformInterceptor(app.get(Reflector)),
   );
 
+  app.enableCors();
+
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
