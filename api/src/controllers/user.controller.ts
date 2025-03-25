@@ -41,6 +41,21 @@ export class UserController {
   }
 
   /**
+   * Fetch organizations for a user
+   */
+  @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('read_all', OrganizationUser)
+  @Get('/users/:user_id/organizations')
+  async fetchOrganizationsForUser(@Param('user_id') userId: string) {
+    this.logger.info('START: fetchOrganizationsForUser controller');
+
+    const result = await this.userService.fetchOrganizationsForUser(userId);
+
+    this.logger.info('END: fetchOrganizationsForUser controller');
+    return { message: 'Successfully fetched organization for user', result };
+  }
+
+  /**
    * Create user
    */
   @ApiResponse({ status: 200, description: 'Successful response' })

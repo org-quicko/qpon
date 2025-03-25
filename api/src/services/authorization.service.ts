@@ -154,6 +154,10 @@ export class AuthorizationService {
             organizationId,
           });
 
+          allow('read_all', OrganizationUser, {
+            organizationId: organizationId,
+          });
+
           allow('read_all', User);
 
           allow(
@@ -183,6 +187,10 @@ export class AuthorizationService {
           break;
         case roleEnum.VIEWER:
           allow('read_all', User);
+
+          allow('read_all', OrganizationUser, {
+            organizationId: organizationId,
+          });
 
           allow(
             ['read', 'read_all'],

@@ -14,6 +14,7 @@ import { UserConverter } from '../converters/user.converter';
 import { OrganizationUser } from '../entities/organization-user.entity';
 import { QueryOptionsInterface } from '../interfaces/queryOptions.interface';
 import { roleEnum } from '../enums';
+import { OrganizationUserConverter } from '../converters/organization-user.converter';
 
 @Injectable()
 export class UserService {
@@ -23,6 +24,7 @@ export class UserService {
     @InjectRepository(OrganizationUser)
     private readonly organizationUserRepository: Repository<OrganizationUser>,
     private userConverter: UserConverter,
+    private organizationUserConverter: OrganizationUserConverter,
     private logger: LoggerService,
   ) {}
 
@@ -386,6 +388,42 @@ export class UserService {
         {
           cause: error.message,
         },
+      );
+    }
+  }
+
+  async fetchOrganizationsForUser(userId: string) {
+    this.logger.info('START: fetchOrganizationsForUser service');
+    try {
+      const organizationUsers = await this.organizationUserRepository.find({
+        relations: {
+          organization: true,
+        },
+        where: {
+          user: {
+            userId,
+          },
+        },
+      });
+
+      if (!organizationUsers || organizationUsers.length == 0) {
+        this.logger.warn('Organizations not found for user', { userId });
+        throw new NotFoundException('Organizations not found for this user');
+      }
+
+      this.logger.info('END: fetchOrganizationsForUser service');
+      return organizationUsers.map((organizationUser) =>
+        this.organizationUserConverter.convert(organizationUser),
+      );
+    } catch (error) {
+      this.logger.error(
+        `Error in fetchOrganizationsForUser: ${error.message}`,
+        error,
+      );
+
+      throw new HttpException(
+        'Failed to fetch organizations for a user',
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }
