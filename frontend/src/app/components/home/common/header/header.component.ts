@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ChooseOrganizationComponent } from "./choose-organization/choose-organization.component";
 import { ProfileComponent } from "./profile/profile.component";
+import { OrganizationStore } from '../../../../store/organization.store';
 
 @Component({
   selector: 'app-header',
@@ -9,5 +10,5 @@ import { ProfileComponent } from "./profile/profile.component";
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-
+  readonly organizationStore = inject(OrganizationStore);
 }

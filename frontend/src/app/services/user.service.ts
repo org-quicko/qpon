@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ApiResponse } from '../../dtos/api-response.dto';
 import { environment } from '../../environments/environment.dev';
+import { OrganizationUserDto } from '../../dtos/organization-user.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,6 @@ export class UserService {
 
   fetchOrganizationsForUser(userId: string) {
     let url = this.endpoint + "/users/" + userId + "/organizations";
-    return this.httpClient.get<ApiResponse<any>>(url);
+    return this.httpClient.get<ApiResponse<OrganizationUserDto[]>>(url);
   }
 }

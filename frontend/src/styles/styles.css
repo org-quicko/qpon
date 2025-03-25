@@ -1,4 +1,7 @@
 @import "tailwindcss";
+
+@config '../../tailwind.config.ts';
+
 *,
 *::before,
 *::after {
@@ -48,4 +51,9 @@ body {
 .mat-drawer-inner-container {
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE/Edge */
+}
+
+.mdc-notched-outline__notch
+{
+  border-right: none;
 }

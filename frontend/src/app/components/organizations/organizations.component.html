@@ -1,0 +1,35 @@
+<div class="flex justify-center items-center pt-[32px] pb-[32px]">
+  <div class="w-[560px]">
+    <div class="pt-[295px]">
+      <p class="text-[24px] font-medium leading-[32px] tracking-[0px]">
+        Welcome back! You look good today
+      </p>
+      <div class="pt-[32px] flex flex-col gap-[12px]">
+        <p class="text-[14px] font-medium leading-[20px] tracking-[0,.25px]">
+          Organisations you’re in
+        </p>
+        <mat-list
+          class="border border-[#C6C5D0] rounded-[5px] py-[8px] divide-y divide-[#C6C5D0] px-[10px]"
+        >
+          <mat-list-item
+            class="px-[3px] pl-[10px] pr-[10px]"
+            *ngFor="let organization of organizations(); let last = last"
+          >
+            <div class="flex items-center justify-between w-full hover:cursor-pointer" (click)="onClick(organization.organizationId!)">
+              <div class="flex flex-col justify-between gap-[4px]">
+                <span class="text-[16px] leading-[24px] tracking-[0px]">
+                  {{ organization.name }}
+                </span>
+                <span class="text-[12px] leading-[16px] tracking-[0.4px]">
+                  You are the {{ organization.role?.replace("_", " ") }}
+                </span>
+              </div>
+              <mat-icon class="material-symbols-outlined"
+                >chevron_right</mat-icon>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </div>
+  </div>
+</div>

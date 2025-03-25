@@ -1,4 +1,4 @@
-<div class="py-[40px] px-[48px]">
+<div>
   <div class="flex flex-col gap-[26px]">
     <div class="flex items-center justify-between">
       <div>
@@ -30,7 +30,7 @@
         </button>
       </div>
     </div>
-    @if(false) {
+    @if(customers() && customers().length == 0) {
     <div class="flex justify-center items-center h-[600px]">
       <div class="flex flex-col items-center gap-[10px] h-auto w-auto">
         <div class="bg-[#EFEDF4] rounded-[10px]">
@@ -52,7 +52,7 @@
         <p
           class="font-sans font-medium text-[14px] leading-[150%] text-[#747579] text-center align-middle"
         >
-          Create items or import them.
+          Create customers or import them.
         </p>
         <div class="flex justify-center">
           <button mat-button class="!bg-[#4D5C92] w-auto">
@@ -85,7 +85,7 @@
       <div class="border-[#C6C5D0] border-[1px] rounded-[5px]">
         <table
           mat-table
-          [dataSource]="data"
+          [dataSource]="customers()"
           class="!bg-white border-[1px] border-[#C6C5D0] overflow-hidden"
         >
           <ng-container matColumnDef="name">

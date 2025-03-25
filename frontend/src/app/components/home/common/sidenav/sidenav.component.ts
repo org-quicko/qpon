@@ -8,7 +8,7 @@ import { MatListModule } from "@angular/material/list"
 @Component({
   selector: 'app-sidenav',
   standalone: true,
-  imports: [MatSidenavModule, MatIconModule, RouterOutlet, MatListModule, RouterLinkActive, RouterLink],
+  imports: [MatSidenavModule, MatIconModule, MatListModule, RouterLinkActive, RouterLink],
   templateUrl: './sidenav.component.html',
   styleUrl: './sidenav.component.css',
 })

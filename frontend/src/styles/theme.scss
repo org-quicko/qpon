@@ -1,8 +1,15 @@
 @use "@angular/material" as mat;
 @use "./_overrides.scss" as overrides;
+@use "./m3-theme.scss";
 @include mat.core();
 html,
 body {
+  @include mat.all-component-themes(m3-theme.$light-theme);
+  @include mat.system-level-colors(m3-theme.$light-theme);
+   //typography
+   @include mat.typography-hierarchy(m3-theme.$light-theme);
+   @include mat.system-level-typography(m3-theme.$light-theme);
+   @include mat.all-component-typographies(m3-theme.$light-theme);
   //overrides
   @include overrides.mat-overrides(); 
 }

@@ -18,6 +18,7 @@ import { ItemsCreateComponent } from './components/items/items-create/items-crea
 import { CustomersCreateComponent } from './components/customers/customers-create/customers-create.component';
 import { CustomersEditComponent } from './components/customers/customers-edit/customers-edit.component';
 import { HomeComponent } from './components/home/home.component';
+import { OrganizationUserResolver } from './resolvers/organization-user.resolver';
 // import { UserResolver } from './resolvers/user.resolver';
 
 export const routes: Routes = [
@@ -25,17 +26,17 @@ export const routes: Routes = [
   {
     path: '',
     // resolve: { user: UserResolver },
+    resolve: { organizations: OrganizationUserResolver },
     canActivate: [AuthGuard],
     children: [
       {
         path: 'organizations',
         component: OrganizationsComponent,
-        // resolve: { organizations: 'true' },
         children: [{ path: 'create', component: OrganizationHomeComponent }],
       },
       {
-        path: ':organization_id',
         resolve: { organization: OrganizationResolver },
+        path: ':organization_id',
         children: [
           {
             path: 'home',

@@ -1,4 +1,14 @@
-<div>
+<div class="h-screen flex flex-col">
+    <!-- Top Bar -->
     <app-header></app-header>
-    <app-sidenav></app-sidenav>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <app-sidenav class="w-[252px]"></app-sidenav>
+
+        <!-- Main Content -->
+        <div class="flex-1 overflow-auto px-[48px] py-[40px]">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
 </div>

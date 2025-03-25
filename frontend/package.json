@@ -28,6 +28,7 @@
     "class-validator": "^0.14.1",
     "ngx-avatars": "^1.7.0",
     "ngx-cookie-service": "^19.1.2",
+    "ngx-skeleton-loader": "^10.0.0",
     "postcss": "^8.5.3",
     "rxjs": "~7.8.0",
     "tailwindcss": "^4.0.14",

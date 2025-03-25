@@ -1,7 +1,7 @@
 <nav class="h-[80px] w-full border-b-1 border-[#C6C5D0]">
-    <div class="flex justify-between pt-[16px] pr-[32px] pb-[16px] pl-[32px]">
+    <div class="flex justify-between pt-[16px] pr-[32px] pb-[16px] pl-[32px] items-center">
         <div>
-            <p class="text-[22px] font-medium leading-[28px]">Logoipsum</p>
+            <p class="text-[22px] font-medium leading-[28px]">{{ organizationStore.organizaiton()?.name }}</p>
         </div>
         <div class="flex justify-between gap-[24px] items-center">
             <app-choose-organization></app-choose-organization>
