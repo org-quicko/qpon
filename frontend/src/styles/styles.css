@@ -17,10 +17,6 @@ body {
   font-family: "General Sans", sans-serif;
 }
 
-.mat-sidenav {
-  background-color: white !important;
-}
-
 .mdc-list-item.mdc-list-item--with-one-line {
   --mdc-list-list-item-one-line-container-height: 56px;
 }

@@ -1,7 +1,7 @@
 import { Injectable, Renderer2, RendererFactory2 } from "@angular/core";
 import { CookieService } from "ngx-cookie-service";
 import { BehaviorSubject } from "rxjs";
-import { environment } from "../../environments/environment";
+import { Theme } from "../../enums";
 
 @Injectable({
     providedIn: "root"
@@ -27,7 +27,7 @@ export class ThemeService {
         this.systemThemePreference = this.getSystemThemePreference()
 
         const themePreferenceFromCookie = this.cookieService.get("theme")
-        this.userThemePreference = Theme[themePreferenceFromCookie?.toUpperCase()];
+        this.userThemePreference = Theme[themePreferenceFromCookie?.toUpperCase() as keyof typeof Theme];
     }
 
     public getSystemThemePreference(){
@@ -58,10 +58,7 @@ export class ThemeService {
 
         this.updateThemingClasses(theme);
 
-        if (environment.production)
-            this.cookieService.set("theme", theme, undefined, '/', `.quicko.pro`, true,'Strict');
-        else
-            this.cookieService.set("theme", theme, undefined, '/', `localhost`, true, 'Strict');
+        this.cookieService.set("theme", theme, undefined, '/', `localhost`, true, 'Strict');
 
     }
 
@@ -85,10 +82,4 @@ export class ThemeService {
                 break;
         }
     }
-}
-
-export enum Theme {
-    LIGHT = "light",
-    DARK = "dark",
-    SYSTEM = "system"
 }
