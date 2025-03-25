@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
-import { LoginComponent } from './auth/login/login.component';
-import { OrganizationsComponent } from './organizations/organizations.component';
+import { LoginComponent } from './components/login/login.component';
+import { OrganizationsComponent } from './components/organizations/organizations.component';
 import { OrganizationResolver } from './resolvers/organization.resolver';
-import { OrganizationHomeComponent } from './organization-home/organization-home.component';
+import { OrganizationHomeComponent } from './components/organization-home/organization-home.component';
 import { DashboardComponent } from './components/home/dashboard/dashboard.component';
 import { CustomersComponent } from './components/home/customers/customers.component';
 import { ItemsComponent } from './components/home/items/items.component';
@@ -18,17 +18,19 @@ import { ItemsCreateComponent } from './components/items/items-create/items-crea
 import { CustomersCreateComponent } from './components/customers/customers-create/customers-create.component';
 import { CustomersEditComponent } from './components/customers/customers-edit/customers-edit.component';
 import { HomeComponent } from './components/home/home.component';
+// import { UserResolver } from './resolvers/user.resolver';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {
     path: '',
+    // resolve: { user: UserResolver },
     canActivate: [AuthGuard],
     children: [
       {
         path: 'organizations',
         component: OrganizationsComponent,
-        resolve: { organizations: 'true' },
+        // resolve: { organizations: 'true' },
         children: [{ path: 'create', component: OrganizationHomeComponent }],
       },
       {
@@ -39,14 +41,13 @@ export const routes: Routes = [
             path: 'home',
             component: HomeComponent,
             children: [
-              { path: 'home', pathMatch: 'full', redirectTo: 'dashboard' },
+              { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
               { path: 'dashboard', component: DashboardComponent },
               { path: 'customers', component: CustomersComponent },
               {
                 path: 'items',
                 children: [
                   { path: '', component: ItemsComponent },
-                  { path: ':item_id', component: ItemsEditComponent },
                 ],
               },
               { path: 'reports', component: ReportsComponent },
