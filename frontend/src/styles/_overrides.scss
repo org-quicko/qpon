@@ -77,6 +77,19 @@
       container-shape: 8px
     )
   );
+
+  @include mat.paginator-overrides(
+    (
+      container-background-color: var(--sys-surface-container-lowest),
+    )
+  );
+
+  @include mat.table-overrides(
+    (
+      background-color: var(--sys-surface-container-lowest),
+      row-item-outline-color: var(--sys-outline-variant)
+    )
+  )
 }
 
 @mixin dark-theme-palette-overrides {

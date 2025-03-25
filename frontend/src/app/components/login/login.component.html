@@ -1,32 +1,64 @@
 <div class="grid grid-cols-2 w-full h-full">
-    <div class="bg-[#4D5C92]">
-        <div class="flex flex-col justify-center pt-[120px] px-[64px] pb-[48px] h-[838px]">
-            <p class="font-sans text-[45px] leading-[52px] tracking-[0px] text-[#FAF8FF]">Grow with discounts</p>
-            <p class="font-sans text-[22px] leading-[28px] tracking-[0px] text-[#FAF8FF]">All your coupons in one place</p>
-        </div>
-        <div class=" px-[64px] pb-[48px]">
-            <p class="text-[#E9E7EF]">Powered by <span class="text-[#F4F3FA]">Qpon</span></p>
-        </div>
+  <div class="bg-primary">
+    <div
+      class="flex flex-col justify-center pt-[120px] px-[64px] pb-[48px] h-[838px]"
+    >
+      <p class="mat-display-medium text-surface">Grow with discounts</p>
+      <p
+        class="mat-title-large text-surface"
+      >
+        All your coupons in one place
+      </p>
     </div>
-    <div class="flex flex-col items-center pt-[281px] pr-[150px] pb-[48px]">
-        <div class="w-[400px]">
-            <p class="text-[28px] leading-[36px] text-center spacing-[0px]">Login to your account</p>
-            <div class="flex flex-col gap-[48px]">
-                <form [formGroup]="loginFormGroup" class="flex flex-col gap-[32px]">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Email</mat-label>
-                        <input matInput type="text" ng-trim="true" formControlName="email" />
-                    </mat-form-field>
-                    <mat-form-field appearance="outline" class="h-[56px] rounded-[4px]">
-                        <mat-label>Password</mat-label>
-                        <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" required>
-                        <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
-                            <mat-icon class="material-symbols-outlined !text-[#1A1B21]">{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-                        </button>
-                    </mat-form-field>
-                </form>
-                <button mat-button class="!bg-[#4D5C92] !text-white text-[14px] leading-[20px] tracking-[0px]" (click)="onLogin()">Log in</button>
-            </div>
-        </div>
+    <div class="px-[64px] pb-[48px]">
+      <p class="mat-body-large text-surface-container-high">
+        Powered by <span class="text-surface-container-low">Qpon</span>
+      </p>
     </div>
+  </div>
+  <div class="flex flex-col items-center pt-[281px] pr-[150px] pb-[48px]">
+    <div class="w-[400px]">
+      <p class="text-[28px] leading-[36px] text-center spacing-[0px]">
+        Login to your account
+      </p>
+      <div class="flex flex-col gap-[48px]">
+        <form [formGroup]="loginFormGroup" class="flex flex-col gap-[32px]">
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              type="text"
+              ng-trim="true"
+              formControlName="email"
+            />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="h-[56px] rounded-[4px]">
+            <mat-label>Password</mat-label>
+            <input
+              matInput
+              [type]="hidePassword ? 'password' : 'text'"
+              formControlName="password"
+              required
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              (click)="hidePassword = !hidePassword"
+            >
+              <mat-icon class="material-symbols-outlined text-on-surface">{{
+                hidePassword ? "visibility_off" : "visibility"
+              }}</mat-icon>
+            </button>
+          </mat-form-field>
+        </form>
+        <button
+          mat-button
+          class="bg-primary text-on-primary text-[14px] leading-[20px] tracking-[0px]"
+          (click)="onLogin()"
+        >
+          Log in
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

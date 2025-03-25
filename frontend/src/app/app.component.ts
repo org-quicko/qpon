@@ -15,7 +15,7 @@ export class AppComponent {
   constructor(private themeService: ThemeService) {}
 
   ngOnInit() {
-    ColorUtil.setThemeFromSeed('#2692FF');
+    ColorUtil.setThemeFromSeed('#2962FF');
 
     this.themeService.initializeTheme();
   }
