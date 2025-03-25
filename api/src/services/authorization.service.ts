@@ -326,7 +326,8 @@ export class AuthorizationService {
             subjectCouponCodeId,
           );
         } else if (subject === Customer) {
-          if (action === 'read' || action === 'create') return subject;
+          if (action === 'read' || action === 'create' || action == 'read_all')
+            return subject;
 
           if (!subjectOrganizationId || !subjectCustomerId) {
             throw new BadRequestException(
