@@ -17,7 +17,8 @@
           </mat-icon>
           <div
             matListItemTitle
-            class="mat-body-large"
+            class="mat-label-large"
+            [ngClass]="{'font-bold': dashboard.isActive}"
           >
             Dashboard
           </div>
@@ -38,7 +39,8 @@
             </mat-icon>
             <div
               matListItemTitle
-              class="mat-body-large"
+              class="mat-label-large"
+              [ngClass]="{'font-bold': customers.isActive}"
             >
               Customers
             </div>
@@ -59,7 +61,8 @@
             </mat-icon>
             <div
               matListItemTitle
-              class="mat-body-large"
+              class="mat-label-large"
+              [ngClass]="{'font-bold': items.isActive}"
             >
               Catalogue
             </div>
@@ -80,7 +83,8 @@
             </mat-icon>
             <div
               matListItemTitle
-              class="mat-body-large"
+              class="mat-label-large"
+              [ngClass]="{'font-bold': coupons.isActive}"
             >
               Coupons
             </div>
@@ -101,7 +105,8 @@
             </mat-icon>
             <div
               matListItemTitle
-              class="mat-body-large"
+              class="mat-label-large"
+              [ngClass]="{'font-bold': reports.isActive}"
             >
               Reports
             </div>
