@@ -253,7 +253,9 @@ export class AuthorizationService {
               `Error. Must provide a User ID for performing action on object`,
             );
           }
-          return this.userService.fetchUser({ userId: subjectUserId });
+          return this.userService.fetchUserForValidation({
+            userId: subjectUserId,
+          });
         } else if (subject === OrganizationUser) {
           if (action === 'read_all' || action === 'create' || action == 'read')
             return subject;
@@ -263,7 +265,7 @@ export class AuthorizationService {
               `Error. Must provide Organization ID and User ID for performing action on object`,
             );
           }
-          return this.userService.fetchUser({
+          return this.userService.fetchUserForValidation({
             userId: subjectUserId,
             organizationUser: {
               organization: {

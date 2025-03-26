@@ -328,8 +328,8 @@ export class UserService {
   /**
    * Fetch user
    */
-  async fetchUser(whereOptions: FindOptionsWhere<User> = {}) {
-    this.logger.info('START: fetchUser service');
+  async fetchUserForValidation(whereOptions: FindOptionsWhere<User> = {}) {
+    this.logger.info('START: fetchUserForValidation service');
     try {
       const user = await this.userRepository.findOne({
         relations: {
@@ -344,10 +344,13 @@ export class UserService {
         this.logger.warn('User not found');
       }
 
-      this.logger.info('END: fetchUser service');
+      this.logger.info('END: fetchUserForValidation service');
       return user;
     } catch (error) {
-      this.logger.error(`Error in fetchUser: ${error.message}`, error);
+      this.logger.error(
+        `Error in fetchUserValidation: ${error.message}`,
+        error,
+      );
     }
   }
 
@@ -425,6 +428,31 @@ export class UserService {
         'Failed to fetch organizations for a user',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
+    }
+  }
+
+  async fetchUser(userId: string) {
+    this.logger.info('START: fetchUser service');
+    try {
+      const user = await this.userRepository.findOne({
+        where: {
+          userId,
+        },
+      });
+
+      if (!user) {
+        this.logger.warn('User not found');
+      }
+
+      if (!user) {
+        this.logger.warn('User not found', { userId });
+        throw new NotFoundException('User not found');
+      }
+
+      this.logger.info('END: fetchUser service');
+      return this.userConverter.convert(user);
+    } catch (error) {
+      this.logger.error(`Error in fetchUser: ${error.message}`, error);
     }
   }
 }

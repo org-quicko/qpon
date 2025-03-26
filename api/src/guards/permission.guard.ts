@@ -53,7 +53,7 @@ export class PermissionGuard implements CanActivate {
 
     const userId = request.headers.userId;
 
-    const user = await this.userService.fetchUser({ userId });
+    const user = await this.userService.fetchUserForValidation({ userId });
 
     if (!user) {
       throw new ForbiddenException('User not authenticated');
