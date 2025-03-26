@@ -11,10 +11,9 @@ export class CouponConverter {
     couponDto.name = coupon.name;
     couponDto.itemConstraint = coupon.itemConstraint;
     couponDto.discountType = coupon.discountType;
+    couponDto.discountValue = coupon.discountValue;
 
-    if (coupon.discountType == discountTypeEnum.FIXED) {
-      couponDto.discountValue = coupon.discountValue;
-    } else if (
+    if (
       coupon.discountType == discountTypeEnum.PERCENTAGE &&
       coupon.discountUpto > 0
     ) {
