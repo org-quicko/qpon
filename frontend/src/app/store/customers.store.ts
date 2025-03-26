@@ -6,6 +6,7 @@ import { catchError, concatMap, EMPTY, pipe, shareReplay, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { CustomerDto } from '../../dtos/customer.dto';
 import { plainToClass } from 'class-transformer';
+import { withDevtools } from '@angular-architects/ngrx-toolkit';
 
 type CustomersState = {
   customers: CustomerDto[];
@@ -23,6 +24,7 @@ const initialState: CustomersState = {
 
 export const CustomersStore = signalStore(
   { providedIn: 'root' },
+  withDevtools('customers'),
   withState(initialState),
   withMethods((store, customerService = inject(CustomerService)) => ({
     fetchCustomers: rxMethod<{ organizationId: string }>(

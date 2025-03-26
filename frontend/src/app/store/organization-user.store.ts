@@ -7,6 +7,7 @@ import { catchError, concatMap, EMPTY, pipe } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { plainToClass } from 'class-transformer';
 import { Router } from '@angular/router';
+import { withDevtools } from "@angular-architects/ngrx-toolkit";
 
 type OrganizationUser = {
   organizations: OrganizationUserDto[];
@@ -22,6 +23,7 @@ const initialState: OrganizationUser = {
 
 export const OrganizationUserStore = signalStore(
   { providedIn: 'root' },
+  withDevtools('organization_user'),
   withState(initialState),
   withMethods(
     (store, userService = inject(UserService), router = inject(Router)) => ({

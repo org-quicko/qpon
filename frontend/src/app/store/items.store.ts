@@ -6,6 +6,7 @@ import { catchError, concatMap, EMPTY, pipe, shareReplay, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { ItemDto } from '../../dtos/item.dto';
 import { plainToClass } from 'class-transformer';
+import { withDevtools } from "@angular-architects/ngrx-toolkit";
 
 type ItemsState = {
   items: ItemDto[];
@@ -23,6 +24,7 @@ const initialState: ItemsState = {
 
 export const ItemsStore = signalStore(
   { providedIn: 'root' },
+  withDevtools('items'),
   withState(initialState),
   withMethods((store, itemsService = inject(ItemsService)) => ({
     fetchItems: rxMethod<{ organizationId: string }>(
