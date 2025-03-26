@@ -21,6 +21,7 @@ import { LoggerService } from './logger.service';
 import { ItemConverter } from '../converters/item.converter';
 import { statusEnum } from '../enums';
 import { CouponItem } from '../entities/coupon-item.entity';
+import { ItemsListConverter } from 'src/converters/items-list.converter';
 
 @Injectable()
 export class ItemsService {
@@ -28,6 +29,7 @@ export class ItemsService {
     @InjectRepository(Item)
     private readonly itemsRepository: Repository<Item>,
     private itemConverter: ItemConverter,
+    private itemListConverter: ItemsListConverter,
     private logger: LoggerService,
     private datasource: DataSource,
   ) {}
@@ -88,7 +90,7 @@ export class ItemsService {
   ) {
     this.logger.info('START: fetchItems service');
     try {
-      const items = await this.itemsRepository.find({
+      const [items, count] = await this.itemsRepository.findAndCount({
         where: {
           organization: {
             organizationId,
@@ -106,7 +108,7 @@ export class ItemsService {
       }
 
       this.logger.info('END: fetchItems service');
-      return items.map((item) => this.itemConverter.convert(item));
+      return this.itemListConverter.convert(items, skip, take, count);
     } catch (error) {
       this.logger.error(`Error in fetchItems: ${error.message}`, error);
 

@@ -7,6 +7,7 @@ import { CustomerCouponCodeConverter } from '../converters/customer-coupon-code.
 import { CustomersService } from '../services/customer.service';
 import { CustomerConverter } from '../converters/customer.converter';
 import { Customer } from '../entities/customer.entity';
+import { CustomerListConverter } from 'src/converters/customer-list.converter';
 
 @Module({
   imports: [TypeOrmModule.forFeature([CustomerCouponCode, Customer])],
@@ -16,6 +17,7 @@ import { Customer } from '../entities/customer.entity';
     CustomersService,
     CustomerCouponCodeConverter,
     CustomerConverter,
+    CustomerListConverter,
   ],
   exports: [CustomerCouponCodeService],
 })

@@ -7,6 +7,7 @@ import { Item } from '../entities/item.entity';
 import { CouponItemService } from '../services/coupon-item.service';
 import { ItemsService } from '../services/item.service';
 import { ItemConverter } from 'src/converters/item.converter';
+import { ItemsListConverter } from 'src/converters/items-list.converter';
 
 @Module({
   imports: [TypeOrmModule.forFeature([CouponItem, Item])],
@@ -16,6 +17,7 @@ import { ItemConverter } from 'src/converters/item.converter';
     CouponItemConverter,
     ItemsService,
     ItemConverter,
+    ItemsListConverter,
   ],
   exports: [CouponItemService],
 })

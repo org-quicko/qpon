@@ -20,6 +20,7 @@ import { LoggerService } from './logger.service';
 import { CustomerConverter } from 'src/converters/customer.converter';
 import { statusEnum } from '../enums';
 import { CustomerCouponCode } from 'src/entities/customer-coupon-code.entity';
+import { CustomerListConverter } from 'src/converters/customer-list.converter';
 
 @Injectable()
 export class CustomersService {
@@ -27,6 +28,7 @@ export class CustomersService {
     @InjectRepository(Customer)
     private readonly customersRepository: Repository<Customer>,
     private customerConverter: CustomerConverter,
+    private customerListConverter: CustomerListConverter,
     private logger: LoggerService,
     private datasource: DataSource,
   ) {}
@@ -86,13 +88,13 @@ export class CustomersService {
    */
   async fetchCustomers(
     organizationId: string,
-    skip?: number,
-    take?: number,
+    skip: number = 0,
+    take: number = 10,
     whereOptions: FindOptionsWhere<Customer> = {},
   ) {
     this.logger.info('START: fetchCustomers service');
     try {
-      const customers = await this.customersRepository.find({
+      const [customers, count] = await this.customersRepository.findAndCount({
         where: {
           organization: {
             organizationId,
@@ -110,9 +112,7 @@ export class CustomersService {
       }
 
       this.logger.info('END: fetchCustomers service');
-      return customers.map((customer) =>
-        this.customerConverter.convert(customer),
-      );
+      return this.customerListConverter.convert(customers, skip, take, count);
     } catch (error) {
       this.logger.error(`Error in fetchCustomers: ${error.message}`, error);
 

@@ -8,6 +8,7 @@ import { CouponSummaryMv } from '../entities/coupon-summary.view';
 import { CouponConverter } from '../converters/coupon.converter';
 import { ItemConverter } from '../converters/item.converter';
 import { CouponSummarySheetConverter } from '../converters/coupon-summary-sheet.converter';
+import { CouponListConverter } from 'src/converters/coupon-list.converter';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Coupon, CouponItem, CouponSummaryMv])],
@@ -17,6 +18,7 @@ import { CouponSummarySheetConverter } from '../converters/coupon-summary-sheet.
     CouponConverter,
     ItemConverter,
     CouponSummarySheetConverter,
+    CouponListConverter,
   ],
   exports: [CouponService],
 })

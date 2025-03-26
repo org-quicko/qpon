@@ -17,6 +17,7 @@ import { Campaign } from '../entities/campaign.entity';
 import { CouponCode } from '../entities/coupon-code.entity';
 import { CouponSummarySheetConverter } from '../converters/coupon-summary-sheet.converter';
 import { CouponSummaryMv } from '../entities/coupon-summary.view';
+import { CouponListConverter } from 'src/converters/coupon-list.converter';
 
 @Injectable()
 export class CouponService {
@@ -27,6 +28,7 @@ export class CouponService {
     private readonly couponSummaryMvRepository: Repository<CouponSummaryMv>,
     private couponConverter: CouponConverter,
     private couponSummarySheetConverter: CouponSummarySheetConverter,
+    private couponListConverter: CouponListConverter,
     private logger: LoggerService,
     private datasource: DataSource,
   ) {}
@@ -109,7 +111,7 @@ export class CouponService {
   ) {
     this.logger.info('START: fetchCoupons service');
     try {
-      const coupons = await this.couponRepository.find({
+      const [coupons, count] = await this.couponRepository.findAndCount({
         where: {
           organization: {
             organizationId,
@@ -126,7 +128,7 @@ export class CouponService {
       }
 
       this.logger.info('END: fetchCoupons service');
-      return coupons.map((coupon) => this.couponConverter.convert(coupon));
+      return this.couponListConverter.convert(coupons, skip, take, count);
     } catch (error) {
       this.logger.error(`Error in fetchCoupons: ${error.message}`, error);
 
