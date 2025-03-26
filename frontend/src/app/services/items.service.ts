@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.dev';
 import { ApiResponse } from '../../dtos/api-response.dto';
 import { ItemDto } from '../../dtos/item.dto';
+import { PaginatedList } from '../../dtos/paginated-list.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class ItemsService {
 
   fetchItems(organizationId: string, take:number  = 10, skip: number = 0) {
     const url = this.endpoint + "/organizations/" + organizationId + "/items"
-    return this.httpClient.get<ApiResponse<ItemDto[]>>(url, {
+    return this.httpClient.get<ApiResponse<PaginatedList<ItemDto>>>(url, {
       params: {
         take,
         skip

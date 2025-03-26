@@ -7,9 +7,13 @@ import { tapResponse } from '@ngrx/operators';
 import { CustomerDto } from '../../dtos/customer.dto';
 import { plainToClass } from 'class-transformer';
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
+import { PaginatedList } from '../../dtos/paginated-list.dto';
 
 type CustomersState = {
   customers: CustomerDto[];
+  skip?: number | null,
+  take?: number | null,
+  count?: number | null,
   isLoading: boolean;
   filter: { query: string } | null;
   error: string | null;
@@ -17,6 +21,9 @@ type CustomersState = {
 
 const initialState: CustomersState = {
   customers: [],
+  skip: null,
+  take: null,
+  count: null,
   isLoading: false,
   filter: null,
   error: null,
@@ -34,9 +41,12 @@ export const CustomersStore = signalStore(
           return customerService.fetchCustomers(organizationId).pipe(
             tapResponse({
               next: (response) => {
-                const customers = response.data;
+                const customerList = plainToClass(PaginatedList<CustomerDto>, response.data) ;
                 patchState(store, {
-                  customers: customers?.map((customer) => plainToClass(CustomerDto, customer)),
+                  customers: customerList.getItems()?.map((customer) => plainToClass(CustomerDto, customer)),
+                  skip: customerList?.getSkip(),
+                  count: customerList?.getCount(),
+                  take: customerList?.getTake(),
                   isLoading: false,
                 });
               },

@@ -30,6 +30,8 @@ export class CustomersComponent implements OnInit {
   organizationStore = inject(OrganizationStore);
 
   customers = this.customersStore.customers;
+  count = this.customersStore.count!;
+  take = this.customersStore.take!;
 
   ngOnInit(): void {
     this.customersStore.fetchCustomers({

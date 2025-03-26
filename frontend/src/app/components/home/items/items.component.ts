@@ -36,6 +36,8 @@ export class ItemsComponent implements OnInit {
   organizationStore = inject(OrganizationStore);
 
   items = this.itemsStore.items;
+  count = this.itemsStore.count!;
+  take = this.itemsStore.take!;
   isLoading = this.itemsStore.isLoading;
 
   onEdit(item: ItemDto) {

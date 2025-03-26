@@ -5,7 +5,13 @@
         <p
           class="mat-headline-medium text-on-surface w-full"
         >
+        @if (count() !== null && count() !== undefined) {
+          @if (count()! > 0) {
+            Customers {{ `(${count()!})` }}
+          }
+        } @else {
           Customers
+        }
         </p>
       </div>
       <div class="flex gap-[8px]">
@@ -175,7 +181,7 @@
         </table>
       </div>
       <div>
-        <mat-paginator></mat-paginator>
+        <mat-paginator [length]="count()" [pageSize]="take()"></mat-paginator>
       </div>
     </div>
     }
