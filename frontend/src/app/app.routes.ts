@@ -19,14 +19,14 @@ import { CustomersCreateComponent } from './components/customers/customers-creat
 import { CustomersEditComponent } from './components/customers/customers-edit/customers-edit.component';
 import { HomeComponent } from './components/home/home.component';
 import { OrganizationUserResolver } from './resolvers/organization-user.resolver';
+import { UserResolver } from './resolvers/user.resolver';
 // import { UserResolver } from './resolvers/user.resolver';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {
     path: '',
-    // resolve: { user: UserResolver },
-    resolve: { organizations: OrganizationUserResolver },
+    resolve: { user: UserResolver, organizations: OrganizationUserResolver },
     canActivate: [AuthGuard],
     children: [
       {
@@ -47,9 +47,7 @@ export const routes: Routes = [
               { path: 'customers', component: CustomersComponent },
               {
                 path: 'items',
-                children: [
-                  { path: '', component: ItemsComponent },
-                ],
+                children: [{ path: '', component: ItemsComponent }],
               },
               { path: 'reports', component: ReportsComponent },
               {
