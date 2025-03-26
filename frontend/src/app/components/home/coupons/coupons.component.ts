@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-coupons',
-  template: `<p>Coupons Component</p>`,
-  standalone: true
+  imports: [],
+  templateUrl: './coupon.component.html',
+  styleUrl: './coupons.component.html',
 })
 export class CouponsComponent {}
