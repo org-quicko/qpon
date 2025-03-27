@@ -7,6 +7,8 @@ import {
   Body,
   Param,
   Query,
+  HttpStatus,
+  HttpCode,
 } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { CouponService } from '../services/coupon.service';
@@ -161,6 +163,7 @@ export class CouponController {
   /**
    * Deactivate coupon
    */
+  @HttpCode(HttpStatus.OK)
   @ApiResponse({ status: 200, description: 'Successful response' })
   @Permissions('update', Coupon)
   @Post(':coupon_id/deactivate')
@@ -176,6 +179,7 @@ export class CouponController {
   /**
    * Reactivate coupon
    */
+  @HttpCode(HttpStatus.OK)
   @ApiResponse({ status: 200, description: 'Successful response' })
   @Permissions('update', Coupon)
   @Post(':coupon_id/reactivate')
