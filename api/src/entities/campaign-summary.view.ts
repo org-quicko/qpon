@@ -19,7 +19,7 @@ import { Index, ViewColumn, ViewEntity } from 'typeorm';
         SELECT 
             campaign_id,
             COUNT(redemption_id) AS total_redemption_count,
-            SUM(amount) AS total_redemption_amount
+            SUM(discount) AS total_redemption_amount
         FROM redemption
         GROUP BY campaign_id
     ) r ON cp.campaign_id = r.campaign_id
