@@ -46,11 +46,15 @@ export class CouponsComponent implements OnInit, AfterViewInit {
   coupons = this.couponsStore.coupons;
   count = this.couponsStore.count!;
   take = this.couponsStore.take!;
+  skip = this.couponsStore.skip!;
 
   readonly dialog = inject(MatDialog);
 
-  @ViewChild(MatPaginator)
-  paginator: MatPaginator = new MatPaginator;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  ngAfterViewInit() {
+    this.couponDatasource.paginator = this.paginator;
+  }
 
   openDialog(coupon: CouponDto) {
     this.dialog.open(ChangeStatusComponent, {
@@ -62,13 +66,9 @@ export class CouponsComponent implements OnInit, AfterViewInit {
   onPageChange(event: PageEvent) {
     this.couponsStore.fetchCoupons({
       organizationId: this.organization()?.organizationId!,
-      skip: (event.pageIndex - 1) * (this.take()!),
-      take: this.take()!
+      skip: (event.pageIndex) * event.pageSize,
+      take: event.pageSize
     })
-  }
-
-  ngAfterViewInit(): void {
-    this.couponDatasource.paginator = this.paginator;
   }
 
   ngOnInit(): void {

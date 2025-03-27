@@ -13,7 +13,7 @@ export class CustomerService {
 
   constructor(private httpClient: HttpClient) { }
 
-  fetchCustomers(organizationId: string, take:number  = 10, skip: number = 0) {
+  fetchCustomers(organizationId: string, skip: number = 0, take:number  = 10) {
     const url = this.endpoint + "/organizations/" + organizationId + "/customers"
     return this.httpClient.get<ApiResponse<PaginatedList<CustomerDto>>>(url, {
       params: {

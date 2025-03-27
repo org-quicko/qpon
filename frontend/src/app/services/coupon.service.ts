@@ -14,7 +14,7 @@ export class CouponService {
 
   constructor(private httpClient: HttpClient) { }
 
-  fetchCoupons(organizationId: string, skip: number = 0, take:number = 2) {
+  fetchCoupons(organizationId: string, skip: number = 0, take:number = 10) {
     const url = this.endpoint + "/organizations/" + organizationId + "/coupons";
     return this.httpClient.get<ApiResponse<PaginatedList<CouponDto>>>(url,{
       params: {

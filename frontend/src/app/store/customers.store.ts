@@ -34,11 +34,11 @@ export const CustomersStore = signalStore(
   withDevtools('customers'),
   withState(initialState),
   withMethods((store, customerService = inject(CustomerService)) => ({
-    fetchCustomers: rxMethod<{ organizationId: string }>(
+    fetchCustomers: rxMethod<{ organizationId: string, skip?:number, take?: number }>(
       pipe(
         tap(() => patchState(store, { isLoading: true })),
-        concatMap(({ organizationId }) => {
-          return customerService.fetchCustomers(organizationId).pipe(
+        concatMap(({ organizationId, skip, take }) => {
+          return customerService.fetchCustomers(organizationId, skip, take).pipe(
             tapResponse({
               next: (response) => {
                 const customerList = plainToClass(PaginatedList<CustomerDto>, response.data) ;

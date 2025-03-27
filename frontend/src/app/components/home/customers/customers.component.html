@@ -181,7 +181,7 @@
         </table>
       </div>
       <div>
-        <mat-paginator [length]="count()" [pageSize]="take()"></mat-paginator>
+        <mat-paginator [length]="count()" [pageSize]="take()" (page)="onPageChange($event)"></mat-paginator>
       </div>
     </div>
     }

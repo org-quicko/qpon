@@ -34,11 +34,11 @@ export const ItemsStore = signalStore(
   withDevtools('items'),
   withState(initialState),
   withMethods((store, itemsService = inject(ItemsService)) => ({
-    fetchItems: rxMethod<{ organizationId: string }>(
+    fetchItems: rxMethod<{ organizationId: string, skip?: number, take?: number }>(
       pipe(
         tap(() => patchState(store, { isLoading: true })),
-        concatMap(({ organizationId }) => {
-          return itemsService.fetchItems(organizationId).pipe(
+        concatMap(({ organizationId, skip, take }) => {
+          return itemsService.fetchItems(organizationId, skip, take).pipe(
             tapResponse({
               next: (response) => {
                 const itemList = plainToClass(PaginatedList<ItemDto>, response.data);
