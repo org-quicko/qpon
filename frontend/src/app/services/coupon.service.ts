@@ -14,7 +14,7 @@ export class CouponService {
 
   constructor(private httpClient: HttpClient) { }
 
-  fetchCoupons(organizationId: string, skip: number = 0, take:number = 0) {
+  fetchCoupons(organizationId: string, skip: number = 0, take:number = 2) {
     const url = this.endpoint + "/organizations/" + organizationId + "/coupons";
     return this.httpClient.get<ApiResponse<PaginatedList<CouponDto>>>(url,{
       params: {
@@ -22,5 +22,15 @@ export class CouponService {
         take
       }
     })
+  }
+
+  deactivateCoupon(organizationId: string, couponId: string) {
+    const url = this.endpoint + "/organizations/" + organizationId + "/coupons/" + couponId + "/deactivate";
+    return this.httpClient.post<ApiResponse<any>>(url, null);
+  }
+
+  activateCoupon(organizationId: string, couponId: string) {
+    const url = this.endpoint + "/organizations/" + organizationId + "/coupons/" + couponId + "/reactivate";
+    return this.httpClient.post<ApiResponse<any>>(url, null);
   }
 }

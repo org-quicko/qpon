@@ -1,5 +1,5 @@
 import { CommonModule, TitleCasePipe } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal, Signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -10,6 +10,7 @@ import { take } from 'rxjs';
 import { OrganizationUserStore } from '../../../../../store/organization-user.store';
 import { OrganizationDto } from '../../../../../../dtos/organization.dto';
 import { environment } from '../../../../../../environments/environment.dev';
+import { OrganizationUserDto } from '../../../../../../dtos/organization-user.dto';
 
 @Component({
   selector: 'app-choose-organization',
@@ -28,7 +29,7 @@ import { environment } from '../../../../../../environments/environment.dev';
 export class ChooseOrganizationComponent implements OnInit {
   organizations: any;
   currentOrganizationId: any
-  currentOrganization: any
+  currentOrganization = signal<OrganizationUserDto | null>(null)
 
   organizationUserStore = inject(OrganizationUserStore);
 
@@ -50,7 +51,7 @@ export class ChooseOrganizationComponent implements OnInit {
     this.organizations = this.organizationUserStore.organizations()
     this.organizations.map((organization: OrganizationDto) => {
       if(organization.organizationId == this.currentOrganizationId) {
-        this.currentOrganization = organization;
+        this.currentOrganization.set(organization);
       }
     })
   }

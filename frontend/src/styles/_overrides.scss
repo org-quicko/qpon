@@ -169,3 +169,9 @@
   overflow-y: scroll; /* Needed to ensure scrolling works in Safari */
 }
 
+.coupon-table {
+  @include mat.table-overrides((
+    row-item-container-height: 80px,
+    header-container-height: 72px
+  ));
+}

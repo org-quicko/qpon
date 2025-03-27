@@ -10,7 +10,7 @@
         <ngx-avatars
           size="30"
           [round]="true"
-          [name]="currentOrganization?.name"
+          [name]="currentOrganization()?.name"
         >
         </ngx-avatars>
       </ng-container>
@@ -20,7 +20,7 @@
           [textSizeRatio]="2.5"
           [style]="{ fontWeight: '500' }"
           [round]="true"
-          [name]="((currentOrganization?.name.split(' ') | titlecase))"
+          [name]="((currentOrganization()?.name?.split(' ')?.join(' ')| titlecase))"
           bgColor="var(--sys-primary-fixed)"
           fgColor="var(--sys-on-primary-fixed-variant)"
         >
@@ -29,11 +29,11 @@
     </div>
     <div class="flex flex-col">
       <div class="text-on-surface mat-body-medium max-w-[142px] truncate">
-        {{ currentOrganization.name }}
+        {{ currentOrganization()?.name }}
       </div>
       <div class="flex gap-[4px]">
         <div class="mat-body-small text-on-surface-variant">
-          You're the {{ currentOrganization.role.replace('_', ' ') }}
+          You're the {{ currentOrganization()?.role!.replace('_', ' ') }}
         </div>
       </div>
     </div>
