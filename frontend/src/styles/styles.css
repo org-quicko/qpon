@@ -15,6 +15,7 @@ body {
 body {
   margin: 0;
   font-family: "General Sans", sans-serif;
+  background-color: var(--sys-surface-container-lowest);
 }
 
 .mdc-list-item.mdc-list-item--with-one-line {

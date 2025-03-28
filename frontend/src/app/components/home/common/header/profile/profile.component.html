@@ -21,10 +21,10 @@
         <div class="border-b pb-[20px] flex flex-col gap-[20px] border-b-outline-variant">
           <div class="w-[175px] h-auto px-[16px] pt-[16px]">
             <div class="flex flex-col gap-[4px]">
-              <div class="flex gap-[8px] items-center">
+              <div class="flex gap-[8px] items-center text-on-surface">
                 <p class="mat-body-large">{{ user()?.name | titlecase }}</p>
                 <p
-                  class="bg-surface-container mat-label-small text-on-surface px-[8px] py-[4px]"
+                  class="bg-surface-container mat-label-small px-[8px] py-[4px]"
                 >
                   {{ role.replace("_", " ") | titlecase }}
                 </p>
