@@ -20,7 +20,7 @@ import { Column, PrimaryColumn, ViewEntity } from 'typeorm';
     SELECT 
         organization_id,
         COUNT(redemption_id) AS total_redemption_count,
-        SUM(amount) AS total_redemption_amount
+        SUM(discount) AS total_redemption_amount
     FROM redemption
     GROUP BY organization_id
     ) r ON o.organization_id = r.organization_id
