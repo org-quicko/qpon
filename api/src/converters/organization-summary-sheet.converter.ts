@@ -4,7 +4,7 @@ import {
   OrganizationSummarySheet,
   OrganizationSummaryTable,
   OrganizationSummaryWorkbook,
-} from 'generated/sources';
+} from 'generated/sources/organization_summary_workbook';
 import { OrganizationSummaryMv } from '../entities/organization-summary.view';
 
 @Injectable()

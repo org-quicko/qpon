@@ -6,7 +6,7 @@ import {
   RedemptionSheet,
   RedemptionTable,
   RedemptionWorkbook,
-} from 'generated/sources';
+} from 'generated/sources/redemption_workbook';
 
 @Injectable()
 export class RedemptionSheetConverter {

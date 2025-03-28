@@ -4,7 +4,7 @@ import {
   RedemptionReportSheet,
   RedemptionReportTable,
   RedemptionReportWorkbook,
-} from 'generated/sources';
+} from 'generated/sources/redemption_report_workbook';
 import { Redemption } from '../entities/redemption.entity';
 import { formatDate } from '../utils/date.utils';
 

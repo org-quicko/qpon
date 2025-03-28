@@ -5,7 +5,7 @@ import {
   CampaignSummarySheet,
   CampaignSummaryTable,
   CampaignSummaryWorkbook,
-} from 'generated/sources';
+} from 'generated/sources/campaign_summary_workbook';
 import { CampaignSummaryMv } from '../entities/campaign-summary.view';
 
 @Injectable()

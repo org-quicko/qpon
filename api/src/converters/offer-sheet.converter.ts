@@ -5,7 +5,7 @@ import {
   OfferSheet,
   OfferTable,
   OfferWorkbook,
-} from 'generated/sources';
+} from 'generated/sources/offer_workbook';
 import { Offer } from '../entities/offer.view';
 import { offerDescriptionBuilder } from '../utils/offer-description.builder';
 import { offerTitleBuilder } from '../utils/offer-title.builder';

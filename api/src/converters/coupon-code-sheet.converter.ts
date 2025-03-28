@@ -5,7 +5,7 @@ import {
   CouponCodeSheet,
   CouponCodeTable,
   CouponCodeWorkbook,
-} from 'generated/sources';
+} from 'generated/sources/coupon_code_workbook';
 import { CouponCode } from '../entities/coupon-code.entity';
 
 @Injectable()

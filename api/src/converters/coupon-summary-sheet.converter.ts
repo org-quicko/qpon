@@ -5,7 +5,7 @@ import {
   CouponSummarySheet,
   CouponSummaryTable,
   CouponSummaryWorkbook,
-} from 'generated/sources';
+} from 'generated/sources/coupon_summary_workbook';
 import { CouponSummaryMv } from '../entities/coupon-summary.view';
 
 @Injectable()
