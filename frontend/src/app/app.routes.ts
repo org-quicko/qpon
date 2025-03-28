@@ -20,6 +20,7 @@ import { CustomersEditComponent } from './components/customers/customers-edit/cu
 import { HomeComponent } from './components/home/home.component';
 import { OrganizationUserResolver } from './resolvers/organization-user.resolver';
 import { UserResolver } from './resolvers/user.resolver';
+import { CouponComponent } from './components/home/coupon/coupon.component';
 // import { UserResolver } from './resolvers/user.resolver';
 
 export const routes: Routes = [
@@ -54,34 +55,36 @@ export const routes: Routes = [
                 path: 'coupons',
                 children: [
                   { path: '', component: CouponsComponent },
-                  { path: ':coupon_id', component: CouponEditComponent },
                 ],
               },
+              {
+                path: 'coupon/:coupon_id', component: CouponComponent
+              }
             ],
           },
           {
-            path: 'coupons',
+            path: 'coupon',
             children: [
               { path: 'create', component: CouponCreateComponent },
               { path: 'edit/:coupon_id', component: CouponEditComponent },
             ],
           },
           {
-            path: 'campaigns',
+            path: 'campaign',
             children: [
               { path: 'create', component: CampaignCreateComponent },
               { path: 'edit/:campaign_id', component: CampaignEditComponent },
             ],
           },
           {
-            path: 'customers',
+            path: 'customer',
             children: [
               { path: 'create', component: CustomersCreateComponent },
               { path: 'edit/:customer_id', component: CustomersEditComponent },
             ],
           },
           {
-            path: 'items',
+            path: 'item',
             children: [
               { path: 'create', component: ItemsCreateComponent },
               { path: 'edit/:item_id', component: ItemsEditComponent },
