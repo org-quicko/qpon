@@ -5,7 +5,7 @@
         <p class="mat-headline-medium text-on-surface w-full">
           @if (count() !== null && count() !== undefined) { @if (count()! > 0) {
           Coupons {{ `(${count()!})` }}
-          } } @else { Coupons }
+          }@else {Coupons}} @else { Coupons }
         </p>
       </div>
       <div class="flex gap-[8px]">
@@ -15,7 +15,7 @@
         </button>
       </div>
     </div>
-    @if(coupons() && coupons ().length == 0) {
+    @if( couponsStore.coupons() && couponsStore.coupons().length == 0) {
     <div class="flex justify-center items-center h-[600px]">
       <div class="flex flex-col items-center gap-[10px] h-auto w-auto">
         <div class="bg-surface-container rounded-[10px]">
@@ -52,13 +52,47 @@
       </div>
       <input
         matInput
-        class="focus:outline-none align-middle py-[4px] w-full mat-body-large"
+        [formControl]="searchControl"
+        class="focus:outline-none align-middle py-[4px] w-full mat-body-large text-outline"
         placeholder="Search coupons"
       />
+      <div class="h-[48px] w-[48px] flex justify-center items-center cursor-pointer" [matMenuTriggerFor]="filterMenu">
+        <mat-icon class="text-on-surface-variant">tune</mat-icon>
+      </div>
     </div>
+    <mat-menu #filterMenu="matMenu" class="w-[400px] relative top-[-20px] bg-surface-container-lowest">
+      <form [formGroup]="filterForm">
+        <div class="py-2 px-4">
+          <p class="mat-body-large text-on-surface">Coupon status</p>
+          <mat-radio-group formControlName="couponStatus" class="flex gap-[24px]" (click)="preventClose($event)">
+            <mat-radio-button value="active">Active</mat-radio-button>
+            <mat-radio-button value="inactive">Inactive</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <div class="py-2 px-4">
+          <p class="mat-body-large text-on-surface">Items</p>
+          <mat-radio-group formControlName="itemConstraint" class="flex gap-[24px]" (click)="preventClose($event)">
+            <mat-radio-button value="all">All</mat-radio-button>
+            <mat-radio-button value="specific">Specific</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <div class="py-2 px-4">
+          <p class="mat-body-large text-on-surface">Discount type</p>
+          <mat-radio-group formControlName="discountType" class="flex gap-[24px]" (click)="preventClose($event)">
+            <mat-radio-button value="percentage">Percentage</mat-radio-button>
+            <mat-radio-button value="fixed">Fixed</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <mat-divider class="bg-outline-variant border border-outline-variant"></mat-divider>
+        <div class="flex justify-end gap-2 mat-label-large p-4">
+          <button mat-stroked-button class="rounded-[100px]" (click)="resetForm()">Cancel</button>
+          <button mat-button class="bg-primary text-on-primary" (click)="applyFilters()">Apply</button>
+        </div>
+      </form>
+    </mat-menu>
     <div>
       <div class="border-outline-variant border-[1px] rounded-[5px]">
-        <table mat-table [dataSource]="coupons()" class="coupon-table">
+        <table mat-table [dataSource]="coupons()" class="coupon-table" matSort [matSortActive]="'createdAt'" [matSortDirection]="'desc'" matSortDisableClear="true" [ngClass]="{'h-[500px]': coupons().length == 0}">
           <ng-container matColumnDef="name">
             <th
               mat-header-cell
@@ -141,13 +175,17 @@
             </td>
           </ng-container>
 
-          <ng-container matColumnDef="created_at">
+          <ng-container matColumnDef="createdAt">
             <th
               mat-header-cell
               *matHeaderCellDef
-              class="mat-body-medium text-on-surface px-6 py-3 w-[250px]"
+              mat-sort-header
+              class="mat-body-medium text-on-surface px-6 py-3 w-[250px] cursor-pointer"
             >
+            <div class="flex items-center">
               <span>Created at</span>
+              <!-- <mat-icon class="w-[18px] h-[18px] text-[18px] top-[1px] left-[76px]">arrow_downward</mat-icon> -->
+            </div>  
             </th>
             <td
               mat-cell
@@ -187,7 +225,21 @@
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="columns"></tr>
-          <tr mat-row *matRowDef="let row; columns: columns" class="hover:bg-surface-bright cursor-pointer"></tr>
+          <tr mat-row *matRowDef="let row; columns: columns" class="hover:bg-surface-bright cursor-pointer" (click)="onRowClick(row)"></tr>
+          <tr class="empty-row" *matNoDataRow>
+            <td [attr.colspan]="columns.length">
+              <div class="flex flex-col justify-center items-center h-[300px]">
+                <div class="p-6 text-center">
+                  <div class="text-on-surface-variant flex flex-col items-center">
+                    <!-- <div class="bg-surface-container rounded-full h-[72px] w-[72px] flex items-center justify-center p-3">
+                      <mat-icon class="material-symbols-outlined text-[48px]">local_activity</mat-icon>
+                    </div> -->
+                    <p class="text-lg font-medium">No coupons to show</p>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
         </table>
       </div>
       <div>

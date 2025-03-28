@@ -1,36 +1,74 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.dev';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { ApiResponse } from '../../dtos/api-response.dto';
 import { PaginatedList } from '../../dtos/paginated-list.dto';
 import { CouponDto } from '../../dtos/coupon.dto';
+import { CouponFilter } from '../interfaces/coupon-filter.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CouponService {
+  private endpoint = environment.api_qpon_dev;
 
-  private endpoint = environment.api_qpon_dev
+  constructor(private httpClient: HttpClient) {}
 
-  constructor(private httpClient: HttpClient) { }
+  fetchCoupons(
+    organizationId: string,
+    skip: number = 0,
+    take: number = 10,
+    filter?: CouponFilter
+  ) {
+    const url = this.endpoint + '/organizations/' + organizationId + '/coupons';
 
-  fetchCoupons(organizationId: string, skip: number = 0, take:number = 10) {
-    const url = this.endpoint + "/organizations/" + organizationId + "/coupons";
-    return this.httpClient.get<ApiResponse<PaginatedList<CouponDto>>>(url,{
-      params: {
-        skip,
-        take
-      }
-    })
+    let params = new HttpParams()
+        .set('skip', skip)
+        .set('take', take);
+
+    if (filter && filter.query) {
+      params = params.set('name', filter.query);
+    }
+
+    if (filter && filter.couponStatus) {
+      params = params.set('status', filter.couponStatus);
+    }
+    if (filter && filter.itemConstraint) {
+      params = params.set('item_constraint', filter.itemConstraint);
+    }
+    if (filter && filter.discountType) {
+      params = params.set('discount_type', filter.discountType);
+    }
+
+    if(filter && filter.sortBy && filter.sortOrder) {
+      params = params.set('sort_by', filter.sortBy);
+      params = params.set('sort_order', filter.sortOrder);
+    }
+
+    return this.httpClient.get<ApiResponse<PaginatedList<CouponDto>>>(url, {
+      params
+    });
   }
 
   deactivateCoupon(organizationId: string, couponId: string) {
-    const url = this.endpoint + "/organizations/" + organizationId + "/coupons/" + couponId + "/deactivate";
+    const url =
+      this.endpoint +
+      '/organizations/' +
+      organizationId +
+      '/coupons/' +
+      couponId +
+      '/deactivate';
     return this.httpClient.post<ApiResponse<any>>(url, null);
   }
 
   activateCoupon(organizationId: string, couponId: string) {
-    const url = this.endpoint + "/organizations/" + organizationId + "/coupons/" + couponId + "/reactivate";
+    const url =
+      this.endpoint +
+      '/organizations/' +
+      organizationId +
+      '/coupons/' +
+      couponId +
+      '/reactivate';
     return this.httpClient.post<ApiResponse<any>>(url, null);
   }
 }
