@@ -14,7 +14,12 @@ import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { CouponService } from '../services/coupon.service';
 import { CreateCouponDto, UpdateCouponDto } from '../dtos';
 import { LoggerService } from '../services/logger.service';
-import { discountTypeEnum, statusEnum } from '../enums';
+import {
+  discountTypeEnum,
+  itemConstraintEnum,
+  sortOrderEnum,
+  statusEnum,
+} from '../enums';
 import { Permissions } from '../decorators/permission.decorator';
 import { Coupon } from '../entities/coupon.entity';
 import { CouponSummaryMv } from '../entities/coupon-summary.view';
@@ -57,6 +62,9 @@ export class CouponController {
     @Query('discount_type') discountType?: discountTypeEnum,
     @Query('external_item_id') externalItemId?: string,
     @Query('name') name?: string,
+    @Query('item_constraint') itemConstraint?: itemConstraintEnum,
+    @Query('sort_by') sortBy?: string,
+    @Query('sort_order') sortOrder: sortOrderEnum = sortOrderEnum.DESC,
     @Query('take') take?: number,
     @Query('skip') skip?: number,
   ) {
@@ -70,12 +78,15 @@ export class CouponController {
         name,
         status,
         discountType,
+        itemConstraint,
         couponItems: {
           item: {
             externalId: externalItemId,
           },
         },
       },
+      sortBy,
+      sortOrder,
     );
 
     this.logger.info('END: fetchCoupons controller');

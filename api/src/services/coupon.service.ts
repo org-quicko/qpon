@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-base-to-string */
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import {
   BadRequestException,
   ConflictException,
@@ -7,11 +9,16 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, FindOptionsWhere, Like, Repository } from 'typeorm';
+import { DataSource, FindOptionsWhere, ILike, Like, Repository } from 'typeorm';
 import { Coupon } from '../entities/coupon.entity';
 import { CreateCouponDto, UpdateCouponDto } from '../dtos';
 import { LoggerService } from './logger.service';
-import { campaignStatusEnum, couponCodeStatusEnum, statusEnum } from '../enums';
+import {
+  campaignStatusEnum,
+  couponCodeStatusEnum,
+  sortOrderEnum,
+  statusEnum,
+} from '../enums';
 import { CouponConverter } from '../converters/coupon.converter';
 import { Campaign } from '../entities/campaign.entity';
 import { CouponCode } from '../entities/coupon-code.entity';
@@ -108,16 +115,27 @@ export class CouponService {
     skip: number = 0,
     take: number = 10,
     whereOptions: FindOptionsWhere<Coupon> = {},
+    sortBy?: string,
+    sortOrder?: sortOrderEnum,
   ) {
     this.logger.info('START: fetchCoupons service');
     try {
+      let nameFilter: string = '';
+
+      if (whereOptions.name) {
+        nameFilter = whereOptions.name as string;
+        delete whereOptions.name;
+      }
+
       const [coupons, count] = await this.couponRepository.findAndCount({
         where: {
           organization: {
             organizationId,
           },
+          ...(nameFilter && { name: ILike(`%${nameFilter}%`) }),
           ...whereOptions,
         },
+        ...(sortBy && { order: { [sortBy]: sortOrder } }),
         skip,
         take,
       });
