@@ -11,6 +11,7 @@ import {
   DataSource,
   EntityManager,
   FindOptionsWhere,
+  ILike,
   In,
   Like,
   Repository,
@@ -90,12 +91,20 @@ export class ItemsService {
   ) {
     this.logger.info('START: fetchItems service');
     try {
+      let nameFilter: string = '';
+
+      if (whereOptions.name) {
+        nameFilter = whereOptions.name as string;
+        delete whereOptions.name;
+      }
+
       const [items, count] = await this.itemsRepository.findAndCount({
         where: {
           organization: {
             organizationId,
           },
           status: statusEnum.ACTIVE,
+          ...(nameFilter && { name: ILike(`%${nameFilter}%`) }),
           ...whereOptions,
         },
         skip,

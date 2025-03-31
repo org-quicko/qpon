@@ -8,6 +8,7 @@ import { ItemDto } from '../../dtos/item.dto';
 import { plainToClass } from 'class-transformer';
 import { withDevtools } from "@angular-architects/ngrx-toolkit";
 import { PaginatedList } from '../../dtos/paginated-list.dto';
+import { ItemFilter } from '../interfaces/item-filter.interface';
 
 type ItemsState = {
   items: ItemDto[];
@@ -34,11 +35,11 @@ export const ItemsStore = signalStore(
   withDevtools('items'),
   withState(initialState),
   withMethods((store, itemsService = inject(ItemsService)) => ({
-    fetchItems: rxMethod<{ organizationId: string, skip?: number, take?: number }>(
+    fetchItems: rxMethod<{ organizationId: string, skip?: number, take?: number, filter?: ItemFilter }>(
       pipe(
         tap(() => patchState(store, { isLoading: true })),
-        concatMap(({ organizationId, skip, take }) => {
-          return itemsService.fetchItems(organizationId, skip, take).pipe(
+        concatMap(({ organizationId, skip, take, filter }) => {
+          return itemsService.fetchItems(organizationId, skip, take, filter).pipe(
             tapResponse({
               next: (response) => {
                 const itemList = plainToClass(PaginatedList<ItemDto>, response.data);

@@ -1,16 +1,28 @@
-import { AfterViewInit, Component, inject, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import {
+  MatPaginator,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
 import { ItemsStore } from '../../../store/items.store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { plainToClass, plainToInstance } from 'class-transformer';
 import { ItemDto } from '../../../../dtos/item.dto';
 import { OrganizationStore } from '../../../store/organization.store';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-items',
@@ -22,15 +34,17 @@ import { OrganizationStore } from '../../../store/organization.store';
     MatCheckboxModule,
     MatMenuModule,
     MatPaginatorModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './items.component.html',
   styleUrl: './items.component.css',
 })
 export class ItemsComponent implements OnInit, AfterViewInit {
-
   constructor(private router: Router, private route: ActivatedRoute) {}
 
   columns = ['name', 'description', 'menu'];
+
+  searchControl = new FormControl('');
 
   itemsStore = inject(ItemsStore);
   organizationStore = inject(OrganizationStore);
@@ -47,11 +61,16 @@ export class ItemsComponent implements OnInit, AfterViewInit {
   isLoading = this.itemsStore.isLoading;
 
   onEdit(item: ItemDto) {
-    this.router.navigate([`../../items/edit/${item.itemId}`], { relativeTo: this.route })
+    this.router.navigate([`../../items/edit/${item.itemId}`], {
+      relativeTo: this.route,
+    });
   }
 
   onDelete(item: ItemDto) {
-    this.itemsStore.deleteItem({organizationId: this.organizationStore.organizaiton()?.organizationId!, itemId: item.itemId!})
+    this.itemsStore.deleteItem({
+      organizationId: this.organizationStore.organizaiton()?.organizationId!,
+      itemId: item.itemId!,
+    });
   }
 
   ngAfterViewInit(): void {
@@ -59,14 +78,27 @@ export class ItemsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.itemsStore.fetchItems({organizationId: this.organization()?.organizationId!});
+    this.itemsStore.fetchItems({
+      organizationId: this.organization()?.organizationId!,
+    });
+
+    this.searchControl.valueChanges
+      .pipe(debounceTime(500), distinctUntilChanged())
+      .subscribe((name) => {
+        this.itemsStore.fetchItems({
+          organizationId: this.organization()?.organizationId!,
+          filter: {
+            query: name
+          }
+        });
+      });
   }
-  
+
   onPageChange(event: PageEvent) {
     this.itemsStore.fetchItems({
       organizationId: this.organization()?.organizationId!,
-      skip: (event.pageIndex) * event.pageSize,
-      take: event.pageSize
-    })
+      skip: event.pageIndex * event.pageSize,
+      take: event.pageSize,
+    });
   }
 }
