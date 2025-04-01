@@ -94,28 +94,49 @@ export class CouponController {
   }
 
   /**
+   * Fetch coupon summary
+   */
+  @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('read', CouponSummaryMv)
+  @Get(':coupon_id/summary')
+  async fetchCouponSummary(
+    @Param('organization_id') organizationId: string,
+    @Param('coupon_id') couponId: string,
+  ) {
+    this.logger.info('START: fetchCouponSummary controller');
+
+    const result = await this.couponService.fetchCouponSummary(
+      organizationId,
+      couponId,
+    );
+
+    this.logger.info('END: fetchCouponSummary controller');
+    return { message: 'Successfully fetched coupon summary', result };
+  }
+
+  /**
    * Fetch coupons summary
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
   @Permissions('read', CouponSummaryMv)
   @Get('/summary')
-  async fetchCouponSummary(
+  async fetchCouponsSummary(
     @Param('organization_id') organizationId: string,
     @Query('coupon_id') couponId?: string,
     @Query('skip') skip?: number,
     @Query('take') take?: number,
   ) {
-    this.logger.info('START: fetchCouponSummary controller');
+    this.logger.info('START: fetchCouponsSummary controller');
 
-    const result = await this.couponService.fetchCouponSummary(
+    const result = await this.couponService.fetchCouponsSummary(
       organizationId,
       { couponId },
       skip,
       take,
     );
 
-    this.logger.info('END: fetchCouponSummary controller');
-    return { message: 'Successfully fetched organization summary', result };
+    this.logger.info('END: fetchCouponsSummary controller');
+    return { message: 'Successfully fetched coupons summary', result };
   }
 
   /**

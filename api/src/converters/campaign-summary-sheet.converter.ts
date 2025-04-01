@@ -16,6 +16,7 @@ export class CampaignSummarySheetConverter {
     campaignSummaryMv.map((campaignSummary) => {
       const campaignSummaryRow = new CampaignSummaryRow([]);
       campaignSummaryRow.setCampaignId(campaignSummary.campaignId);
+      campaignSummaryRow.setName(campaignSummary.name);
       campaignSummaryRow.setTotalRedemptionCount(
         campaignSummary.totalRedemptionCount,
       );
@@ -25,6 +26,7 @@ export class CampaignSummarySheetConverter {
       campaignSummaryRow.setActiveCouponCodeCount(
         campaignSummary.activeCouponCodeCount,
       );
+      campaignSummaryRow.setStatus(campaignSummary.status);
       campaignSummaryRow.setCreatedAt(campaignSummary.createdAt.toISOString());
       campaignSummaryRow.setUpdatedAt(campaignSummary.updatedAt.toISOString());
 

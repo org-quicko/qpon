@@ -310,9 +310,9 @@ export class CampaignService {
   }
 
   /**
-   * Fetch campaign summary
+   * Fetch campaign summaries for a coupon
    */
-  async fetchCampaignSummary(
+  async fetchCampaignsSummary(
     couponId: string,
     whereOptions: FindOptionsWhere<CampaignSummaryMv> = {},
     skip: number = 0,
@@ -327,6 +327,39 @@ export class CampaignService {
         },
         skip,
         take,
+      });
+
+      if (!campaignSummaryMv || campaignSummaryMv.length == 0) {
+        this.logger.warn('Unable to find campaign summary');
+        throw new NotFoundException('Unable to find campaign summary');
+      }
+
+      this.logger.info('END: fetchCampaignSummary service');
+      return this.campaignSummarySheetConverter.convert(campaignSummaryMv);
+    } catch (error) {
+      this.logger.error(
+        `Error in fetchCampaignSummary: ${error.message}`,
+        error,
+      );
+
+      throw new HttpException(
+        'Failed to fetch campaign summary',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  /**
+   * Fetch campaign summary
+   */
+  async fetchCampaignSummary(couponId: string, campaignId: string) {
+    this.logger.info('START: fetchCampaignSummary service');
+    try {
+      const campaignSummaryMv = await this.campaignSummaryMvRepository.find({
+        where: {
+          couponId,
+          campaignId,
+        },
       });
 
       if (!campaignSummaryMv || campaignSummaryMv.length == 0) {

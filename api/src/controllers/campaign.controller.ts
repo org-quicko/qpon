@@ -11,7 +11,7 @@ import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { CampaignService } from '../services/campaign.service';
 import { CreateCampaignDto, UpdateCampaignDto } from '../dtos';
 import { LoggerService } from '../services/logger.service';
-import { campaignStatusEnum } from 'src/enums';
+import { campaignStatusEnum, statusEnum } from 'src/enums';
 import { Permissions } from '../decorators/permission.decorator';
 import { Campaign } from '../entities/campaign.entity';
 import { CampaignSummaryMv } from '../entities/campaign-summary.view';
@@ -70,28 +70,50 @@ export class CampaignController {
   }
 
   /**
-   * Fetch campaign summary
+   * Fetch summary of a campaign
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
   @Permissions('read', CampaignSummaryMv)
-  @Get('summary')
+  @Get(':campaign_id/summary')
   async fetchCampaignSummary(
     @Param('coupon_id') couponId: string,
     @Param('campaign_id') campaignId: string,
-    @Query('take') take?: number,
-    @Query('skip') skip?: number,
   ) {
     this.logger.info('START: fetchCampaignSummary controller');
 
     const result = await this.campaignService.fetchCampaignSummary(
       couponId,
-      { campaignId },
-      take,
-      skip,
+      campaignId,
     );
 
     this.logger.info('END: fetchCampaignSummary controller');
     return { message: 'Successfully fetched campaign summary', result };
+  }
+
+  /**
+   * Fetch summary of all campaigns
+   */
+  @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('read', CampaignSummaryMv)
+  @Get('summary')
+  async fetchCampaignsSummary(
+    @Param('coupon_id') couponId: string,
+    @Query('campaign_id') campaignId?: string,
+    @Query('status') status?: statusEnum,
+    @Query('take') take?: number,
+    @Query('skip') skip?: number,
+  ) {
+    this.logger.info('START: fetchCampaignsSummary controller');
+
+    const result = await this.campaignService.fetchCampaignsSummary(
+      couponId,
+      { campaignId, status },
+      take,
+      skip,
+    );
+
+    this.logger.info('END: fetchCampaignsSummary controller');
+    return { message: 'Successfully fetched all campaign summaries', result };
   }
 
   /**

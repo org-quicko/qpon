@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-base-to-string */
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import {
   BadRequestException,
   ConflictException,
@@ -410,23 +408,16 @@ export class CouponService {
   }
 
   /**
-   * Fetch coupons summary
+   * Fetch coupon summary
    */
-  async fetchCouponSummary(
-    organizationId: string,
-    whereOptions: FindOptionsWhere<CouponSummaryMv> = {},
-    skip: number = 0,
-    take: number = 10,
-  ) {
+  async fetchCouponSummary(organizationId: string, couponId: string) {
     this.logger.info('START: fetchCouponSummary service');
     try {
       const couponSummaries = await this.couponSummaryMvRepository.find({
         where: {
           organizationId,
-          ...whereOptions,
+          couponId,
         },
-        skip,
-        take,
       });
 
       if (!couponSummaries || couponSummaries.length == 0) {
@@ -444,6 +435,49 @@ export class CouponService {
 
       throw new HttpException(
         'Failed to fetch coupon summary',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  /**
+   * Fetch coupons summary
+   */
+  async fetchCouponsSummary(
+    organizationId: string,
+    whereOptions: FindOptionsWhere<CouponSummaryMv> = {},
+    skip: number = 0,
+    take: number = 10,
+  ) {
+    this.logger.info('START: fetchCouponsSummary service');
+    try {
+      const couponSummaries = await this.couponSummaryMvRepository.find({
+        where: {
+          organizationId,
+          ...whereOptions,
+        },
+        skip,
+        take,
+      });
+
+      if (!couponSummaries || couponSummaries.length == 0) {
+        this.logger.warn('Unable to find summary for coupons');
+        throw new NotFoundException('Coupon summary not found');
+      }
+
+      this.logger.info('END: fetchCouponsSummary service');
+      return this.couponSummarySheetConverter.convert(
+        couponSummaries,
+        organizationId,
+      );
+    } catch (error) {
+      this.logger.error(
+        `Error in fetchCouponsSummary: ${error.message}`,
+        error,
+      );
+
+      throw new HttpException(
+        'Failed to fetch summary of coupons',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
