@@ -20,7 +20,8 @@ import { CustomersEditComponent } from './components/customers/customers-edit/cu
 import { HomeComponent } from './components/home/home.component';
 import { OrganizationUserResolver } from './resolvers/organization-user.resolver';
 import { UserResolver } from './resolvers/user.resolver';
-import { CouponComponent } from './components/home/coupon/coupon.component';
+import { CouponComponent } from './components/home/coupons/coupon/coupon.component';
+import { CampaignComponent } from './components/home/coupons/coupon/campaign/campaign.component';
 // import { UserResolver } from './resolvers/user.resolver';
 
 export const routes: Routes = [
@@ -55,11 +56,18 @@ export const routes: Routes = [
                 path: 'coupons',
                 children: [
                   { path: '', component: CouponsComponent },
+                  {
+                    path: ':coupon_id',
+                    component: CouponComponent,
+                    children: [
+                      {
+                        path: 'campaigns/:campaign_id',
+                        component: CampaignComponent,
+                      },
+                    ],
+                  },
                 ],
               },
-              {
-                path: 'coupon/:coupon_id', component: CouponComponent
-              }
             ],
           },
           {

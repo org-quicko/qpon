@@ -1,12 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { CouponsStore } from '../store/coupons.store';
-
+import { CouponsStore } from '../../../../store/coupons.store';
 @Component({
   selector: 'app-change-status',
   imports: [MatDialogModule, MatButtonModule],
-  providers: [CouponsStore],
   templateUrl: './change-status.component.html',
   styleUrl: './change-status.component.css'
 })

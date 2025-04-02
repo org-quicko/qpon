@@ -38,4 +38,5 @@ export const appConfig: ApplicationConfig = {
 
 export function registerIcons(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
   iconRegistry.addSvgIcon('regime_preference', sanitizer.bypassSecurityTrustResourceUrl('/assets/regime_preference.svg'));
+  iconRegistry.addSvgIcon('discount', sanitizer.bypassSecurityTrustResourceUrl('/assets/discount.svg'));
 }

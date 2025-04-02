@@ -1,7 +1,7 @@
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { CouponDto } from '../../../../../dtos/coupon.dto';
+import { CouponDto } from '../../dtos/coupon.dto';
 import { inject } from '@angular/core';
-import { CouponService } from '../../../../services/coupon.service';
+import { CouponService } from '../services/coupon.service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import {
   catchError,
@@ -19,14 +19,14 @@ import {
 import { tapResponse } from '@ngrx/operators';
 import { plainToClass } from 'class-transformer';
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
-import { PaginatedList } from '../../../../../dtos/paginated-list.dto';
+import { PaginatedList } from '../../dtos/paginated-list.dto';
 import {
   discountTypeEnum,
   itemConstraintEnum,
   sortOrderEnum,
   statusEnum,
-} from '../../../../../enums';
-import { CouponFilter } from '../../../../interfaces/coupon-filter.interface';
+} from '../../enums';
+import { CouponFilter } from '../interfaces/coupon-filter.interface';
 import { HttpErrorResponse } from '@angular/common/http';
 
 type CouponsState = {
@@ -52,6 +52,7 @@ const initialState: CouponsState = {
 };
 
 export const CouponsStore = signalStore(
+  { providedIn: 'root' },
   withDevtools('coupons'),
   withState(initialState),
   withMethods((store, couponService = inject(CouponService)) => ({
@@ -64,7 +65,10 @@ export const CouponsStore = signalStore(
         tap(() => patchState(store, { isLoading: true })),
         concatMap(({ organizationId, skip, take }) => {
           return couponService
-            .fetchCoupons(organizationId, skip, take, { sortBy: 'createdAt', sortOrder: sortOrderEnum.DESC })
+            .fetchCoupons(organizationId, skip, take, {
+              sortBy: 'createdAt',
+              sortOrder: sortOrderEnum.DESC,
+            })
             .pipe(
               tapResponse({
                 next: (response) => {
@@ -74,8 +78,9 @@ export const CouponsStore = signalStore(
                       response.data
                     );
 
-                    const coupons = couponList.getItems()
-                    ?.map((coupon) => plainToClass(CouponDto, coupon))
+                    const coupons = couponList
+                      .getItems()
+                      ?.map((coupon) => plainToClass(CouponDto, coupon));
                     patchState(store, {
                       coupons: coupons,
                       filteredCoupons: coupons,
@@ -129,8 +134,9 @@ export const CouponsStore = signalStore(
                       response.data
                     );
 
-                    const coupons = couponList.getItems()
-                    ?.map((coupon) => plainToClass(CouponDto, coupon))
+                    const coupons = couponList
+                      .getItems()
+                      ?.map((coupon) => plainToClass(CouponDto, coupon));
                     patchState(store, {
                       coupons: store.coupons(),
                       filteredCoupons: coupons,
@@ -167,7 +173,10 @@ export const CouponsStore = signalStore(
     ),
 
     resetFilter: () => {
-      patchState(store, { filteredCoupons: store.coupons(), count: store.coupons().length });
+      patchState(store, {
+        filteredCoupons: store.coupons(),
+        count: store.coupons().length,
+      });
     },
 
     deactivateCoupon: rxMethod<{ organizationId: string; couponId: string }>(

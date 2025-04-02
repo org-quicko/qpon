@@ -54,3 +54,7 @@ body {
 {
   border-right: none;
 }
+
+ngx-skeleton-loader {
+  margin-bottom: -4px;
+}

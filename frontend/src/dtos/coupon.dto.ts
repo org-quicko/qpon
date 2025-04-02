@@ -25,13 +25,13 @@ export class CouponDto {
 
   @Expose({ name: 'discount_value' })
   @Transform(({ value }) => value, { toClassOnly: true })
-  @IsNumber()
-  discountValue?: number;
+  @IsString()
+  discountValue?: string;
 
   @Expose({ name: 'discount_upto' })
   @Transform(({ value }) => value, { toClassOnly: true })
-  @IsNumber()
-  discountUpto?: number;
+  @IsString()
+  discountUpto?: string;
 
   @Expose({ name: 'item_constraint' })
   @Transform(({ value }) => value, { toClassOnly: true })

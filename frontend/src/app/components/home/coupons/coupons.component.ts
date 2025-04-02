@@ -1,18 +1,22 @@
 import {
   AfterViewChecked,
-  AfterViewInit,
   Component,
   effect,
   inject,
   OnInit,
   signal,
   ViewChild,
+  computed,
+  DestroyRef,
+  inject as injectDI,
+  AfterViewInit,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatMenuModule } from '@angular/material/menu';
+import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 import {
   MatPaginator,
   MatPaginatorModule,
@@ -21,9 +25,9 @@ import {
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
-import { CurrencyPipe, NgClass, NgIf, TitleCasePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { OrganizationStore } from '../../../store/organization.store';
-import { CouponsStore } from './store/coupons.store';
+import { CouponsStore } from '../../../store/coupons.store';
 import { DatePipe } from '../../../pipe/date.pipe';
 import { ChangeStatusComponent } from './change-status/change-status.component';
 import { CouponDto } from '../../../../dtos/coupon.dto';
@@ -34,10 +38,15 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { sortOrderEnum } from '../../../../enums';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatRippleModule } from '@angular/material/core';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { OverlayRef } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-coupons',
+  standalone: true,
   imports: [
+    MatRippleModule,
     MatButtonModule,
     MatIconModule,
     MatInputModule,
@@ -49,13 +58,11 @@ import { ActivatedRoute, Router } from '@angular/router';
     MatRadioModule,
     MatDividerModule,
     MatSortModule,
-    CurrencyPipe,
     DatePipe,
-    TitleCasePipe,
-    NgClass,
+    CommonModule,
     ReactiveFormsModule,
+    NgxSkeletonLoaderModule,
   ],
-  providers: [CouponsStore],
   templateUrl: './coupons.component.html',
   styleUrl: './coupons.component.html',
 })
@@ -70,12 +77,15 @@ export class CouponsComponent implements OnInit, AfterViewChecked {
   ];
   filterForm: FormGroup;
   searchControl = new FormControl('');
+  overlayRef!: OverlayRef;
+  loading: boolean = true;
 
   couponDatasource = new MatTableDataSource<CouponDto>();
 
   couponsStore = inject(CouponsStore);
   organizationStore = inject(OrganizationStore);
   readonly dialog = inject(MatDialog);
+  private destroyRef = injectDI(DestroyRef);
 
   organization = this.organizationStore.organizaiton;
   isLoading = this.couponsStore.isLoading;
@@ -84,8 +94,14 @@ export class CouponsComponent implements OnInit, AfterViewChecked {
   take = this.couponsStore.take!;
   skip = this.couponsStore.skip!;
 
+  // Computed property for pageIndex
+  pageIndex = computed(() => {
+    return this.skip() && this.take() ? Math.floor(this.skip()! / this.take()!) : 0;
+  });
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild('matMenu') matMenuTrigger!: MatMenuTrigger;
 
   // **Signal for Sort State**
   sortState = signal<{ sortBy: string | null; sortOrder: sortOrderEnum }>({
@@ -119,17 +135,23 @@ export class CouponsComponent implements OnInit, AfterViewChecked {
       organizationId: this.organization()?.organizationId!,
     });
 
+    // Update datasource when coupons change
+    effect(() => {
+      this.couponDatasource.data = this.coupons() || [];
+    });
+
     this.searchControl.valueChanges.pipe(
       debounceTime(500),
-      distinctUntilChanged()
+      distinctUntilChanged(),
+      takeUntilDestroyed(this.destroyRef)
     ).subscribe((name) => {
       this.couponsStore.fetchCouponsByFilter({
         organizationId: this.organization()?.organizationId!,
         filter: {
-          query: name
+          query: name?.trim()
         }
       });
-    })
+    });
   }
 
   ngAfterViewChecked(): void {
@@ -186,6 +208,6 @@ export class CouponsComponent implements OnInit, AfterViewChecked {
   }
 
   onRowClick(coupon: CouponDto) {
-    this.router.navigate([`../coupon/${coupon.couponId}`], { relativeTo: this.route })
+    this.router.navigate([`../coupons/${coupon.couponId}`], { relativeTo: this.route })
   }
 }
