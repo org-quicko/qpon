@@ -9,6 +9,7 @@ import { Index, ViewColumn, ViewEntity } from 'typeorm';
       cp.coupon_id,
       cp.campaign_id,
       cp.name,
+      cp.budget,
       COALESCE(r.total_redemption_count, 0) AS total_redemption_count,
       COALESCE(r.total_redemption_amount, 0) AS total_redemption_amount,
       COALESCE(cc.active_coupon_code_count, 0) AS active_coupon_code_count,
@@ -51,6 +52,9 @@ export class CampaignSummaryMv {
 
   @ViewColumn()
   name: string;
+
+  @ViewColumn()
+  budget: number | null;
 
   @ViewColumn({ name: 'total_redemption_count' })
   totalRedemptionCount: number;

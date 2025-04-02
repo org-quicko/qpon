@@ -2,6 +2,7 @@ import {
   EntitySubscriberInterface,
   EventSubscriber,
   InsertEvent,
+  UpdateEvent,
 } from 'typeorm';
 import { Campaign } from '../entities/campaign.entity';
 
@@ -16,6 +17,14 @@ export class CampaignSubscriber implements EntitySubscriberInterface<Campaign> {
 
     await event.queryRunner.query(`    
             REFRESH MATERIALIZED VIEW campaign_summary_mv WITH DATA;    
+    `);
+  }
+
+  async afterUpdate(event: UpdateEvent<Campaign>) {
+    await event.queryRunner.connect();
+
+    await event.queryRunner.query(`    
+      REFRESH MATERIALIZED VIEW campaign_summary_mv WITH DATA;    
     `);
   }
 }

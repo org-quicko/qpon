@@ -110,7 +110,7 @@ export class CouponItemService {
       }
 
       this.logger.info('END: fetchItems service');
-      return this.couponItemConverter.convert(couponItems);
+      return this.couponItemConverter.convert(couponItems, skip, take);
     } catch (error) {
       this.logger.error(`Error in fetchItems: ${error.message}`, error);
 

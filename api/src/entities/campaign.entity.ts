@@ -22,7 +22,7 @@ export class Campaign {
   @Column()
   name: string;
 
-  @Column('numeric', { nullable: true })
+  @Column('numeric', { nullable: true, default: null })
   budget: number;
 
   @Column({ name: 'external_id', nullable: true })

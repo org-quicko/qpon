@@ -17,6 +17,7 @@ export class CampaignSummarySheetConverter {
       const campaignSummaryRow = new CampaignSummaryRow([]);
       campaignSummaryRow.setCampaignId(campaignSummary.campaignId);
       campaignSummaryRow.setName(campaignSummary.name);
+      campaignSummaryRow.setBudget(campaignSummary.budget);
       campaignSummaryRow.setTotalRedemptionCount(
         campaignSummary.totalRedemptionCount,
       );
