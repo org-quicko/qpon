@@ -45,7 +45,6 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     onSignInSuccess.subscribe((success) => {
-      console.log(success)
       this.router.navigate(['/organizations'])
     })
   }

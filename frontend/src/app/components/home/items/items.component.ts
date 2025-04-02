@@ -1,7 +1,9 @@
 import {
   AfterViewInit,
   Component,
+  effect,
   inject,
+  Injector,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -23,6 +25,9 @@ import { ItemDto } from '../../../../dtos/item.dto';
 import { OrganizationStore } from '../../../store/organization.store';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { CommonModule } from '@angular/common';
+import { watchState } from '@ngrx/signals';
 
 @Component({
   selector: 'app-items',
@@ -35,19 +40,21 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
     MatMenuModule,
     MatPaginatorModule,
     ReactiveFormsModule,
+    NgxSkeletonLoaderModule,
+    CommonModule,
   ],
   templateUrl: './items.component.html',
   styleUrl: './items.component.css',
 })
 export class ItemsComponent implements OnInit, AfterViewInit {
-  constructor(private router: Router, private route: ActivatedRoute) {}
-
   columns = ['name', 'description', 'menu'];
 
   searchControl = new FormControl('');
 
   itemsStore = inject(ItemsStore);
   organizationStore = inject(OrganizationStore);
+
+  constructor(private router: Router, private route: ActivatedRoute) {}
 
   organization = this.organizationStore.organizaiton;
 

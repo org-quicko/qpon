@@ -5,6 +5,7 @@ import { ApiResponse } from '../../dtos/api-response.dto';
 import { PaginatedList } from '../../dtos/paginated-list.dto';
 import { CouponDto } from '../../dtos/coupon.dto';
 import { CouponFilter } from '../interfaces/coupon-filter.interface';
+import { CouponSummaryWorkbook } from '../../generated/sources/coupon_summary_workbook';
 
 @Injectable({
   providedIn: 'root',
@@ -70,5 +71,19 @@ export class CouponService {
       couponId +
       '/reactivate';
     return this.httpClient.post<ApiResponse<any>>(url, null);
+  }
+
+  fetchCoupon(organizationId: string, couponId: string) {
+    const url = this.endpoint + "/organizations/" + organizationId + "/coupons/" + couponId;
+    return this.httpClient.get<ApiResponse<CouponDto>>(url);
+  }
+
+  fetchCouponSummary(organizationId: string, couponId: string) {
+    const url = this.endpoint + "/organizations/" + organizationId + "/coupons/" + couponId  + "/summary";
+    return this.httpClient.get<ApiResponse<CouponSummaryWorkbook>>(url, {
+      headers: {
+        'x-accept-type': "application/json;format=sheet-json"
+      },
+    })
   }
 }

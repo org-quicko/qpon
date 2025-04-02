@@ -23,7 +23,7 @@
           >
           <span class="mat-label-large text-primary">Import</span>
         </button>
-        <button mat-button class="bg-primary w-auto">
+        <button mat-flat-button class="bg-primary w-auto rounded-[100px]">
           <mat-icon class="material-symbols-outlined text-on-primary left-[3px]"
             >add</mat-icon
           >
@@ -31,128 +31,145 @@
         </button>
       </div>
     </div>
-    @if(items() && items().length == 0) {
-    <div class="flex justify-center items-center h-[600px]">
-      <div class="flex flex-col items-center gap-[10px] h-auto w-auto">
-        <div class="bg-surface-container rounded-[10px]">
-          <mat-icon
-            class="text-on-surface material-symbols-outlined !h-[64px] !w-auto !text-[64px] px-[8px]"
-            >category</mat-icon
-          >
-        </div>
-        <p class="mat-title-large text-on-surface">No items to show</p>
-        <p class="mat-body-medium text-on-surface-variant">
-          You don't have any items in catalogue
-        </p>
-        <p class="mat-body-medium text-on-surface-variant">
-          Create items or import them.
-        </p>
-        <div class="flex justify-center">
-          <button mat-button class="bg-primary w-auto">
-            <mat-icon
-              class="material-symbols-outlined text-on-primary left-[3px]"
-              >add</mat-icon
-            >
-            <span class="mat-large-font text-on-primary">Add item</span>
-          </button>
-        </div>
-      </div>
-    </div>
-    } @else {
-    <div
-      class="flex flex-1 items-center gap-[10px] w-full border rounded-[4px] h-[56px] border-outline-variant"
-    >
-      <div class="h-[48px] w-[48px] flex justify-center items-center">
-        <mat-icon class="text-on-surface-variant">search</mat-icon>
-      </div>
-      <input
-        matInput
-        [formControl]="searchControl"
-        class="focus:outline-none align-middle py-[4px] w-full mat-body-large text-outline"
-        placeholder="Search items"
-      />
-    </div>
-    <div>
-      <div class="border-outline-variant border-[1px] rounded-[5px]">
-        <table mat-table [dataSource]="items()">
-          <ng-container matColumnDef="name">
-            <th
-              mat-header-cell
-              *matHeaderCellDef
-              class="mat-body-medium text-on-surface w-[218px]"
-            >
-              Name
-            </th>
-            <td
-              mat-cell
-              *matCellDef="let item"
-              class="mat-body-medium text-on-surface w-[218px]"
-            >
-              {{ item.name }}
-            </td>
-          </ng-container>
-
-          <ng-container matColumnDef="description">
-            <th
-              mat-header-cell
-              *matHeaderCellDef
-              class="mat-body-medium text-on-surface w-[218px]"
-            >
-              Description
-            </th>
-            <td
-              mat-cell
-              *matCellDef="let item"
-              class="mat-body-medium text-on-surface w-[218px]"
-            >
-              {{ item.description }}
-            </td>
-          </ng-container>
-
-          <ng-container matColumnDef="menu" stickyEnd>
-            <th mat-header-cell *matHeaderCellDef aria-label="row actions">
-              &nbsp;
-            </th>
-            <td mat-cell *matCellDef="let item">
-              <div class="flex justify-end">
-                <mat-icon
-                  [matMenuTriggerFor]="menu"
-                  class="hover:cursor-pointer"
-                  >more_vert</mat-icon
-                >
+    @if(isLoading()) {
+      <div class="flex flex-col pt-[50px] p-4 gap-[8px] h-[100vh] w-[100vw]">
+        <div class="flex flex-col gap-2">
+          <div *ngFor="let item of [1,2,3,4,5,6,7,8,9,10]; let i = index;">
+            <div class="relative group">
+              <div class="flex flex-row justify-between gap-x-4 relative">
+                <div class="flex overflow-hidden" [ngStyle]="{ 'width': 5 * 100 / 6 + '%' }">
+                  <ngx-skeleton-loader [theme]="{ height: '36px' , width: '100%'}"
+                    class="h-[36px] w-full"></ngx-skeleton-loader>
+                </div>
               </div>
-              <mat-menu
-                #menu="matMenu"
-                class="w-[200px] min-w-[112px] max-w-[280px] rounded-[4px] bg-surface-container-lowest top-[208px] left-[3155px] font-sans"
+            </div>
+          </div>
+        </div>
+      </div>
+    } @else {
+      @if(!isLoading() && items().length == 0) {
+      <div class="flex justify-center items-center h-[600px]">
+        <div class="flex flex-col items-center gap-[10px] h-auto w-auto">
+          <div class="bg-surface-container rounded-[10px]">
+            <mat-icon
+              class="text-on-surface material-symbols-outlined !h-[64px] !w-auto !text-[64px] px-[8px]"
+              >category</mat-icon
+            >
+          </div>
+          <p class="mat-title-large text-on-surface">No items to show</p>
+          <p class="mat-body-medium text-on-surface-variant">
+            You don't have any items in catalogue
+          </p>
+          <p class="mat-body-medium text-on-surface-variant">
+            Create items or import them.
+          </p>
+          <div class="flex justify-center">
+            <button mat-flat-button class="bg-primary w-auto rounded-[100px]">
+              <mat-icon
+                class="material-symbols-outlined text-on-primary left-[3px]"
+                >add</mat-icon
               >
-                <button
-                  mat-menu-item
-                  class="h-[56px] py-8 flex gap-[12px]"
-                  (click)="onEdit(item)"
-                >
-                  <mat-icon class="material-symbols-outlined">edit</mat-icon>
-                  <span class="mat-body-large text-on-surface">Edit</span>
-                </button>
-                <button
-                  mat-menu-item
-                  class="h-[56px] py-8 flex gap-[12px]"
-                  (click)="onDelete(item)"
-                >
-                  <mat-icon class="material-symbols-outlined">delete</mat-icon>
-                  <span class="mat-body-large text-on-surface">Delete</span>
-                </button>
-              </mat-menu>
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="columns"></tr>
-          <tr mat-row *matRowDef="let row; columns: columns"></tr>
-        </table>
+              <span class="mat-large-font text-on-primary">Add item</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      } @else {
+      <div
+        class="flex flex-1 items-center gap-[10px] w-full border rounded-[4px] h-[56px] border-outline-variant"
+      >
+        <div class="h-[48px] w-[48px] flex justify-center items-center">
+          <mat-icon class="text-on-surface-variant">search</mat-icon>
+        </div>
+        <input
+          matInput
+          [formControl]="searchControl"
+          class="focus:outline-none align-middle py-[4px] w-full mat-body-large text-outline"
+          placeholder="Search items"
+        />
       </div>
       <div>
-        <mat-paginator [length]="count()" [pageSize]="take()"></mat-paginator>
+        <div class="border-outline-variant border-[1px] rounded-[5px]">
+          <table mat-table [dataSource]="items()">
+            <ng-container matColumnDef="name">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="mat-body-medium text-on-surface w-[218px]"
+              >
+                Name
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let item"
+                class="mat-body-medium text-on-surface w-[218px]"
+              >
+                {{ item.name }}
+              </td>
+            </ng-container>
+  
+            <ng-container matColumnDef="description">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                class="mat-body-medium text-on-surface w-[218px]"
+              >
+                Description
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let item"
+                class="mat-body-medium text-on-surface w-[218px]"
+              >
+                {{ item.description }}
+              </td>
+            </ng-container>
+  
+            <ng-container matColumnDef="menu" stickyEnd>
+              <th mat-header-cell *matHeaderCellDef aria-label="row actions">
+                &nbsp;
+              </th>
+              <td mat-cell *matCellDef="let item">
+                <div class="flex justify-end">
+                  <mat-icon
+                    [matMenuTriggerFor]="menu"
+                    class="hover:cursor-pointer"
+                    >more_vert</mat-icon
+                  >
+                </div>
+                <mat-menu
+                  #menu="matMenu"
+                  class="w-[200px] min-w-[112px] max-w-[280px] rounded-[4px] bg-surface-container-lowest top-[208px] left-[3155px] font-sans"
+                >
+                  <button
+                    mat-menu-item
+                    class="h-[56px] py-8 flex gap-[12px]"
+                    (click)="onEdit(item)"
+                  >
+                    <mat-icon class="material-symbols-outlined">edit</mat-icon>
+                    <span class="mat-body-large text-on-surface">Edit</span>
+                  </button>
+                  <button
+                    mat-menu-item
+                    class="h-[56px] py-8 flex gap-[12px]"
+                    (click)="onDelete(item)"
+                  >
+                    <mat-icon class="material-symbols-outlined">delete</mat-icon>
+                    <span class="mat-body-large text-on-surface">Delete</span>
+                  </button>
+                </mat-menu>
+              </td>
+            </ng-container>
+  
+            <tr mat-header-row *matHeaderRowDef="columns"></tr>
+            <tr mat-row *matRowDef="let row; columns: columns"></tr>
+          </table>
+        </div>
+        <div>
+          <mat-paginator [length]="count()" [pageSize]="take()"></mat-paginator>
+        </div>
       </div>
-    </div>
+      }
     }
   </div>
 </div>
