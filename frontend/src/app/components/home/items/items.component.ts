@@ -20,7 +20,6 @@ import {
 } from '@angular/material/paginator';
 import { ItemsStore } from '../../../store/items.store';
 import { ActivatedRoute, Router } from '@angular/router';
-import { plainToClass, plainToInstance } from 'class-transformer';
 import { ItemDto } from '../../../../dtos/item.dto';
 import { OrganizationStore } from '../../../store/organization.store';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -50,6 +49,7 @@ export class ItemsComponent implements OnInit, AfterViewInit {
   columns = ['name', 'description', 'menu'];
 
   searchControl = new FormControl('');
+  tempDatasource: number[] = Array.from({ length: 10 }, (_, i) => i + 1);
   isFilterApplied: boolean = false;
 
   itemsStore = inject(ItemsStore);
@@ -57,6 +57,10 @@ export class ItemsComponent implements OnInit, AfterViewInit {
 
   constructor(private router: Router, private route: ActivatedRoute) {
     this.isFilterApplied = false;
+
+    effect(() => {
+      this.itemsDatasource.data = this.items();
+    })
   }
 
   organization = this.organizationStore.organizaiton;

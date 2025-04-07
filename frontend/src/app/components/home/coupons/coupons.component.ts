@@ -86,11 +86,12 @@ export class CouponsComponent
   overlayRef!: OverlayRef;
   sort!: MatSort;
   isFilterApplied: boolean = false;
+  tempDatasource: number[] = Array.from({ length: 10 }, (_, i) => i + 1);
 
   sortActive = signal<string>('createdAt');
   sortDirection = signal<'asc' | 'desc'>('desc');
 
-  couponDatasource = new MatTableDataSource<CouponDto>();
+  couponDatasource = new MatTableDataSource<CouponDto | number>();
 
   couponsStore = inject(CouponsStore);
   organizationStore = inject(OrganizationStore);
@@ -136,7 +137,9 @@ export class CouponsComponent
 
     // Update datasource when coupons change
     effect(() => {
-      this.couponDatasource.data = this.coupons() || [];
+      this.couponDatasource.data = this.isLoading()
+        ? this.tempDatasource
+        : this.coupons() ?? [];
     });
   }
 

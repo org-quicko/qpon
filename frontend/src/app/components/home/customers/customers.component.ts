@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, effect, inject, OnInit, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -35,6 +35,7 @@ export class CustomersComponent implements OnInit, AfterViewInit {
   columns = ['name', 'email', 'phoneNumber', 'menu'];
   isFilterApplied: boolean = false;
   searchControl = new FormControl('');
+  tempDatasource: number[] = Array.from({ length: 10 }, (_, i) => i + 1);
 
   customersStore = inject(CustomersStore);
   organizationStore = inject(OrganizationStore);
@@ -52,6 +53,10 @@ export class CustomersComponent implements OnInit, AfterViewInit {
 
   constructor() {
     this.isFilterApplied = false;
+
+    effect(() => {
+      this.customerDataSource.data = this.customers() ?? [];
+    });
   }
 
   ngAfterViewInit(): void {
