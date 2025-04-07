@@ -6,6 +6,8 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { concatMap, pipe, switchMap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { AuthService } from '../../../services/auth.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { SnackbarService } from '../../../services/snackbar.service';
 
 type LoginState = {
   loginCredentials: LoginCredentialDto | null;
@@ -26,7 +28,8 @@ export const LoginStore = signalStore(
     (
       store,
       userService = inject(UserService),
-      authService = inject(AuthService)
+      authService = inject(AuthService),
+      snackbarService = inject(SnackbarService)
     ) => ({
       login: rxMethod<{ email: string; password: string }>(
         pipe(
@@ -41,7 +44,11 @@ export const LoginStore = signalStore(
                     patchState(store, { error: response.message });
                   }
                 },
-                error: (error: any) => {
+                error: (error: HttpErrorResponse) => {
+                  if(error.status === 401 || error.status == 400) {
+                    snackbarService.openSnackBar('Invalid credentials', 'error')
+
+                  }
                   patchState(store, { error: error.message });
                 },
               })
