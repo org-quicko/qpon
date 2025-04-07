@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { CouponsStore } from '../../../../store/coupons.store';
@@ -9,18 +9,20 @@ import { CouponsStore } from '../../../../store/coupons.store';
   styleUrl: './change-status.component.css'
 })
 export class ChangeStatusComponent {
+  @Output() onDialogClose = new EventEmitter<string>();
+
   readonly dialogRef = inject(MatDialogRef<ChangeStatusComponent>);
   readonly data = inject(MAT_DIALOG_DATA)
 
   couponsStore = inject(CouponsStore);
 
   onActivate() {
-    this.couponsStore.activateCoupon({organizationId: this.data.organizationId, couponId: this.data.coupon.couponId});
+    this.data.activateCoupon({organizationId: this.data.organizationId, couponId: this.data.coupon.couponId});
     this.dialogRef.close();
   }
 
   onDeactivate() {
-    this.couponsStore.deactivateCoupon({organizationId: this.data.organizationId, couponId: this.data.coupon.couponId});
+    this.data.deactivateCoupon({organizationId: this.data.organizationId, couponId: this.data.coupon.couponId});
     this.dialogRef.close();
   }
 }

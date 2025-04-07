@@ -8,10 +8,11 @@ import { NgClass, TitleCasePipe } from '@angular/common';
 import { CouponDetailsComponent } from "./coupon-details/coupon-details.component";
 import { CouponSummaryComponent } from "./coupon-summary/coupon-summary.component";
 import { CouponTabComponent } from "./coupon-tab/coupon-tab.component";
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @Component({
   selector: 'app-coupon',
-  imports: [MatIconModule, CouponDetailsComponent, CouponSummaryComponent, CouponTabComponent],
+  imports: [MatIconModule, CouponDetailsComponent, CouponSummaryComponent, CouponTabComponent, NgxSkeletonLoaderModule],
   providers: [CouponStore],
   templateUrl: './coupon.component.html',
   styleUrl: './coupon.component.css',
@@ -31,6 +32,7 @@ export class CouponComponent implements OnInit {
   organization = this.organizationStore.organizaiton;
   coupon = this.couponStore.coupon.data;
   couponSummary = this.couponStore.couponStatistics.data;
+  isLoading = this.couponStore.coupon.isLoading;
 
   ngOnInit(): void {
     this.organizationId = this.organization()?.organizationId!;

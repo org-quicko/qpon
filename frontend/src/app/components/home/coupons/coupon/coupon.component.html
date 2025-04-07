@@ -5,7 +5,21 @@
       <mat-icon>
         <div class="material-symbols-outlined" class="w-[21px] h-[21px] text-[21px]">navigate_next</div>
       </mat-icon>
-      <div class="cursor-pointer">{{ coupon()?.name }}</div>
+      <div class="cursor-pointer">
+        <div class="cursor-pointer">
+          @if(!isLoading()) {
+            {{ coupon()?.name }}
+          } @else {
+            <ngx-skeleton-loader
+            [theme]="{
+              height: '20px',
+              width: '100px',
+              margin: '0px',
+              padding: '0px'
+            }"></ngx-skeleton-loader>
+          }
+        </div>
+      </div>
     </div>
   </div>
   <div class="pt-[18px]">
