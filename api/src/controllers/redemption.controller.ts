@@ -7,7 +7,7 @@ import {} from '../dtos';
 import { LoggerService } from '../services/logger.service';
 import { CreateRedemptionDto } from '../dtos/redemption.dto';
 import { getStartEndDate } from '../utils/date.utils';
-import { timePeriodEnum } from '../enums';
+import { sortOrderEnum, timePeriodEnum } from '../enums';
 import { getReportFileName } from '../utils/reportFileName.util';
 import { SkipTransform } from '../decorators/skipTransform.decorator';
 import { Permissions } from 'src/decorators/permission.decorator';
@@ -73,6 +73,53 @@ export class RedemptionsController {
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     );
     res.send(buffer);
+  }
+
+  /**
+   * Fetch redemptions for a coupon code
+   */
+  @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('read', Redemption)
+  @Get(
+    'coupons/:coupon_id/campaigns/:campaign_id/coupon-codes/:coupon_code_id/redemptions',
+  )
+  async fetchRedemptionsForCouponCode(
+    @Param('organization_id') organizationId: string,
+    @Param('coupon_id') couponId: string,
+    @Param('campaign_id') campaignId: string,
+    @Param('coupon_code_id') couponCodeId: string,
+    @Query('customer_email') customerEmail?: string,
+    @Query('sort_by') sortBy?: string,
+    @Query('sort_order') sortOrder?: sortOrderEnum,
+    @Query('skip') skip?: number,
+    @Query('take') take?: number,
+  ) {
+    this.logger.info('START: fetchRedemptionsForCouponCode controller');
+
+    const result = await this.redemptionsService.fetchRedemptions(
+      organizationId,
+      {
+        coupon: {
+          couponId,
+        },
+        campaign: {
+          campaignId,
+        },
+        couponCode: {
+          couponCodeId,
+        },
+        customer: {
+          email: customerEmail,
+        },
+      },
+      skip,
+      take,
+      sortBy,
+      sortOrder,
+    );
+
+    this.logger.info('END: fetchRedemptionsForCouponCode controller');
+    return { message: 'Successfully fetched redemptions', result };
   }
 
   /**

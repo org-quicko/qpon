@@ -13,6 +13,9 @@ export class RedemptionSheetConverter {
   convert(
     redemptions: Redemption[],
     organizationId: string,
+    count?: number,
+    skip?: number,
+    take?: number,
   ): RedemptionWorkbook {
     const redemptionTable = new RedemptionTable();
 
@@ -38,6 +41,12 @@ export class RedemptionSheetConverter {
 
     redemptionWorkbook.metadata = new JSONObject({
       organization_id: organizationId,
+    });
+
+    redemptionTable.metadata = new JSONObject({
+      count: count,
+      skip: skip,
+      take: take,
     });
 
     return redemptionWorkbook;

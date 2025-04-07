@@ -25,6 +25,7 @@ import {
   customerConstraintEnum,
   durationTypeEnum,
   itemConstraintEnum,
+  sortOrderEnum,
   timePeriodEnum,
 } from '../enums';
 import { Customer } from '../entities/customer.entity';
@@ -147,37 +148,47 @@ export class RedemptionsService {
     whereOptions: FindOptionsWhere<Redemption> = {},
     skip: number = 0,
     take: number = 10,
+    sortBy?: string,
+    sortOrder?: sortOrderEnum,
   ) {
     this.logger.info('START: fetchRedemptions service');
     try {
-      const redemptions = await this.redemptionsRepository.find({
-        relations: {
-          couponCode: true,
-          customer: true,
-        },
-        where: {
-          organization: {
-            organizationId,
+      const [redemptions, count] =
+        await this.redemptionsRepository.findAndCount({
+          relations: {
+            couponCode: true,
+            customer: true,
           },
-          ...whereOptions,
-        },
-        select: {
-          customer: {
-            name: true,
-            email: true,
+          where: {
+            organization: {
+              organizationId,
+            },
+            ...(sortBy && { order: { [sortBy]: sortOrder } }),
+            ...whereOptions,
           },
-        },
-        skip,
-        take,
-      });
+          select: {
+            customer: {
+              name: true,
+              email: true,
+            },
+          },
+          skip,
+          take,
+        });
 
-      if (!redemptions) {
+      if (!redemptions || redemptions.length == 0) {
         this.logger.warn('Redemptions not found');
         throw new NotFoundException('Redemptions not found');
       }
 
       this.logger.info('END: fetchRedemptions service');
-      return this.redemptionSheetConverter.convert(redemptions, organizationId);
+      return this.redemptionSheetConverter.convert(
+        redemptions,
+        organizationId,
+        count,
+        skip,
+        take,
+      );
     } catch (error) {
       this.logger.error(`Error in fetchRedemptions: ${error.message}`, error);
 
