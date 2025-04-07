@@ -4,7 +4,7 @@ import { environment } from '../../environments/environment.dev';
 import { ApiResponse } from '../../dtos/api-response.dto';
 import { ItemDto } from '../../dtos/item.dto';
 import { PaginatedList } from '../../dtos/paginated-list.dto';
-import { ItemFilter } from '../interfaces/item-filter.interface';
+import { ItemFilter } from '../types/item-filter.interface';
 
 @Injectable({
   providedIn: 'root',

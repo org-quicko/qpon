@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { ApiResponse } from '../../dtos/api-response.dto';
@@ -13,8 +13,17 @@ export class EligibleItemsService {
 
   constructor(private httpClient: HttpClient) {}
 
-  fetchItemsForCoupon(organizationId: string, couponId: string) {
+  fetchItemsForCoupon(organizationId: string, couponId: string, filter?: {name: string}, skip: number = 0, take: number = 10) {
     const url = this.endpoint + "/organizations/" + organizationId + "/coupons/" + couponId + "/items";
-    return this.httpClient.get<ApiResponse<PaginatedList<ItemDto>>>(url);
+
+    let params = new HttpParams()
+      .set('skip', skip)
+      .set('take', take);
+
+      if(filter && filter.name) {
+        params = params.set('name', filter.name);
+      }
+
+    return this.httpClient.get<ApiResponse<PaginatedList<ItemDto>>>(url, {params});
   }
 }

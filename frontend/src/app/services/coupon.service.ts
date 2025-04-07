@@ -4,7 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { ApiResponse } from '../../dtos/api-response.dto';
 import { PaginatedList } from '../../dtos/paginated-list.dto';
 import { CouponDto } from '../../dtos/coupon.dto';
-import { CouponFilter } from '../interfaces/coupon-filter.interface';
+import { CouponFilter } from '../types/coupon-filter.interface';
 import { CouponSummaryWorkbook } from '../../generated/sources/coupon_summary_workbook';
 
 @Injectable({

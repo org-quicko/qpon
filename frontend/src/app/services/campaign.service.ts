@@ -21,6 +21,15 @@ export class CampaignService {
     });
   }
 
+  fetchCampaignSummary(couponId: string, campaignId: string) {
+    const url = this.endpoint + '/coupons/' + couponId + '/campaigns/' + campaignId +  '/summary';
+    return this.httpClient.get<ApiResponse<CampaignSummaryWorkbook>>(url, {
+      headers: {
+        'x-accept-type': 'application/json;format=sheet-json',
+      },
+    });
+  }
+
   deactivateCampaign(couponId: string, campaignId: string) {
     const url =
       this.endpoint +

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.dev';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { ApiResponse } from '../../dtos/api-response.dto';
 import { CustomerDto } from '../../dtos/customer.dto';
 import { PaginatedList } from '../../dtos/paginated-list.dto';
@@ -13,13 +13,19 @@ export class CustomerService {
 
   constructor(private httpClient: HttpClient) { }
 
-  fetchCustomers(organizationId: string, skip: number = 0, take:number  = 10) {
+  fetchCustomers(organizationId: string, skip: number = 0, take:number  = 10, filter?: {email: string}) {
     const url = this.endpoint + "/organizations/" + organizationId + "/customers"
+
+    let params = new HttpParams()
+      .set('skip', skip)
+      .set('take', take);
+
+    if (filter && filter.email) {
+      params = params.set('email', filter.email);
+    }
+
     return this.httpClient.get<ApiResponse<PaginatedList<CustomerDto>>>(url, {
-      params: {
-        take,
-        skip
-      }
+      params
     })
   }
 }
