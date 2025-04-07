@@ -1,0 +1,18 @@
+@use "@angular/material" as mat;
+
+.toggle-chip {
+  @include mat.chips-overrides(
+    (
+      container-shape-radius: 100px,
+      outline-color: var(--sys-outline-variant),
+      container-height: 40px,
+      disabled-outline-color: var(--sys-outline-variant),
+    )
+  );
+}
+
+.toggle-chip .mat-mdc-standard-chip .mdc-evolution-chip__action--primary {
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+  min-width: 64px !important;
+}

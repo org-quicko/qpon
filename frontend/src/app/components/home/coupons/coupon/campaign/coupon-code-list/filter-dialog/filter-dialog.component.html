@@ -1,0 +1,79 @@
+<div class="flex flex-col w-[516px] rounded-[5px]">
+  <div class="flex justify-between items-center py-5 px-6">
+    <p class="mat-headline-small text-on-surface">Filter coupon codes</p>
+    <button mat-icon-button (click)="onCancel()">
+      <mat-icon class="material-symbols-outlined cursor-pointer">close</mat-icon>
+    </button>
+  </div>
+  <mat-divider class="text-outline-variant"></mat-divider>
+  <form [formGroup]="filterForm" class="flex flex-col px-4 pb-6">
+    <div class="flex flex-col gap-[16px] pt-4 pr-2 pl-2">
+      <div class="text-on-surface-variant mat-body-large">Status</div>
+      <div class="flex">
+        <mat-chip-listbox  class="toggle-chip" [hideSingleSelectionIndicator]="true" formControlName="status" (change)="onSelectStatus($event)">
+            <!-- Filter Chip 1 -->
+            <mat-chip-option [value]="'active'" #chipOption>
+                <div class="flex gap-[8px] h-[20px]">
+                   <div>Active</div>
+                </div>
+            </mat-chip-option>
+            <!-- Filter Chip 2 -->
+            <mat-chip-option [value]="'inactive'" #chipOption>
+             <div class="flex gap-[8px] h-[20px]">
+               <div>Inactive</div>
+            </div>
+            </mat-chip-option>
+        </mat-chip-listbox>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-[16px] pt-4 pr-2 pl-2">
+      <div class="text-on-surface-variant mat-body-large">Visibility</div>
+      <div class="flex">
+        <mat-chip-listbox  class="toggle-chip" [hideSingleSelectionIndicator]="true" formControlName="visibility" (change)="onSelectVisibility($event)">
+            <!-- Filter Chip 1 -->
+            <mat-chip-option [value]="'public'" #chipOption>
+                <div class="flex gap-[8px] h-[20px]">
+                   <div>Public</div>
+                </div>
+            </mat-chip-option>
+            <!-- Filter Chip 2 -->
+            <mat-chip-option [value]="'private'" #chipOption>
+             <div class="flex gap-[8px] h-[20px]">
+               <div>Private</div>
+            </div>
+            </mat-chip-option>
+        </mat-chip-listbox>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-[16px] pt-4 pr-2 pl-2">
+      <div class="text-on-surface-variant mat-body-large">Validity</div>
+      <div class="flex">
+        <mat-chip-listbox  class="toggle-chip" [hideSingleSelectionIndicator]="true" formControlName="durationType" (change)="onSelectDurationType($event)">
+            <!-- Filter Chip 1 -->
+            <mat-chip-option [value]="'forever'" #chipOption>
+                <div class="flex gap-[8px] h-[20px]">
+                   <div>Forever</div>
+                </div>
+            </mat-chip-option>
+            <!-- Filter Chip 2 -->
+            <mat-chip-option [value]="'limited'" #chipOption>
+             <div class="flex gap-[8px] h-[20px]">
+               <div>Limited</div>
+            </div>
+            </mat-chip-option>
+        </mat-chip-listbox>
+      </div>
+    </div>
+  </form>
+  <mat-divider class="text-outline-variant"></mat-divider>
+  <div class="flex justify-end gap-2 pt-5 pr-[24px] pb-5">
+    <button mat-stroked-button class="border-outline-variant rounded-full" (click)="onClearAll()">
+      Clear all
+    </button>
+    <button mat-flat-button class="rounded-full" (click)="onApply()">
+      Apply
+    </button>
+  </div>
+</div>

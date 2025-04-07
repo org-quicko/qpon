@@ -2,6 +2,7 @@
 @use "./m3-theme.scss" as theme;
 @use "./_extended-palette.scss" as extendedPalette;
 @use "./_overrides.scss" as overrides;
+@use "./extended-material-styles";
 
 html,
 body {
