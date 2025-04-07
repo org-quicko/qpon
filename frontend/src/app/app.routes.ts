@@ -22,6 +22,7 @@ import { OrganizationUserResolver } from './resolvers/organization-user.resolver
 import { UserResolver } from './resolvers/user.resolver';
 import { CouponComponent } from './components/home/coupons/coupon/coupon.component';
 import { CampaignComponent } from './components/home/coupons/coupon/campaign/campaign.component';
+import { CouponCodeComponent } from './components/home/coupons/coupon/campaign/coupon-code/coupon-code.component';
 // import { UserResolver } from './resolvers/user.resolver';
 
 export const routes: Routes = [
@@ -59,13 +60,15 @@ export const routes: Routes = [
                   {
                     path: ':coupon_id',
                     component: CouponComponent,
-                    children: [
-                      {
-                        path: 'campaigns/:campaign_id',
-                        component: CampaignComponent,
-                      },
-                    ],
                   },
+                  {
+                    path: ':coupon_id/campaigns/:campaign_id',
+                    component: CampaignComponent,
+                  },
+                  {
+                    path: ':coupon_id/campaigns/:campaign_id/coupon-codes/:coupon_code_id',
+                    component: CouponCodeComponent,
+                  }
                 ],
               },
             ],

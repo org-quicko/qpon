@@ -186,3 +186,11 @@
 .campaigns-table .mat-header-cell {
   border-bottom-style: none;
 }
+
+.copy-icon-button{
+  @include mat.icon-button-overrides(
+    (
+      icon-size: 16px
+    )
+  )
+}

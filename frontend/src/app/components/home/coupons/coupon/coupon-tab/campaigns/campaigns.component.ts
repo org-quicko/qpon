@@ -13,14 +13,14 @@ import { MatMenuModule } from '@angular/material/menu';
 import { CampaignsStore } from './store/campaigns.store';
 import { CouponStore } from '../../store/coupon.store';
 import { CouponDto } from '../../../../../../../dtos/coupon.dto';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import {
   CampaignSummaryRow,
   CampaignSummarySheet,
 } from '../../../../../../../generated/sources/campaign_summary_workbook';
 import { MatInputModule } from '@angular/material/input';
-import { DatePipe } from '../../../../../../pipe/date.pipe';
+import { CustomDatePipe } from '../../../../../../pipe/date.pipe';
 import { CurrencyPipe, NgClass, NgFor, NgStyle, TitleCasePipe } from '@angular/common';
 import { OrganizationStore } from '../../../../../../store/organization.store';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -38,7 +38,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
     MatInputModule,
     MatMenuModule,
     MatDialogModule,
-    DatePipe,
+    CustomDatePipe,
     TitleCasePipe,
     CurrencyPipe,
     NgClass,
@@ -74,7 +74,7 @@ export class CampaignsComponent implements OnInit {
     'menu',
   ];
 
-  constructor(private route: ActivatedRoute, private formBuilder: FormBuilder) {
+  constructor(private route: ActivatedRoute, private formBuilder: FormBuilder, private router: Router) {
     this.couponId = '';
 
     this.filterForm = this.formBuilder.group({
@@ -112,5 +112,9 @@ export class CampaignsComponent implements OnInit {
 
   resetForm() {
     this.filterForm.reset();
+  }
+
+  onRowClick(campaignId: string) {
+    this.router.navigate([`./campaigns/${campaignId}`], { relativeTo: this.route })
   }
 }

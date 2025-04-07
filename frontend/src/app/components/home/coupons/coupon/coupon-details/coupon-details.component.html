@@ -23,12 +23,14 @@
         <span>Edit</span>
       </button>
 
-      <mat-icon [matMenuTriggerFor]="menu" class="hover:cursor-pointer text-on-surface"
-        >more_vert</mat-icon
-      >
+      <button mat-icon-button>
+        <mat-icon [matMenuTriggerFor]="menu" class="hover:cursor-pointer text-on-surface"
+          >more_vert</mat-icon
+        >
+      </button>
     </div>
   </div>
-  <div class="inline-flex justify-start items-start gap-8">
+  <div class="inline-flex justify-start items-start gap-8 mat-body-large">
     <div class="flex justify-start items-center gap-2">
       @if(isLoading()) {
       <ngx-skeleton-loader
@@ -45,20 +47,39 @@
           class="w-6 h-6 rounded-[12px] flex items-center justify-center"
           [ngClass]="{
             'bg-success-container': coupon()?.status == 'active',
-            'bg-warn-container': coupon()?.status == 'inactive'
+            'bg-surface-container-highest': coupon()?.status == 'inactive'
           }"
         >
           <div
             class="w-3 h-3 rounded-[6px]"
             [ngClass]="{
               'bg-success': coupon()?.status == 'active',
-              'bg-warn': coupon()?.status == 'inactive'
+              'bg-outline': coupon()?.status == 'inactive'
             }"
           ></div>
         </div>
       </div>
       <div class="justify-start mat-body-large text-on-surface-variant">
         {{ coupon()?.status | titlecase }}
+      </div>
+      }
+    </div>
+    <div class="flex justify-start items-center gap-2 text-on-surface-variant">
+      @if(isLoading()) {
+      <ngx-skeleton-loader
+        [theme]="{
+          height: '20px',
+          width: '150px',
+          margin: '0px',
+          padding: '0px'
+        }"
+      ></ngx-skeleton-loader>
+      } @else {
+      <div data-size="20px" class="flex justify-start items-start gap-1.5">
+        <mat-icon class="material-symbols-outlined text-on-surface-variant">local_activity</mat-icon>
+      </div>
+      <div class="justify-start mat-body-large">
+        Coupon
       </div>
       }
     </div>

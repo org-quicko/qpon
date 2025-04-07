@@ -8,8 +8,6 @@ import { plainToInstance } from 'class-transformer';
 import { CampaignService } from '../../../../../../../services/campaign.service';
 import {
   CampaignSummaryRow,
-  CampaignSummarySheet,
-  CampaignSummaryTable,
   CampaignSummaryWorkbook,
 } from '../../../../../../../../generated/sources/campaign_summary_workbook';
 import { statusEnum } from '../../../../../../../../enums';

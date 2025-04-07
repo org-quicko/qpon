@@ -19,9 +19,10 @@
     />
     <div
       class="h-[48px] w-[48px] flex justify-center items-center cursor-pointer"
-      [matMenuTriggerFor]="filterMenu"
     >
-      <mat-icon class="text-on-surface-variant">tune</mat-icon>
+      <button mat-icon-button>
+        <mat-icon class="text-on-surface-variant">tune</mat-icon>
+      </button>
     </div>
   </div>
   <div class="border-[1px] rounded-[5px] border-outline-variant overflow-hidden">
@@ -79,23 +80,23 @@
         <ng-container matColumnDef="created_at">
           <th mat-header-cell *matHeaderCellDef class="px-6 py-4">Created at</th>
           <td mat-cell *matCellDef="let summary" class="px-6 py-4 mat-body-large">
-            {{ convertToCampaignSummaryRow(summary).getCreatedAt() | date }}
+            {{ convertToCampaignSummaryRow(summary).getCreatedAt() | custom_date }}
           </td>
         </ng-container>
   
         <ng-container matColumnDef="menu">
-          <th mat-header-cell *matHeaderCellDef aria-label="row actions">
+          <th mat-header-cell *matHeaderCellDef aria-label="row actions" class="py-6 pl-6 pr-4">
             &nbsp;
           </th>
-          <td mat-cell *matCellDef="let summary">
-            <div>
+          <td mat-cell *matCellDef="let summary" class="py-6 pl-6 pr-4">
+            <button mat-icon-button>
               <mat-icon
                 [matMenuTriggerFor]="menu"
                 (click)="$event.stopPropagation()"
                 class="hover:cursor-pointer"
                 >more_vert</mat-icon
               >
-            </div>
+            </button>
             <mat-menu
               #menu="matMenu"
               class="w-[200px] min-w-[112px] max-w-[280px] rounded-[4px] bg-surface-container-lowest"
@@ -113,7 +114,7 @@
         </ng-container>
   
         <tr mat-header-row *matHeaderRowDef="columns"></tr>
-        <tr mat-row *matRowDef="let row; columns: columns" class="hover:bg-surface-bright cursor-pointer"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns" class="hover:bg-surface-bright cursor-pointer" (click)="onRowClick(convertToCampaignSummaryRow(row).getCampaignId())"></tr>
       </table>
     } @else {
       <div class="flex flex-col pt-[50px] p-4 gap-[8px] h-[290px] w-screen">

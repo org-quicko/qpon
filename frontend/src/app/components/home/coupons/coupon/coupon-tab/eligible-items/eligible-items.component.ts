@@ -12,6 +12,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatMenuModule } from '@angular/material/menu';
 import { NgFor, NgStyle } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-eligible-items',
@@ -25,6 +27,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     NgFor,
     NgStyle,
     NgxSkeletonLoaderModule,
+    ReactiveFormsModule,
   ],
   providers: [EligibleItemsStore],
   templateUrl: './eligible-items.component.html',
@@ -33,6 +36,8 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 export class EligibleItemsComponent implements OnInit {
   columns = ['name', 'description', 'menu'];
   couponId: string;
+  searchControl: FormControl;
+  isFilterApplied: boolean = false;
 
   couponStore = inject(CouponStore);
   eligibleItemsStore = inject(EligibleItemsStore);
@@ -47,6 +52,8 @@ export class EligibleItemsComponent implements OnInit {
 
   constructor(private route: ActivatedRoute) {
     this.couponId = '';
+    this.searchControl = new FormControl('');
+    this.isFilterApplied = false;
 
     effect(() => {
       this.datasource.data = this.eligibleItemsStore.items() ?? [];
@@ -63,6 +70,15 @@ export class EligibleItemsComponent implements OnInit {
       couponId: this.couponId,
     });
 
-    this;
+    this.searchControl.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe((value) => {
+      this.isFilterApplied = true;
+      this.eligibleItemsStore.fetchItems({
+        organizationId: this.organization()?.organizationId!,
+        couponId: this.couponId,
+        filter: {
+          name: value.trim()
+        },
+      });
+    })
   }
 }
