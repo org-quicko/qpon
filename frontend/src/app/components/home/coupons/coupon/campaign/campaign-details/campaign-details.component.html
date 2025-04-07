@@ -1,0 +1,102 @@
+<div class="flex flex-col gap-4">
+  <div class="flex justify-between items-center border-red-100">
+    @if(isLoading()){
+      <ngx-skeleton-loader
+        [theme]="{
+          height: '20px',
+          width: '100px',
+          margin: '0px',
+          padding: '0px'
+        }"></ngx-skeleton-loader>
+    } @else {
+      <p class="mat-headline-small text-on-surface">{{ campaign()?.getName() }}</p>
+    }
+    <div class="flex gap-0.5 items-center">
+      <button mat-stroked-button class="border-outline-variant text-primary mat-label-large rounded-[100px]">
+        <mat-icon>edit</mat-icon>
+        <span>Edit</span>
+      </button>
+      <button mat-icon-button>
+        <mat-icon>more_vert</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div class="inline-flex justify-start items-start gap-8">
+    <div class="flex justify-start items-center gap-2">
+      @if(isLoading()) {
+      <ngx-skeleton-loader
+        [theme]="{
+          height: '20px',
+          width: '100px',
+          margin: '0px',
+          padding: '0px'
+        }"
+      ></ngx-skeleton-loader>
+      } @else {
+      <div class="relative flex justify-start items-center gap-2.5">
+        <div
+          class="w-6 h-6 rounded-[12px] flex items-center justify-center"
+          [ngClass]="{
+            'bg-success-container': campaign()?.getStatus() == 'active',
+            'bg-surface-container-highest': campaign()?.getStatus() == 'inactive'
+          }"
+        >
+          <div
+            class="w-3 h-3 rounded-[6px]"
+            [ngClass]="{
+              'bg-success': campaign()?.getStatus() == 'active',
+              'bg-outline': campaign()?.getStatus() == 'inactive'
+            }"
+          ></div>
+        </div>
+      </div>
+      <div class="justify-start mat-body-large text-on-surface-variant">
+        {{ campaign()?.getStatus() | titlecase }}
+      </div>
+      }
+    </div>
+    <div class="flex justify-start items-center gap-2 text-on-surface-variant">
+      @if(isLoading()) {
+      <ngx-skeleton-loader
+        [theme]="{
+          height: '20px',
+          width: '150px',
+          margin: '0px',
+          padding: '0px'
+        }"
+      ></ngx-skeleton-loader>
+      } @else {
+      <div data-size="20 px" class="flex justify-start items-start gap-1.5 text-on-surface-variant">
+        <mat-icon class="material-symbols-outlined w-5 h-5 text-[20px]"
+          >campaign</mat-icon
+        >
+      </div>
+      <div class="justify-start mat-body-large">
+        Campaign
+      </div>
+      }
+    </div>
+    <div class="flex justify-start items-center gap-2 text-on-surface-variant">
+      @if(isLoading()) {
+      <ngx-skeleton-loader
+        [theme]="{
+          height: '20px',
+          width: '150px',
+          margin: '0px',
+          padding: '0px'
+        }"
+      ></ngx-skeleton-loader>
+      } @else {
+      <div data-size="20 px" class="flex justify-start items-start gap-1.5">
+        <mat-icon class="material-symbols-outlined w-5 h-5 text-[20px]"
+          >edit_square</mat-icon
+        >
+      </div>
+      <div class="justify-start mat-body-large">
+        <!-- Created on {{ getFormattedDate(campaign()?.getCreatedAt()!) }} -->
+        Created on {{ getFormattedDate(campaign()?.getCreatedAt()!) }}
+      </div>
+      }
+    </div>
+  </div>
+</div>
