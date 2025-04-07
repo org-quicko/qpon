@@ -7,14 +7,15 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, FindOptionsWhere, Repository } from 'typeorm';
+import { DataSource, FindOptionsWhere, ILike, Repository } from 'typeorm';
 import { CouponCode } from '../entities/coupon-code.entity';
 import { CreateCouponCodeDto, UpdateCouponCodeDto } from '../dtos';
 import { LoggerService } from './logger.service';
-import { couponCodeStatusEnum } from '../enums';
+import { couponCodeStatusEnum, sortOrderEnum } from '../enums';
 import { CouponCodeConverter } from '../converters/coupon-code.converter';
 import { CouponCodeSheetConverter } from '../converters/coupon-code-sheet.converter';
 import { Campaign } from 'src/entities/campaign.entity';
+import { CouponCodeListConverter } from 'src/converters/coupon-code-list.converter';
 
 @Injectable()
 export class CouponCodeService {
@@ -23,6 +24,7 @@ export class CouponCodeService {
     private readonly couponCodeRepository: Repository<CouponCode>,
     private couponCodeConverter: CouponCodeConverter,
     private couponCodeSheetConverter: CouponCodeSheetConverter,
+    private couponCodeListConverter: CouponCodeListConverter,
     private logger: LoggerService,
     private datasource: DataSource,
   ) {}
@@ -126,28 +128,41 @@ export class CouponCodeService {
     organizationId: string,
     couponId: string,
     campaignId: string,
+    sortBy?: string,
+    sortOrder?: sortOrderEnum,
     take: number = 10,
     skip: number = 0,
     whereOptions: FindOptionsWhere<CouponCode> = {},
   ) {
     this.logger.info('START: fetchCouponCodes service');
     try {
-      const couponCodes = await this.couponCodeRepository.find({
-        where: {
-          organization: {
-            organizationId,
+      let codeFilter: string = '';
+
+      if (whereOptions.code) {
+        codeFilter = whereOptions.code as string;
+        delete whereOptions.code;
+      }
+
+      const [couponCodes, count] = await this.couponCodeRepository.findAndCount(
+        {
+          where: {
+            organization: {
+              organizationId,
+            },
+            campaign: {
+              campaignId,
+            },
+            coupon: {
+              couponId,
+            },
+            ...(codeFilter && { code: ILike(`%${codeFilter}%`) }),
+            ...whereOptions,
           },
-          campaign: {
-            campaignId,
-          },
-          coupon: {
-            couponId,
-          },
-          ...whereOptions,
+          ...(sortBy && { order: { [sortBy]: sortOrder } }),
+          skip,
+          take,
         },
-        skip,
-        take,
-      });
+      );
 
       if (!couponCodes || couponCodes.length == 0) {
         this.logger.warn('Coupon codes not found', { campaignId, couponId });
@@ -155,8 +170,11 @@ export class CouponCodeService {
       }
 
       this.logger.info('END: fetchCouponCodes service');
-      return couponCodes.map((couponCode) =>
-        this.couponCodeConverter.convert(couponCode),
+      return this.couponCodeListConverter.convert(
+        couponCodes,
+        skip,
+        take,
+        count,
       );
     } catch (error) {
       this.logger.error(`Error in fetchCouponCodes service`, error);

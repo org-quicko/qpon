@@ -14,6 +14,7 @@ export class CouponCodeConverter {
     couponCodeDto.maxRedemptions = couponCode.maxRedemptions;
     couponCodeDto.maxRedemptionPerCustomer =
       couponCode.maxRedemptionPerCustomer;
+    couponCodeDto.redemptionCount = couponCode.redemptionCount;
     couponCodeDto.minimumAmount = couponCode.minimumAmount;
     couponCodeDto.visibility = couponCode.visibility;
     couponCodeDto.durationType = couponCode.durationType;

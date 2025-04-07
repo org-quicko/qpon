@@ -11,6 +11,7 @@ import {
   DataSource,
   EntityManager,
   FindOptionsWhere,
+  ILike,
   In,
   Repository,
 } from 'typeorm';
@@ -94,12 +95,20 @@ export class CustomersService {
   ) {
     this.logger.info('START: fetchCustomers service');
     try {
+      let emailFilter: string = '';
+
+      if (whereOptions.email) {
+        emailFilter = whereOptions.email as string;
+        delete whereOptions.email;
+      }
+
       const [customers, count] = await this.customersRepository.findAndCount({
         where: {
           organization: {
             organizationId,
           },
           status: statusEnum.ACTIVE,
+          ...(emailFilter && { name: ILike(`%${emailFilter}%`) }),
           ...whereOptions,
         },
         skip,

@@ -5,11 +5,17 @@ import { CouponCodeController } from '../controllers/coupon-code.controller';
 import { CouponCode } from '../entities/coupon-code.entity';
 import { CouponCodeConverter } from '../converters/coupon-code.converter';
 import { CouponCodeSheetConverter } from '../converters/coupon-code-sheet.converter';
+import { CouponCodeListConverter } from 'src/converters/coupon-code-list.converter';
 
 @Module({
   imports: [TypeOrmModule.forFeature([CouponCode])],
   controllers: [CouponCodeController],
-  providers: [CouponCodeService, CouponCodeConverter, CouponCodeSheetConverter],
+  providers: [
+    CouponCodeService,
+    CouponCodeConverter,
+    CouponCodeSheetConverter,
+    CouponCodeListConverter,
+  ],
   exports: [CouponCodeService],
 })
 export class CouponCodeModule {}

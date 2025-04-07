@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CouponItem } from '../entities/coupon-item.entity';
-import { DataSource, FindOptionsWhere, Repository } from 'typeorm';
+import { DataSource, FindOptionsWhere, ILike, Repository } from 'typeorm';
 import { LoggerService } from './logger.service';
 import { Coupon } from '../entities/coupon.entity';
 import { ItemsService } from './item.service';
@@ -78,6 +78,13 @@ export class CouponItemService {
   ) {
     this.logger.info('START: fetchItems service');
     try {
+      let nameFilter: string = '';
+
+      if (whereOptions.name) {
+        nameFilter = whereOptions.name as string;
+        delete whereOptions.name;
+      }
+
       const couponItems = await this.couponItemRepository.find({
         relations: {
           item: true,
@@ -87,7 +94,7 @@ export class CouponItemService {
             couponId,
           },
           item: {
-            ...whereOptions,
+            ...(nameFilter && { name: ILike(`%${nameFilter}%`) }),
           },
         },
         select: {

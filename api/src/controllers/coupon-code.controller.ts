@@ -15,6 +15,7 @@ import { LoggerService } from '../services/logger.service';
 import {
   couponCodeStatusEnum,
   durationTypeEnum,
+  sortOrderEnum,
   visibilityEnum,
 } from 'src/enums';
 import { Permissions } from '../decorators/permission.decorator';
@@ -63,10 +64,13 @@ export class CouponCodeController {
     @Param('organization_id') organizationId: string,
     @Param('coupon_id') couponId: string,
     @Param('campaign_id') campaignId: string,
+    @Query('code') code?: string,
     @Query('status') status?: couponCodeStatusEnum,
     @Query('visibility') visibility?: visibilityEnum,
     @Query('external_id') externalId?: string,
     @Query('duration_type') durationType?: durationTypeEnum,
+    @Query('sort_by') sortBy?: string,
+    @Query('sort_order') sortOrder: sortOrderEnum = sortOrderEnum.DESC,
     @Query('take') take?: number,
     @Query('skip') skip?: number,
   ) {
@@ -76,9 +80,12 @@ export class CouponCodeController {
       organizationId,
       couponId,
       campaignId,
+      sortBy,
+      sortOrder,
       take,
       skip,
       {
+        code,
         status,
         visibility,
         durationType,
@@ -206,7 +213,7 @@ export class CouponCodeController {
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
   @Permissions('update', CouponCode)
-  @Post(
+  @Patch(
     'coupons/:coupon_id/campaigns/:campaign_id/coupon-codes/:coupon_code_id/deactivate',
   )
   async deactivateCouponCode(
@@ -233,7 +240,7 @@ export class CouponCodeController {
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
   @Permissions('update', CouponCode)
-  @Post(
+  @Patch(
     'coupons/:coupon_id/campaigns/:campaign_id/coupon-codes/:coupon_code_id/reactivate',
   )
   async reactivateCouponCode(
