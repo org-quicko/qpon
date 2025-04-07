@@ -245,7 +245,12 @@ export class AuthorizationService {
         const subjectItemId = request.params.item_id as string;
 
         if (subject === User) {
-          if (action === 'read' || action === 'create' || action == 'read_all')
+          if (
+            action === 'read' ||
+            action === 'create' ||
+            action == 'read_all' ||
+            action === 'invite_user'
+          )
             return subject;
 
           if (!subjectUserId) {
