@@ -57,6 +57,6 @@ export class ChooseOrganizationComponent implements OnInit {
   }
 
   changeOrganization(organization: OrganizationDto) {
-    window.location.href = environment.dashboard_host + organization.organizationId + "/home/dashboard";
+    window.location.href = `${window.location.origin}/` + organization.organizationId + "/home/dashboard";
   }
 }

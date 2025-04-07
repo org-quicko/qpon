@@ -75,6 +75,6 @@ export class ProfileComponent implements OnInit {
 
   logout() {
     this.authService.deleteCookie();
-    window.location.href = environment.dashboard_host + "login"
+    window.location.href =  window.location.origin + "/login"
   }
 }
