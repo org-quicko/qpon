@@ -23,6 +23,7 @@ import { CampaignSubscriber } from './subscribers/campaign.subscriber';
 import { CouponSubscriber } from './subscribers/coupon.subscriber';
 import { OrganizationSubscriber } from './subscribers/organization.subscriber';
 import { PermissionGuard } from './guards/permission.guard';
+import { CouponCodeSubscriber } from './subscribers/coupon-code.subscriber';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { PermissionGuard } from './guards/permission.guard';
         CampaignSubscriber,
         CouponSubscriber,
         OrganizationSubscriber,
+        CouponCodeSubscriber,
       ],
       synchronize: true,
       logging: true,
