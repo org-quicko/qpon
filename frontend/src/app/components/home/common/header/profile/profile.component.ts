@@ -12,6 +12,9 @@ import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../../services/auth.service';
 import { environment } from '../../../../../../environments/environment';
+import { ThemeService } from '../../../../../services/theme.service';
+import { Theme } from '../../../../../../enums';
+import { Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -31,6 +34,8 @@ import { environment } from '../../../../../../environments/environment';
 export class ProfileComponent implements OnInit {
   role: any;
   selectedThemePreference: any;
+  theme$!: Observable<Theme>;
+  destroy$ = new Subject<void>();
 
 
   userStore = inject(UserStore);
@@ -39,14 +44,22 @@ export class ProfileComponent implements OnInit {
 
   user = this.userStore.user;
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService, private themeService: ThemeService) {
+    this.selectedThemePreference = Theme.SYSTEM
+  }
 
   ngOnInit() {
     this.getRole();
+
+    this.theme$ = this.themeService.theme$;
+
+    this.theme$.pipe(takeUntil(this.destroy$)).subscribe((res) => {
+      this.selectedThemePreference = res
+    })
   }
 
   changeTheme(event: MatButtonToggleChange) {
-    //TODO: add support for switching theme
+    this.themeService.setTheme(event.value)
   }
 
   getRole() {
