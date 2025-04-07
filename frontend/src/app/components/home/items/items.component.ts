@@ -50,11 +50,14 @@ export class ItemsComponent implements OnInit, AfterViewInit {
   columns = ['name', 'description', 'menu'];
 
   searchControl = new FormControl('');
+  isFilterApplied: boolean = false;
 
   itemsStore = inject(ItemsStore);
   organizationStore = inject(OrganizationStore);
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(private router: Router, private route: ActivatedRoute) {
+    this.isFilterApplied = false;
+  }
 
   organization = this.organizationStore.organizaiton;
 
@@ -92,6 +95,7 @@ export class ItemsComponent implements OnInit, AfterViewInit {
     this.searchControl.valueChanges
       .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe((name) => {
+        this.isFilterApplied = true;
         this.itemsStore.fetchItems({
           organizationId: this.organization()?.organizationId!,
           filter: {

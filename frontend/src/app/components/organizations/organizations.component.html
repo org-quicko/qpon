@@ -9,12 +9,14 @@
           Organisations you’re in
         </p>
         <mat-list
-          class="border border-outline-variant rounded-[5px] py-[8px] divide-y divide-outline-variant px-[24px]"
+          class="border border-outline-variant rounded-[5px] py-[8px] divide-y divide-outline-variant "
         >
+        @if(!isLoading()) {
           <mat-list-item
-            class="px-[3px] pl-[10px] pr-[10px]"
+            class="hover:bg-surface-bright hover:cursor-pointer"
             *ngFor="let organization of organizations(); let last = last"
           >
+          <div class="px-[3px] pl-[10px] pr-[10px]">
             <div class="flex items-center justify-between w-full hover:cursor-pointer" (click)="onClick(organization.organizationId!)">
               <div class="flex flex-col justify-between gap-[4px]">
                 <span class="mat-body-large text-on-surface">
@@ -27,7 +29,18 @@
               <mat-icon class="material-symbols-outlined"
                 >chevron_right</mat-icon>
             </div>
+          </div>
           </mat-list-item>
+        } @else {
+          @for(idx of [1,2,3,4,5]; track idx){
+            <mat-list-item >
+              <ngx-skeleton-loader
+                [theme]="{ height: '40px', width: '100%', margin: '0px', padding: '0px' }"
+                class="h-[40px] w-full"
+              ></ngx-skeleton-loader>
+            </mat-list-item>
+          } 
+        }
         </mat-list>
       </div>
     </div>

@@ -9,6 +9,10 @@ import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/p
 import { CustomersStore } from '../../../store/customers.store';
 import { OrganizationStore } from '../../../store/organization.store';
 import { CustomerDto } from '../../../../dtos/customer.dto';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-customers',
@@ -20,17 +24,23 @@ import { CustomerDto } from '../../../../dtos/customer.dto';
     MatCheckboxModule,
     MatMenuModule,
     MatPaginatorModule,
+    CommonModule,
+    NgxSkeletonLoaderModule,
+    ReactiveFormsModule
   ],
   templateUrl: './customers.component.html',
   styleUrl: './customers.component.css',
 })
 export class CustomersComponent implements OnInit, AfterViewInit {
   columns = ['name', 'email', 'phoneNumber', 'menu'];
+  isFilterApplied: boolean = false;
+  searchControl = new FormControl('');
 
   customersStore = inject(CustomersStore);
   organizationStore = inject(OrganizationStore);
 
   organization = this.organizationStore.organizaiton;
+  isLoading = this.customersStore.isLoading;
 
   customerDataSource = new MatTableDataSource<CustomerDto>()
 
@@ -39,6 +49,10 @@ export class CustomersComponent implements OnInit, AfterViewInit {
   customers = this.customersStore.customers;
   count = this.customersStore.count!;
   take = this.customersStore.take!;
+
+  constructor() {
+    this.isFilterApplied = false;
+  }
 
   ngAfterViewInit(): void {
     this.customerDataSource.paginator = this.paginator;
@@ -56,6 +70,17 @@ export class CustomersComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.customersStore.fetchCustomers({
       organizationId: this.organizationStore.organizaiton()?.organizationId!,
+    });
+
+
+    this.searchControl.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe((value) => {
+      this.isFilterApplied = true;
+      this.customersStore.fetchCustomers({
+        organizationId: this.organizationStore.organizaiton()?.organizationId!,
+        filter: {
+          email: value?.trim()!,
+        },
+      })
     });
   }
 }
