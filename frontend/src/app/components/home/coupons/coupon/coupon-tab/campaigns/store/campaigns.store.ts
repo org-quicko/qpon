@@ -8,6 +8,7 @@ import { plainToInstance } from 'class-transformer';
 import { CampaignService } from '../../../../../../../services/campaign.service';
 import {
   CampaignSummaryRow,
+  CampaignSummarySheet,
   CampaignSummaryTable,
   CampaignSummaryWorkbook,
 } from '../../../../../../../../generated/sources/campaign_summary_workbook';
@@ -35,19 +36,16 @@ export const CampaignsStore = signalStore(
     fetchCampaingSummaries: rxMethod<{ couponId: string }>(
       pipe(
         tap(() => patchState(store, { isLoading: true })),
-        concatMap(({ couponId }) => {
+        switchMap(({ couponId }) => {
           return campaignService.fetchCampaignSummaries(couponId).pipe(
             tapResponse({
               next: (response) => {
                 if (response.code == 200) {
-                  const campaignSummaryTable = plainToInstance(
-                    CampaignSummaryWorkbook,
-                    response.data
-                  )
-                    ?.getCampaignSummarySheet()
-                    .getCampaignSummaryTable() as CampaignSummaryTable;
+                  const campaignSummaryTable = plainToInstance(CampaignSummaryWorkbook, response.data).getCampaignSummarySheet().getCampaignSummaryTable();
+                  
+                  const rows = campaignSummaryTable.getRows()?.map((_, index) => campaignSummaryTable.getRow(index))
                   patchState(store, {
-                    campaignSummaries: campaignSummaryTable.getRows()?.map((_, index) => campaignSummaryTable.getRow(index)),
+                    campaignSummaries: rows,
                     isLoading: false,
                   });
                   onChangeStatusSuccess.emit(true);

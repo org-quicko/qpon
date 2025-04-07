@@ -28,14 +28,18 @@ import { MatRadioModule } from '@angular/material/radio';
 import { CommonModule } from '@angular/common';
 import { OrganizationStore } from '../../../store/organization.store';
 import { CouponsStore } from '../../../store/coupons.store';
-import { DatePipe } from '../../../pipe/date.pipe';
+import { CustomDatePipe } from '../../../pipe/date.pipe';
 import { ChangeStatusComponent } from './change-status/change-status.component';
 import { CouponDto } from '../../../../dtos/coupon.dto';
 import { MatDividerModule } from '@angular/material/divider';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { CouponFilter } from '../../../interfaces/coupon-filter.interface';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { sortOrderEnum } from '../../../../enums';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { CouponFilter } from '../../../types/coupon-filter.interface';
+import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatRippleModule } from '@angular/material/core';
@@ -58,7 +62,7 @@ import { OverlayRef } from '@angular/cdk/overlay';
     MatRadioModule,
     MatDividerModule,
     MatSortModule,
-    DatePipe,
+    CustomDatePipe,
     CommonModule,
     ReactiveFormsModule,
     NgxSkeletonLoaderModule,
@@ -66,7 +70,9 @@ import { OverlayRef } from '@angular/cdk/overlay';
   templateUrl: './coupons.component.html',
   styleUrl: './coupons.component.html',
 })
-export class CouponsComponent implements OnInit, AfterViewChecked {
+export class CouponsComponent
+  implements OnInit, AfterViewChecked, AfterViewInit
+{
   columns = [
     'name',
     'discount',
@@ -78,7 +84,11 @@ export class CouponsComponent implements OnInit, AfterViewChecked {
   filterForm: FormGroup;
   searchControl = new FormControl('');
   overlayRef!: OverlayRef;
-  loading: boolean = true;
+  sort!: MatSort;
+  isFilterApplied: boolean = false;
+
+  sortActive = signal<string>('createdAt');
+  sortDirection = signal<'asc' | 'desc'>('desc');
 
   couponDatasource = new MatTableDataSource<CouponDto>();
 
@@ -89,44 +99,44 @@ export class CouponsComponent implements OnInit, AfterViewChecked {
 
   organization = this.organizationStore.organizaiton;
   isLoading = this.couponsStore.isLoading;
-  coupons = this.couponsStore.filteredCoupons;
+  coupons = this.couponsStore.coupons;
   count = this.couponsStore.count!;
   take = this.couponsStore.take!;
   skip = this.couponsStore.skip!;
 
   // Computed property for pageIndex
   pageIndex = computed(() => {
-    return this.skip() && this.take() ? Math.floor(this.skip()! / this.take()!) : 0;
+    return this.skip() && this.take()
+      ? Math.floor(this.skip()! / this.take()!)
+      : 0;
   });
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatSort) set matSort(ms: MatSort) {
+    if (ms) {
+      this.sort = ms;
+      this.couponDatasource.sort = ms;
+    }
+  }
+
   @ViewChild('matMenu') matMenuTrigger!: MatMenuTrigger;
 
-  // **Signal for Sort State**
-  sortState = signal<{ sortBy: string | null; sortOrder: sortOrderEnum }>({
-    sortBy: null,
-    sortOrder: sortOrderEnum.ASC,
-  });
-
-  private isSortInitialized = false;
-
-  constructor(private formBuilder: FormBuilder, private router: Router, private route: ActivatedRoute) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
     this.filterForm = this.formBuilder.group<CouponFilter>({
       couponStatus: null,
       discountType: null,
       itemConstraint: null,
     });
 
-    // **Effect to reactively fetch data when sorting changes**
+    this.isFilterApplied = false;
+
+    // Update datasource when coupons change
     effect(() => {
-      const { sortBy, sortOrder } = this.sortState();
-      if (sortBy) {
-        this.couponsStore.fetchCouponsByFilter({
-          organizationId: this.organization()?.organizationId!,
-          filter: { ...this.filterForm.value, sortBy, sortOrder },
-        });
-      }
+      this.couponDatasource.data = this.coupons() || [];
     });
   }
 
@@ -135,52 +145,50 @@ export class CouponsComponent implements OnInit, AfterViewChecked {
       organizationId: this.organization()?.organizationId!,
     });
 
-    // Update datasource when coupons change
-    effect(() => {
-      this.couponDatasource.data = this.coupons() || [];
-    });
-
-    this.searchControl.valueChanges.pipe(
-      debounceTime(500),
-      distinctUntilChanged(),
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe((name) => {
-      this.couponsStore.fetchCouponsByFilter({
-        organizationId: this.organization()?.organizationId!,
-        filter: {
-          query: name?.trim()
-        }
+    this.searchControl.valueChanges
+      .pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((name) => {
+        this.isFilterApplied = true;
+        this.couponsStore.fetchCoupons({
+          organizationId: this.organization()?.organizationId!,
+          filter: {
+            query: name?.trim(),
+          },
+        });
       });
-    });
   }
 
   ngAfterViewChecked(): void {
     // **Ensure MatSort is available before initializing**
-    if (this.sort && !this.isSortInitialized) {
+  }
+
+  ngAfterViewInit(): void {
+    if (this.sort) {
       this.couponDatasource.sort = this.sort;
-      this.sort.sortChange.subscribe(() => {
+      this.couponDatasource.sort.sortChange.subscribe(() => {
         this.paginator.pageIndex = 0; // Reset pagination on sort change
-        this.sortState.set({
-          sortBy: this.sort.active,
-          sortOrder:
-            this.sort.direction === 'asc'
-              ? sortOrderEnum.ASC
-              : sortOrderEnum.DESC,
-        });
       });
-      this.isSortInitialized = true;
     }
   }
 
   openDialog(coupon: CouponDto) {
     this.dialog.open(ChangeStatusComponent, {
-      data: { coupon, organizationId: this.organization()?.organizationId },
+      data: {
+        coupon,
+        organizationId: this.organization()?.organizationId,
+        activateCoupon: this.couponsStore.activateCoupon,
+        deactivateCoupon: this.couponsStore.deactivateCoupon,
+      },
       autoFocus: false,
     });
   }
 
   onPageChange(event: PageEvent) {
-    this.couponsStore.fetchCouponsByFilter({
+    this.couponsStore.fetchCoupons({
       organizationId: this.organization()?.organizationId!,
       skip: event.pageIndex * event.pageSize,
       take: event.pageSize,
@@ -194,20 +202,39 @@ export class CouponsComponent implements OnInit, AfterViewChecked {
   resetForm() {
     this.filterForm.reset();
     this.couponsStore.resetFilter();
+
+    this.couponsStore.fetchCoupons({
+      organizationId: this.organization()?.organizationId!,
+    });
   }
 
   applyFilters() {
+    this.isFilterApplied = true;
     if (this.couponDatasource.paginator) {
       this.couponDatasource.paginator.firstPage();
     }
 
-    this.couponsStore.fetchCouponsByFilter({
+    this.couponsStore.fetchCoupons({
       organizationId: this.organization()?.organizationId!,
       filter: this.filterForm.value,
     });
   }
 
   onRowClick(coupon: CouponDto) {
-    this.router.navigate([`../coupons/${coupon.couponId}`], { relativeTo: this.route })
+    this.router.navigate([`../coupons/${coupon.couponId}`], {
+      relativeTo: this.route,
+    });
+  }
+
+  onSortChange(event: Sort) {
+
+    this.sortActive.set(event.active);
+    this.sortDirection.set(event.direction as 'asc' | 'desc');
+
+    this.couponsStore.fetchCoupons({
+      organizationId: this.organization()?.organizationId!,
+      filter: { ...this.filterForm.value, sortBy: event.active, sortOrder: event.direction },
+      isSortOperation: true,
+    });
   }
 }

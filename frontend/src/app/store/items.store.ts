@@ -8,7 +8,8 @@ import { ItemDto } from '../../dtos/item.dto';
 import { plainToClass } from 'class-transformer';
 import { withDevtools } from "@angular-architects/ngrx-toolkit";
 import { PaginatedList } from '../../dtos/paginated-list.dto';
-import { ItemFilter } from '../interfaces/item-filter.interface';
+import { ItemFilter } from '../types/item-filter.interface';
+import { HttpErrorResponse } from '@angular/common/http';
 
 type ItemsState = {
   items: ItemDto[];
@@ -51,8 +52,12 @@ export const ItemsStore = signalStore(
                   isLoading: false,
                 });
               },
-              error: (error: any) => {
-                patchState(store, { isLoading: false, error: error.message });
+              error: (error: HttpErrorResponse) => {
+                if(error.status === 404) {
+                  patchState(store, { items: [], isLoading: false });
+                } else {
+                  patchState(store, { isLoading: false, error: error.message });
+                }
               },
             }),
             catchError((error) => {

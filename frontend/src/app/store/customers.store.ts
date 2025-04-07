@@ -8,6 +8,7 @@ import { CustomerDto } from '../../dtos/customer.dto';
 import { plainToClass } from 'class-transformer';
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { PaginatedList } from '../../dtos/paginated-list.dto';
+import { HttpErrorResponse } from '@angular/common/http';
 
 type CustomersState = {
   customers: CustomerDto[];
@@ -34,11 +35,11 @@ export const CustomersStore = signalStore(
   withDevtools('customers'),
   withState(initialState),
   withMethods((store, customerService = inject(CustomerService)) => ({
-    fetchCustomers: rxMethod<{ organizationId: string, skip?:number, take?: number }>(
+    fetchCustomers: rxMethod<{ organizationId: string, skip?:number, take?: number, filter?: {email: string} }>(
       pipe(
         tap(() => patchState(store, { isLoading: true })),
-        concatMap(({ organizationId, skip, take }) => {
-          return customerService.fetchCustomers(organizationId, skip, take).pipe(
+        concatMap(({ organizationId, skip, take, filter }) => {
+          return customerService.fetchCustomers(organizationId, skip, take, filter).pipe(
             tapResponse({
               next: (response) => {
                 const customerList = plainToClass(PaginatedList<CustomerDto>, response.data) ;
@@ -50,8 +51,12 @@ export const CustomersStore = signalStore(
                   isLoading: false,
                 });
               },
-              error: (error: any) => {
-                patchState(store, { isLoading: false, error: error.message });
+              error: (error: HttpErrorResponse) => {
+                if(error.status === 404) {
+                  patchState(store, { customers: [], isLoading: false });
+                } else {
+                  patchState(store, { isLoading: false, error: error.message });
+                }
               },
             }),
             catchError((error) => {

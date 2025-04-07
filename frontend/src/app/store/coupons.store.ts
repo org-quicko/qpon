@@ -26,28 +26,28 @@ import {
   sortOrderEnum,
   statusEnum,
 } from '../../enums';
-import { CouponFilter } from '../interfaces/coupon-filter.interface';
+import { CouponFilter } from '../types/coupon-filter.interface';
 import { HttpErrorResponse } from '@angular/common/http';
 
 type CouponsState = {
   coupons: CouponDto[];
-  filteredCoupons: CouponDto[];
   skip?: number | null;
   take?: number | null;
   count?: number | null;
   filter?: CouponFilter;
   isLoading: boolean | null;
+  isSorting: boolean | null;
   error: string | null;
 };
 
 const initialState: CouponsState = {
   coupons: [],
-  filteredCoupons: [],
   skip: null,
   take: null,
   count: null,
   filter: undefined,
   isLoading: null,
+  isSorting: null,
   error: null,
 };
 
@@ -60,12 +60,21 @@ export const CouponsStore = signalStore(
       organizationId: string;
       skip?: number;
       take?: number;
+      filter?: CouponFilter,
+      isSortOperation?: boolean;
     }>(
       pipe(
-        tap(() => patchState(store, { isLoading: true })),
-        concatMap(({ organizationId, skip, take }) => {
+        tap(({isSortOperation}) => {
+          if (isSortOperation) {
+            patchState(store, {isSorting: true});
+          } else {
+            patchState(store, {isLoading: true});
+          }
+        }),
+        concatMap(({ organizationId, skip, take, filter }) => {
           return couponService
             .fetchCoupons(organizationId, skip, take, {
+              ...filter,
               sortBy: 'createdAt',
               sortOrder: sortOrderEnum.DESC,
             })
@@ -83,7 +92,6 @@ export const CouponsStore = signalStore(
                       ?.map((coupon) => plainToClass(CouponDto, coupon));
                     patchState(store, {
                       coupons: coupons,
-                      filteredCoupons: coupons,
                       skip: couponList?.getSkip(),
                       count: couponList?.getCount(),
                       take: couponList?.getTake(),
@@ -114,67 +122,9 @@ export const CouponsStore = signalStore(
       )
     ),
 
-    fetchCouponsByFilter: rxMethod<{
-      organizationId: string;
-      skip?: number;
-      take?: number;
-      filter?: CouponFilter;
-    }>(
-      pipe(
-        tap(() => patchState(store, { isLoading: true })),
-        concatMap(({ organizationId, skip, take, filter }) => {
-          return couponService
-            .fetchCoupons(organizationId, skip, take, filter)
-            .pipe(
-              tapResponse({
-                next: (response) => {
-                  if (response.code == 200) {
-                    const couponList = plainToClass(
-                      PaginatedList<CouponDto>,
-                      response.data
-                    );
-
-                    const coupons = couponList
-                      .getItems()
-                      ?.map((coupon) => plainToClass(CouponDto, coupon));
-                    patchState(store, {
-                      coupons: store.coupons(),
-                      filteredCoupons: coupons,
-                      skip: couponList?.getSkip(),
-                      count: couponList?.getCount(),
-                      take: couponList?.getTake(),
-                      isLoading: false,
-                    });
-                  }
-                },
-                error: (error: HttpErrorResponse) => {
-                  if (error.status == 404) {
-                    patchState(store, {
-                      coupons: store.coupons(),
-                      filteredCoupons: [],
-                      count: 0,
-                      isLoading: false,
-                    });
-                  } else {
-                    patchState(store, {
-                      isLoading: false,
-                      error: error.message,
-                    });
-                  }
-                },
-              }),
-              catchError((error) => {
-                patchState(store, { isLoading: false, error: error.message });
-                return EMPTY;
-              })
-            );
-        })
-      )
-    ),
-
     resetFilter: () => {
       patchState(store, {
-        filteredCoupons: store.coupons(),
+        coupons: store.coupons(),
         count: store.coupons().length,
       });
     },

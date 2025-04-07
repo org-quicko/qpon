@@ -1,5 +1,10 @@
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { CouponSummaryRow, CouponSummarySheet, CouponSummaryTable, CouponSummaryWorkbook } from '../../../../../../generated/sources/coupon_summary_workbook';
+import {
+  CouponSummaryRow,
+  CouponSummarySheet,
+  CouponSummaryTable,
+  CouponSummaryWorkbook,
+} from '../../../../../../generated/sources/coupon_summary_workbook';
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { inject } from '@angular/core';
 import { CouponService } from '../../../../../services/coupon.service';
@@ -8,6 +13,7 @@ import { catchError, concatMap, EMPTY, pipe, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { CouponDto } from '../../../../../../dtos/coupon.dto';
 import { plainToClass } from 'class-transformer';
+import { statusEnum } from '../../../../../../enums';
 
 type CouponState = {
   coupon: {
@@ -48,31 +54,19 @@ export const CouponStore = signalStore(
           })
         ),
         concatMap(({ organizationId, couponId }) => {
-          return couponService
-            .fetchCoupon(organizationId, couponId)
-            .pipe(
-              tapResponse({
-                next: (response) => {
-                  if (response.code == 200) {
-                    patchState(store, {
-                      coupon: {
-                        data: plainToClass(CouponDto, response.data!),
-                        isLoading: false,
-                      },
-                    });
-                  }
-                },
-                error: (error: any) => {
+          return couponService.fetchCoupon(organizationId, couponId).pipe(
+            tapResponse({
+              next: (response) => {
+                if (response.code == 200) {
                   patchState(store, {
                     coupon: {
-                      ...store.coupon(),
+                      data: plainToClass(CouponDto, response.data!),
                       isLoading: false,
-                      error: error.message,
                     },
                   });
-                },
-              }),
-              catchError((error) => {
+                }
+              },
+              error: (error: any) => {
                 patchState(store, {
                   coupon: {
                     ...store.coupon(),
@@ -80,9 +74,19 @@ export const CouponStore = signalStore(
                     error: error.message,
                   },
                 });
-                return EMPTY;
-              })
-            );
+              },
+            }),
+            catchError((error) => {
+              patchState(store, {
+                coupon: {
+                  ...store.coupon(),
+                  isLoading: false,
+                  error: error.message,
+                },
+              });
+              return EMPTY;
+            })
+          );
         })
       )
     ),
@@ -104,8 +108,14 @@ export const CouponStore = signalStore(
               tapResponse({
                 next: (response) => {
                   if (response.code == 200) {
-                    const couponSummarySheet = plainToClass(CouponSummaryWorkbook, response.data).getCouponSummarySheet()
-                    const couponSummaryTable = plainToClass(CouponSummarySheet, couponSummarySheet).getCouponSummaryTable()
+                    const couponSummarySheet = plainToClass(
+                      CouponSummaryWorkbook,
+                      response.data
+                    ).getCouponSummarySheet();
+                    const couponSummaryTable = plainToClass(
+                      CouponSummarySheet,
+                      couponSummarySheet
+                    ).getCouponSummaryTable();
                     patchState(store, {
                       couponStatistics: {
                         data: couponSummaryTable,
@@ -139,6 +149,57 @@ export const CouponStore = signalStore(
       )
     ),
 
-    
+    deactivateCoupon: rxMethod<{ organizationId: string; couponId: string }>(
+      pipe(
+        tap(() => patchState(store, {coupon: {isLoading: true, data: store.coupon.data()}})),
+        concatMap(({ organizationId, couponId }) => {
+          return couponService.deactivateCoupon(organizationId, couponId).pipe(
+            tapResponse({
+              next: (response) => {
+                if (response.code == 200) {
+                  patchState(store, {
+                    coupon: {
+                      data: {
+                        status: statusEnum.INACTIVE
+                      },
+                      isLoading: false
+                    }
+                  });
+                }
+              },
+              error: (error: any) => {
+                patchState(store, { coupon:{ data: store.coupon.data(), error: error.message, isLoading: false }});
+              },
+            }),
+          );
+        })
+      )
+    ),
+
+    activateCoupon: rxMethod<{ organizationId: string; couponId: string }>(
+      pipe(
+        concatMap(({ organizationId, couponId }) => {
+          return couponService.activateCoupon(organizationId, couponId).pipe(
+            tapResponse({
+              next: (response) => {
+                if (response.code == 200) {
+                  patchState(store, {
+                    coupon: {
+                      data: {
+                        status: statusEnum.ACTIVE
+                      },
+                      isLoading: false
+                    }
+                  });
+                }
+              },
+              error: (error: any) => {
+                patchState(store, { coupon:{ data: store.coupon.data(), error: error.message, isLoading: false }});
+              },
+            }),
+          );
+        })
+      )
+    ),
   }))
 );

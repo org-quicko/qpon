@@ -8,6 +8,7 @@ import { pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { plainToInstance } from 'class-transformer';
 import { PaginatedList } from '../../../../../../../../dtos/paginated-list.dto';
+import { HttpErrorResponse } from '@angular/common/http';
 
 type EligibleItemsState = {
   items: ItemDto[] | null;
@@ -28,11 +29,11 @@ export const EligibleItemsStore = signalStore(
     withState(initialState),
     withDevtools('eligible_items'),
     withMethods((store, eligibleItemService = inject(EligibleItemsService)) => ({
-        fetchItems: rxMethod<{organizationId: string, couponId: string}>(
+        fetchItems: rxMethod<{organizationId: string, couponId: string, filter?: {name: string}}>(
             pipe(
                 tap(() => patchState(store, { isLoading: true })),
-                switchMap(({organizationId, couponId}) => {
-                    return eligibleItemService.fetchItemsForCoupon(organizationId, couponId).pipe(
+                switchMap(({organizationId, couponId, filter}) => {
+                    return eligibleItemService.fetchItemsForCoupon(organizationId, couponId, filter).pipe(
                         tapResponse({
                             next: (response) => {
                                 if(response.code == 200) {
@@ -40,8 +41,12 @@ export const EligibleItemsStore = signalStore(
                                     patchState(store, {isLoading: false, items: items})
                                 }
                             },
-                            error: (error:any) => {
-                                patchState(store, { isLoading: false, error: error.message })
+                            error: (error:HttpErrorResponse) => {
+                                if(error.status === 404) {
+                                    patchState(store, { items: [], isLoading: false });
+                                } else {
+                                    patchState(store, { isLoading: false, error: error.message })
+                                }
                             }
                         })
                     )

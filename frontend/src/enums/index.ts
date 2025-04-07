@@ -4,3 +4,7 @@ export * from './status.enum';
 export * from './itemConstraint.enum';
 export * from './discountType.enum';
 export * from './sortOrder.enum';
+export * from './customerConstraint.enum';
+export * from './couponCodeStatus.enum';
+export * from './durationType.enum';
+export * from './visibility.enum';

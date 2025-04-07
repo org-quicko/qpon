@@ -3,19 +3,21 @@
     <div class="flex items-center justify-between">
       <div>
         <p class="mat-headline-medium text-on-surface w-full">
-          @if (coupons() !== null && coupons() !== undefined) { @if (coupons().length && coupons().length >= 0) {
-          Coupons {{ `(${coupons().length})` }}
+          @if (coupons() !== null && coupons() !== undefined) { 
+          @if (count()! >= 0) { Coupons
+          {{ `(${coupons().length})` }}
           }@else {Coupons}} @else { Coupons }
         </p>
       </div>
       <div class="flex gap-[8px]">
         <button mat-flat-button class="w-auto rounded-[100px]">
-          <mat-icon class="material-symbols-outlined left-[3px] ">add</mat-icon>
+          <mat-icon class="material-symbols-outlined left-[3px]">add</mat-icon>
           <span class="mat-label-large">Add Coupon</span>
         </button>
       </div>
     </div>
-    @if( !isLoading() && couponsStore.coupons().length == 0) {
+    @if( !isLoading() && couponsStore.coupons().length == 0 && !isFilterApplied)
+    {
     <div class="flex justify-center items-center h-[600px]">
       <div class="flex flex-col items-center gap-[10px] h-auto w-auto">
         <div class="bg-surface-container rounded-[10px]">
@@ -35,8 +37,7 @@
               class="material-symbols-outlined text-on-primary left-[3px]"
               >add</mat-icon
             >
-            <span
-              class="mat-label-large text-center text-on-primary"
+            <span class="mat-label-large text-center text-on-primary"
               >Add Coupon</span
             >
           </button>
@@ -56,59 +57,81 @@
         class="focus:outline-none align-middle py-[4px] w-full mat-body-large text-outline"
         placeholder="Search coupons"
       />
-      <div class="h-[48px] w-[48px] flex justify-center items-center cursor-pointer" [matMenuTriggerFor]="filterMenu">
-        <mat-icon class="text-on-surface-variant">tune</mat-icon>
+      <div
+        class="h-[48px] w-[48px] flex justify-center items-center cursor-pointer"
+        [matMenuTriggerFor]="filterMenu"
+      >
+        <button mat-icon-button>
+          <mat-icon class="text-on-surface-variant">tune</mat-icon>
+        </button>
       </div>
     </div>
     <div>
       @if(isLoading()) {
-        <div class="flex flex-col pt-[50px] p-4 gap-[8px] h-[100vh] w-[100vw]">
-          <div class="flex flex-col gap-2">
-            <div *ngFor="let item of [1,2,3,4,5,6,7,8,9,10]; let i = index;">
-              <div class="relative group">
-                <div class="flex flex-row justify-between gap-x-4 relative">
-                  <div class="flex overflow-hidden" [ngStyle]="{ 'width': 5 * 100 / 6 + '%' }">
-                    <ngx-skeleton-loader [theme]="{ height: '36px' , width: '100%'}"
-                      class="h-[36px] w-full"></ngx-skeleton-loader>
-                  </div>
+      <div class="flex flex-col pt-[50px] p-4 gap-[8px] h-[100vh] w-[100vw]">
+        <div class="flex flex-col gap-2">
+          <div
+            *ngFor="let item of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; let i = index"
+          >
+            <div class="relative group">
+              <div class="flex flex-row justify-between gap-x-4 relative">
+                <div
+                  class="flex overflow-hidden"
+                  [ngStyle]="{ width: (5 * 100) / 6 + '%' }"
+                >
+                  <ngx-skeleton-loader
+                    [theme]="{ height: '36px', width: '100%' }"
+                    class="h-[36px] w-full"
+                  ></ngx-skeleton-loader>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      } @else if(!isLoading() && coupons().length > 0) {
-        <div class="border-outline-variant border-[1px] rounded-[5px]">
-          <table mat-table [dataSource]="coupons()" class="coupon-table" matSort [matSortActive]="'createdAt'" [matSortDirection]="'desc'" matSortDisableClear="true" [ngClass]="{'h-[500px]': coupons().length == 0}">
-            <ng-container matColumnDef="name">
-              <th
-                mat-header-cell
-                *matHeaderCellDef
-                class="mat-body-medium text-on-surface px-6 py-3"
-              >
-                Name
-              </th>
-              <td
-                mat-cell
-                *matCellDef="let coupon"
-                class="mat-body-large text-on-surface px-6 py-4"
-              >
-                {{ coupon.name }}
-              </td>
-            </ng-container>
-  
-            <ng-container matColumnDef="discount">
-              <th
-                mat-header-cell
-                *matHeaderCellDef
-                class="mat-body-medium text-on-surface px-6 py-3"
-              >
-                Discount
-              </th>
-              <td
-                mat-cell
-                *matCellDef="let coupon"
-                class="mat-body-large text-on-surface px-6 py-4"
-              >
+      </div>
+      } @else if(!isLoading()) {
+      <div class="border-outline-variant border-[1px] rounded-[5px] overflow-hidden">
+        <table
+          mat-table
+          [dataSource]="couponDatasource"
+          class="coupon-table w-full"
+          matSort
+          [matSortActive]="'createdAt'"
+          [matSortDirection]="'desc'"
+          matSortDisableClear="true"
+          (matSortChange)="onSortChange($event)"
+          [ngClass]="{ 'h-[500px]': coupons().length == 0 && isFilterApplied }"
+        >
+          <ng-container matColumnDef="name">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="mat-body-medium text-on-surface px-6 py-3 w-[199px]"
+            >
+              Name
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let coupon"
+              class="mat-body-large text-on-surface px-6 py-4 w-[199px]"
+            >
+              {{ coupon.name }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="discount">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="mat-body-medium text-on-surface px-6 py-3 w-[199px]"
+            >
+              Discount
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let coupon"
+              class="mat-body-large text-on-surface px-6 py-4 w-[199px]"
+            >
               {{ 
                 coupon.discountType == 'fixed' ?
                 coupon.discountUpto ? 
@@ -119,151 +142,207 @@
                   `${coupon.discountValue}% upto ${coupon.discountUpto | currency: organization()?.currency : 'symbol'}` 
                   : `${coupon.discountValue}%`
               }}
-              </td>
-            </ng-container>
-  
-            <ng-container matColumnDef="applicable_on">
-              <th
-                mat-header-cell
-                *matHeaderCellDef
-                class="mat-body-medium text-on-surface px-6 py-3"
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="applicable_on">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="mat-body-medium text-on-surface px-6 py-3 w-[199px]"
+            >
+              Applicable on
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let coupon"
+              class="mat-body-large text-on-surface px-6 py-4 w-[199px]"
+            >
+              {{
+                coupon.itemConstraint == "all"
+                  ? "All products"
+                  : "Specific products"
+              }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="mat-body-medium text-on-surface px-6 py-3 w-[199px]"
+            >
+              Status
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let coupon"
+              class="px-6 py-4 text-on-surface w-[199px]"
+              [ngClass]="{ 'text-outline': coupon.status == 'inactive' }"
+            >
+              <span
+                class="bg-surface-container rounded-sm mat-label-small px-2 py-1"
+                >{{ coupon.status | titlecase }}</span
               >
-                Applicable on
-              </th>
-              <td
-                mat-cell
-                *matCellDef="let coupon"
-                class="mat-body-large text-on-surface px-6 py-4"
-              >
-                {{
-                  coupon.itemConstraint == "all"
-                    ? "All products"
-                    : "Specific products"
-                }}
-              </td>
-            </ng-container>
-  
-            <ng-container matColumnDef="status">
-              <th
-                mat-header-cell
-                *matHeaderCellDef
-                class="mat-body-medium text-on-surface px-6 py-3"
-              >
-                Status
-              </th>
-              <td
-                mat-cell
-                *matCellDef="let coupon"
-                class="px-6 py-4 text-on-surface"
-                [ngClass]="{'text-outline': coupon.status == 'inactive'}"
-              >
-                <span class="bg-surface-container rounded-sm mat-label-small px-2 py-1">{{ coupon.status | titlecase }}</span>
-              </td>
-            </ng-container>
-  
-            <ng-container matColumnDef="createdAt">
-              <th
-                mat-header-cell
-                *matHeaderCellDef
-                mat-sort-header
-                class="mat-body-medium text-on-surface px-6 py-3 w-[250px] cursor-pointer"
-              >
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="createdAt">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              class="mat-body-medium text-on-surface px-6 py-3 w-[199px] cursor-pointer"
+            >
               <div class="flex items-center">
                 <span>Created at</span>
-                <!-- <mat-icon class="w-[18px] h-[18px] text-[18px] top-[1px] left-[76px]">arrow_downward</mat-icon> -->
-              </div>  
-              </th>
-              <td
-                mat-cell
-                *matCellDef="let coupon"
-                class="mat-body-large text-on-surface px-6 py-4"
-              >
-                {{ coupon.createdAt | date }}
-              </td>
-            </ng-container>
-  
-            <ng-container matColumnDef="menu">
-              <th mat-header-cell *matHeaderCellDef aria-label="row actions">
-                &nbsp;
-              </th>
-              <td mat-cell *matCellDef="let coupon">
-                <div>
+              </div>
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let coupon"
+              class="mat-body-large text-on-surface px-6 py-4 w-[199px]"
+            >
+              {{ coupon.createdAt | custom_date }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="menu" stickyEnd>
+            <th mat-header-cell *matHeaderCellDef aria-label="row actions" class="w-[48px]"> 
+              &nbsp;
+            </th>
+            <td mat-cell *matCellDef="let coupon" class="w-[48px]">
+              <div>
+                <button mat-icon-button>
                   <mat-icon
                     [matMenuTriggerFor]="menu"
                     (click)="$event.stopPropagation()"
                     class="hover:cursor-pointer"
                     >more_vert</mat-icon
                   >
-                </div>
-                <mat-menu
-                  #menu="matMenu"
-                  class="w-[200px] min-w-[112px] max-w-[280px] rounded-[4px] bg-surface-container-lowest top-[208px] left-[3155px]"
+                </button>
+              </div>
+              <mat-menu
+                #menu="matMenu"
+                class="w-[200px] min-w-[112px] max-w-[280px] rounded-[4px] bg-surface-container-lowest top-[208px] left-[3155px]"
+              >
+                <button mat-menu-item class="h-[56px] py-8 flex gap-[12px]">
+                  <mat-icon class="material-symbols-outlined">edit</mat-icon>
+                  <span class="mat-body-large text-on-surface">Edit</span>
+                </button>
+                <button
+                  mat-menu-item
+                  class="h-[56px] py-8 flex gap-[12px]"
+                  (click)="openDialog(coupon)"
                 >
-                  <button mat-menu-item class="h-[56px] py-8 flex gap-[12px]">
-                    <mat-icon class="material-symbols-outlined">edit</mat-icon>
-                    <span class="mat-body-large text-on-surface">Edit</span>
-                  </button>
-                  <button mat-menu-item class="h-[56px] py-8 flex gap-[12px]" (click)="openDialog(coupon)">
-                    <mat-icon svgIcon="regime_preference" class="w-6 h-6 text-on-surface"></mat-icon>
-                    <span class="mat-body-large text-on-surface">Change status</span>
-                  </button>
-                </mat-menu>
-              </td>
-            </ng-container>
-  
-            <tr mat-header-row *matHeaderRowDef="columns"></tr>
-            <tr mat-row *matRowDef="let row; columns: columns" class="hover:bg-surface-bright cursor-pointer" (click)="onRowClick(row)"></tr>
-            <tr class="empty-row" *matNoDataRow>
-              <td [attr.colspan]="columns.length">
-                <div class="flex flex-col justify-center items-center h-[300px]">
-                  <div class="p-6 text-center">
-                    <div class="text-on-surface-variant flex flex-col items-center gap-y-[16px]">
-                      <div class="scale-200 rounded-full inline-flex justify-start items-center gap-2.5 overflow-hidden">
-                        <mat-icon class="material-symbols-outlined ">local_activity</mat-icon>
+                  <mat-icon
+                    svgIcon="regime_preference"
+                    class="w-6 h-6 text-on-surface"
+                  ></mat-icon>
+                  <span class="mat-body-large text-on-surface"
+                    >Change status</span
+                  >
+                </button>
+              </mat-menu>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: columns"
+            class="hover:bg-surface-bright cursor-pointer"
+            (click)="onRowClick(row)"
+          ></tr>
+
+          <tr class="empty-row" *matNoDataRow>
+            <td [attr.colspan]="columns.length">
+              <div class="flex flex-col justify-center items-center h-[300px]">
+                <div class="p-6 text-center flex flex-col gap-4">
+                  <div
+                    class="text-on-surface-variant flex flex-col items-center gap-y-[16px]"
+                  >
+                    <div
+                      class="scale-150 rounded-full inline-flex justify-start items-center gap-2.5 overflow-hidden bg-surface-container p-3"
+                    >
+                      <mat-icon class="material-symbols-outlined text-on-surface-variant"
+                        >local_activity</mat-icon
+                      >
                     </div>
-                      <p class="text-lg font-medium">No coupons to show</p>
-                    </div>
+                    <p class="text-on-surface mat-body-large">
+                      No coupons to show
+                    </p>
                   </div>
                 </div>
-              </td>
-            </tr>
-          </table>
-        </div>
-      }
-      <div>
-        <mat-paginator [length]="count()" [pageSize]="take()" (page)="onPageChange($event)"></mat-paginator>
+              </div>
+            </td>
+          </tr>
+        </table>
       </div>
+      }
     </div>
     }
+    <div>
+      <mat-paginator
+        [length]="count()"
+        [pageSize]="take()"
+        (page)="onPageChange($event)"
+      ></mat-paginator>
+    </div>
   </div>
 </div>
-<mat-menu #filterMenu="matMenu" class="w-[400px] relative top-[-20px] bg-surface-container-lowest">
+<mat-menu
+  #filterMenu="matMenu"
+  class="w-[400px] relative top-[-20px] bg-surface-container-lowest"
+>
   <form [formGroup]="filterForm">
     <div class="py-2 px-4">
       <p class="mat-body-large text-on-surface">Coupon status</p>
-      <mat-radio-group formControlName="couponStatus" class="flex gap-[24px]" (click)="preventClose($event)">
+      <mat-radio-group
+        formControlName="couponStatus"
+        class="flex gap-[24px]"
+        (click)="preventClose($event)"
+      >
         <mat-radio-button value="active">Active</mat-radio-button>
         <mat-radio-button value="inactive">Inactive</mat-radio-button>
       </mat-radio-group>
     </div>
     <div class="py-2 px-4">
       <p class="mat-body-large text-on-surface">Items</p>
-      <mat-radio-group formControlName="itemConstraint" class="flex gap-[24px]" (click)="preventClose($event)">
+      <mat-radio-group
+        formControlName="itemConstraint"
+        class="flex gap-[24px]"
+        (click)="preventClose($event)"
+      >
         <mat-radio-button value="all">All</mat-radio-button>
         <mat-radio-button value="specific">Specific</mat-radio-button>
       </mat-radio-group>
     </div>
     <div class="py-2 px-4">
       <p class="mat-body-large text-on-surface">Discount type</p>
-      <mat-radio-group formControlName="discountType" class="flex gap-[24px]" (click)="preventClose($event)">
+      <mat-radio-group
+        formControlName="discountType"
+        class="flex gap-[24px]"
+        (click)="preventClose($event)"
+      >
         <mat-radio-button value="percentage">Percentage</mat-radio-button>
         <mat-radio-button value="fixed">Fixed</mat-radio-button>
       </mat-radio-group>
     </div>
-    <mat-divider class="bg-outline-variant border border-outline-variant"></mat-divider>
+    <mat-divider
+      class="bg-outline-variant border border-outline-variant"
+    ></mat-divider>
     <div class="flex justify-end gap-2 mat-label-large p-4">
-      <button mat-stroked-button class="rounded-[100px]" (click)="resetForm()">Clear all</button>
-      <button mat-button class="bg-primary text-on-primary" (click)="applyFilters()">Apply</button>
+      <button mat-stroked-button class="rounded-[100px]" (click)="resetForm()">
+        Clear all
+      </button>
+      <button
+        mat-button
+        class="bg-primary text-on-primary"
+        (click)="applyFilters()"
+      >
+        Apply
+      </button>
     </div>
   </form>
 </mat-menu>
