@@ -37,15 +37,15 @@
       mat-table
       matSort
       [matSortDisableClear]="true"
-      [matSortActive]="sortActive()" 
+      [matSortActive]="sortActive()"
       [matSortDirection]="sortDirection()"
       (matSortChange)="onSortChange($event)"
       [dataSource]="datasource"
       [ngClass]="{ 'h-[500px]': couponCodes()?.length === 0 && !isLoading() }"
     >
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef  class="py-6 pl-6 pr-4">Name</th>
-        <td mat-cell *matCellDef="let couponCode"  class="py-6 pl-6 pr-4">
+        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">Name</th>
+        <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
           <div class="flex items-center group">
             <div class="text-on-surface">{{ couponCode.code }}</div>
             <button
@@ -66,32 +66,40 @@
       </ng-container>
 
       <ng-container matColumnDef="visibility">
-        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">Visibility</th>
+        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">
+          Visibility
+        </th>
         <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
           {{ couponCode.visibility }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="expires_at">
-        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">Expires on</th>
+        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">
+          Expires on
+        </th>
         <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
           {{
             couponCode.expiresAt
-              ? (couponCode.expiresAt | custom_date: "")
+              ? (couponCode.expiresAt | custom_date : "")
               : "Never"
           }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="redemption_count">
-        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">Total redemptions</th>
+        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">
+          Total redemptions
+        </th>
         <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
           {{ couponCode.redemptionCount }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="max_redemptions">
-        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">Max redemptions</th>
+        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">
+          Max redemptions
+        </th>
         <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
           {{ couponCode.maxRedemptions ?? "Unlimited" }}
         </td>
@@ -113,7 +121,14 @@
       </ng-container>
 
       <ng-container matColumnDef="createdAt">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="py-6 pl-6 pr-4">Created at</th>
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="py-6 pl-6 pr-4"
+        >
+          Created at
+        </th>
         <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
           {{ couponCode.createdAt | custom_date }}
         </td>
@@ -122,7 +137,7 @@
       <ng-container matColumnDef="menu">
         <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">&nbsp;</th>
         <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
-          <button mat-icon-button (click)="$event.stopPropagation();">
+          <button mat-icon-button (click)="$event.stopPropagation()">
             <mat-icon [matMenuTriggerFor]="menu">more_vert</mat-icon>
           </button>
           <mat-menu
@@ -155,7 +170,8 @@
       <tr
         mat-row
         *matRowDef="let row; columns: columns"
-        class="hover:bg-surface-bright cursor-pointer" (click)="onRowClick(row)"
+        class="hover:bg-surface-bright cursor-pointer"
+        (click)="onRowClick(row)"
       ></tr>
 
       <!-- Empty State Row -->
@@ -183,30 +199,169 @@
       </tr>
     </table>
     } @else {
-    <div class="flex flex-col pt-[50px] p-4 gap-[8px] h-[100vh] w-[100vw]">
-      <div class="flex flex-col gap-2">
-        <div
-          *ngFor="let item of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; let i = index"
+    <table mat-table [dataSource]="tempDatasource">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">Name</th>
+        <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
+          <ngx-skeleton-loader
+            [theme]="{
+              height: '24px',
+              width: '100px',
+              margin: '0px',
+              padding: '0px'
+            }"
+          ></ngx-skeleton-loader>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="visibility">
+        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">
+          Visibility
+        </th>
+        <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
+          <ngx-skeleton-loader
+          [theme]="{
+            height: '24px',
+            width: '100px',
+            margin: '0px',
+            padding: '0px'
+          }"
+        ></ngx-skeleton-loader>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="expires_at">
+        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">
+          Expires on
+        </th>
+        <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
+          <ngx-skeleton-loader
+          [theme]="{
+            height: '24px',
+            width: '100px',
+            margin: '0px',
+            padding: '0px'
+          }"
+        ></ngx-skeleton-loader>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="redemption_count">
+        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">
+          Total redemptions
+        </th>
+        <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
+          <ngx-skeleton-loader
+            [theme]="{
+              height: '24px',
+              width: '100px',
+              margin: '0px',
+              padding: '0px'
+            }"
+          ></ngx-skeleton-loader>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="max_redemptions">
+        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">
+          Max redemptions
+        </th>
+        <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
+          <ngx-skeleton-loader
+            [theme]="{
+              height: '24px',
+              width: '100px',
+              margin: '0px',
+              padding: '0px'
+            }"
+          ></ngx-skeleton-loader>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">Status</th>
+        <td
+          mat-cell
+          *matCellDef="let couponCode"
+          class="text-on-surface py-6 pl-6 pr-4"
         >
-          <div class="relative group">
-            <div class="flex flex-row justify-between gap-x-4 relative">
-              <div
-                class="flex overflow-hidden"
-                [ngStyle]="{ width: (5 * 100) / 6 + '%' }"
-              >
-                <ngx-skeleton-loader
-                  [theme]="{ height: '36px', width: '100%' }"
-                  class="h-[36px] w-full"
-                ></ngx-skeleton-loader>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+        <ngx-skeleton-loader
+        [theme]="{
+          height: '24px',
+          width: '100px',
+          margin: '0px',
+          padding: '0px'
+        }"
+      ></ngx-skeleton-loader>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="createdAt">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="py-6 pl-6 pr-4"
+        >
+          Created at
+        </th>
+        <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
+          <ngx-skeleton-loader
+            [theme]="{
+              height: '24px',
+              width: '100px',
+              margin: '0px',
+              padding: '0px'
+            }"
+          ></ngx-skeleton-loader>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="menu">
+        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">&nbsp;</th>
+        <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
+          <button mat-icon-button (click)="$event.stopPropagation()">
+            <mat-icon [matMenuTriggerFor]="menu">more_vert</mat-icon>
+          </button>
+          <mat-menu
+            #menu="matMenu"
+            class="w-[200px] min-w-[112px] max-w-[280px] rounded-[4px] bg-surface-container-lowest top-[208px] left-[3155px]"
+          >
+            <button mat-menu-item class="h-[56px] py-8 flex gap-[12px]">
+              <mat-icon class="material-symbols-outlined">edit</mat-icon>
+              <span class="mat-body-large text-on-surface">Edit</span>
+            </button>
+            <button
+              mat-menu-item
+              class="h-[56px] py-8 flex gap-[12px]"
+              (click)="openChangeStatusDialog(couponCode)"
+            >
+              <mat-icon
+                svgIcon="regime_preference"
+                class="w-6 h-6 text-on-surface"
+              ></mat-icon>
+              <span class="mat-body-large text-on-surface">Change status</span>
+            </button>
+          </mat-menu>
+        </td>
+      </ng-container>
+
+      <!-- Table Header -->
+      <tr mat-header-row *matHeaderRowDef="columns"></tr>
+
+      <!-- Data Rows -->
+      <tr
+        mat-row
+        *matRowDef="let row; columns: columns"
+        class="hover:bg-surface-bright cursor-pointer"
+      ></tr>
+    </table>
     }
   </div>
   <div class="flex justify-end">
-    <mat-paginator [length]="count()" [pageSize]="take()" (page)="onPageChange($event)"></mat-paginator>
+    <mat-paginator
+      [length]="count()"
+      [pageSize]="take()"
+      (page)="onPageChange($event)"
+    ></mat-paginator>
   </div>
 </div>

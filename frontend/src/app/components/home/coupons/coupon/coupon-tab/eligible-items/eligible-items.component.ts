@@ -24,8 +24,6 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
     MatTableModule,
     MatPaginatorModule,
     MatMenuModule,
-    NgFor,
-    NgStyle,
     NgxSkeletonLoaderModule,
     ReactiveFormsModule,
   ],
@@ -38,6 +36,7 @@ export class EligibleItemsComponent implements OnInit {
   couponId: string;
   searchControl: FormControl;
   isFilterApplied: boolean = false;
+  tempDatasource: number[] = Array.from({ length: 10 }, (_, i) => i + 1);
 
   couponStore = inject(CouponStore);
   eligibleItemsStore = inject(EligibleItemsStore);

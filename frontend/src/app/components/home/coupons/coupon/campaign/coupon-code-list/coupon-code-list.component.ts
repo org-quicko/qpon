@@ -47,8 +47,6 @@ import { CouponCodeFilter } from '../../../../../../types/coupon-code-filter.int
     NgClass,
     CustomDatePipe,
     TitleCasePipe,
-    NgStyle,
-    NgFor,
     NgxSkeletonLoaderModule,
     ReactiveFormsModule,
   ],
@@ -64,6 +62,7 @@ export class CouponCodeListComponent implements OnInit, AfterViewInit {
   sort!: MatSort;
   filter = signal<CouponCodeFilter | null>(null);
   couponCodeFilter!: Signal<CouponCodeFilter | null>;
+  tempDatasource: number[] = Array.from({ length: 10 }, (_, i) => i + 1);
 
   sortActive = signal<string>('createdAt');
   sortDirection = signal<'asc' | 'desc'>('desc');
