@@ -1,5 +1,5 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
-import { MatCardModule } from "@angular/material/card";
+import { MatCardModule } from '@angular/material/card';
 import { CouponStore } from '../store/coupon.store';
 import { OrganizationStore } from '../../../../../store/organization.store';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
@@ -9,10 +9,9 @@ import { CurrencyPipe } from '@angular/common';
   selector: 'app-coupon-summary',
   imports: [MatCardModule, NgxSkeletonLoaderModule, CurrencyPipe],
   templateUrl: './coupon-summary.component.html',
-  styleUrl: './coupon-summary.component.css'
+  styleUrl: './coupon-summary.component.css',
 })
 export class CouponSummaryComponent implements OnInit {
-
   @Input() couponId!: string;
   @Input() organizationId!: string;
 
@@ -23,7 +22,6 @@ export class CouponSummaryComponent implements OnInit {
   couponSummary = this.couponStore.couponStatistics.data;
   coupon = this.couponStore.coupon.data;
   organization = this.oraganizationStore.organizaiton;
-
   ngOnInit(): void {
     this.couponStore.fetchCouponSummary({
       organizationId: this.organizationId,

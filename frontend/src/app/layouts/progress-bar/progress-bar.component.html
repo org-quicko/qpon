@@ -1,0 +1,14 @@
+<div class="w-full h-[5px] bg-surface-container-high">
+    <ng-container *ngIf="animate">
+        <div class="w-full h-[5px]">
+            <div class="h-full bg-primary"
+                [@fillAnimation]="{ value: fillPercentage,params: {percentage: fillPercentage} }">
+            </div>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="!animate">
+        <div class="w-full h-[5px]">
+            <div class="h-full bg-primary" [style.width.%]="fillPercentage"></div>
+        </div>
+    </ng-container>
+</div>
