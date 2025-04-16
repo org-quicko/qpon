@@ -1,9 +1,9 @@
 <div class="flex flex-col gap-6 overflow-hidden">
   <div class="flex justify-between items-center">
     <p class="mat-body-large text-on-surface">Campaigns</p>
-    <button mat-flat-button class="bg-primary rounded-[100px] text-on-primary">
+    <button mat-flat-button class="bg-primary rounded-[100px] text-on-primary" (click)="onCreateCampaign()">
       <mat-icon>add</mat-icon>
-      <span>Add campaign</span>
+      <span>Create campaign</span>
     </button>
   </div>
   <div
@@ -14,6 +14,7 @@
     </div>
     <input
       matInput
+      [formControl]="searchControl"
       class="focus:outline-none align-middle py-[4px] w-full mat-body-large text-outline"
       placeholder="Search campaigns"
     />

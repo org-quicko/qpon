@@ -29,7 +29,7 @@ import { OrganizationStore } from '../../../../../../store/organization.store';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ChangeStatusComponent } from './change-status/change-status.component';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-campaigns',
@@ -57,6 +57,7 @@ export class CampaignsComponent implements OnInit {
   filterForm: FormGroup;
   tempDatasource: number[] = Array.from({ length: 10 }, (_, i) => i + 1);
   readonly dialog = inject(MatDialog);
+  searchControl: FormControl;
 
   campaignsStore = inject(CampaignsStore);
   organizationStore = inject(OrganizationStore);
@@ -82,6 +83,7 @@ export class CampaignsComponent implements OnInit {
     private router: Router
   ) {
     this.couponId = '';
+    this.searchControl = new FormControl('');
 
     this.filterForm = this.formBuilder.group({
       status: null,
@@ -123,5 +125,11 @@ export class CampaignsComponent implements OnInit {
     this.router.navigate([`./campaigns/${campaignId}`], {
       relativeTo: this.route,
     });
+  }
+
+  onCreateCampaign() {
+    this.router.navigate([`../../../coupons/${this.couponId}/campaigns/create`], {relativeTo: this.route, queryParams: {
+      'redirect': btoa(this.router.url)
+    }})
   }
 }
