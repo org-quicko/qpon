@@ -3,7 +3,7 @@ FROM node:22-slim
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json ./
 COPY .npmrc ./
 RUN npm --userconfig ./.npmrc install
 

@@ -2,7 +2,7 @@ FROM node:22-alpine as build
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json ./
 COPY .npmrc ./
 RUN npm --userconfig ./.npmrc install --legacy-peer-deps
 
