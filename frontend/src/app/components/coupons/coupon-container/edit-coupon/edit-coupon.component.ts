@@ -35,6 +35,7 @@ export class EditCouponComponent implements OnInit {
   updateCouponForm: FormGroup;
   maxAmount!: boolean;
   discountType: string;
+  redirectUri: string;
 
   couponCodeStore = inject(CouponCodeStore);
   organizationStore = inject(OrganizationStore);
@@ -50,6 +51,7 @@ export class EditCouponComponent implements OnInit {
   ) {
     this.couponId = '';
     this.discountType = '';
+    this.redirectUri = '';
     this.updateCouponForm = formBuilder.group(new UpdateCouponDto());
 
 
@@ -71,10 +73,14 @@ export class EditCouponComponent implements OnInit {
         
         CreateSuccess.subscribe((res) => {
           if(res){
-            this.couponCodeStore.nextStep();
-            this.router.navigate([`../items/edit`], {
-              relativeTo: this.route,
-            });
+            if(this.redirectUri) {
+              this.router.navigate([atob(this.redirectUri)]);
+            } else {
+              this.couponCodeStore.nextStep();
+              this.router.navigate([`../items/edit`], {
+                relativeTo: this.route,
+              });
+            }
           }
         })
       }
@@ -90,6 +96,10 @@ export class EditCouponComponent implements OnInit {
       organizationId: this.organization()?.organizationId!,
       couponId: this.couponId,
     });
+
+    this.route.queryParams.subscribe((params: Params) => {
+      this.redirectUri = params['redirect'];
+    })
   }
 
   updateCoupon() {
