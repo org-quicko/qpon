@@ -2,7 +2,7 @@ import { discountTypeEnum, itemConstraintEnum, sortOrderEnum, statusEnum } from 
 
 export interface CouponFilter {
   query?: string | null;
-  couponStatus?: statusEnum | null;
+  status?: statusEnum | null;
   itemConstraint?: itemConstraintEnum | null;
   discountType?: discountTypeEnum | null;
   sortBy?: string;

@@ -15,13 +15,18 @@ export class CustomDatePipe implements PipeTransform {
     }
   }
 
-  transform(value: Date | string, format?: string): string {
+  transform(value: Date | string, format?: string, withTime?: boolean): string {
     if (!value) return '';
 
     const date = new Date(value);
 
     const day = date.getDate();
-    const defaultFormat = `d'${this.getOrdinalSuffix(day)}' MMM, y 'at' h:mm a`;
+    let defaultFormat = `d'${this.getOrdinalSuffix(day)}' MMM, y 'at' h:mm a`;
+    if(!withTime) {
+      defaultFormat = `d'${this.getOrdinalSuffix(day)}' MMM, y`;
+    } else {
+      defaultFormat = `d'${this.getOrdinalSuffix(day)}' MMM, y 'at' h:mm a`;
+    }
 
     return formatDate(date, format || defaultFormat, 'en-US');
   }

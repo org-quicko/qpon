@@ -7,6 +7,7 @@ import {
   IsUUID,
   IsOptional,
 } from 'class-validator';
+import { maxLength, prop, required } from "@rxweb/reactive-form-validators";
 import { statusEnum, itemConstraintEnum, discountTypeEnum } from '../enums';
 
 export class CouponDto {
@@ -53,25 +54,30 @@ export class CouponDto {
 }
 
 export class CreateCouponDto {
+  @prop()
   @IsString()
   name?: string;
 
+  @prop()
   @Expose({ name: 'discount_type' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsEnum(discountTypeEnum)
   discountType?: discountTypeEnum;
 
+  @prop()
   @Expose({ name: 'discount_value' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsNumber()
   discountValue?: number;
 
+  @prop()
   @IsOptional()
   @Expose({ name: 'discount_upto' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsNumber()
   discountUpto?: number;
 
+  @prop()
   @Expose({ name: 'item_constraint' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsEnum(itemConstraintEnum)
@@ -79,16 +85,13 @@ export class CreateCouponDto {
 }
 
 export class UpdateCouponDto {
+  @prop()
+  @required()
   @IsOptional()
   @IsString()
   name?: string;
 
-  @IsOptional()
-  @Expose({ name: 'discount_upto' })
-  @Transform(({ value }) => value, { toClassOnly: true })
-  @IsNumber()
-  discountUpto?: number;
-
+  @prop()
   @IsOptional()
   @Expose({ name: 'item_constraint' })
   @Transform(({ value }) => value, { toClassOnly: true })

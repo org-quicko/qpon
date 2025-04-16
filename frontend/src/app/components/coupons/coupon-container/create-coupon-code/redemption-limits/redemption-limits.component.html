@@ -1,0 +1,62 @@
+<div class="flex flex-col gap-8 w-[560px]">
+  <div class="flex flex-col gap-2">
+    <div class="flex gap-1 items-center mat-label-medium text-on-surface">
+      <div>
+        {{ coupon()?.name }}
+      </div>
+      <mat-icon class="h-5 w-5 text-[20px]">navigate_next</mat-icon>
+      <div>{{ campaign()?.name }}</div>
+    </div>
+    <div class="meat-headline-small text-on-surface">Set redemption limit</div>
+  </div>
+  <form [formGroup]="createCouponCodeForm" class="flex flex-col gap-8">
+    <div class="flex flex-col gap-4">
+      <mat-checkbox
+        class="mat-body-large text-on-surface"
+        [formControl]="minimumAmountChecked"
+        >Set minimum purchase amount</mat-checkbox
+      >
+      <mat-form-field appearance="outline" class="w-full">
+        <input
+          type="text"
+          matInput
+          placeholder="Rs. 250"
+          class="placeholder:text-outline-variant"
+          formControlName="minimumAmount"
+        />
+      </mat-form-field>
+    </div>
+    <div class="flex flex-col gap-4">
+      <mat-checkbox
+        class="mat-body-large text-on-surface"
+        [formControl]="maxRedemptionsChecked"
+        >Set max redemptions</mat-checkbox
+      >
+      <mat-form-field appearance="outline" class="w-full">
+        <input
+          type="text"
+          matInput
+          placeholder="100"
+          class="placeholder:text-outline-variant"
+          formControlName="maxRedemptions"
+        />
+      </mat-form-field>
+    </div>
+    <div class="flex flex-col gap-4">
+      <mat-checkbox
+        class="mat-body-large text-on-surface"
+        [formControl]="maxRedemptionsPerCustomerChecked"
+        >Set max redemptions per customer</mat-checkbox
+      >
+      <mat-form-field appearance="outline" class="w-full">
+        <input
+          type="text"
+          matInput
+          placeholder="1"
+          class="placeholder:text-outline-variant"
+          formControlName="maxRedemptionPerCustomer"
+        />
+      </mat-form-field>
+    </div>
+  </form>
+</div>

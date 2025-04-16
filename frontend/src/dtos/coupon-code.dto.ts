@@ -6,8 +6,10 @@ import {
   IsDate,
   IsUUID,
   IsOptional,
+  ValidateIf,
 } from 'class-validator';
 import { customerConstraintEnum, couponCodeStatusEnum, durationTypeEnum, visibilityEnum, statusEnum } from '../enums';
+import { prop, required } from '@rxweb/reactive-form-validators';
 
 export class CouponCodeDto {
   @Expose({ name: 'coupon_code_id' })
@@ -80,90 +82,107 @@ export class CouponCodeDto {
 }
 
 export class CreateCouponCodeDto {
+  @prop()
+  @Expose({ name: 'code' })
   @IsString()
   code?: string;
 
+  @prop()
+  @Expose({ name: 'description' })
   @IsOptional()
   @IsString()
   description?: string;
 
+  @prop()
   @Expose({ name: 'customer_constraint' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsEnum(customerConstraintEnum)
   customerConstraint?: customerConstraintEnum;
 
+  @prop()
   @IsOptional()
   @Expose({ name: 'max_redemptions' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsNumber()
-  maxRedemptions?: number;
+  @ValidateIf((object, value) => value !== null)
+  maxRedemptions?: number | null;
 
+  @prop()
   @IsOptional()
   @Expose({ name: 'max_redemption_per_customer' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsNumber()
-  maxRedemptionPerCustomer?: number;
+  @ValidateIf((object, value) => value !== null)
+  maxRedemptionPerCustomer?: number | null;
 
+  @prop()
   @IsOptional()
   @Expose({ name: 'minimum_amount' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsNumber()
-  minimumAmount?: number;
-
+  @ValidateIf((object, value) => value !== null)
+  minimumAmount?: number | null;
+  
+  @prop()
+  @Expose({ name: 'visibility' })
   @IsEnum(visibilityEnum)
   visibility?: visibilityEnum;
 
+  @prop()
   @Expose({ name: 'duration_type' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsEnum(durationTypeEnum)
   durationType?: durationTypeEnum;
 
+  @prop()
   @IsOptional()
   @Expose({ name: 'expires_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsString()
   expiresAt?: string;
 }
 
 export class UpdateCouponCodeDto {
+  @prop()
   @IsOptional()
   @IsString()
   description?: string;
 
+  @prop()
   @IsOptional()
   @Expose({ name: 'customer_constraint' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsEnum(customerConstraintEnum)
   customerConstraint?: customerConstraintEnum;
 
+  @prop()
   @IsOptional()
   @Expose({ name: 'max_redemptions' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsNumber()
   maxRedemptions?: number;
 
+  @prop()
   @IsOptional()
   @Expose({ name: 'max_redemption_per_customer' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsNumber()
   maxRedemptionPerCustomer?: number;
 
+  @prop()
   @IsOptional()
   @Expose({ name: 'minimum_amount' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsNumber()
   minimumAmount?: number;
 
+  @prop()
   @IsOptional()
   @IsEnum(visibilityEnum)
   visibility?: visibilityEnum;
 
+  @prop()
   @IsOptional()
   @Expose({ name: 'duration_type' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsEnum(durationTypeEnum)
   durationType?: durationTypeEnum;
 
+  @prop()
   @IsOptional()
   @Expose({ name: 'expires_at' })
   @Transform(({ value }) => value, { toClassOnly: true })

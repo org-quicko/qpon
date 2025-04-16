@@ -4,27 +4,27 @@
   @include mat.expansion-overrides(
     (
       container-background-color: var(--sys-surface),
-      header-hover-state-layer-color: var(--sys-surface-dim)
+      header-hover-state-layer-color: var(--sys-surface-dim),
     )
   );
 
   @include mat.dialog-overrides(
     (
       container-color: var(--sys-surface-container-lowest),
-      container-shape: 5px
+      container-shape: 5px,
     )
   );
 
   @include mat.select-overrides(
     (
-      panel-background-color: var(--sys-surface-container-low)
+      panel-background-color: var(--sys-surface-container-low),
     )
   );
 
   @include mat.divider-overrides(
     (
       color: var(--sys-outline),
-      width: 1px
+      width: 1px,
     )
   );
 
@@ -32,7 +32,7 @@
     (
       outlined-focus-outline-color: var(--sys-outline-variant),
       outlined-outline-color: var(--sys-outline-variant),
-      container-text-line-height: 16px
+      container-text-line-height: 16px,
     )
   );
 
@@ -42,7 +42,7 @@
       container-color: var(--sys-surface-container-low),
       divider-bottom-spacing: 0px,
       divider-top-spacing: 0px,
-      item-spacing: 0px
+      item-spacing: 0px,
     )
   );
 
@@ -53,7 +53,7 @@
       elevated-container-elevation: var(--mat-sys-level0),
       elevated-container-color: var(--sys-surface-container-lowest),
       outlined-outline-color: var(--sys-outline-variant),
-      outlined-container-color: var(--sys-on-primary)
+      outlined-container-color: var(--sys-on-primary),
     )
   );
 
@@ -61,7 +61,7 @@
     (
       outlined-container-shape: 5px,
       filled-container-shape: 5px,
-      outlined-outline-color: var(--sys-outline-variant)
+      outlined-outline-color: var(--sys-outline-variant),
     )
   );
 
@@ -73,7 +73,7 @@
       label-text-weight: 500,
       label-text-tracking: -0.025em,
       active-label-text-color: var(--sys-on-surface),
-      inactive-label-text-color: var(--sys-on-surface-variant)
+      inactive-label-text-color: var(--sys-on-surface-variant),
     )
   );
 
@@ -81,7 +81,7 @@
     (
       container-color: var(--sys-inverse-surface),
       supporting-text-color: var(--sys-inverse-on-surface),
-      container-shape: 8px
+      container-shape: 8px,
     )
   );
 
@@ -94,14 +94,24 @@
   @include mat.table-overrides(
     (
       background-color: var(--sys-surface-container-lowest),
-      row-item-outline-color: var(--sys-outline-variant)
+      row-item-outline-color: var(--sys-outline-variant),
     )
-  )
+  );
+
+  @include mat.autocomplete-overrides(
+    (
+      background-color: var(--sys-surface-container-lowest),
+    )
+  );
 }
 
 @mixin dark-theme-palette-overrides {
   & {
-    --sys-surface-container-low: color-mix(in srgb, var(--sys-neutral-10) 95%, var(--sys-primary) 5%);
+    --sys-surface-container-low: color-mix(
+      in srgb,
+      var(--sys-neutral-10) 95%,
+      var(--sys-primary) 5%
+    );
   }
 }
 
@@ -177,20 +187,22 @@
 }
 
 .coupon-table {
-  @include mat.table-overrides((
-    row-item-container-height: 80px,
-    header-container-height: 72px
-  ));
+  @include mat.table-overrides(
+    (
+      row-item-container-height: 80px,
+      header-container-height: 72px,
+    )
+  );
 }
 
 .campaigns-table .mat-header-cell {
   border-bottom-style: none;
 }
 
-.copy-icon-button{
+.copy-icon-button {
   @include mat.icon-button-overrides(
     (
-      icon-size: 16px
+      icon-size: 16px,
     )
-  )
+  );
 }

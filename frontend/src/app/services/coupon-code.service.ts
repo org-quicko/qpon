@@ -3,8 +3,9 @@ import { environment } from '../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ApiResponse } from '../../dtos/api-response.dto';
 import { PaginatedList } from '../../dtos/paginated-list.dto';
-import { CouponCodeDto } from '../../dtos/coupon-code.dto';
+import { CouponCodeDto, CreateCouponCodeDto } from '../../dtos/coupon-code.dto';
 import { CouponCodeFilter } from '../types/coupon-code-filter.interface';
+import { instanceToPlain } from 'class-transformer';
 
 @Injectable({
   providedIn: 'root'
@@ -60,5 +61,10 @@ export class CouponCodeService {
   fetchCouponCode(organizationId: string, couponId: string, campaignId: string, couponCodeId: string) {
     const url = this.endpoint + "/organizations/" + organizationId + "/coupons/" + couponId + "/campaigns/" + campaignId + "/coupon-codes/" + couponCodeId;
     return this.httpClient.get<ApiResponse<CouponCodeDto>>(url);
+  }
+
+  createCouponCode(organizationId: string, couponId: string, campaignId: string, body: CreateCouponCodeDto) {
+    const url = this.endpoint + "/organizations/" + organizationId + "/coupons/" + couponId + "/campaigns/" + campaignId + "/coupon-codes";
+    return this.httpClient.post<ApiResponse<CouponCodeDto>>(url, body);
   }
 }

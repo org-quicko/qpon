@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { ApiResponse } from '../../dtos/api-response.dto';
 import { CampaignSummaryWorkbook } from '../../generated/sources/campaign_summary_workbook';
+import { CampaignDto, CreateCampaignDto } from '../../dtos/campaign.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +23,13 @@ export class CampaignService {
   }
 
   fetchCampaignSummary(couponId: string, campaignId: string) {
-    const url = this.endpoint + '/coupons/' + couponId + '/campaigns/' + campaignId +  '/summary';
+    const url =
+      this.endpoint +
+      '/coupons/' +
+      couponId +
+      '/campaigns/' +
+      campaignId +
+      '/summary';
     return this.httpClient.get<ApiResponse<CampaignSummaryWorkbook>>(url, {
       headers: {
         'x-accept-type': 'application/json;format=sheet-json',
@@ -50,5 +57,15 @@ export class CampaignService {
       campaignId +
       '/reactivate';
     return this.httpClient.post<ApiResponse<any>>(url, null);
+  }
+
+  createCampaign(couponId: string, body: CreateCampaignDto) {
+    const url = this.endpoint + '/coupons/' + couponId + '/campaigns';
+    return this.httpClient.post<ApiResponse<CampaignDto>>(url, body);
+  }
+
+  fetchCampaign(couponId: string, campaignId: string) {
+    const url = this.endpoint + '/coupons/' + couponId + '/campaigns/' + campaignId;
+    return this.httpClient.get<ApiResponse<CampaignDto>>(url);
   }
 }

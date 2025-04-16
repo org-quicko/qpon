@@ -3,9 +3,10 @@ import { environment } from '../../environments/environment.dev';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ApiResponse } from '../../dtos/api-response.dto';
 import { PaginatedList } from '../../dtos/paginated-list.dto';
-import { CouponDto } from '../../dtos/coupon.dto';
+import { CouponDto, CreateCouponDto, UpdateCouponDto } from '../../dtos/coupon.dto';
 import { CouponFilter } from '../types/coupon-filter.interface';
 import { CouponSummaryWorkbook } from '../../generated/sources/coupon_summary_workbook';
+import { UpdateCouponCodeDto } from '../../dtos/coupon-code.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -31,8 +32,8 @@ export class CouponService {
       params = params.set('name', filter.query);
     }
 
-    if (filter && filter.couponStatus) {
-      params = params.set('status', filter.couponStatus);
+    if (filter && filter.status) {
+      params = params.set('status', filter.status);
     }
     if (filter && filter.itemConstraint) {
       params = params.set('item_constraint', filter.itemConstraint);
@@ -85,5 +86,15 @@ export class CouponService {
         'x-accept-type': "application/json;format=sheet-json"
       },
     })
+  }
+
+  createCoupon(organizationId: string, coupon: CreateCouponDto) {
+    const url = this.endpoint + "/organizations/" + organizationId + "/coupons";
+    return this.httpClient.post<ApiResponse<CouponDto>>(url, coupon);
+  }
+
+  updateCoupon(organizationId: string, couponId: string, body: UpdateCouponDto) {
+    const url = this.endpoint + "/organizations/" + organizationId + "/coupons/" + couponId;
+    return this.httpClient.patch<ApiResponse<CouponDto>>(url, body);
   }
 }
