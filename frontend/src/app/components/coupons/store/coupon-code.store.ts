@@ -21,7 +21,7 @@ import { computed, EventEmitter, inject } from '@angular/core';
 import { CouponService } from '../../../services/coupon.service';
 import { CampaignService } from '../../../services/campaign.service';
 import { CouponCodeService } from '../../../services/coupon-code.service';
-import { catchError, concatMap, forkJoin, from, map, mergeMap, of, pipe, switchMap, tap, toArray } from 'rxjs';
+import { catchError, concatMap, forkJoin, from, map, mergeMap, Observable, of, pipe, switchMap, tap, toArray } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { instanceToPlain, plainToInstance } from 'class-transformer';
@@ -35,6 +35,9 @@ import { EligibleItemsService } from '../../../services/eligible-items.service';
 import { CustomerDto } from '../../../../dtos/customer.dto';
 import { CustomerCouponCodeService } from '../../../services/customer-coupon-code.service';
 import { CreateCustomerCouponCodeDto } from '../../../../dtos/customer-coupon-code.dto';
+import { CouponItemDto, UpdateCouponItemDto } from '../../../../dtos/coupon-item.dto';
+import { ItemDto } from '../../../../dtos/item.dto';
+import { PaginatedList } from '../../../../dtos/paginated-list.dto';
 
 export const CreateSuccess = new EventEmitter<boolean>();
 export const CreateError = new EventEmitter<string>();
@@ -71,6 +74,11 @@ type UpsertCouponCodeState = {
     isLoading: boolean;
     error: string | null;
   };
+  couponItems: {
+    data: ItemDto[] | null,
+    isLoading: boolean | null,
+    error: string | null
+  }
   currentStep: number;
   totalSteps: number;
   couponCodeScreenIndex: number;
@@ -101,6 +109,11 @@ const initialState: UpsertCouponCodeState = {
     data: null,
     isLoading: false,
     error: null,
+  },
+  couponItems: {
+    data: null,
+    isLoading: null,
+    error: null
   },
   currentStep: 0,
   totalSteps: steps.length,
@@ -226,11 +239,12 @@ export const CouponCodeStore = signalStore(
         )
       ),
 
-      updateCouponWithItems: rxMethod<{
+      configureCouponItems: rxMethod<{
         organizationId: string;
         couponId: string;
         itemConstraint: itemConstraintEnum;
         items: string[];
+        update?: boolean;
       }>(
         pipe(
           tap(() => {
@@ -241,26 +255,26 @@ export const CouponCodeStore = signalStore(
               },
             });
           }),
-          concatMap(({ organizationId, couponId, itemConstraint, items }) => {
-            const shouldUpdateItems =
-              itemConstraint === itemConstraintEnum.SPECIFIC;
-
+          concatMap(({ organizationId, couponId, itemConstraint, items, update }) => {
+            const shouldModifyItems = itemConstraint === itemConstraintEnum.SPECIFIC;
+      
             const updatedCoupon = new UpdateCouponDto();
             updatedCoupon.itemConstraint = itemConstraint;
-
+      
+            let itemOperation$: Observable<any> = of(null);
+            if (shouldModifyItems) {
+              itemOperation$ = update
+                ? eligibleItemsService.updateItemsForCoupon(organizationId, couponId, items)
+                : eligibleItemsService.addItemsForCoupon(organizationId, couponId, items);
+            }
+      
             return forkJoin({
               updateCoupon: couponService.updateCoupon(
                 organizationId,
                 couponId,
                 instanceToPlain(updatedCoupon)
               ),
-              insertItems: shouldUpdateItems
-                ? eligibleItemsService.addItemsForCoupon(
-                    organizationId,
-                    couponId,
-                    items
-                  )
-                : of(null),
+              itemOperation: itemOperation$,
             });
           }),
           tapResponse({
@@ -272,15 +286,12 @@ export const CouponCodeStore = signalStore(
                   error: null,
                 },
               });
-
+      
               CreateSuccess.emit(true);
             },
             error: (error: HttpErrorResponse) => {
-              snackbarService.openSnackBar(
-                'Error configuring items',
-                undefined
-              );
-
+              snackbarService.openSnackBar('Error configuring items', undefined);
+      
               patchState(store, {
                 coupon: {
                   ...store.coupon(),
@@ -291,7 +302,7 @@ export const CouponCodeStore = signalStore(
             },
           })
         )
-      ),
+      ),      
 
       createCampaign: rxMethod<{
         couponId: string;
@@ -720,7 +731,49 @@ export const CouponCodeStore = signalStore(
             )
           })
         )
-      )
+      ),
+
+      fetchItemsForCoupon: rxMethod<{organizationId: string, couponId: string}>(
+        pipe(
+          tap(() => {
+            patchState(store, {
+              couponItems: {
+                ...store.couponItems(),
+                isLoading: true
+              }
+            })
+          }),
+          switchMap(({organizationId, couponId}) => {
+            return eligibleItemsService.fetchItemsForCoupon(organizationId, couponId).pipe(
+              tapResponse({
+                next: (response) => {
+                  if(response.code == 200) {
+                    let items = plainToInstance(PaginatedList<ItemDto>, response.data).getItems();
+                    items = items?.map((item) => plainToInstance(ItemDto, item));
+
+                    patchState(store, {
+                      couponItems: {
+                        data: items!,
+                        isLoading: false,
+                        error: null
+                      }
+                    })
+                  }
+                },
+                error: (error: HttpErrorResponse) => {
+                  patchState(store, {
+                    couponItems: {
+                      isLoading: false,
+                      error: error.message,
+                      data: store.couponItems.data()
+                    }
+                  })
+                }
+              })
+            )  
+          })
+        )
+      ),
     }),
   ),
   withComputed((store) => ({

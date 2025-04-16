@@ -93,7 +93,7 @@
               <mat-checkbox
                 (click)="$event.stopPropagation()"
                 (change)="selectedItem(item)"
-                [checked]="selectedItems.includes(item)"
+                [checked]="isItemSelected(item)"
                 [value]="item.itemId!"
               >
                 {{ item.name }}

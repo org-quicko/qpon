@@ -58,6 +58,7 @@ export class EditItemsComponent implements OnInit {
   couponUpdateForm: FormGroup;
   eligibleItemsForm: FormGroup;
   searchControl: FormControl;
+  redirectUri: string;
 
   couponCodeStore = inject(CouponCodeStore);
   organizationStore = inject(OrganizationStore);
@@ -68,6 +69,7 @@ export class EditItemsComponent implements OnInit {
   coupon = this.couponCodeStore.coupon.data;
   isNextClicked = this.couponCodeStore.onNext;
   isBackClicked = this.couponCodeStore.onBack;
+  couponItems = this.couponCodeStore.couponItems.data
 
   @ViewChild('itemsInput') itemsInput!: ElementRef<HTMLInputElement>;
 
@@ -83,6 +85,7 @@ export class EditItemsComponent implements OnInit {
     this.eligibleItemsForm = formBuilder.formGroup(this.eligibleItems);
     this.couponUpdateForm = formBuilder.formGroup(this.updateCoupon);
     this.searchControl = new FormControl('');
+    this.redirectUri = '';
 
     effect(() => {
       if (this.isNextClicked()) {
@@ -90,9 +93,13 @@ export class EditItemsComponent implements OnInit {
         this.updateCouponWithItems();
         CreateSuccess.subscribe((res) => {
           if(res) {
-            this.couponCodeStore.nextStep();
-            this.router.navigate(['../../campaigns'], { relativeTo: this.route });
-          }
+            if(this.redirectUri) {
+              this.router.navigate([atob(this.redirectUri)]);
+            } else {
+              this.couponCodeStore.nextStep();
+              this.router.navigate(['../../campaigns'], { relativeTo: this.route });
+            }
+            }
         });
       }
     });
@@ -102,6 +109,17 @@ export class EditItemsComponent implements OnInit {
         this.couponCodeStore.setOnBack();
         this.couponCodeStore.previousStep();
         this.router.navigate([`../../edit`], { relativeTo: this.route })
+      }
+    })
+
+    effect(() => {
+      if(this.couponItems()?.length! > 0) {
+        this.selectedItems = this.couponItems()!
+      }
+
+      if(this.coupon()) {
+        this.itemConstraint = this.coupon()?.itemConstraint! == itemConstraintEnum.ALL ? 'all' : 'specific'
+        this.couponUpdateForm.get('itemConstraint')?.setValue(this.itemConstraint)
       }
     })
   }
@@ -115,6 +133,18 @@ export class EditItemsComponent implements OnInit {
       organizationId: this.organization()?.organizationId!,
       couponId: this.couponId,
     });
+
+    this.route.queryParams.subscribe((params: Params) => {
+      this.redirectUri = params['redirect'];
+
+      if(this.redirectUri) {
+        this.couponCodeStore.fetchItemsForCoupon({
+          organizationId: this.organization()?.organizationId!,
+          couponId: this.couponId
+        })
+      }
+    })
+
 
     if (this.items().length == 0) {
       this.itemsStore.fetchItems({
@@ -146,7 +176,7 @@ export class EditItemsComponent implements OnInit {
   }
 
   updateCouponWithItems() {
-    this.couponCodeStore.updateCouponWithItems({
+    this.couponCodeStore.configureCouponItems({
       organizationId: this.organization()?.organizationId!,
       couponId: this.couponId,
       itemConstraint:
@@ -154,6 +184,11 @@ export class EditItemsComponent implements OnInit {
           ? itemConstraintEnum.ALL
           : itemConstraintEnum.SPECIFIC,
       items: this.selectedItems.map((item) => item.itemId!),
+      update: this.redirectUri.length > 0 ? true : false
     });
+  }
+
+  isItemSelected(item: ItemDto): boolean {
+    return this.selectedItems.some(selected => selected.itemId === item.itemId);
   }
 }
