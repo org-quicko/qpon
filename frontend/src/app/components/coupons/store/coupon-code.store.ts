@@ -14,7 +14,7 @@ import {
   CreateCouponDto,
   UpdateCouponDto,
 } from '../../../../dtos/coupon.dto';
-import { CampaignDto, CreateCampaignDto } from '../../../../dtos/campaign.dto';
+import { CampaignDto, CreateCampaignDto, UpdateCampaignDto } from '../../../../dtos/campaign.dto';
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { computed, EventEmitter, inject } from '@angular/core';
@@ -670,6 +670,51 @@ export const CouponCodeStore = signalStore(
 
                   CreateError.emit(error.message);
                   snackbarService.openSnackBar('Error updating coupon', undefined);
+                }
+              })
+            )
+          })
+        )
+      ),
+
+      updateCampaign: rxMethod<{couponId: string, campaignId: string, body: UpdateCampaignDto}>(
+        pipe(
+          tap(() => {
+            patchState(store, {
+              campaign: {
+                ...store.campaign(),
+                isLoading: true,
+              }
+            })
+          }),
+          switchMap(({ couponId, campaignId, body }) => {
+            return campaignService.updateCampaign(couponId, campaignId, body).pipe(
+              tapResponse({
+                next: (response) => {
+                  if(response.code == 200) {
+                    patchState(store, {
+                      campaign: {
+                        isLoading: false,
+                        error: null,
+                        data: plainToInstance(CampaignDto, response.data)
+                      }
+                    });
+                    
+                    CreateSuccess.emit(true);
+                    snackbarService.openSnackBar('Campaign updated successfully', undefined);
+                  }
+                },
+                error: (error: HttpErrorResponse) => {
+                  patchState(store, {
+                    campaign: {
+                      error: error.message,
+                      isLoading: false,
+                      data: store.campaign.data()
+                    }
+                  });
+
+                  CreateError.emit(error.message);
+                  snackbarService.openSnackBar('Error updating campaign', undefined);
                 }
               })
             )

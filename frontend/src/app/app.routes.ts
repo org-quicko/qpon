@@ -8,7 +8,6 @@ import { CustomersComponent } from './components/home/customers/customers.compon
 import { ItemsComponent } from './components/home/items/items.component';
 import { ReportsComponent } from './components/home/reports/reports.component';
 import { CouponsComponent } from './components/home/coupons/coupons.component';
-import { CampaignEditComponent } from './components/campaigns/campaign-edit/campaign-edit.component';
 import { ItemsEditComponent } from './components/items/items-edit/items-edit.component';
 import { ItemsCreateComponent } from './components/items/items-create/items-create.component';
 import { CustomersCreateComponent } from './components/customers/customers-create/customers-create.component';
@@ -26,6 +25,7 @@ import { EditItemsComponent } from './components/coupons/coupon-container/edit-i
 import { CreateCampaignComponent } from './components/coupons/coupon-container/create-campaign/create-campaign.component';
 import { CreateCouponCodeComponent } from './components/coupons/coupon-container/create-coupon-code/create-coupon-code.component';
 import { EditCouponComponent } from './components/coupons/coupon-container/edit-coupon/edit-coupon.component';
+import { EditCampaignComponent } from './components/coupons/coupon-container/edit-campaign/edit-campaign.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -94,7 +94,7 @@ export const routes: Routes = [
                       { 
                         path: ":campaign_id",
                         children: [
-                          { path: "edit", component: CampaignEditComponent },
+                          { path: "edit", component: EditCampaignComponent },
                           { 
                             path: "coupon-codes",
                             children: [

@@ -55,3 +55,9 @@ export class CreateCampaignDto {
   @IsNumber()
   budget?: number;
 }
+
+export class UpdateCampaignDto {
+  @prop()
+  @IsString()
+  name?: string;
+}
