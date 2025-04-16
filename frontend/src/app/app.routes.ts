@@ -3,15 +3,11 @@ import { AuthGuard } from './guards/auth.guard';
 import { LoginComponent } from './components/login/login.component';
 import { OrganizationsComponent } from './components/organizations/organizations.component';
 import { OrganizationResolver } from './resolvers/organization.resolver';
-import { OrganizationHomeComponent } from './components/organization-home/organization-home.component';
 import { DashboardComponent } from './components/home/dashboard/dashboard.component';
 import { CustomersComponent } from './components/home/customers/customers.component';
 import { ItemsComponent } from './components/home/items/items.component';
 import { ReportsComponent } from './components/home/reports/reports.component';
 import { CouponsComponent } from './components/home/coupons/coupons.component';
-import { CouponEditComponent } from './components/coupons/coupon-edit/coupon-edit.component';
-import { CouponCreateComponent } from './components/coupons/coupon-create/coupon-create.component';
-import { CampaignCreateComponent } from './components/campaigns/campaign-create/campaign-create.component';
 import { CampaignEditComponent } from './components/campaigns/campaign-edit/campaign-edit.component';
 import { ItemsEditComponent } from './components/items/items-edit/items-edit.component';
 import { ItemsCreateComponent } from './components/items/items-create/items-create.component';
@@ -23,7 +19,13 @@ import { UserResolver } from './resolvers/user.resolver';
 import { CouponComponent } from './components/home/coupons/coupon/coupon.component';
 import { CampaignComponent } from './components/home/coupons/coupon/campaign/campaign.component';
 import { CouponCodeComponent } from './components/home/coupons/coupon/campaign/coupon-code/coupon-code.component';
-// import { UserResolver } from './resolvers/user.resolver';
+import { CreateOrganizationComponent } from './components/create-organization/create-organization.component';
+import { CouponContainerComponent } from './components/coupons/coupon-container/coupon-container.component';
+import { CreateCouponComponent } from './components/coupons/coupon-container/create-coupon/create-coupon.component';
+import { EditItemsComponent } from './components/coupons/coupon-container/edit-items/edit-items.component';
+import { CreateCampaignComponent } from './components/coupons/coupon-container/create-campaign/create-campaign.component';
+import { CreateCouponCodeComponent } from './components/coupons/coupon-container/create-coupon-code/create-coupon-code.component';
+import { EditCouponComponent } from './components/coupons/coupon-container/edit-coupon/edit-coupon.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -35,7 +37,7 @@ export const routes: Routes = [
       {
         path: 'organizations',
         component: OrganizationsComponent,
-        children: [{ path: 'create', component: OrganizationHomeComponent }],
+        children: [{ path: 'create', component: CreateOrganizationComponent }],
       },
       {
         resolve: { organization: OrganizationResolver },
@@ -74,18 +76,42 @@ export const routes: Routes = [
             ],
           },
           {
-            path: 'coupon',
+            path: 'coupons',
+            component: CouponContainerComponent,
             children: [
-              { path: 'create', component: CouponCreateComponent },
-              { path: 'edit/:coupon_id', component: CouponEditComponent },
-            ],
-          },
-          {
-            path: 'campaign',
-            children: [
-              { path: 'create', component: CampaignCreateComponent },
-              { path: 'edit/:campaign_id', component: CampaignEditComponent },
-            ],
+              { path: '', pathMatch: 'full', redirectTo: 'create' },
+              { "path": "create", component: CreateCouponComponent },
+              {
+                path: ":coupon_id",
+                children: [
+                  { path: "items/edit", component: EditItemsComponent },
+                  { path: "edit", component: EditCouponComponent },
+                  { 
+                    path: "campaigns",
+                    children: [
+                      { path: "", pathMatch: 'full', redirectTo: 'create' },
+                      { path: "create", component: CreateCampaignComponent },
+                      { 
+                        path: ":campaign_id",
+                        children: [
+                          { path: "edit", component: CampaignEditComponent },
+                          { 
+                            path: "coupon-codes",
+                            children: [
+                              { path: "create", component: CreateCouponCodeComponent },
+                              // { 
+                              //   path: ":coupon_code_id",
+                              //   component: EditCouponCodeComponent
+                              // }
+                            ]
+                          },
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           },
           {
             path: 'customer',

@@ -1,7 +1,6 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
-
 import { routes } from './app.routes';
 import {
   HTTP_INTERCEPTORS,
@@ -9,6 +8,7 @@ import {
   withFetch,
   withInterceptorsFromDi,
 } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RxFormBuilder } from '@rxweb/reactive-form-validators';
 import { RequestInterceptor } from './interceptors/request.interceptor';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -24,6 +24,7 @@ export const appConfig: ApplicationConfig = {
       multi: true,
     },
     provideHttpClient(withInterceptorsFromDi(), withFetch()),
+    ReactiveFormsModule,
     RxFormBuilder,
     {
       provide: MatIconRegistry,
@@ -34,11 +35,12 @@ export const appConfig: ApplicationConfig = {
       useFactory: registerIcons,
       deps: [MatIconRegistry, DomSanitizer],
     },
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
   ],
 };
 
 export function registerIcons(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
   iconRegistry.addSvgIcon('regime_preference', sanitizer.bypassSecurityTrustResourceUrl('/assets/regime_preference.svg'));
   iconRegistry.addSvgIcon('discount', sanitizer.bypassSecurityTrustResourceUrl('/assets/discount.svg'));
+  iconRegistry.addSvgIcon('autofill', sanitizer.bypassSecurityTrustResourceUrl('/assets/autofill.svg'));
 }

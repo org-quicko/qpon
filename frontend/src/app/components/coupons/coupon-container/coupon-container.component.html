@@ -1,0 +1,63 @@
+<div class="min-h-screen flex flex-col overflow-hidden">
+  <app-coupon-code-creation-header></app-coupon-code-creation-header>
+  <div class="flex-grow !py-8 flex flex-col items-center justify-center">
+    <router-outlet></router-outlet>
+  </div>
+  <div
+    class="flex flex-col bg-surface-container-lowest z-10 fixed bottom-0 w-full"
+  >
+    @if(!this.redirectUri) {
+      <div
+        class="w-full flex space-x-[8px] justify-between"
+      >
+        <div class="flex-1">
+          <app-progress-bar
+            [fillPercentage]="couponCodeStore.progress1()"
+            [animate]="couponCodeStore.animateBar1()"
+          />
+        </div>
+        <div class="flex-1">
+          <app-progress-bar
+            [fillPercentage]="couponCodeStore.progress2()"
+            [animate]="couponCodeStore.animateBar2()"
+          />
+        </div>
+        <div class="flex-1">
+          <app-progress-bar
+            [fillPercentage]="couponCodeStore.progress3()"
+            [animate]="couponCodeStore.animateBar3()"
+          />
+        </div>
+      </div>
+    } @else if(this.redirectUri.length > 0 && this.uri.includes('coupon-codes/create')) {
+      
+      <div
+      class="w-full flex space-x-[8px] justify-between"
+    >
+      <div class="flex-1">
+        <app-progress-bar
+          [fillPercentage]="couponCodeStore.progress3()"
+          [animate]="couponCodeStore.animateBar3()"
+        />
+      </div>
+    </div>
+    }
+    <!-- footer -->
+    @if(hideBackButton()) {
+    <div class="flex justify-end items-center px-8 py-4">
+      <button mat-flat-button (click)="onNext()" class="rounded-full">
+        {{ getButtonText() }}
+      </button>
+    </div>
+    } @else {
+    <div class="flex justify-between items-center px-8 py-4">
+      <button mat-stroked-button class="rounded-full" (click)="onBack()">
+        Back
+      </button>
+      <button mat-flat-button (click)="onNext()" class="rounded-full">
+        {{ getButtonText() }}
+      </button>
+    </div>
+    }
+  </div>
+</div>
