@@ -1,0 +1,97 @@
+<div class="flex flex-col w-[560px] gap-8">
+  <div class="mat-headline-small text-on-surface">
+    Let’s create a new coupon
+  </div>
+  <form [formGroup]="couponFormGroup" class="flex flex-col gap-4">
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Coupon name</mat-label>
+      <input matInput type="text" ng-trim="true" formControlName="name" />
+    </mat-form-field>
+      <div class="flex flex-col gap-1">
+        <div class="mat-body-large text-on-surface">Discount type</div>
+        <div class="mat-body-medium text-on-surface-variant">
+          Choose whether you want to give percentage or fixed amount discount
+        </div>
+      </div>
+      <div class="flex gap-4">
+        <div
+          class="w-[272px] p-4 flex flex-col gap-1 border rounded-[5px] border-outline-variant hover:cursor-pointer"
+          [ngClass]="{
+            'bg-secondary-container border-primary border-[1.5px]':
+              discountType === 'percentage'
+          }"
+          (click)="discountType = 'percentage'"
+        >
+          <div class="mat-body-large text-on-surface">Percentage</div>
+          <input
+            matInput
+            formControlName="discountValue"
+            class="mat-display-medium text-on-surface focus:outline-none"
+            placeholder="0%"
+          />
+        </div>
+        <div
+          class="w-[272px] p-4 flex flex-col gap-1 border rounded-[5px] border-outline-variant hover:cursor-pointer"
+          [ngClass]="{
+            'bg-secondary-container border-primary border-[1.5px]':
+              discountType === 'fixed_amount'
+          }"
+          (click)="discountType = 'fixed_amount'"
+        >
+          <div class="mat-body-large text-on-surface">Fixed amount</div>
+          <input
+            matInput
+            formControlName="discountValue"
+            class="mat-display-medium text-on-surface focus:outline-none"
+            placeholder="₹0"
+          />
+        </div>
+      </div>
+      <div class="flex flex-col gap-4">
+        <div class="mat-body-large text-on-surface">
+          Maximum amount that will be discounted*
+        </div>
+        <div class="flex flex-col gap-6">
+          <div class="flex gap-4">
+            <div
+              class="w-[272px] p-4 flex flex-col gap-1 border rounded-[5px] border-outline-variant hover:cursor-pointer"
+              [ngClass]="{
+                  'bg-secondary-container border-primary border-[1.5px]': maxAmount,
+                  'text-outline': !maxAmount,
+                }"
+              (click)="maxAmount = true"
+            >
+              <div>Set max amount</div>
+            </div>
+            <div
+              class="w-[272px] p-4 flex flex-col gap-1 border rounded-[5px] border-outline-variant hover:cursor-pointer"
+              [ngClass]="{
+                  'bg-secondary-container border-primary border-[1.5px]': !maxAmount,
+                  'text-outline': maxAmount,
+                }"
+              (click)="maxAmount = false"
+            >
+              <div>No max amount</div>
+            </div>
+          </div>
+          @if(maxAmount) {
+          <div
+            class="flex items-center gap-[10px] w-full border rounded-[4px] h-[56px] border-outline-variant"
+          >
+            <div class="h-[48px] w-[48px] flex justify-center items-center">
+              <mat-icon class="text-on-surface-variant"
+                >currency_rupee</mat-icon
+              >
+            </div>
+            <input
+              matInput
+              formControlName="discountUpto"
+              class="focus:outline-none align-middle py-[4px] w-full mat-body-large placeholder:text-on-surface-variant"
+              placeholder="Add amount"
+            />
+          </div>
+          }
+        </div>
+      </div>
+  </form>
+</div>
