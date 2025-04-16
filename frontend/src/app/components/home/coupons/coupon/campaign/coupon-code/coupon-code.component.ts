@@ -91,7 +91,7 @@ export class CouponCodeComponent implements OnInit {
   }
 
   onNavigateParent() {
-    this.router.navigate(['../../../'], { relativeTo: this.route });
+    this.router.navigate(['../../../../../'], { relativeTo: this.route });
   }
 
   copyToClipboard(value: string, field: string) {
