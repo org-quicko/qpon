@@ -137,6 +137,7 @@ export class CustomerConstraintComponent implements OnInit {
       newCouponCode.visibility = this.couponCode()?.visibility == 'public' ? visibilityEnum.PUBLIC : visibilityEnum.PRIVATE;
       newCouponCode.durationType = this.couponCode()?.durationType == 'forever' ? durationTypeEnum.FOREVER : durationTypeEnum.LIMITED;
       newCouponCode.customerConstraint = this.customerConstraint == 'all' ? customerConstraintEnum.ALL : customerConstraintEnum.SPECIFIC;
+      newCouponCode.expiresAt = this.couponCode()?.expiresAt;
       newCouponCode.description = this.createCouponCodeForm.value['description'] || null;
       newCouponCode.maxRedemptionPerCustomer = this.createCouponCodeForm.value['maxRedemptionPerCustomer'];
       newCouponCode.maxRedemptions = this.createCouponCodeForm.value['maxRedemptions'];

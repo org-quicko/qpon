@@ -26,13 +26,7 @@ export class CreateCouponCodeComponent implements OnInit {
   campaignId: string;
   createCouponCodeForm: FormGroup;
   currentScreen = 'code';
-  screens = {
-    code: 1,
-    'redemption-limits': 2,
-    'customer-constraint': 3,
-    'add-more': 4,
-  };
-
+  
   couponCodeStore = inject(CouponCodeStore);
   organizationStore = inject(OrganizationStore);
 
