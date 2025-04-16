@@ -1,19 +1,20 @@
-<div class="flex flex-col w-[560px] gap-8">
-  <div class="mat-headline-small text-on-surface">
-    Let’s create a new coupon
-  </div>
-  <form [formGroup]="couponFormGroup" class="flex flex-col gap-4">
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>Coupon name</mat-label>
-      <input matInput type="text" ng-trim="true" formControlName="name" />
-    </mat-form-field>
-    <div class="flex flex-col gap-1">
+<div class="flex flex-col gap-10 w-[560px]">
+  <div class="w-[289px] mat-headline-small text-on-surface">Edit your coupon</div>
+  <div class="flex flex-col gap-8">
+    <form [formGroup]="updateCouponForm">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Coupon name</mat-label>
+        <input matInput formControlName="name">
+      </mat-form-field>
+    </form>
+    <app-alert-tile text="You can’t edit discount type once coupon is created."></app-alert-tile>
+    <div class="flex flex-col gap-1 opacity-[38%]">
       <div class="mat-body-large text-on-surface">Discount type</div>
       <div class="mat-body-medium text-on-surface-variant">
         Choose whether you want to give percentage or fixed amount discount
       </div>
     </div>
-    <mat-radio-group class="flex gap-4" formControlName="discountType">
+    <mat-radio-group class="flex gap-4 opacity-[38%]" [disabled]="true">
       <mat-radio-button
         matInput
         value="percentage"
@@ -35,9 +36,9 @@
           <input
             matInput
             type="number"
-            formControlName="discountValue"
             class="mat-display-medium text-on-surface focus:outline-none"
             placeholder="0%"
+            [value]="discountType == 'percentage' ? coupon()?.discountValue : 0"
           />
         </div>
       </mat-radio-button>
@@ -62,19 +63,19 @@
           <input
             matInput
             type="number"
-            formControlName="discountValue"
             class="mat-display-medium text-on-surface focus:outline-none"
             placeholder="₹0"
+            [value]="discountType == 'fixed' ? coupon()?.discountValue : 0"
           />
         </div>
       </mat-radio-button>
     </mat-radio-group>
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-4 opacity-[38%]">
       <div class="mat-body-large text-on-surface">
         Maximum amount that will be discounted*
       </div>
       <div class="flex flex-col gap-6">
-        <mat-radio-group class="flex gap-4">
+        <mat-radio-group class="flex gap-4" [disabled]="true">
           <mat-radio-button
             matInput
             [value]="true"
@@ -117,21 +118,23 @@
           </mat-radio-button>
         </mat-radio-group>
         @if(maxAmount) {
-        <div
-          class="flex items-center gap-[10px] w-full border rounded-[4px] h-[56px] border-outline-variant"
-        >
-          <div class="h-[48px] w-[48px] flex justify-center items-center">
-            <mat-icon class="text-on-surface-variant">currency_rupee</mat-icon>
+          <div class="pb-8">
+            <div
+              class="flex items-center gap-[10px] w-full border rounded-[4px] h-[56px] border-outline-variant"
+            >
+              <div class="h-[48px] w-[48px] flex justify-center items-center">
+                <mat-icon class="text-on-surface-variant">currency_rupee</mat-icon>
+              </div>
+              <input
+                matInput
+                class="focus:outline-none align-middle py-[4px] w-full mat-body-large placeholder:text-on-surface-variant"
+                placeholder="Add amount"
+                [value]="coupon()?.discountUpto"
+              />
+            </div>
           </div>
-          <input
-            matInput
-            formControlName="discountUpto"
-            class="focus:outline-none align-middle py-[4px] w-full mat-body-large placeholder:text-on-surface-variant"
-            placeholder="Add amount"
-          />
-        </div>
         }
       </div>
     </div>
-  </form>
+  </div>
 </div>

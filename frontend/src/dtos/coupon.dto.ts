@@ -86,7 +86,6 @@ export class CreateCouponDto {
 
 export class UpdateCouponDto {
   @prop()
-  @required()
   @IsOptional()
   @IsString()
   name?: string;
