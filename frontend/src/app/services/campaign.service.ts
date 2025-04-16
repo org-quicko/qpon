@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { ApiResponse } from '../../dtos/api-response.dto';
 import { CampaignSummaryWorkbook } from '../../generated/sources/campaign_summary_workbook';
-import { CampaignDto, CreateCampaignDto } from '../../dtos/campaign.dto';
+import { CampaignDto, CreateCampaignDto, UpdateCampaignDto } from '../../dtos/campaign.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -67,5 +67,10 @@ export class CampaignService {
   fetchCampaign(couponId: string, campaignId: string) {
     const url = this.endpoint + '/coupons/' + couponId + '/campaigns/' + campaignId;
     return this.httpClient.get<ApiResponse<CampaignDto>>(url);
+  }
+
+  updateCampaign(couponId: string, campaignId: string, body: UpdateCampaignDto) {
+    const url = this.endpoint + '/coupons/' + couponId + '/campaigns/' + campaignId;
+    return this.httpClient.patch<ApiResponse<CampaignDto>>(url, body);
   }
 }
