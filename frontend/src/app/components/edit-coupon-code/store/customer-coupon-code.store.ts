@@ -5,8 +5,6 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { forkJoin, Observable, of, pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { instanceToPlain, plainToInstance } from 'class-transformer';
-import { CouponDto } from '../../../../dtos/coupon.dto';
-import { CouponService } from '../../../services/coupon.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CustomerDto } from '../../../../dtos/customer.dto';
 import { CustomerCouponCodeService } from '../../../services/customer-coupon-code.service';
@@ -76,11 +74,19 @@ export const CustomerCouponCodeStore = signalStore(
                     }
                   },
                   error: (error: HttpErrorResponse) => {
-                    patchState(store, {
-                      data: store.data(),
-                      isLoading: false,
-                      error: error.message,
-                    });
+                    if(error.status == 404) {
+                      patchState(store, {
+                        data: [],
+                        isLoading: false,
+                        error: error.message,
+                      });
+                    } else {
+                      patchState(store, {
+                        data: store.data(),
+                        isLoading: false,
+                        error: error.message,
+                      });
+                    }
                   },
                 })
               );

@@ -6,7 +6,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CouponStore } from '../../store/coupon.store';
 import { EligibleItemsStore } from './store/eligible-items.store';
 import { OrganizationStore } from '../../../../../../store/organization.store';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ItemDto } from '../../../../../../../dtos/item.dto';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatMenuModule } from '@angular/material/menu';
@@ -49,7 +49,7 @@ export class EligibleItemsComponent implements OnInit {
 
   datasource = new MatTableDataSource<ItemDto>();
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private router: Router) {
     this.couponId = '';
     this.searchControl = new FormControl('');
     this.isFilterApplied = false;
@@ -78,6 +78,14 @@ export class EligibleItemsComponent implements OnInit {
           name: value.trim()
         },
       });
+    })
+  }
+
+  onAddItem() {
+    this.router.navigate([`/${this.organization()?.organizationId}/coupons/${this.couponId}/items/edit`], {
+      queryParams: {
+        'redirect': btoa(this.router.url)
+      }
     })
   }
 }

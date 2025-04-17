@@ -13,6 +13,7 @@ import { CustomDatePipe } from '../../../../../../pipe/date.pipe';
 import { CouponCodeDetailsComponent } from './coupon-code-details/coupon-code-details.component';
 import { RedemptionListComponent } from './redemption-list/redemption-list.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { CustomerCouponCodeStore } from './store/customer-coupon-code.store';
 
 @Component({
   selector: 'app-coupon-code',
@@ -26,7 +27,7 @@ import { MatMenuModule } from '@angular/material/menu';
     CouponCodeDetailsComponent,
     RedemptionListComponent,
   ],
-  providers: [CouponStore, CampaignStore, CouponCodeStore],
+  providers: [CouponStore, CampaignStore, CouponCodeStore, CustomerCouponCodeStore],
   templateUrl: './coupon-code.component.html',
   styleUrls: ['./coupon-code.component.css'],
 })
@@ -50,6 +51,7 @@ export class CouponCodeComponent implements OnInit {
   campaignStore = inject(CampaignStore);
   organizationStore = inject(OrganizationStore);
   couponCodeStore = inject(CouponCodeStore);
+  customerCouponCodeStore = inject(CustomerCouponCodeStore);
 
   organization = this.organizationStore.organizaiton;
   coupon = this.couponStore.coupon.data;
@@ -82,6 +84,12 @@ export class CouponCodeComponent implements OnInit {
       campaignId: this.campaignId,
       couponCodeId: this.couponCodeId,
     });
+
+    this.customerCouponCodeStore.fetchCustomersForCouponCode({
+      couponId: this.couponId,
+      campaignId: this.campaignId,
+      couponCodeId: this.couponCodeId
+    })
   }
 
   onNavigateChild() {

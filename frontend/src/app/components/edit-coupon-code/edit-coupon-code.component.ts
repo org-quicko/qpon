@@ -105,7 +105,7 @@ export class EditCouponCodeComponent implements OnInit {
   }
 
   private updateBackButtonVisibility(url: string) {
-    const shouldHide = url.includes('code-details');
+    const shouldHide = url.includes('code-details') || this.redirectUri.length > 0;
     this.hideBackButton.set(shouldHide);
   }
 

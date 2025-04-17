@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit, Signal } from '@angular/core';
+import { Component, effect, inject, Input, OnInit, Signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { CouponCodeDto } from '../../../../../../../../dtos/coupon-code.dto';
 import { TitleCasePipe } from '@angular/common';
@@ -8,6 +8,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { OrganizationStore } from '../../../../../../../store/organization.store';
+import { CustomerCouponCodeStore } from '../store/customer-coupon-code.store';
+import { customerConstraintEnum } from '../../../../../../../../enums';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-coupon-code-details',
@@ -15,6 +18,7 @@ import { OrganizationStore } from '../../../../../../../store/organization.store
     MatCardModule,
     MatDividerModule,
     MatButtonModule,
+    MatChipsModule,
     TitleCasePipe,
     CustomDatePipe,
     NgxSkeletonLoaderModule,
@@ -29,15 +33,26 @@ export class CouponCodeDetailsComponent implements OnInit {
   couponId: string;
   campaignId: string;
   couponCodeId: string;
+  customerConstraint: string;
 
   organizationStore = inject(OrganizationStore);
+  customerCouponCodeStore = inject(CustomerCouponCodeStore);
 
   organization = this.organizationStore.organizaiton;
+  customers = this.customerCouponCodeStore.data;
 
   constructor(private route: ActivatedRoute, private router: Router) {
     this.couponId = '';
     this.campaignId = '';
     this.couponCodeId = '';
+    this.customerConstraint = '';
+
+    effect(() => {
+      if(this.couponCode()) {
+        this.customerConstraint = this.couponCode()?.customerConstraint == customerConstraintEnum.ALL ? 'all' : 'specific';
+      }
+    })
+    
   }
 
   ngOnInit(): void {

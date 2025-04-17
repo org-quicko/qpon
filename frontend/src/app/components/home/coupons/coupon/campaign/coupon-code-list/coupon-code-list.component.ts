@@ -18,7 +18,14 @@ import { debounceTime, distinctUntilChanged, take } from 'rxjs';
 import { CouponCodeDto } from '../../../../../../../dtos/coupon-code.dto';
 import { CouponCodesStore } from './store/coupon-codes.store';
 import { OrganizationStore } from '../../../../../../store/organization.store';
-import { formatDate, NgClass, NgFor, NgIf, NgStyle, TitleCasePipe } from '@angular/common';
+import {
+  formatDate,
+  NgClass,
+  NgFor,
+  NgIf,
+  NgStyle,
+  TitleCasePipe,
+} from '@angular/common';
 import { CustomDatePipe } from '../../../../../../pipe/date.pipe';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -118,9 +125,22 @@ export class CouponCodeListComponent implements OnInit, AfterViewInit {
       this.campaignId = params['campaign_id'];
     });
 
-    this.route.queryParams.pipe().subscribe((params) => {
-      this.filter.set(Object.assign({}, params));
-    })
+    this.route.queryParams.subscribe((queryParams) => {
+      this.filter.set(Object.assign({}, queryParams));
+      this.couponCodesStore.fetchCouponCodes({
+        organizationId: this.organization()?.organizationId!,
+        couponId: this.couponId,
+        campaignId: this.campaignId,
+        filter: {
+          ...this.filter(),
+          sortBy: this.sortActive(),
+          sortOrder:
+            this.sortDirection() === 'asc'
+              ? sortOrderEnum.ASC
+              : sortOrderEnum.DESC,
+        },
+      });
+    });
 
     this.couponCodesStore.fetchCouponCodes({
       organizationId: this.organization()?.organizationId!,
@@ -129,8 +149,11 @@ export class CouponCodeListComponent implements OnInit, AfterViewInit {
       filter: {
         ...this.filter(),
         sortBy: this.sortActive(),
-        sortOrder: this.sortDirection() === 'asc' ? sortOrderEnum.ASC : sortOrderEnum.DESC
-      }
+        sortOrder:
+          this.sortDirection() === 'asc'
+            ? sortOrderEnum.ASC
+            : sortOrderEnum.DESC,
+      },
     });
 
     this.searchControl.valueChanges
@@ -163,20 +186,28 @@ export class CouponCodeListComponent implements OnInit, AfterViewInit {
   private getOrdinalSuffix(day: number): string {
     if (day > 3 && day < 21) return 'th';
     switch (day % 10) {
-      case 1: return 'st';
-      case 2: return 'nd';
-      case 3: return 'rd';
-      default: return 'th';
+      case 1:
+        return 'st';
+      case 2:
+        return 'nd';
+      case 3:
+        return 'rd';
+      default:
+        return 'th';
     }
   }
 
   transform(value: Date | string): string {
     if (!value) return '';
-    
+
     const date = new Date(value);
     const day = date.getDate();
-    const formattedDate = formatDate(date, `d'${this.getOrdinalSuffix(day)}' MMM, y`, 'en-US');
-    
+    const formattedDate = formatDate(
+      date,
+      `d'${this.getOrdinalSuffix(day)}' MMM, y`,
+      'en-US'
+    );
+
     return formattedDate;
   }
 
@@ -209,6 +240,9 @@ export class CouponCodeListComponent implements OnInit, AfterViewInit {
   }
 
   onSortChange(event: Sort) {
+    if (this.couponCodes()?.length == 0) {
+      return;
+    }
 
     this.sortActive.set(event.active);
     this.sortDirection.set(event.direction as 'asc' | 'desc');
@@ -219,26 +253,45 @@ export class CouponCodeListComponent implements OnInit, AfterViewInit {
       campaignId: this.campaignId,
       filter: {
         sortBy: event.active,
-        sortOrder: event.direction == 'asc' ? sortOrderEnum.ASC : sortOrderEnum.DESC
+        sortOrder:
+          event.direction == 'asc' ? sortOrderEnum.ASC : sortOrderEnum.DESC,
       },
-      isSortOperation: true
-    })
+      isSortOperation: true,
+    });
   }
 
   openFilterDialog() {
-    const dialogRef = this.dialog.open(FilterDialogComponent, {autoFocus: false, data: {couponCodeFilter: this.filter()}});
+    const dialogRef = this.dialog.open(FilterDialogComponent, {
+      autoFocus: false,
+      data: { couponCodeFilter: this.filter() },
+    });
 
-    dialogRef.afterClosed().pipe().subscribe((params: CouponCodeFilter) => {
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: params,
-      })
-    }) 
+    dialogRef
+      .afterClosed()
+      .pipe(take(1))
+      .subscribe((params: CouponCodeFilter) => {
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: params,
+        });
+      });
   }
 
   onRowClick(couponCode: CouponCodeDto) {
     this.router.navigate(['./coupon-codes', couponCode.couponCodeId], {
       relativeTo: this.route,
+    });
+  }
+
+  onCreateCouponCode() {
+    this.router.navigate([
+      `/${this.organization()?.organizationId}/coupons/${
+        this.couponId
+      }/campaigns/${this.campaignId}/coupon-codes/create`,
+    ], {
+      queryParams: {
+        'redirect': btoa(this.router.url)
+      }
     });
   }
 }

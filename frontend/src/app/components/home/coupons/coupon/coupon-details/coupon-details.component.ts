@@ -13,6 +13,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { OrganizationStore } from '../../../../../store/organization.store';
 import { ChangeStatusComponent } from '../../change-status/change-status.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-coupon-details',
@@ -37,6 +38,8 @@ export class CouponDetailsComponent {
 
   organization = this.organizationStore.organizaiton;
 
+  constructor(private router: Router, private route: ActivatedRoute) {}
+
   getFormattedDate(date: Date) {
     return new Date(date).toDateString();
   }
@@ -46,5 +49,13 @@ export class CouponDetailsComponent {
       data: { coupon, organizationId: this.organization()?.organizationId },
       autoFocus: false,
     });
+  }
+
+  onEdit() {
+    this.router.navigate([`/${this.organization()?.organizationId}/coupons/${this.coupon()?.couponId}/edit`], {
+      queryParams: {
+        'redirect': btoa(this.router.url)
+      }
+    })
   }
 }
