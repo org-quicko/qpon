@@ -1,0 +1,41 @@
+<div class="min-h-screen flex flex-col overflow-hidden">
+  <div class="flex justify-between px-8 py-4 fixed top-0 w-full">
+    <div class="text-on-surface mat-title-large">
+      {{ organization()?.name }}
+    </div>
+    <button mat-stroked-button class="rounded-full" (click)="onExit()">
+      Exit
+    </button>
+  </div>
+  <div class="flex-grow !py-8 flex flex-col items-center justify-center">
+    <router-outlet></router-outlet>
+  </div>
+  <div
+    class="flex flex-col bg-surface-container-lowest z-10 fixed bottom-0 w-full"
+  >
+    <div class="w-full flex space-x-[8px] justify-between" [hidden]="redirectUri">
+      <div class="flex-1">
+        <app-progress-bar
+          [animate]="true"
+          [fillPercentage]="getFillPercentage()"
+        ></app-progress-bar>
+      </div>
+    </div>
+    @if(hideBackButton()) {
+      <div class="flex justify-end items-center px-8 py-4">
+        <button mat-flat-button (click)="onNext()" class="rounded-full">
+          {{ getButtonText() }}
+        </button>
+      </div>  
+    } @else {
+      <div class="flex justify-between items-center px-8 py-4">
+        <button mat-stroked-button class="rounded-full" (click)="onBack()">
+          Back
+        </button>
+        <button mat-flat-button (click)="onNext()" class="rounded-full">
+          {{ getButtonText() }}
+        </button>
+      </div>
+    }
+  </div>
+</div>

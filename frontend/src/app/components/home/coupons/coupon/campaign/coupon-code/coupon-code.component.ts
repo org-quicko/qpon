@@ -103,4 +103,12 @@ export class CouponCodeComponent implements OnInit {
       }, 2000);
     });
   }
+
+  onEdit() {
+    this.router.navigate([
+      `/${this.organization()?.organizationId}/coupons/${
+        this.couponId
+      }/campaigns/${this.campaignId}/coupon-codes/${this.couponCodeId}/edit/code-details`,
+    ]);
+  }
 }

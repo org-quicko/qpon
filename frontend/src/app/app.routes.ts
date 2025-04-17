@@ -26,6 +26,9 @@ import { CreateCampaignComponent } from './components/coupons/coupon-container/c
 import { CreateCouponCodeComponent } from './components/coupons/coupon-container/create-coupon-code/create-coupon-code.component';
 import { EditCouponComponent } from './components/coupons/coupon-container/edit-coupon/edit-coupon.component';
 import { EditCampaignComponent } from './components/coupons/coupon-container/edit-campaign/edit-campaign.component';
+import { EditCouponCodeComponent } from './components/edit-coupon-code/edit-coupon-code.component';
+import { UpdateCodeDetailsComponent } from './components/edit-coupon-code/update-code-details/update-code-details.component';
+import { UpdateCustomerConstraintComponent } from './components/edit-coupon-code/update-customer-constraint/update-customer-constraint.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -70,7 +73,7 @@ export const routes: Routes = [
                   {
                     path: ':coupon_id/campaigns/:campaign_id/coupon-codes/:coupon_code_id',
                     component: CouponCodeComponent,
-                  }
+                  },
                 ],
               },
             ],
@@ -80,36 +83,49 @@ export const routes: Routes = [
             component: CouponContainerComponent,
             children: [
               { path: '', pathMatch: 'full', redirectTo: 'create' },
-              { "path": "create", component: CreateCouponComponent },
+              { path: 'create', component: CreateCouponComponent },
               {
-                path: ":coupon_id",
+                path: ':coupon_id',
                 children: [
-                  { path: "items/edit", component: EditItemsComponent },
-                  { path: "edit", component: EditCouponComponent },
-                  { 
-                    path: "campaigns",
+                  { path: 'items/edit', component: EditItemsComponent },
+                  { path: 'edit', component: EditCouponComponent },
+                  {
+                    path: 'campaigns',
                     children: [
-                      { path: "", pathMatch: 'full', redirectTo: 'create' },
-                      { path: "create", component: CreateCampaignComponent },
-                      { 
-                        path: ":campaign_id",
+                      { path: '', pathMatch: 'full', redirectTo: 'create' },
+                      { path: 'create', component: CreateCampaignComponent },
+                      {
+                        path: ':campaign_id',
                         children: [
-                          { path: "edit", component: EditCampaignComponent },
-                          { 
-                            path: "coupon-codes",
+                          { path: 'edit', component: EditCampaignComponent },
+                          {
+                            path: 'coupon-codes',
                             children: [
-                              { path: "create", component: CreateCouponCodeComponent },
-                              // { 
-                              //   path: ":coupon_code_id",
-                              //   component: EditCouponCodeComponent
-                              // }
-                            ]
+                              {
+                                path: 'create',
+                                component: CreateCouponCodeComponent,
+                              },
+                            ],
                           },
-                        ]
-                      }
-                    ]
-                  }
-                ]
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: 'coupons/:coupon_id/campaigns/:campaign_id/coupon-codes/:coupon_code_id/edit',
+            component: EditCouponCodeComponent,
+            children: [
+              {
+                path: 'code-details',
+                component: UpdateCodeDetailsComponent
+              },
+              {
+                path: 'customer-constraint',
+                component: UpdateCustomerConstraintComponent
               }
             ]
           },
