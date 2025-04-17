@@ -176,9 +176,7 @@ export class AuthorizationService {
 
           allow('read', ApiKey, ['organization.organizationId']);
 
-          allow('manage', CustomerCouponCode, [
-            'couponCode.organization.organizationId',
-          ]);
+          allow('manage', CustomerCouponCode);
 
           allow('manage', CouponItem, ['coupon.organization.organizationId']);
 

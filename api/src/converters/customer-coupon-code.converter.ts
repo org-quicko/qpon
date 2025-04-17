@@ -16,9 +16,6 @@ export class CustomerCouponCodeConverter {
   ): PaginatedList<CustomerDto> {
     const customerCouponCodeDto = new CustomerCouponCodeDto();
 
-    customerCouponCodeDto.couponCodeId =
-      customerCouponCodes[0].couponCode.couponCodeId;
-
     customerCouponCodeDto.customers = customerCouponCodes.map(
       (customerCouponCode) => {
         return this.customerConverter.convert(customerCouponCode.customer);

@@ -87,7 +87,7 @@ export class CustomerCouponCodeController {
    * Update customers
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
-  @Permissions('update', CustomerCouponCode)
+  // @Permissions('update', CouponCode)
   @Patch()
   async updateCustomers(
     @Param('coupon_id') couponId: string,

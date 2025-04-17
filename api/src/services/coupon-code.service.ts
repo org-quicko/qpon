@@ -11,11 +11,16 @@ import { DataSource, FindOptionsWhere, ILike, Repository } from 'typeorm';
 import { CouponCode } from '../entities/coupon-code.entity';
 import { CreateCouponCodeDto, UpdateCouponCodeDto } from '../dtos';
 import { LoggerService } from './logger.service';
-import { couponCodeStatusEnum, sortOrderEnum } from '../enums';
+import {
+  couponCodeStatusEnum,
+  customerConstraintEnum,
+  sortOrderEnum,
+} from '../enums';
 import { CouponCodeConverter } from '../converters/coupon-code.converter';
 import { CouponCodeSheetConverter } from '../converters/coupon-code-sheet.converter';
 import { Campaign } from 'src/entities/campaign.entity';
 import { CouponCodeListConverter } from 'src/converters/coupon-code-list.converter';
+import { CustomerCouponCode } from 'src/entities/customer-coupon-code.entity';
 
 @Injectable()
 export class CouponCodeService {
@@ -301,55 +306,66 @@ export class CouponCodeService {
     body: UpdateCouponCodeDto,
   ) {
     this.logger.info('START: updateCouponCode service');
-    try {
-      const couponCode = await this.couponCodeRepository.findOne({
-        where: {
-          couponCodeId,
-          campaign: {
-            campaignId,
+    return this.datasource.transaction(async (manager) => {
+      try {
+        const couponCode = await manager.findOne(CouponCode, {
+          where: {
+            couponCodeId,
+            campaign: {
+              campaignId,
+            },
+            coupon: {
+              couponId,
+            },
+            organization: {
+              organizationId,
+            },
           },
-          coupon: {
-            couponId,
-          },
-          organization: {
-            organizationId,
-          },
-        },
-      });
+        });
 
-      if (!couponCode) {
-        this.logger.warn('Coupon code not found', { couponCodeId });
-        throw new NotFoundException('Coupon code not found');
+        if (!couponCode) {
+          this.logger.warn('Coupon code not found', { couponCodeId });
+          throw new NotFoundException('Coupon code not found');
+        }
+
+        if (
+          couponCode.customerConstraint == customerConstraintEnum.SPECIFIC &&
+          body.customerConstraint == customerConstraintEnum.ALL
+        ) {
+          await manager.delete(CustomerCouponCode, {
+            couponCode: { couponCodeId: couponCode.couponCodeId },
+          });
+        }
+
+        await manager.update(CouponCode, { couponCodeId }, body);
+
+        const updatedCouponCode = await manager.findOne(CouponCode, {
+          where: {
+            couponCodeId,
+            campaign: {
+              campaignId,
+            },
+            coupon: {
+              couponId,
+            },
+          },
+        });
+
+        this.logger.info('END: updateCouponCode service');
+        return this.couponCodeConverter.convert(updatedCouponCode!);
+      } catch (error) {
+        this.logger.error(`Error in updateCouponCode: ${error.message}`, error);
+
+        if (error instanceof NotFoundException) {
+          throw error;
+        }
+
+        throw new HttpException(
+          'Failed to update coupon code',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
       }
-
-      await this.couponCodeRepository.update({ couponCodeId }, body);
-
-      const updatedCouponCode = await this.couponCodeRepository.findOne({
-        where: {
-          couponCodeId,
-          campaign: {
-            campaignId,
-          },
-          coupon: {
-            couponId,
-          },
-        },
-      });
-
-      this.logger.info('END: updateCouponCode service');
-      return this.couponCodeConverter.convert(updatedCouponCode!);
-    } catch (error) {
-      this.logger.error(`Error in updateCouponCode: ${error.message}`, error);
-
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-
-      throw new HttpException(
-        'Failed to update coupon code',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    });
   }
 
   /**
