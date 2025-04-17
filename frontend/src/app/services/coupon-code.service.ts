@@ -3,7 +3,7 @@ import { environment } from '../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ApiResponse } from '../../dtos/api-response.dto';
 import { PaginatedList } from '../../dtos/paginated-list.dto';
-import { CouponCodeDto, CreateCouponCodeDto } from '../../dtos/coupon-code.dto';
+import { CouponCodeDto, CreateCouponCodeDto, UpdateCouponCodeDto } from '../../dtos/coupon-code.dto';
 import { CouponCodeFilter } from '../types/coupon-code-filter.interface';
 import { instanceToPlain } from 'class-transformer';
 
@@ -66,5 +66,10 @@ export class CouponCodeService {
   createCouponCode(organizationId: string, couponId: string, campaignId: string, body: CreateCouponCodeDto) {
     const url = this.endpoint + "/organizations/" + organizationId + "/coupons/" + couponId + "/campaigns/" + campaignId + "/coupon-codes";
     return this.httpClient.post<ApiResponse<CouponCodeDto>>(url, body);
+  }
+
+  updateCouponCode(organizationId: string, couponId: string, campaignId: string, couponCodeId: string, body: UpdateCouponCodeDto) {
+    const url = this.endpoint + "/organizations/" + organizationId + "/coupons/" + couponId + "/campaigns/" + campaignId + "/coupon-codes/" + couponCodeId;
+    return this.httpClient.patch<ApiResponse<CouponCodeDto>>(url, body);
   }
 }
