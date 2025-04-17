@@ -1,0 +1,29 @@
+<div class="w-[560px]">
+  <div class="flex flex-col gap-10">
+    <div class="mat-headline-small text-on-surface">Add another item</div>
+    <div class="grid grid-cols-2 gap-4 w-full">
+      @for(item of items(); track item.name) {
+        <mat-card>
+          <mat-card-content>
+            <div class="w-[256px] flex flex-col gap-1 border border-outline-variant py-[32px] px-[16px] rounded-[5px]">
+              <div class="mat-body-large text-on-surface">{{ item.name }}</div>
+              <div class="mat-body-medium text-on-surface-variant truncate">{{ item.description ?? "-" }}</div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+      <mat-card>
+        <mat-card-content>
+          <button mat-button class="w-[256px] h-auto py-3 flex flex-col justify-between items-center border border-dashed border-outline-variant rounded-[5px]" (click)="onAddMore()">
+              <div class="p-2 flex justify-between items-center w-full">
+                <div class="h-12 w-12 rounded-full bg-secondary-container flex justify-center items-center">
+                  <mat-icon class="text-primary">add</mat-icon>
+                </div>
+              </div>
+              <div class="mat-body-large text-on-surface">Add more</div>
+          </button>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

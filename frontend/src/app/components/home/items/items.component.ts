@@ -75,7 +75,7 @@ export class ItemsComponent implements OnInit, AfterViewInit {
   isLoading = this.itemsStore.isLoading;
 
   onEdit(item: ItemDto) {
-    this.router.navigate([`../../items/edit/${item.itemId}`], {
+    this.router.navigate([`../../items/${item.itemId}/edit`], {
       relativeTo: this.route,
     });
   }
@@ -115,5 +115,9 @@ export class ItemsComponent implements OnInit, AfterViewInit {
       skip: event.pageIndex * event.pageSize,
       take: event.pageSize,
     });
+  }
+
+  onAddItem() {
+    this.router.navigate([`/${this.organization()?.organizationId}/items/create`])
   }
 }

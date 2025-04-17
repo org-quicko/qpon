@@ -1,0 +1,62 @@
+<div class="flex flex-col gap-[48px] w-[560px]">
+  <div class="flex flex-col gap-10">
+    <div class="mat-headline-small text-on-surface">Add a new item</div>
+    <form [formGroup]="createItemForm" class="flex flex-col gap-[32px]">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Item name</mat-label>
+        <input matInput formControlName="name" />
+        <mat-error>Name is required</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Description</mat-label>
+        <input matInput formControlName="description" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>External Id</mat-label>
+        <input matInput formControlName="externalId" />
+        <mat-error>External Id is required</mat-error>
+      </mat-form-field>
+    </form>
+  </div>
+  <div class="flex flex-col gap-4">
+    <div class="flex justify-between items-center">
+      <div class="mat-body-large text-on-surface">Meta data</div>
+      <button
+        mat-stroked-button
+        class="rounded-full text-primary"
+        type="button"
+        (click)="addCustomField()"
+      >
+        Add
+      </button>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <div
+        *ngFor="let field of customFields.controls; let i = index"
+        class="flex gap-4 justify-between items-start"
+        [formGroup]="field"
+      >
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Key</mat-label>
+          <input matInput formControlName="key" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Value</mat-label>
+          <input matInput formControlName="value" />
+        </mat-form-field>
+        <div class="relative top-2">
+          <button
+            mat-icon-button
+            color="warn"
+            type="button"
+            (click)="removeCustomField(i)"
+          >
+            <mat-icon class="material-symbols-outlined">delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

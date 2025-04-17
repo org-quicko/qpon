@@ -1,6 +1,6 @@
 import { Expose, Transform } from 'class-transformer';
 import { IsString, IsDate, IsUUID, IsOptional } from 'class-validator';
-import { prop } from '@rxweb/reactive-form-validators';
+import { prop, required } from '@rxweb/reactive-form-validators';
 
 export class ItemDto {
   @Expose({ name: 'item_id' })
@@ -36,18 +36,24 @@ export class ItemDto {
 }
 
 export class CreateItemDto {
+  @prop()
+  @required()
   @IsString()
   name?: string;
 
+  @prop()
   @IsOptional()
   @IsString()
   description?: string;
 
+  @prop()
   @IsOptional()
   @Expose({ name: 'custom_fields' })
   @Transform(({ value }) => value, { toClassOnly: true })
-  customFields?: any;
+  customFields?: object;
 
+  @prop()
+  @required()
   @Expose({ name: 'external_id' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsString()

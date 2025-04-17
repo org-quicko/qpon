@@ -8,8 +8,6 @@ import { CustomersComponent } from './components/home/customers/customers.compon
 import { ItemsComponent } from './components/home/items/items.component';
 import { ReportsComponent } from './components/home/reports/reports.component';
 import { CouponsComponent } from './components/home/coupons/coupons.component';
-import { ItemsEditComponent } from './components/items/items-edit/items-edit.component';
-import { ItemsCreateComponent } from './components/items/items-create/items-create.component';
 import { CustomersCreateComponent } from './components/customers/customers-create/customers-create.component';
 import { CustomersEditComponent } from './components/customers/customers-edit/customers-edit.component';
 import { HomeComponent } from './components/home/home.component';
@@ -29,6 +27,9 @@ import { EditCampaignComponent } from './components/coupons/coupon-container/edi
 import { EditCouponCodeComponent } from './components/edit-coupon-code/edit-coupon-code.component';
 import { UpdateCodeDetailsComponent } from './components/edit-coupon-code/update-code-details/update-code-details.component';
 import { UpdateCustomerConstraintComponent } from './components/edit-coupon-code/update-customer-constraint/update-customer-constraint.component';
+import { ItemsContainerComponent } from './components/items/items-container/items-container.component';
+import { CreateItemsComponent } from './components/items/items-container/create-items/create-items.component';
+import { EditItemComponent } from './components/items/edit-item/edit-item.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -137,12 +138,13 @@ export const routes: Routes = [
             ],
           },
           {
-            path: 'item',
+            path: 'items',
+            component: ItemsContainerComponent,
             children: [
-              { path: 'create', component: ItemsCreateComponent },
-              { path: 'edit/:item_id', component: ItemsEditComponent },
+              { path: 'create', component: CreateItemsComponent },
             ],
           },
+          { path: 'items/:item_id/edit', component: EditItemComponent },
         ],
       },
     ],

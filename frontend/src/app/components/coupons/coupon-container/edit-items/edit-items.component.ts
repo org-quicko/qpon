@@ -184,7 +184,7 @@ export class EditItemsComponent implements OnInit {
           ? itemConstraintEnum.ALL
           : itemConstraintEnum.SPECIFIC,
       items: this.selectedItems.map((item) => item.itemId!),
-      update: this.redirectUri.length > 0 ? true : false
+      update: this.redirectUri && this.redirectUri.length > 0 ? true : false
     });
   }
 
