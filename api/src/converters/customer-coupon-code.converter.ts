@@ -2,12 +2,18 @@ import { Injectable } from '@nestjs/common';
 import { CustomerCouponCodeDto } from '../dtos/customer-coupon-code.dto';
 import { CustomerCouponCode } from '../entities/customer-coupon-code.entity';
 import { CustomerConverter } from './customer.converter';
+import { PaginatedList } from '../dtos/paginated-list.dto';
+import { CustomerDto } from 'src/dtos';
 
 @Injectable()
 export class CustomerCouponCodeConverter {
   constructor(private customerConverter: CustomerConverter) {}
 
-  convert(customerCouponCodes: CustomerCouponCode[]): CustomerCouponCodeDto {
+  convert(
+    customerCouponCodes: CustomerCouponCode[],
+    skip?: number,
+    take?: number,
+  ): PaginatedList<CustomerDto> {
     const customerCouponCodeDto = new CustomerCouponCodeDto();
 
     customerCouponCodeDto.couponCodeId =
@@ -19,6 +25,10 @@ export class CustomerCouponCodeConverter {
       },
     );
 
-    return customerCouponCodeDto;
+    return PaginatedList.Builder.build(
+      customerCouponCodeDto.customers,
+      skip!,
+      take!,
+    );
   }
 }

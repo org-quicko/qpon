@@ -135,7 +135,7 @@ export class CustomerCouponCodeService {
       }
 
       this.logger.info('END: fetchCustomers service');
-      return this.customerCouponCodeConverter.convert(customers);
+      return this.customerCouponCodeConverter.convert(customers, skip, take);
     } catch (error) {
       this.logger.error(`Error in fetchCustomers: ${error.message}`, error);
 
