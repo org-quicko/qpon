@@ -9,7 +9,6 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { take } from 'rxjs';
 import { OrganizationUserStore } from '../../../../../store/organization-user.store';
 import { OrganizationDto } from '../../../../../../dtos/organization.dto';
-import { environment } from '../../../../../../environments/environment.dev';
 import { OrganizationUserDto } from '../../../../../../dtos/organization-user.dto';
 
 @Component({

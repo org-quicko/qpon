@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ApiResponse } from '../../dtos/api-response.dto';
-import { environment } from '../../environments/environment.dev';
+import { environment } from '../../environments/environment';
 import { OrganizationUserDto } from '../../dtos/organization-user.dto';
 import { UserDto } from '../../dtos/user.dto';
 

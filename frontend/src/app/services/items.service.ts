@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment.dev';
+import { environment } from '../../environments/environment';
 import { ApiResponse } from '../../dtos/api-response.dto';
 import { CreateItemDto, ItemDto, UpdateItemDto } from '../../dtos/item.dto';
 import { PaginatedList } from '../../dtos/paginated-list.dto';
