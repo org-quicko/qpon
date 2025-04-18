@@ -2,10 +2,11 @@ import { Component, inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { OrganizationStore } from '../../../../../store/organization.store';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-coupon-code-creation-header',
-  imports: [MatButtonModule],
+  imports: [MatButtonModule, MatDividerModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
