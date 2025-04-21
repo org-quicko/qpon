@@ -1,11 +1,14 @@
-<nav class="h-[80px] w-full border-b-1 border-outline-variant">
-    <div class="flex justify-between pt-[16px] pr-[32px] pb-[16px] pl-[32px] items-center">
-        <div>
-            <p class="mat-title-large text-on-surface">{{ organizationStore.organizaiton()?.name }}</p>
+<nav class="h-[80px] w-full">
+    <div class="flex flex-col">
+        <div class="flex justify-between pt-[16px] pr-[32px] pb-[16px] pl-[32px] items-center">
+            <div>
+                <p class="mat-title-large text-on-surface">{{ organizationStore.organizaiton()?.name }}</p>
+            </div>
+            <div class="flex justify-between gap-[24px] items-center">
+                <app-choose-organization></app-choose-organization>
+                <app-profile></app-profile>
+            </div>
         </div>
-        <div class="flex justify-between gap-[24px] items-center">
-            <app-choose-organization></app-choose-organization>
-            <app-profile></app-profile>
-        </div>
+        <mat-divider class="border-outline-variant"></mat-divider>
     </div>
 </nav>
