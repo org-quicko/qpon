@@ -1,0 +1,39 @@
+<div class="flex flex-col gap-10">
+  <div class="mat-headline-small text-on-surface">Add another customer</div>
+  <div class="grid grid-cols-2 gap-4">
+    @for(customer of customers(); track customer.email) {
+    <mat-card appearance="outlined">
+      <mat-card-content>
+        <div class="w-[272px] py-8 px-4">
+          <div class="flex flex-col gap-1">
+            <div class="mat-body-large text-on-surface">
+              {{ customer.name }}
+            </div>
+            <div class="mat-body-medium text-on-surface-variant">
+              {{ customer.email }}
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    }
+    <mat-card>
+      <mat-card-content>
+        <button
+          mat-button
+          class="w-[272px] h-auto py-4 flex flex-col justify-between items-center border border-dashed border-outline-variant rounded-[5px]"
+          (click)="onAddMore()"
+        >
+          <div class="p-2 flex justify-between items-center w-full">
+            <div
+              class="h-12 w-12 rounded-full bg-secondary-container flex justify-center items-center"
+            >
+              <mat-icon class="text-primary">add</mat-icon>
+            </div>
+          </div>
+          <div class="mat-body-large text-on-surface">Add more</div>
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

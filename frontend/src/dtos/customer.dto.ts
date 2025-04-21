@@ -1,3 +1,4 @@
+import { prop, required } from '@rxweb/reactive-form-validators';
 import { Expose, Transform } from 'class-transformer';
 import { IsString, IsDate, IsUUID, IsOptional } from 'class-validator';
 
@@ -40,23 +41,30 @@ export class CustomerDto {
 }
 
 export class CreateCustomerDto {
+  @prop()
+  @required()
   @IsString()
   name?: string;
 
-  @IsOptional()
+  @prop()
+  @required()
   @IsString()
   email?: string;
 
+  @prop()
   @IsOptional()
   @Expose({ name: 'isd_code' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsString()
   isdCode?: string;
 
+  @prop()
   @IsOptional()
   @IsString()
   phone?: string;
 
+  @prop()
+  @required()
   @Expose({ name: 'external_id' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsString()
@@ -64,25 +72,32 @@ export class CreateCustomerDto {
 }
 
 export class UpdateCustomerDto {
+  @prop()
+  @IsOptional()
   @IsString()
   name?: string;
 
+  @prop()
   @IsOptional()
   @IsString()
   email?: string;
 
+  @prop()
   @IsOptional()
   @Expose({ name: 'isd_code' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsString()
   isdCode?: string;
 
+  @prop()
   @IsOptional()
   @IsString()
   phone?: string;
 
+  @prop()
   @Expose({ name: 'external_id' })
   @Transform(({ value }) => value, { toClassOnly: true })
+  @IsOptional()
   @IsString()
   externalId?: string;
 }

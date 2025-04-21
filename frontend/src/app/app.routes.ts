@@ -8,8 +8,6 @@ import { CustomersComponent } from './components/home/customers/customers.compon
 import { ItemsComponent } from './components/home/items/items.component';
 import { ReportsComponent } from './components/home/reports/reports.component';
 import { CouponsComponent } from './components/home/coupons/coupons.component';
-import { CustomersCreateComponent } from './components/customers/customers-create/customers-create.component';
-import { CustomersEditComponent } from './components/customers/customers-edit/customers-edit.component';
 import { HomeComponent } from './components/home/home.component';
 import { OrganizationUserResolver } from './resolvers/organization-user.resolver';
 import { UserResolver } from './resolvers/user.resolver';
@@ -30,6 +28,9 @@ import { UpdateCustomerConstraintComponent } from './components/edit-coupon-code
 import { ItemsContainerComponent } from './components/items/items-container/items-container.component';
 import { CreateItemsComponent } from './components/items/items-container/create-items/create-items.component';
 import { EditItemComponent } from './components/items/edit-item/edit-item.component';
+import { EditCustomerComponent } from './components/customers/edit-customer/edit-customer.component';
+import { CreateCustomersContainerComponent } from './components/customers/create-customers-container/create-customers-container.component';
+import { CreateCustomersComponent } from './components/customers/create-customers-container/create-customers/create-customers.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -131,12 +132,13 @@ export const routes: Routes = [
             ]
           },
           {
-            path: 'customer',
+            path: 'customers',
+            component: CreateCustomersContainerComponent,
             children: [
-              { path: 'create', component: CustomersCreateComponent },
-              { path: 'edit/:customer_id', component: CustomersEditComponent },
+              { path: 'create', component: CreateCustomersComponent },
             ],
           },
+          { path: 'customers/:customer_id/edit', component: EditCustomerComponent },
           {
             path: 'items',
             component: ItemsContainerComponent,

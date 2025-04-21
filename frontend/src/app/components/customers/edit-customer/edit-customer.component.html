@@ -1,0 +1,49 @@
+<div class="min-h-screen flex flex-col overflow-hidden">
+  <div class="flex flex-col fixed top-0 w-full">
+    <div class="flex justify-between px-8 py-4">
+      <div class="text-on-surface mat-title-large">
+        {{ organization()?.name }}
+      </div>
+      <button mat-stroked-button class="rounded-full" (click)="onExit()">
+        Exit
+      </button>
+    </div>
+    <mat-divider class="border-outline-variant"></mat-divider>
+  </div>
+  <div class="flex-grow !py-8 flex flex-col items-center justify-center">
+    <div class="flex flex-col gap-10 w-[560px]">
+      <div class="mat-headline-small text-on-surface">Edit customer details</div>
+      <form [formGroup]="updateCustomerForm" class="flex flex-col gap-8">
+        <mat-form-field appearance="outline">
+          <mat-label>Customer Name</mat-label>
+          <input matInput type="text" formControlName="name" />
+          <mat-error>Name is required</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput type="text" formControlName="email" />
+          <mat-error>Email is required</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Phone</mat-label>
+          <input matInput type="number" formControlName="phone" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>External id</mat-label>
+          <input matInput type="text" formControlName="externalId" />
+          <mat-error>External id is required</mat-error>
+        </mat-form-field>
+      </form>
+    </div>
+  </div>
+
+  <div
+    class="flex flex-col bg-surface-container-lowest z-10 fixed bottom-0 w-full"
+  >
+    <div class="flex justify-end items-center px-8 py-4">
+      <button mat-flat-button class="rounded-full" (click)="onSave()" [disabled]="isLoading()">
+        Save
+      </button>
+    </div>
+  </div>
+</div>
