@@ -24,9 +24,14 @@ import { CouponSubscriber } from './subscribers/coupon.subscriber';
 import { OrganizationSubscriber } from './subscribers/organization.subscriber';
 import { PermissionGuard } from './guards/permission.guard';
 import { CouponCodeSubscriber } from './subscribers/coupon-code.subscriber';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '..', 'public'),
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
