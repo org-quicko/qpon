@@ -2,10 +2,10 @@ import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { ItemsService } from '../services/items.service';
-import { catchError, concatMap, EMPTY, pipe, shareReplay, tap } from 'rxjs';
+import { catchError, concatMap, EMPTY, of, pipe, shareReplay, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { ItemDto } from '../../dtos/item.dto';
-import { plainToClass } from 'class-transformer';
+import { plainToClass, plainToInstance } from 'class-transformer';
 import { withDevtools } from "@angular-architects/ngrx-toolkit";
 import { PaginatedList } from '../../dtos/paginated-list.dto';
 import { ItemFilter } from '../types/item-filter.interface';
@@ -18,6 +18,7 @@ type ItemsState = {
   count?: number | null,
   isLoading: boolean;
   filter: { query: string } | null;
+  loadedPages: Set<number>;
   error: string | null;
 };
 
@@ -28,6 +29,7 @@ const initialState: ItemsState = {
   count: null,
   isLoading: false,
   filter: null,
+  loadedPages: new Set<number>(),
   error: null,
 };
 
@@ -40,15 +42,36 @@ export const ItemsStore = signalStore(
       pipe(
         tap(() => patchState(store, { isLoading: true })),
         concatMap(({ organizationId, skip, take, filter }) => {
+
+          const page = Math.floor((skip ?? 0) / (take ?? 5));
+
+          if(store.loadedPages().has(page) && !filter) {
+            patchState(store, { isLoading: false })
+            return of(store.items());
+          }
+
           return itemsService.fetchItems(organizationId, skip, take, filter).pipe(
             tapResponse({
               next: (response) => {
                 const itemList = plainToClass(PaginatedList<ItemDto>, response.data);
+                const items = itemList.getItems()?.map((item) => plainToInstance(ItemDto, item))
+
+                const updatedPages = store.loadedPages().add(page);
+                const currentItems = store.items() ?? [];
+                let updatedItems: ItemDto[] = [];
+
+                if (filter) {
+                  updatedItems = items!;
+                } else {
+                  updatedItems = [...currentItems, ...items!];
+                }
+
                 patchState(store, {
-                  items: itemList?.getItems()?.map((item) => plainToClass(ItemDto, item)),
+                  items: updatedItems,
                   skip: itemList?.getSkip(),
                   count: itemList?.getCount(),
                   take: itemList?.getTake(),
+                  loadedPages: updatedPages,
                   isLoading: false,
                 });
               },
@@ -89,5 +112,11 @@ export const ItemsStore = signalStore(
         })
       )
     ),
+
+    resetLoadedPages() {
+      patchState(store, {
+        loadedPages: new Set(),
+      });
+    },
   }))
 );

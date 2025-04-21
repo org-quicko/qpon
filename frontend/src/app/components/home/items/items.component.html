@@ -3,8 +3,8 @@
     <div class="flex items-center justify-between">
       <div>
         <p class="mat-headline-medium text-on-surface w-full">
-          @if (items().length !== null && items().length !== undefined) { @if
-          (count()! > 0) { Items {{ `(${items().length!})` }}
+          @if (items() !== null && count() !== undefined) { @if
+          (count()! > 0) { Items {{ `(${count()!})` }}
           } @else { Items } } @else { Items }
         </p>
       </div>
@@ -151,7 +151,7 @@
 
         <table
           mat-table
-          [dataSource]="items()"
+          [dataSource]="itemsDatasource"
           class="table-fixed w-full"
           [ngClass]="{ 'h-[500px]': items().length == 0 && isFilterApplied }"
         >
@@ -261,7 +261,7 @@
         }
       </div>
       <div>
-        <mat-paginator [length]="count()" [pageSize]="take()"></mat-paginator>
+        <mat-paginator [length]="count()" [pageSize]="take()" (page)="onPageChange($event)"></mat-paginator>
       </div>
     </div>
     }

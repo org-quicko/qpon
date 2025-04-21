@@ -1,11 +1,9 @@
 import {
-  AfterViewInit,
   Component,
   effect,
   inject,
-  Injector,
   OnInit,
-  ViewChild,
+  signal,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,7 +12,6 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from '@angular/material/menu';
 import {
-  MatPaginator,
   MatPaginatorModule,
   PageEvent,
 } from '@angular/material/paginator';
@@ -26,7 +23,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { CommonModule } from '@angular/common';
-import { watchState } from '@ngrx/signals';
+import { PaginationOptions } from '../../../types/PaginatedOptions';
 
 @Component({
   selector: 'app-items',
@@ -45,12 +42,16 @@ import { watchState } from '@ngrx/signals';
   templateUrl: './items.component.html',
   styleUrl: './items.component.css',
 })
-export class ItemsComponent implements OnInit, AfterViewInit {
+export class ItemsComponent implements OnInit {
   columns = ['name', 'description', 'menu'];
 
   searchControl = new FormControl('');
   tempDatasource: number[] = Array.from({ length: 10 }, (_, i) => i + 1);
   isFilterApplied: boolean = false;
+  paginationOptions = signal<PaginationOptions>({
+    pageIndex: 0,
+    pageSize: 10
+  });
 
   itemsStore = inject(ItemsStore);
   organizationStore = inject(OrganizationStore);
@@ -59,15 +60,19 @@ export class ItemsComponent implements OnInit, AfterViewInit {
     this.isFilterApplied = false;
 
     effect(() => {
-      this.itemsDatasource.data = this.items();
+      const items = this.itemsStore.items();
+      const { pageIndex, pageSize } = this.paginationOptions();
+
+      const start = pageIndex * pageSize;
+      const end = Math.min(start + pageSize, items.length);
+
+      this.itemsDatasource.data = items.slice(start, end);
     })
   }
 
   organization = this.organizationStore.organizaiton;
 
   itemsDatasource = new MatTableDataSource<ItemDto>();
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   items = this.itemsStore.items;
   count = this.itemsStore.count!;
@@ -87,11 +92,9 @@ export class ItemsComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit(): void {
-    this.itemsDatasource.paginator = this.paginator;
-  }
-
   ngOnInit(): void {
+    this.itemsStore.resetLoadedPages();
+
     this.itemsStore.fetchItems({
       organizationId: this.organization()?.organizationId!,
     });
@@ -104,16 +107,18 @@ export class ItemsComponent implements OnInit, AfterViewInit {
           organizationId: this.organization()?.organizationId!,
           filter: {
             query: name
-          }
+          },
         });
       });
   }
 
   onPageChange(event: PageEvent) {
+    this.paginationOptions.set({ pageIndex: event.pageIndex, pageSize: event.pageSize });
+
     this.itemsStore.fetchItems({
       organizationId: this.organization()?.organizationId!,
       skip: event.pageIndex * event.pageSize,
-      take: event.pageSize,
+      take: this.paginationOptions().pageSize,
     });
   }
 
