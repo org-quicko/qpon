@@ -29,13 +29,13 @@ export class AuthService {
       1,
       '/',
       undefined,
-      true,
-      'Strict'
+      false,
+      'Lax'
     );
   }
 
   public deleteCookie() {
-    this.cookieService.delete('QPON_ACCESS_TOKEN', '/', undefined, true, 'Strict');
+    this.cookieService.delete('QPON_ACCESS_TOKEN', '/', undefined, false, 'Lax');
   }
 
   public getToken(): string {

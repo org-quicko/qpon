@@ -123,7 +123,7 @@
         >
       </div>
       <div class="justify-start mat-body-large">
-        Created on {{ getFormattedDate(coupon()?.createdAt!) }}
+        Created on {{ coupon()?.createdAt! | custom_date }}
       </div>
       }
     </div>

@@ -14,6 +14,7 @@ import { OrganizationStore } from '../../../../../store/organization.store';
 import { ChangeStatusComponent } from '../../change-status/change-status.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CustomDatePipe } from '../../../../../pipe/date.pipe';
 
 @Component({
   selector: 'app-coupon-details',
@@ -25,6 +26,7 @@ import { ActivatedRoute, Router } from '@angular/router';
     NgxSkeletonLoaderModule,
     TitleCasePipe,
     CurrencyPipe,
+    CustomDatePipe
   ],
   templateUrl: './coupon-details.component.html',
   styleUrl: './coupon-details.component.css',

@@ -26,6 +26,6 @@ export class CustomerCouponCodeService {
 
   updateCustomers(couponId: string, campaignId: string, couponCodeId: string, body: UpdateCustomerCouponCodeDto) {
     const url = this.endpoint + "/coupons/" + couponId + "/campaigns/" + campaignId + "/coupon-codes/" + couponCodeId + "/customers";
-    return this.httpClient.patch<ApiResponse<CustomerCouponCodeDto>>(url, body);
+    return this.httpClient.patch<ApiResponse<PaginatedList<CustomerDto>>>(url, body);
   }
 }

@@ -87,7 +87,7 @@
             }"
           ></ngx-skeleton-loader>
           } @else {
-          {{ redemption.getRedeemedAt() | custom_date }}
+          {{ redemption.getRedeemedAt() | custom_date: "" : true }}
           }
         </td>
       </ng-container>

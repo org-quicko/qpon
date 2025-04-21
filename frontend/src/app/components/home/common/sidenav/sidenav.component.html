@@ -1,4 +1,4 @@
-<div class="h-screen" >
+<div>
   <div class="!w-[272px]" disableClose>
     <div class="pt-[32px] pr-[16px] pl-[16px] pb-[24px]">
       <mat-nav-list class="cursor-pointer">
@@ -8,21 +8,21 @@
           #dashboard="routerLinkActive"
           [routerLinkActiveOptions]="{ exact: true }"
         >
-        <mat-list-item [activated]="dashboard.isActive">
-          <mat-icon
-            matListItemIcon
-            class="material-symbols-outlined text-on-surface"
-          >
-            dashboard_2
-          </mat-icon>
-          <div
-            matListItemTitle
-            class="mat-label-large"
-            [ngClass]="{'font-semibold': dashboard.isActive}"
-          >
-            Dashboard
-          </div>
-        </mat-list-item>
+          <mat-list-item [activated]="dashboard.isActive">
+            <mat-icon
+              matListItemIcon
+              class="material-symbols-outlined text-on-surface"
+            >
+              dashboard_2
+            </mat-icon>
+            <div
+              matListItemTitle
+              class="mat-label-large"
+              [ngClass]="{ 'font-semibold': dashboard.isActive }"
+            >
+              Dashboard
+            </div>
+          </mat-list-item>
         </a>
         <a
           routerLink="./customers"
@@ -39,17 +39,13 @@
             <div
               matListItemTitle
               class="mat-label-large"
-              [ngClass]="{'font-semibold': customers.isActive}"
+              [ngClass]="{ 'font-semibold': customers.isActive }"
             >
               Customers
             </div>
           </mat-list-item>
         </a>
-        <a
-          routerLink="./items"
-          routerLinkActive
-          #items="routerLinkActive"
-        >
+        <a routerLink="./items" routerLinkActive #items="routerLinkActive">
           <mat-list-item [activated]="items.isActive">
             <mat-icon
               matListItemIcon
@@ -60,17 +56,13 @@
             <div
               matListItemTitle
               class="mat-label-large"
-              [ngClass]="{'font-semibold': items.isActive}"
+              [ngClass]="{ 'font-semibold': items.isActive }"
             >
               Catalogue
             </div>
           </mat-list-item>
         </a>
-        <a
-          routerLink="./coupons"
-          routerLinkActive
-          #coupons="routerLinkActive"
-        >
+        <a routerLink="./coupons" routerLinkActive #coupons="routerLinkActive">
           <mat-list-item [activated]="coupons.isActive">
             <mat-icon
               matListItemIcon
@@ -81,17 +73,13 @@
             <div
               matListItemTitle
               class="mat-label-large"
-              [ngClass]="{'font-semibold': coupons.isActive}"
+              [ngClass]="{ 'font-semibold': coupons.isActive }"
             >
               Coupons
             </div>
           </mat-list-item>
         </a>
-        <a
-          routerLink="./reports"
-          routerLinkActive
-          #reports="routerLinkActive"
-        >
+        <a routerLink="./reports" routerLinkActive #reports="routerLinkActive">
           <mat-list-item [activated]="reports.isActive">
             <mat-icon
               matListItemIcon
@@ -102,13 +90,22 @@
             <div
               matListItemTitle
               class="mat-label-large"
-              [ngClass]="{'font-semibold': reports.isActive}"
+              [ngClass]="{ 'font-semibold': reports.isActive }"
             >
               Reports
             </div>
           </mat-list-item>
         </a>
       </mat-nav-list>
+      <!-- <div
+        class="flex justify-start px-[32px] py-[24px] text-outline mat-body-small gap-[3px] absolute bottom-0"
+      >
+        <div>Built with</div>
+        <mat-icon class="w-[14px] h-[14px] text-[14px] flex items-center"
+          >favorite</mat-icon
+        >
+        <div>at Quicko</div>
+      </div> -->
     </div>
   </div>
 </div>

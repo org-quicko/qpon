@@ -8,6 +8,7 @@ import { NgClass, TitleCasePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { OrganizationStore } from '../../../../../../store/organization.store';
 import { CouponStore } from '../../store/coupon.store';
+import { CustomDatePipe } from '../../../../../../pipe/date.pipe';
 
 @Component({
   selector: 'app-campaign-details',
@@ -18,6 +19,7 @@ import { CouponStore } from '../../store/coupon.store';
     NgxSkeletonLoaderModule,
     NgClass,
     TitleCasePipe,
+    CustomDatePipe
   ],
   templateUrl: './campaign-details.component.html',
   styleUrls: ['./campaign-details.component.css'],

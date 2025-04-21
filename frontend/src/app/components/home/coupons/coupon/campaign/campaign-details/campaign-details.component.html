@@ -94,7 +94,7 @@
       </div>
       <div class="justify-start mat-body-large">
         <!-- Created on {{ getFormattedDate(campaign()?.getCreatedAt()!) }} -->
-        Created on {{ getFormattedDate(campaign()?.getCreatedAt()!) }}
+        Created on {{ campaign()?.getCreatedAt()! | custom_date }}
       </div>
       }
     </div>

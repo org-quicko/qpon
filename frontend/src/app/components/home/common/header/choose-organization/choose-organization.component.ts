@@ -2,7 +2,7 @@ import { CommonModule, TitleCasePipe } from '@angular/common';
 import { Component, inject, OnInit, signal, Signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, RouterModule } from '@angular/router';
 import { AvatarModule } from 'ngx-avatars';
 import { MatRippleModule } from '@angular/material/core';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
@@ -20,7 +20,7 @@ import { OrganizationUserDto } from '../../../../../../dtos/organization-user.dt
     AvatarModule,
     MatRippleModule,
     NgxSkeletonLoaderModule,
-    TitleCasePipe
+    CommonModule
   ],
   templateUrl: './choose-organization.component.html',
   styleUrl: './choose-organization.component.css',

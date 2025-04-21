@@ -13,6 +13,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-customers',
@@ -51,7 +52,7 @@ export class CustomersComponent implements OnInit, AfterViewInit {
   count = this.customersStore.count!;
   take = this.customersStore.take!;
 
-  constructor() {
+  constructor(private router: Router) {
     this.isFilterApplied = false;
 
     effect(() => {
@@ -87,5 +88,13 @@ export class CustomersComponent implements OnInit, AfterViewInit {
         },
       })
     });
+  }
+
+  onAddCustomer() {
+    this.router.navigate([`/${this.organization()?.organizationId}/customers/create`])
+  }
+
+  onEditCustomer(customerId: string) {
+    this.router.navigate([`/${this.organization()?.organizationId}/customers/${customerId}/edit`]);
   }
 }
