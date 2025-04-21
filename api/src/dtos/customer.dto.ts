@@ -42,19 +42,25 @@ export class CustomerDto {
 
 export class CreateCustomerDto {
   @IsString()
-  name: string;
+  name?: string;
 
   @IsString()
-  email: string;
+  email?: string;
+
+  @IsOptional()
+  @Expose({ name: 'isd_code' })
+  @Transform(({ value }) => value, { toClassOnly: true })
+  @IsString()
+  isdCode?: string;
 
   @IsOptional()
   @IsString()
-  phone: string;
+  phone?: string;
 
   @Expose({ name: 'external_id' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsString()
-  externalId: string;
+  externalId?: string;
 }
 
 export class UpdateCustomerDto extends PartialType(CreateCustomerDto) {}

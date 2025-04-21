@@ -137,6 +137,42 @@ export class CustomersService {
   }
 
   /**
+   * Fetch customer
+   */
+  async fetchCustomer(organizationId: string, customerId: string) {
+    this.logger.info('START: fetchCustomer service');
+    try {
+      const customer = await this.customersRepository.findOne({
+        where: {
+          organization: {
+            organizationId,
+          },
+          customerId,
+        },
+      });
+
+      if (!customer) {
+        this.logger.warn('Customer not found');
+        throw new NotFoundException('Customer not found');
+      }
+
+      this.logger.info('END: fetchCustomers service');
+      return this.customerConverter.convert(customer);
+    } catch (error) {
+      this.logger.error(`Error in fetchCustomer: ${error.message}`, error);
+
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+
+      throw new HttpException(
+        'Failed to fetch customers',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  /**
    * Update customer
    */
   async updateCustomer(
@@ -288,8 +324,8 @@ export class CustomersService {
     }
   }
 
-  async fetchCustomer(organizationId: string, customerId: string) {
-    this.logger.info('START: fetchCustomer service');
+  async fetchCustomerForValidation(organizationId: string, customerId: string) {
+    this.logger.info('START: fetchCustomerForValidation service');
     try {
       const customer = await this.customersRepository.findOne({
         where: {
@@ -306,10 +342,13 @@ export class CustomersService {
         throw new NotFoundException('Customer not found');
       }
 
-      this.logger.info('END: fetchCustomer service');
+      this.logger.info('END: fetchCustomerForValidation service');
       return customer;
     } catch (error) {
-      this.logger.error(`Error in fetchCustomer: ${error.message}`, error);
+      this.logger.error(
+        `Error in fetchCustomerForValidation: ${error.message}`,
+        error,
+      );
 
       if (error instanceof NotFoundException) {
         throw error;

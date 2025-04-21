@@ -339,7 +339,7 @@ export class AuthorizationService {
               `Error. Must provide an Organization ID and Customer ID for performing action on Customer`,
             );
           }
-          return this.customerService.fetchCustomer(
+          return this.customerService.fetchCustomerForValidation(
             subjectOrganizationId,
             subjectCustomerId,
           );

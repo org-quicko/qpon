@@ -72,6 +72,27 @@ export class CustomersController {
   }
 
   /**
+   * Fetch customer
+   */
+  @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('read_all', Customer)
+  @Get(':customer_id')
+  async fetchCustomer(
+    @Param('organization_id') organizationId: string,
+    @Param('customer_id') customerId: string,
+  ) {
+    this.logger.info('START: fetchCustomer controller');
+
+    const result = await this.customersService.fetchCustomer(
+      organizationId,
+      customerId,
+    );
+
+    this.logger.info('END: fetchCustomer controller');
+    return { message: 'Successfully fetched customer', result };
+  }
+
+  /**
    * Update customer
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
