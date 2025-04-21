@@ -1,11 +1,20 @@
-import { AfterViewInit, Component, effect, inject, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import {
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
 import { CustomersStore } from '../../../store/customers.store';
 import { OrganizationStore } from '../../../store/organization.store';
 import { CustomerDto } from '../../../../dtos/customer.dto';
@@ -14,6 +23,7 @@ import { CommonModule } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { Router } from '@angular/router';
+import { PaginationOptions } from '../../../types/PaginatedOptions';
 
 @Component({
   selector: 'app-customers',
@@ -27,16 +37,20 @@ import { Router } from '@angular/router';
     MatPaginatorModule,
     CommonModule,
     NgxSkeletonLoaderModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   templateUrl: './customers.component.html',
   styleUrl: './customers.component.css',
 })
-export class CustomersComponent implements OnInit, AfterViewInit {
+export class CustomersComponent implements OnInit {
   columns = ['name', 'email', 'phoneNumber', 'menu'];
   isFilterApplied: boolean = false;
   searchControl = new FormControl('');
   tempDatasource: number[] = Array.from({ length: 10 }, (_, i) => i + 1);
+  paginationOptions = signal<PaginationOptions>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
   customersStore = inject(CustomersStore);
   organizationStore = inject(OrganizationStore);
@@ -44,9 +58,7 @@ export class CustomersComponent implements OnInit, AfterViewInit {
   organization = this.organizationStore.organizaiton;
   isLoading = this.customersStore.isLoading;
 
-  customerDataSource = new MatTableDataSource<CustomerDto>()
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator
+  customerDataSource = new MatTableDataSource<CustomerDto>();
 
   customers = this.customersStore.customers;
   count = this.customersStore.count!;
@@ -55,46 +67,57 @@ export class CustomersComponent implements OnInit, AfterViewInit {
   constructor(private router: Router) {
     this.isFilterApplied = false;
 
-    effect(() => {
-      this.customerDataSource.data = this.customers() ?? [];
+      effect(() => {
+        const customers = this.customersStore.customers();
+        const { pageIndex, pageSize } = this.paginationOptions();
+  
+        const start = pageIndex * pageSize;
+        const end = Math.min(start + pageSize, customers.length);
+  
+        this.customerDataSource.data = customers.slice(start, end);
+      })
+  }
+
+  onPageChange(event: PageEvent) {
+    this.paginationOptions.set({ pageIndex: event.pageIndex, pageSize: event.pageSize });
+
+    this.customersStore.fetchCustomers({
+      organizationId: this.organization()?.organizationId!,
+      skip: event.pageIndex * event.pageSize,
+      take: this.paginationOptions().pageSize,
     });
   }
 
-  ngAfterViewInit(): void {
-    this.customerDataSource.paginator = this.paginator;
-  }
-
-  
-  onPageChange(event: PageEvent) {
-    this.customersStore.fetchCustomers({
-      organizationId: this.organization()?.organizationId!,
-      skip: (event.pageIndex) * event.pageSize,
-      take: event.pageSize
-    })
-  }
-
   ngOnInit(): void {
+    this.customersStore.resetLoadedPages();
+
     this.customersStore.fetchCustomers({
       organizationId: this.organizationStore.organizaiton()?.organizationId!,
     });
 
-
-    this.searchControl.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe((value) => {
-      this.isFilterApplied = true;
-      this.customersStore.fetchCustomers({
-        organizationId: this.organizationStore.organizaiton()?.organizationId!,
-        filter: {
-          email: value?.trim()!,
-        },
-      })
-    });
+    this.searchControl.valueChanges
+      .pipe(debounceTime(500), distinctUntilChanged())
+      .subscribe((value) => {
+        this.isFilterApplied = true;
+        this.customersStore.fetchCustomers({
+          organizationId:
+            this.organizationStore.organizaiton()?.organizationId!,
+          filter: {
+            email: value?.trim()!,
+          },
+        });
+      });
   }
 
   onAddCustomer() {
-    this.router.navigate([`/${this.organization()?.organizationId}/customers/create`])
+    this.router.navigate([
+      `/${this.organization()?.organizationId}/customers/create`,
+    ]);
   }
 
   onEditCustomer(customerId: string) {
-    this.router.navigate([`/${this.organization()?.organizationId}/customers/${customerId}/edit`]);
+    this.router.navigate([
+      `/${this.organization()?.organizationId}/customers/${customerId}/edit`,
+    ]);
   }
 }

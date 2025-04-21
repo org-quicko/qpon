@@ -4,7 +4,7 @@
       <div>
         <p class="mat-headline-medium text-on-surface w-full">
           @if (customers().length !== null && customers().length !== undefined)
-          { @if (count()! > 0) { Customers {{ `(${customers().length!})` }}
+          { @if (count()! > 0) { Customers {{ `(${count()!})` }}
           } @else { Customers } } @else { Customers }
         </p>
       </div>
@@ -75,7 +75,7 @@
         @if(!isLoading()) {
         <table
           mat-table
-          [dataSource]="customers()"
+          [dataSource]="customerDataSource"
           [ngClass]="{
             'h-[500px]': customers().length == 0 && isFilterApplied
           }"
@@ -312,7 +312,7 @@
         }
       </div>
       <div>
-        <mat-paginator [length]="count()" [pageSize]="take()"></mat-paginator>
+        <mat-paginator [length]="count()" [pageSize]="take()" (page)="onPageChange($event)"></mat-paginator>
       </div>
     </div>
     }
