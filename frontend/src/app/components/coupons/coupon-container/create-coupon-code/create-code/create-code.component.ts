@@ -78,7 +78,6 @@ export class CreateCodeComponent {
         this.createCouponCodeForm.markAllAsTouched();
 
         if (this.createCouponCodeForm.invalid) {
-          console.log("hit")
           this.errorMessage.set('Please fill out all required fields');
           this.showValidationError.set(true);
           return;

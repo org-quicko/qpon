@@ -64,8 +64,6 @@ export class CouponContainerComponent implements OnInit, OnDestroy {
         this.hideBackButton.set(false);
       }
     });
-
-    console.log(this.hideBackButton())
   }
 
   ngOnInit() {
