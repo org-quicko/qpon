@@ -23,11 +23,21 @@ export class FilterDialogComponent {
   readonly dialogRef = inject(MatDialogRef<FilterDialogComponent>);
   readonly data = inject(MAT_DIALOG_DATA);
 
+  couponCodeFilter = this.filtersStore.couponCodesFilter;
+
   constructor() {
     this.filterForm = new FormGroup({
       status: new FormControl(this.data?.couponCodeFilter?.status ?? ''),
       visibility: new FormControl(this.data?.couponCodeFilter?.visibility ?? ''),
       durationType: new FormControl(this.data?.couponCodeFilter?.durationType ?? ''),
+    })
+
+    effect(() => {
+      if(this.couponCodeFilter()) {
+        this.filter.set({
+          ...this.couponCodeFilter()
+        })
+      }
     })
   }
 

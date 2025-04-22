@@ -61,7 +61,7 @@ import { CouponCodeFilter } from '../../../../../../types/coupon-code-filter.int
   templateUrl: './coupon-code-list.component.html',
   styleUrls: ['./coupon-code-list.component.css'],
 })
-export class CouponCodeListComponent implements OnInit, AfterViewInit {
+export class CouponCodeListComponent implements OnInit {
   couponId: string;
   campaignId: string;
   searchControl: FormControl;
@@ -85,14 +85,6 @@ export class CouponCodeListComponent implements OnInit, AfterViewInit {
     'menu',
   ];
   datasource = new MatTableDataSource<CouponCodeDto>();
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) set matSort(ms: MatSort) {
-    if (ms) {
-      this.sort = ms;
-      this.datasource.sort = ms;
-    }
-  }
 
   couponCodesStore = inject(CouponCodesStore);
   organizationStore = inject(OrganizationStore);
@@ -166,11 +158,6 @@ export class CouponCodeListComponent implements OnInit, AfterViewInit {
           filter: { query: code.trim() },
         });
       });
-  }
-
-  ngAfterViewInit(): void {
-    this.datasource.paginator = this.paginator;
-    this.datasource.sort = this.sort;
   }
 
   copyToClipboard(value: string, field: string) {
@@ -252,6 +239,7 @@ export class CouponCodeListComponent implements OnInit, AfterViewInit {
       couponId: this.couponId,
       campaignId: this.campaignId,
       filter: {
+        ...this.couponCodeFilter(),
         sortBy: event.active,
         sortOrder:
           event.direction == 'asc' ? sortOrderEnum.ASC : sortOrderEnum.DESC,
