@@ -12,6 +12,7 @@ export class CouponItemConverter {
     couponItems: CouponItem[],
     skip?: number,
     take?: number,
+    count?: number,
   ): PaginatedList<ItemDto> {
     const couponItemDto = new CouponItemDto();
 
@@ -23,6 +24,7 @@ export class CouponItemConverter {
       couponItemDto.item,
       skip!,
       take!,
+      count,
     );
 
     return itemList;

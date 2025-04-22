@@ -90,6 +90,29 @@
 
         <tr mat-header-row *matHeaderRowDef="columns"></tr>
         <tr mat-row *matRowDef="let row; columns: columns"></tr>
+
+        <tr class="empty-row" *matNoDataRow>
+          <td [attr.colspan]="columns.length">
+            <div class="flex flex-col justify-center items-center h-[300px]">
+              <div class="p-6 text-center flex flex-col gap-4">
+                <div
+                  class="text-on-surface-variant flex flex-col items-center gap-y-[16px]"
+                >
+                  <div
+                    class="scale-150 rounded-full inline-flex justify-start items-center gap-2.5 overflow-hidden bg-surface-container p-3"
+                  >
+                    <mat-icon class="material-symbols-outlined"
+                      >category</mat-icon
+                    >
+                  </div>
+                  <p class="text-on-surface mat-body-large">
+                    No items to show
+                  </p>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
       </table>
       } @else {
         <table mat-table [dataSource]="tempDatasource" class="text-on-surface w-full">
@@ -144,7 +167,7 @@
       }
     </div>
     <div>
-      <mat-paginator></mat-paginator>
+      <mat-paginator [length]="count()" [pageSize]="paginationOptions().pageSize" (page)="onPageChange($event)"></mat-paginator>
     </div>
   </div>
   }

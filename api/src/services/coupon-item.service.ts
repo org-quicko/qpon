@@ -85,31 +85,33 @@ export class CouponItemService {
         delete whereOptions.name;
       }
 
-      const couponItems = await this.couponItemRepository.find({
-        relations: {
-          item: true,
+      const [couponItems, count] = await this.couponItemRepository.findAndCount(
+        {
+          relations: {
+            item: true,
+          },
+          where: {
+            coupon: {
+              couponId,
+            },
+            item: {
+              ...(nameFilter && { name: ILike(`%${nameFilter}%`) }),
+            },
+          },
+          select: {
+            coupon: {
+              couponId: true,
+            },
+            item: {
+              itemId: true,
+              name: true,
+              description: true,
+            },
+          },
+          skip,
+          take,
         },
-        where: {
-          coupon: {
-            couponId,
-          },
-          item: {
-            ...(nameFilter && { name: ILike(`%${nameFilter}%`) }),
-          },
-        },
-        select: {
-          coupon: {
-            couponId: true,
-          },
-          item: {
-            itemId: true,
-            name: true,
-            description: true,
-          },
-        },
-        skip,
-        take,
-      });
+      );
 
       if (!couponItems || couponItems.length == 0) {
         this.logger.warn('No items found for this coupon', couponId);
@@ -117,7 +119,7 @@ export class CouponItemService {
       }
 
       this.logger.info('END: fetchItems service');
-      return this.couponItemConverter.convert(couponItems, skip, take);
+      return this.couponItemConverter.convert(couponItems, skip, take, count);
     } catch (error) {
       this.logger.error(`Error in fetchItems: ${error.message}`, error);
 
