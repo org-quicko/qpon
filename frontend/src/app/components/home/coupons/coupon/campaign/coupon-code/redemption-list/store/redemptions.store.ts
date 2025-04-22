@@ -7,26 +7,25 @@ import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { inject } from '@angular/core';
 import { RedemptionsService } from '../../../../../../../../services/redemptions.service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { concatMap, pipe, tap } from 'rxjs';
+import { concatMap, of, pipe, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { plainToInstance } from 'class-transformer';
 import { HttpErrorResponse } from '@angular/common/http';
+import { sortOrderEnum } from '../../../../../../../../../enums';
 
 type RedemptionsState = {
   redemptions: RedemptionRow[] | null;
   isLoading: boolean | null;
   error: string | null;
-  skip: number | null;
-  take: number | null;
   count: number | null;
+  loadedPages: Set<number>;
 };
 
 const initialState: RedemptionsState = {
   redemptions: null,
   count: null,
-  skip: null,
-  take: null,
   isLoading: null,
+  loadedPages: new Set(),
   error: null,
 };
 
@@ -42,6 +41,8 @@ export const RedemptionsStore = signalStore(
       filter?: { email: string };
       skip?: number;
       take?: number;
+      sortOptions?: {sortBy: string, sortOrder: sortOrderEnum};
+      isSortOperation?: boolean;
     }>(
       pipe(
         tap(() => patchState(store, { isLoading: true })),
@@ -54,7 +55,17 @@ export const RedemptionsStore = signalStore(
             filter,
             skip,
             take,
+            sortOptions,
+            isSortOperation
           }) => {
+
+            const page = Math.floor((skip ?? 0) / (take ?? 10));
+
+            if(store.loadedPages().has(page) && !filter && !isSortOperation) {
+              patchState(store, { isLoading: false });
+              return of(store.redemptions());
+            }
+
             return redemptionsService
               .fetchRedemptionsForCouponCode(
                 organizationId,
@@ -62,6 +73,7 @@ export const RedemptionsStore = signalStore(
                 campaignId,
                 couponCodeId,
                 filter,
+                sortOptions,
                 skip,
                 take
               )
@@ -82,12 +94,22 @@ export const RedemptionsStore = signalStore(
 
                       const metadata = redemptionsTable.getMetadata();
 
+                      const updatedPages = store.loadedPages().add(page);
+
+                      const currentRedemptions = store.redemptions() ?? [];
+                      let updatedRedemptions = [];
+
+                      if(filter || isSortOperation) {
+                        updatedRedemptions = redemptions
+                      } else {
+                        updatedRedemptions = [...currentRedemptions, ...redemptions];
+                      }
+
                       patchState(store, {
-                        redemptions,
+                        redemptions: updatedRedemptions,
                         isLoading: false,
                         count: metadata.get('count'),
-                        skip: metadata.get('skip'),
-                        take: metadata.get('take'),
+                        loadedPages: updatedPages
                       });
                     }
                   },
@@ -98,8 +120,7 @@ export const RedemptionsStore = signalStore(
                         isLoading: false,
                         redemptions: [],
                         count: 0,
-                        skip: 0,
-                        take: 10,
+                        loadedPages: new Set()
                       });
                     } else {
                       patchState(store, {
@@ -114,5 +135,11 @@ export const RedemptionsStore = signalStore(
         )
       )
     ),
+
+    resetLoadedPages() {
+      patchState(store, {
+        loadedPages: new Set()
+      })
+    }
   }))
 );
