@@ -72,6 +72,8 @@ export class EligibleItemsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.eligibleItemsStore.resetLoadedPages();
+
     this.route.params.subscribe((params: Params) => {
       this.couponId = params['coupon_id'];
     });

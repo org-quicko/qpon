@@ -77,6 +77,11 @@ export const EligibleItemsStore = signalStore(
                     )
                 })
             )
-        )
+        ),
+        resetLoadedPages() {
+            patchState(store, {
+              loadedPages: new Set<number>(),
+            });
+          },
     }))
 )

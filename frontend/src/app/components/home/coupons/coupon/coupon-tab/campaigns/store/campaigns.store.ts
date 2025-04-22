@@ -31,7 +31,7 @@ const initialState: CampaignsState = {
   skip: null,
   take: null,
   count: null,
-  loadedPages: new Set<number>(),
+  loadedPages: new Set(),
   error: null,
 };
 
@@ -41,10 +41,10 @@ export const CampaignsStore = signalStore(
   withState(initialState),
   withDevtools('campaigns'),
   withMethods((store, campaignService = inject(CampaignService)) => ({
-    fetchCampaingSummaries: rxMethod<{ couponId: string, skip?: number, take?: number, query?: {name?: string | null} }>(
+    fetchCampaingSummaries: rxMethod<{ couponId: string, skip?: number, take?: number, query?: {name: string} }>(
       pipe(
         tap(() => patchState(store, { isLoading: true })),
-        switchMap(({ couponId, skip, take, query }) => {
+        concatMap(({ couponId, skip, take, query }) => {
 
           const page = Math.floor((skip ?? 0) / (take ?? 10));
 
@@ -176,5 +176,11 @@ export const CampaignsStore = signalStore(
         })
       )
     ),
+
+    resetLoadedPages() {
+      patchState(store, {
+        loadedPages: new Set<number>(),
+      });
+    },
   }))
 );

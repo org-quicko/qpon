@@ -116,12 +116,14 @@ export class CampaignsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.campaignsStore.resetLoadedPages();
+
     this.route.params.subscribe((params: Params) => {
       this.couponId = params['coupon_id'];
     });
     this.campaignsStore.fetchCampaingSummaries({ couponId: this.couponId });
 
-    this.searchControl.valueChanges
+    this.searchControl.valueChanges 
       .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe((value: string) => {
         this.campaignsStore.fetchCampaingSummaries({
