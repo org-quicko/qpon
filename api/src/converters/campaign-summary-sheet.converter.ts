@@ -10,7 +10,12 @@ import { CampaignSummaryMv } from '../entities/campaign-summary.view';
 
 @Injectable()
 export class CampaignSummarySheetConverter {
-  convert(campaignSummaryMv: CampaignSummaryMv[]): CampaignSummaryWorkbook {
+  convert(
+    campaignSummaryMv: CampaignSummaryMv[],
+    count?: number,
+    skip?: number,
+    take?: number,
+  ): CampaignSummaryWorkbook {
     const campaignSummaryTable = new CampaignSummaryTable();
 
     campaignSummaryMv.map((campaignSummary) => {
@@ -40,9 +45,12 @@ export class CampaignSummarySheetConverter {
     const campaignSummaryWorkbook = new CampaignSummaryWorkbook();
     campaignSummaryWorkbook.addCampaignSummarySheet(campaignSummarySheet);
 
-    campaignSummaryWorkbook.metadata = new JSONObject({
+    campaignSummaryTable.metadata = new JSONObject({
       organization_id: campaignSummaryMv[0].organizationId,
       coupon_id: campaignSummaryMv[0].couponId,
+      count: count,
+      skip: skip,
+      take: take,
     });
 
     return campaignSummaryWorkbook;

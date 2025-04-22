@@ -11,17 +11,27 @@ import {
   CampaignSummaryWorkbook,
 } from '../../../../../../../../generated/sources/campaign_summary_workbook';
 import { statusEnum } from '../../../../../../../../enums';
+import { JSONObject } from '@org.quicko/ngx-core';
+import { HttpErrorResponse } from '@angular/common/http';
 
 type CampaignsState = {
   campaignSummaries: CampaignSummaryRow[] | null;
   filter?: {status: statusEnum},
   isLoading: boolean | null;
+  skip?: number | null;
+  take?: number | null;
+  count: number | null;
+  loadedPages: Set<number>,
   error: string | null;
 };
 
 const initialState: CampaignsState = {
   campaignSummaries: null,
   isLoading: null,
+  skip: null,
+  take: null,
+  count: null,
+  loadedPages: new Set<number>(),
   error: null,
 };
 
@@ -31,31 +41,60 @@ export const CampaignsStore = signalStore(
   withState(initialState),
   withDevtools('campaigns'),
   withMethods((store, campaignService = inject(CampaignService)) => ({
-    fetchCampaingSummaries: rxMethod<{ couponId: string }>(
+    fetchCampaingSummaries: rxMethod<{ couponId: string, skip?: number, take?: number, query?: {name?: string | null} }>(
       pipe(
         tap(() => patchState(store, { isLoading: true })),
-        switchMap(({ couponId }) => {
-          return campaignService.fetchCampaignSummaries(couponId).pipe(
+        switchMap(({ couponId, skip, take, query }) => {
+
+          const page = Math.floor((skip ?? 0) / (take ?? 10));
+
+          if (store.loadedPages().has(page) && !query) {
+            patchState(store, { isLoading: false });
+            return of(store.campaignSummaries());
+          }
+
+          return campaignService.fetchCampaignSummaries(couponId, skip, take, query?.name!).pipe(
             tapResponse({
               next: (response) => {
                 if (response.code == 200) {
                   const campaignSummaryTable = plainToInstance(CampaignSummaryWorkbook, response.data).getCampaignSummarySheet().getCampaignSummaryTable();
                   
                   const rows = campaignSummaryTable.getRows()?.map((_, index) => campaignSummaryTable.getRow(index))
+
+                  const metadata = campaignSummaryTable.getMetadata()
+
+                  const updatedPages = store.loadedPages().add(page);
+
+                  const currentCampaignSummaries = store.campaignSummaries() ?? [];
+
+                  let updatedCampaignSummaries: CampaignSummaryRow[] = [];
+
+                  if (query) {
+                    updatedCampaignSummaries = rows!;
+                  } else {
+                    updatedCampaignSummaries = [...currentCampaignSummaries, ...rows!];
+                  }
+
                   patchState(store, {
-                    campaignSummaries: rows,
+                    campaignSummaries: updatedCampaignSummaries,
+                    count: metadata.getNumber('count'),
+                    loadedPages: updatedPages,
                     isLoading: false,
                   });
                   onChangeStatusSuccess.emit(true);
                 }
               },
-              error: (error: any) => {
+              error: (error: HttpErrorResponse) => {
+                if(error.status == 404) {
+                  patchState(store, {
+                    campaignSummaries: [],
+                    loadedPages: new Set(),
+                    isLoading: false,
+                    count: 0
+                  })
+                }
                 patchState(store, { isLoading: false, error: error.message });
               },
-            }),
-            catchError((error) => {
-              patchState(store, { isLoading: false, error: error.message });
-              return EMPTY;
             })
           );
         })

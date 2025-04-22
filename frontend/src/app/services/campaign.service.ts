@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { ApiResponse } from '../../dtos/api-response.dto';
@@ -13,12 +13,22 @@ export class CampaignService {
 
   constructor(private httpClient: HttpClient) {}
 
-  fetchCampaignSummaries(couponId: string) {
+  fetchCampaignSummaries(couponId: string, skip: number = 0, take: number = 10, name?: string) {
     const url = this.endpoint + '/coupons/' + couponId + '/campaigns/summary';
+
+    let params = new HttpParams()
+                        .set('skip', skip)
+                        .set('take', take);
+    
+    if(name) {
+      params = params.set('name', name);
+    }
+
     return this.httpClient.get<ApiResponse<CampaignSummaryWorkbook>>(url, {
       headers: {
         'x-accept-type': 'application/json;format=sheet-json',
       },
+      params
     });
   }
 

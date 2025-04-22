@@ -98,7 +98,7 @@ export class CampaignController {
   @Get('summary')
   async fetchCampaignsSummary(
     @Param('coupon_id') couponId: string,
-    @Query('campaign_id') campaignId?: string,
+    @Query('name') name?: string,
     @Query('status') status?: statusEnum,
     @Query('take') take?: number,
     @Query('skip') skip?: number,
@@ -107,9 +107,9 @@ export class CampaignController {
 
     const result = await this.campaignService.fetchCampaignsSummary(
       couponId,
-      { campaignId, status },
-      take,
+      { status, name },
       skip,
+      take,
     );
 
     this.logger.info('END: fetchCampaignsSummary controller');

@@ -1,6 +1,10 @@
 <div class="flex flex-col gap-6 overflow-hidden">
   <div class="flex justify-between items-center">
-    <p class="mat-body-large text-on-surface">Campaigns</p>
+    <p class="mat-body-large text-on-surface">
+      @if (campaignSummaries() !== null && count() !== undefined) { @if
+        (count()! > 0) { Campaigns {{ `(${count()!})` }}
+        } @else { Campaigns } } @else { Campaigns }
+    </p>
     <button mat-flat-button class="bg-primary rounded-[100px] text-on-primary" (click)="onCreateCampaign()">
       <mat-icon>add</mat-icon>
       <span>Create campaign</span>
@@ -119,7 +123,7 @@
             #menu="matMenu"
             class="w-[200px] min-w-[112px] max-w-[280px] rounded-[4px] bg-surface-container-lowest"
           >
-            <button mat-menu-item class="h-[56px] py-8 flex gap-[12px]">
+            <button mat-menu-item class="h-[56px] py-8 flex gap-[12px]" (click)="onEditCampaign(convertToCampaignSummaryRow(summary).getCampaignId())">
               <mat-icon class="material-symbols-outlined">edit</mat-icon>
               <span class="mat-body-large text-on-surface">Edit</span>
             </button>
@@ -145,6 +149,29 @@
         class="hover:bg-surface-bright cursor-pointer"
         (click)="onRowClick(convertToCampaignSummaryRow(row).getCampaignId())"
       ></tr>
+
+      <tr class="empty-row" *matNoDataRow>
+        <td [attr.colspan]="columns.length">
+          <div class="flex flex-col justify-center items-center h-[300px]">
+            <div class="p-6 text-center flex flex-col gap-4">
+              <div
+                class="text-on-surface-variant flex flex-col items-center gap-y-[16px]"
+              >
+                <div
+                  class="scale-150 rounded-full inline-flex justify-start items-center gap-2.5 overflow-hidden bg-surface-container p-3"
+                >
+                  <mat-icon class="material-symbols-outlined"
+                    >campaign</mat-icon
+                  >
+                </div>
+                <p class="text-on-surface mat-body-large">
+                  No campaigns to show
+                </p>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
     </table>
     } @else {
     <table mat-table [dataSource]="tempDatasource" class="text-on-surface w-full">
@@ -284,8 +311,12 @@
         class="hover:bg-surface-bright cursor-pointer"
       ></tr>
     </table>
-    }
-  </div>
+
+  }
+</div>
+@if(count()) {
+  <mat-paginator [length]="count()" [pageSize]="paginationOptions().pageSize" (page)="onPageChange($event)"></mat-paginator>
+}
 </div>
 <mat-menu #filterMenu="matMenu" class="top-[200px] left-[3155px]">
   <button mat-menu-item class="h-[56px] py-8 flex gap-[12px]">

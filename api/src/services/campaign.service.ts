@@ -5,7 +5,13 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, FindOptionsWhere, MoreThan, Repository } from 'typeorm';
+import {
+  DataSource,
+  FindOptionsWhere,
+  ILike,
+  MoreThan,
+  Repository,
+} from 'typeorm';
 import { Campaign } from '../entities/campaign.entity';
 import { CreateCampaignDto, UpdateCampaignDto } from '../dtos';
 import { LoggerService } from './logger.service';
@@ -318,29 +324,47 @@ export class CampaignService {
     skip: number = 0,
     take: number = 10,
   ) {
-    this.logger.info('START: fetchCampaignSummary service');
+    this.logger.info('START: fetchCampaignsSummary service');
     try {
-      const campaignSummaryMv = await this.campaignSummaryMvRepository.find({
-        where: {
-          couponId,
-          ...whereOptions,
-        },
-        skip,
-        take,
-      });
+      let nameFilter: string = '';
 
-      if (!campaignSummaryMv || campaignSummaryMv.length == 0) {
-        this.logger.warn('Unable to find campaign summary');
-        throw new NotFoundException('Unable to find campaign summary');
+      if (whereOptions.name) {
+        nameFilter = whereOptions.name as string;
+        delete whereOptions.name;
       }
 
-      this.logger.info('END: fetchCampaignSummary service');
-      return this.campaignSummarySheetConverter.convert(campaignSummaryMv);
+      const [campaignSummaryMv, count] =
+        await this.campaignSummaryMvRepository.findAndCount({
+          where: {
+            couponId,
+            ...whereOptions,
+            ...(nameFilter && { name: ILike(`%${nameFilter}%`) }),
+          },
+          skip,
+          take,
+        });
+
+      if (!campaignSummaryMv || campaignSummaryMv.length == 0) {
+        this.logger.warn('Unable to find campaign summaries');
+        throw new NotFoundException('Unable to find campaign summaries');
+      }
+
+      this.logger.info('END: fetchCampaignsSummary service');
+      return this.campaignSummarySheetConverter.convert(
+        campaignSummaryMv,
+        count,
+        skip,
+        take,
+      );
     } catch (error) {
       this.logger.error(
         `Error in fetchCampaignSummary: ${error.message}`,
         error,
       );
+
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
 
       throw new HttpException(
         'Failed to fetch campaign summary',

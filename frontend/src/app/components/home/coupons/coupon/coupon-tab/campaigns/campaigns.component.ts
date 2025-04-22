@@ -5,6 +5,7 @@ import {
   inject,
   Input,
   OnInit,
+  signal,
   Signal,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -29,7 +30,15 @@ import { OrganizationStore } from '../../../../../../store/organization.store';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ChangeStatusComponent } from './change-status/change-status.component';
 import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { PaginationOptions } from '../../../../../../types/PaginatedOptions';
 
 @Component({
   selector: 'app-campaigns',
@@ -41,6 +50,7 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angul
     MatInputModule,
     MatMenuModule,
     MatDialogModule,
+    MatPaginatorModule,
     CustomDatePipe,
     TitleCasePipe,
     CurrencyPipe,
@@ -58,12 +68,17 @@ export class CampaignsComponent implements OnInit {
   tempDatasource: number[] = Array.from({ length: 10 }, (_, i) => i + 1);
   readonly dialog = inject(MatDialog);
   searchControl: FormControl;
+  paginationOptions = signal<PaginationOptions>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
   campaignsStore = inject(CampaignsStore);
   organizationStore = inject(OrganizationStore);
   datasource = new MatTableDataSource<CampaignSummaryRow>();
 
   campaignSummaries = this.campaignsStore.campaignSummaries;
+  count = this.campaignsStore.count;
   organization = this.organizationStore.organizaiton;
   isLoading = this.campaignsStore.isLoading;
 
@@ -90,7 +105,13 @@ export class CampaignsComponent implements OnInit {
     });
 
     effect(() => {
-      this.datasource.data = this.campaignsStore.campaignSummaries() ?? [];
+      const campaignSummaries = this.campaignsStore.campaignSummaries() ?? [];
+      const { pageIndex, pageSize } = this.paginationOptions();
+
+      const start = pageIndex * pageSize;
+      const end = Math.min(start + pageSize, campaignSummaries.length);
+
+      this.datasource.data = campaignSummaries.slice(start, end);
     });
   }
 
@@ -99,6 +120,17 @@ export class CampaignsComponent implements OnInit {
       this.couponId = params['coupon_id'];
     });
     this.campaignsStore.fetchCampaingSummaries({ couponId: this.couponId });
+
+    this.searchControl.valueChanges
+      .pipe(debounceTime(500), distinctUntilChanged())
+      .subscribe((value: string) => {
+        this.campaignsStore.fetchCampaingSummaries({
+          couponId: this.couponId,
+          query: {
+            name: value
+          }
+        });
+      });
   }
 
   convertToCampaignSummaryRow(row: any[]) {
@@ -128,8 +160,42 @@ export class CampaignsComponent implements OnInit {
   }
 
   onCreateCampaign() {
-    this.router.navigate([`../../../coupons/${this.couponId}/campaigns/create`], {relativeTo: this.route, queryParams: {
-      'redirect': btoa(this.router.url)
-    }})
+    this.router.navigate(
+      [`../../../coupons/${this.couponId}/campaigns/create`],
+      {
+        relativeTo: this.route,
+        queryParams: {
+          redirect: btoa(this.router.url),
+        },
+      }
+    );
+  }
+
+  onEditCampaign(campaignId: string) {
+    this.router.navigate(
+      [
+        `/${this.organization()?.organizationId}/coupons/${
+          this.couponId
+        }/campaigns/${campaignId}/edit`,
+      ],
+      {
+        queryParams: {
+          redirect: btoa(this.router.url),
+        },
+      }
+    );
+  }
+
+  onPageChange(event: PageEvent) {
+    this.paginationOptions.set({
+      pageIndex: event.pageIndex,
+      pageSize: event.pageSize,
+    });
+
+    this.campaignsStore.fetchCampaingSummaries({
+      couponId: this.couponId,
+      skip: event.pageIndex * event.pageSize,
+      take: this.paginationOptions().pageSize,
+    });
   }
 }
