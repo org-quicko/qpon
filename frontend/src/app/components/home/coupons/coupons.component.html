@@ -318,14 +318,16 @@
       </div>
     </div>
     }
-    <div>
-      <mat-paginator
-        [length]="count()"
-        [pageSize]="paginationOptions().pageSize"
-        [pageIndex]="paginationOptions().pageIndex"
-        (page)="onPageChange($event)"
-      ></mat-paginator>
-    </div>
+    @if(count()) {
+      <div>
+        <mat-paginator
+          [length]="count()"
+          [pageSize]="paginationOptions().pageSize"
+          [pageIndex]="paginationOptions().pageIndex"
+          (page)="onPageChange($event)"
+        ></mat-paginator>
+      </div>
+    }
   </div>
 </div>
 <mat-menu
