@@ -11,7 +11,7 @@ import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { CampaignService } from '../services/campaign.service';
 import { CreateCampaignDto, UpdateCampaignDto } from '../dtos';
 import { LoggerService } from '../services/logger.service';
-import { campaignStatusEnum, statusEnum } from 'src/enums';
+import { campaignStatusEnum, sortOrderEnum, statusEnum } from 'src/enums';
 import { Permissions } from '../decorators/permission.decorator';
 import { Campaign } from '../entities/campaign.entity';
 import { CampaignSummaryMv } from '../entities/campaign-summary.view';
@@ -100,6 +100,8 @@ export class CampaignController {
     @Param('coupon_id') couponId: string,
     @Query('name') name?: string,
     @Query('status') status?: statusEnum,
+    @Query('sort_by') sortBy?: string,
+    @Query('sort_order') sortOrder?: sortOrderEnum,
     @Query('take') take?: number,
     @Query('skip') skip?: number,
   ) {
@@ -108,6 +110,8 @@ export class CampaignController {
     const result = await this.campaignService.fetchCampaignsSummary(
       couponId,
       { status, name },
+      sortBy,
+      sortOrder,
       skip,
       take,
     );

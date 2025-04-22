@@ -16,7 +16,11 @@ import { Campaign } from '../entities/campaign.entity';
 import { CreateCampaignDto, UpdateCampaignDto } from '../dtos';
 import { LoggerService } from './logger.service';
 import { CampaignConverter } from '../converters/campaign.converter';
-import { campaignStatusEnum, couponCodeStatusEnum } from 'src/enums';
+import {
+  campaignStatusEnum,
+  couponCodeStatusEnum,
+  sortOrderEnum,
+} from 'src/enums';
 import { CouponCode } from 'src/entities/coupon-code.entity';
 import { CampaignSummaryMv } from '../entities/campaign-summary.view';
 import { CampaignSummarySheetConverter } from '../converters/campaign-summary-sheet.converter';
@@ -321,6 +325,8 @@ export class CampaignService {
   async fetchCampaignsSummary(
     couponId: string,
     whereOptions: FindOptionsWhere<CampaignSummaryMv> = {},
+    sortBy?: string,
+    sortOrder?: sortOrderEnum,
     skip: number = 0,
     take: number = 10,
   ) {
@@ -340,6 +346,7 @@ export class CampaignService {
             ...whereOptions,
             ...(nameFilter && { name: ILike(`%${nameFilter}%`) }),
           },
+          ...(sortBy && { order: { [sortBy]: sortOrder } }),
           skip,
           take,
         });
