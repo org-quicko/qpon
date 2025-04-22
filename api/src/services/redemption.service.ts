@@ -163,9 +163,9 @@ export class RedemptionsService {
             organization: {
               organizationId,
             },
-            ...(sortBy && { order: { [sortBy]: sortOrder } }),
             ...whereOptions,
           },
+          ...(sortBy && { order: { [sortBy]: sortOrder } }),
           select: {
             customer: {
               name: true,
