@@ -39,6 +39,7 @@ export const routes: Routes = [
     resolve: { user: UserResolver, organizations: OrganizationUserResolver },
     canActivate: [AuthGuard],
     children: [
+      { path: '', pathMatch: 'full', redirectTo: 'organizations' },
       {
         path: 'organizations',
         component: OrganizationsComponent,
