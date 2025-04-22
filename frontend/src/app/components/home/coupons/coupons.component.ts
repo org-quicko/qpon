@@ -258,6 +258,8 @@ export class CouponsComponent implements OnInit, AfterViewInit {
     //   queryParamsHandling: 'merge'
     // })
 
+    this.couponsStore.resetLoadedPages();
+
     this.couponsStore.fetchCoupons({
       organizationId: this.organization()?.organizationId!,
       skip: this.paginationOptions().pageIndex * this.paginationOptions().pageSize,
@@ -269,7 +271,7 @@ export class CouponsComponent implements OnInit, AfterViewInit {
           ? sortOrderEnum.ASC
           : sortOrderEnum.DESC,
       },
-      isSortOperation: true, // ✅ Add this
+      isSortOperation: true,
     });
   }
 

@@ -3,7 +3,12 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { ApiResponse } from '../../dtos/api-response.dto';
 import { CampaignSummaryWorkbook } from '../../generated/sources/campaign_summary_workbook';
-import { CampaignDto, CreateCampaignDto, UpdateCampaignDto } from '../../dtos/campaign.dto';
+import {
+  CampaignDto,
+  CreateCampaignDto,
+  UpdateCampaignDto,
+} from '../../dtos/campaign.dto';
+import { sortOrderEnum } from '../../enums';
 
 @Injectable({
   providedIn: 'root',
@@ -13,22 +18,32 @@ export class CampaignService {
 
   constructor(private httpClient: HttpClient) {}
 
-  fetchCampaignSummaries(couponId: string, skip: number = 0, take: number = 10, name?: string) {
+  fetchCampaignSummaries(
+    couponId: string,
+    skip: number = 0,
+    take: number = 10,
+    name?: string,
+    sortOptions?: { sortBy: string; sortOrder: sortOrderEnum }
+  ) {
     const url = this.endpoint + '/coupons/' + couponId + '/campaigns/summary';
 
-    let params = new HttpParams()
-                        .set('skip', skip)
-                        .set('take', take);
-    
-    if(name) {
+    let params = new HttpParams().set('skip', skip).set('take', take);
+
+    if (name) {
       params = params.set('name', name);
+    }
+
+    if (sortOptions) {
+      params = params
+        .set('sort_by', sortOptions.sortBy)
+        .set('sort_order', sortOptions.sortOrder);
     }
 
     return this.httpClient.get<ApiResponse<CampaignSummaryWorkbook>>(url, {
       headers: {
         'x-accept-type': 'application/json;format=sheet-json',
       },
-      params
+      params,
     });
   }
 
@@ -75,12 +90,18 @@ export class CampaignService {
   }
 
   fetchCampaign(couponId: string, campaignId: string) {
-    const url = this.endpoint + '/coupons/' + couponId + '/campaigns/' + campaignId;
+    const url =
+      this.endpoint + '/coupons/' + couponId + '/campaigns/' + campaignId;
     return this.httpClient.get<ApiResponse<CampaignDto>>(url);
   }
 
-  updateCampaign(couponId: string, campaignId: string, body: UpdateCampaignDto) {
-    const url = this.endpoint + '/coupons/' + couponId + '/campaigns/' + campaignId;
+  updateCampaign(
+    couponId: string,
+    campaignId: string,
+    body: UpdateCampaignDto
+  ) {
+    const url =
+      this.endpoint + '/coupons/' + couponId + '/campaigns/' + campaignId;
     return this.httpClient.patch<ApiResponse<CampaignDto>>(url, body);
   }
 }

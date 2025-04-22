@@ -39,6 +39,8 @@ import {
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { PaginationOptions } from '../../../../../../types/PaginatedOptions';
+import { MatSortModule, Sort } from '@angular/material/sort';
+import { sortOrderEnum } from '../../../../../../../enums';
 
 @Component({
   selector: 'app-campaigns',
@@ -51,6 +53,7 @@ import { PaginationOptions } from '../../../../../../types/PaginatedOptions';
     MatMenuModule,
     MatDialogModule,
     MatPaginatorModule,
+    MatSortModule,
     CustomDatePipe,
     TitleCasePipe,
     CurrencyPipe,
@@ -72,6 +75,10 @@ export class CampaignsComponent implements OnInit {
     pageIndex: 0,
     pageSize: 10,
   });
+  sortOptions = signal<{ active: 'createdAt'; direction: 'asc' | 'desc' }>({
+    active: 'createdAt',
+    direction: 'desc',
+  });
 
   campaignsStore = inject(CampaignsStore);
   organizationStore = inject(OrganizationStore);
@@ -84,11 +91,11 @@ export class CampaignsComponent implements OnInit {
 
   columns = [
     'name',
-    'total_budget',
-    'total_discount',
+    'totalBudget',
+    'totalDiscount',
     'redemptions',
     'status',
-    'created_at',
+    'createdAt',
     'menu',
   ];
 
@@ -121,16 +128,26 @@ export class CampaignsComponent implements OnInit {
     this.route.params.subscribe((params: Params) => {
       this.couponId = params['coupon_id'];
     });
-    this.campaignsStore.fetchCampaingSummaries({ couponId: this.couponId });
 
-    this.searchControl.valueChanges 
+    this.campaignsStore.fetchCampaingSummaries({
+      couponId: this.couponId,
+      sortOptions: {
+        sortBy: this.sortOptions().active,
+        sortOrder:
+          this.sortOptions().direction == 'asc'
+            ? sortOrderEnum.ASC
+            : sortOrderEnum.DESC,
+      },
+    });
+
+    this.searchControl.valueChanges
       .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe((value: string) => {
         this.campaignsStore.fetchCampaingSummaries({
           couponId: this.couponId,
           query: {
-            name: value
-          }
+            name: value,
+          },
         });
       });
   }
@@ -198,6 +215,32 @@ export class CampaignsComponent implements OnInit {
       couponId: this.couponId,
       skip: event.pageIndex * event.pageSize,
       take: this.paginationOptions().pageSize,
+    });
+  }
+
+  onSortChange(event: Sort) {
+    this.paginationOptions.set({
+      pageIndex: 0,
+      pageSize: 10,
+    });
+
+    this.sortOptions.set({
+      active: 'createdAt',
+      direction: event.direction as 'asc' | 'desc',
+    });
+
+    this.campaignsStore.resetLoadedPages();
+
+    this.campaignsStore.fetchCampaingSummaries({
+      couponId: this.couponId,
+      sortOptions: {
+        sortBy: this.sortOptions().active,
+        sortOrder:
+          this.sortOptions().direction == 'asc'
+            ? sortOrderEnum.ASC
+            : sortOrderEnum.DESC,
+      },
+      isSortOperation: true
     });
   }
 }
