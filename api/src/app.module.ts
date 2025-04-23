@@ -35,6 +35,7 @@ import { join } from 'path';
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
+      poolSize: 10,
       port: parseInt(process.env.DB_PORT ?? '5432'),
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
@@ -48,7 +49,7 @@ import { join } from 'path';
         CouponCodeSubscriber,
       ],
       synchronize: true,
-      logging: true,
+      logging: process.env.NODE_ENV !== 'production',
     }),
     LoggerModule,
     ApiKeyModule,

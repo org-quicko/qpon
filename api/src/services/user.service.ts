@@ -6,7 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsWhere, Repository } from 'typeorm';
+import { DataSource, FindOptionsWhere, Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
 import { CreateUserDto, UpdateUserDto, UpdateUserRoleDto } from '../dtos';
 import { LoggerService } from './logger.service';
@@ -25,6 +25,7 @@ export class UserService {
     private readonly organizationUserRepository: Repository<OrganizationUser>,
     private userConverter: UserConverter,
     private organizationUserConverter: OrganizationUserConverter,
+    private datasource: DataSource,
     private logger: LoggerService,
   ) {}
 
@@ -33,50 +34,82 @@ export class UserService {
    */
   async createUser(organizationId: string, body: CreateUserDto) {
     this.logger.info('START: createUser service');
-    try {
-      const existingUser = await this.fetchUserByEmail(body.email);
+    return this.datasource.transaction(async (manager) => {
+      try {
+        const existingUser = await this.fetchUserByEmail(body.email);
 
-      if (existingUser) {
-        this.logger.warn('User already exists');
-        throw new ConflictException('User already exists');
+        const existingOrgUser = await manager.findOne(OrganizationUser, {
+          where: {
+            organization: {
+              organizationId,
+            },
+            user: {
+              userId: existingUser?.userId,
+            },
+          },
+        });
+
+        if (existingUser) {
+          if (existingOrgUser) {
+            this.logger.warn('User already exists');
+            throw new ConflictException('User already exists');
+          } else {
+            const orgUserEntity = manager.create(OrganizationUser, {
+              organization: {
+                organizationId,
+              },
+              user: {
+                userId: existingUser.userId,
+              },
+              role: body.role,
+            });
+
+            const saveOrgUser = await manager.save(
+              OrganizationUser,
+              orgUserEntity,
+            );
+
+            return this.userConverter.convert(existingUser, saveOrgUser);
+          }
+        }
+
+        const user = manager.create(User, {
+          name: body.name,
+          email: body.email,
+          password: body.password,
+        });
+
+        const savedUser = await manager.save(User, user);
+        const orgUserEntity = manager.create(OrganizationUser, {
+          organization: {
+            organizationId,
+          },
+          user: {
+            userId: savedUser.userId,
+          },
+          role: body.role,
+        });
+
+        const saveOrgUser = await manager.save(OrganizationUser, orgUserEntity);
+
+        this.logger.info('END: createUser service');
+        return this.userConverter.convert(savedUser, saveOrgUser);
+      } catch (error) {
+        this.logger.error(`Error in createUser: ${error.message}`, error);
+
+        if (error instanceof ConflictException) {
+          throw error;
+        }
+
+        throw new HttpException(
+          'Failed to create user',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+          {
+            cause: error.message,
+          },
+        );
       }
-
-      const user = this.userRepository.create({
-        name: body.name,
-        email: body.email,
-        password: body.password,
-      });
-      const savedUser = await this.userRepository.save(user);
-      const orgUserEntity = this.organizationUserRepository.create({
-        organization: {
-          organizationId,
-        },
-        user: {
-          userId: savedUser.userId,
-        },
-        role: body.role,
-      });
-
-      const saveOrgUser =
-        await this.organizationUserRepository.save(orgUserEntity);
-
-      this.logger.info('END: createUser service');
-      return this.userConverter.convert(savedUser, saveOrgUser);
-    } catch (error) {
-      this.logger.error(`Error in createUser: ${error.message}`, error);
-
-      if (error instanceof ConflictException) {
-        throw error;
-      }
-
-      throw new HttpException(
-        'Failed to create user',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-        {
-          cause: error.message,
-        },
-      );
-    }
+    });
   }
 
   /**
