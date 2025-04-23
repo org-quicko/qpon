@@ -6,7 +6,7 @@ import { PaginatedList } from '../../dtos/paginated-list.dto';
 import { CouponDto, CreateCouponDto, UpdateCouponDto } from '../../dtos/coupon.dto';
 import { CouponFilter } from '../types/coupon-filter.interface';
 import { CouponSummaryWorkbook } from '../../generated/sources/coupon_summary_workbook';
-import { UpdateCouponCodeDto } from '../../dtos/coupon-code.dto';
+import { sortOrderEnum } from '../../enums';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +20,8 @@ export class CouponService {
     organizationId: string,
     skip: number = 0,
     take: number = 10,
-    filter?: CouponFilter
+    filter?: CouponFilter,
+    sortOptions?: {sortBy: string, sortOrder: sortOrderEnum},
   ) {
     const url = this.endpoint + '/organizations/' + organizationId + '/coupons';
 
@@ -42,9 +43,9 @@ export class CouponService {
       params = params.set('discount_type', filter.discountType);
     }
 
-    if(filter && filter.sortBy && filter.sortOrder) {
-      params = params.set('sort_by', filter.sortBy);
-      params = params.set('sort_order', filter.sortOrder);
+    if(sortOptions) {
+      params = params.set('sort_by', sortOptions.sortBy);
+      params = params.set('sort_order', sortOptions.sortOrder);
     }
 
     return this.httpClient.get<ApiResponse<PaginatedList<CouponDto>>>(url, {
@@ -96,5 +97,10 @@ export class CouponService {
   updateCoupon(organizationId: string, couponId: string, body: UpdateCouponDto) {
     const url = this.endpoint + "/organizations/" + organizationId + "/coupons/" + couponId;
     return this.httpClient.patch<ApiResponse<CouponDto>>(url, body);
+  }
+
+  deleteCoupon(organizationId: string, couponId: string) {
+    const url = this.endpoint + "/organizations/" + organizationId + "/coupons/" + couponId;
+    return this.httpClient.delete<ApiResponse<any>>(url);
   }
 }

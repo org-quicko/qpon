@@ -1,3 +1,4 @@
+import { statusEnum } from 'src/enums';
 import { Index, ViewColumn, ViewEntity } from 'typeorm';
 
 @ViewEntity({
@@ -13,6 +14,7 @@ import { Index, ViewColumn, ViewEntity } from 'typeorm';
       COALESCE(camp.active_campaign_count, 0) AS active_campaign_count,
       COALESCE(camp.total_campaign_count, 0) AS total_campaign_count,
       COALESCE(camp.budget, 0) AS budget,
+      c.status,
       now() AS created_at,
       clock_timestamp() AS updated_at
     FROM coupon c
@@ -73,6 +75,9 @@ export class CouponSummaryMv {
 
   @ViewColumn()
   budget: number;
+
+  @ViewColumn()
+  status: statusEnum;
 
   @ViewColumn({ name: 'created_at' })
   createdAt: Date;

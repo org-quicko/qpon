@@ -7,7 +7,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, FindOptionsWhere, ILike, Like, Repository } from 'typeorm';
+import { DataSource, FindOptionsWhere, ILike, Not, Repository } from 'typeorm';
 import { Coupon } from '../entities/coupon.entity';
 import { CreateCouponDto, UpdateCouponDto } from '../dtos';
 import { LoggerService } from './logger.service';
@@ -23,6 +23,7 @@ import { CouponCode } from '../entities/coupon-code.entity';
 import { CouponSummarySheetConverter } from '../converters/coupon-summary-sheet.converter';
 import { CouponSummaryMv } from '../entities/coupon-summary.view';
 import { CouponListConverter } from 'src/converters/coupon-list.converter';
+import { CouponItem } from 'src/entities/coupon-item.entity';
 
 @Injectable()
 export class CouponService {
@@ -54,7 +55,8 @@ export class CouponService {
 
         const existingCoupon = await couponRepository.findOne({
           where: {
-            name: Like(body.name),
+            name: ILike(body.name),
+            status: Not(statusEnum.ARCHIVE),
           },
         });
 
@@ -161,6 +163,7 @@ export class CouponService {
       const coupon = await this.couponRepository.findOne({
         where: {
           couponId,
+          status: Not(statusEnum.ARCHIVE),
         },
         relations: {
           couponItems: true,
@@ -204,7 +207,7 @@ export class CouponService {
 
         // Find the coupon
         const existingCoupon = await couponRepository.findOne({
-          where: { couponId },
+          where: { couponId, status: Not(statusEnum.ARCHIVE) },
           relations: {
             couponItems: true,
           },
@@ -255,62 +258,63 @@ export class CouponService {
    */
   async deleteCoupon(couponId: string) {
     this.logger.info('START: deleteCoupon service');
-    try {
-      const coupon = await this.couponRepository.findOne({
-        relations: {
-          couponItems: true,
-          couponCodes: true,
-          campaigns: true,
-        },
-        where: {
-          couponId,
-        },
-      });
+    return this.datasource.transaction(async (manager) => {
+      try {
+        const coupon = await manager.findOne(Coupon, {
+          relations: {
+            couponItems: true,
+            couponCodes: true,
+            campaigns: true,
+          },
+          where: {
+            couponId,
+            status: Not(statusEnum.ARCHIVE),
+          },
+        });
 
-      if (!coupon) {
-        this.logger.warn('Coupon not found', couponId);
-        throw new NotFoundException('Coupon not found');
-      }
-
-      //check for active campaigns
-      coupon.campaigns.map((campaign) => {
-        if (campaign.status == campaignStatusEnum.ACTIVE) {
-          this.logger.warn('Coupon has active campaigns', couponId);
-          throw new BadRequestException(
-            "Coupon has active campaigns. Couldn't delete the coupon",
-          );
+        if (!coupon) {
+          this.logger.warn('Coupon not found', couponId);
+          throw new NotFoundException('Coupon not found');
         }
-      });
 
-      //check for active coupon codes
-      coupon.couponCodes.map((couponCode) => {
-        if (couponCode.status == couponCodeStatusEnum.ACTIVE) {
-          this.logger.warn('Coupon has active coupon codes', couponId);
-          throw new BadRequestException(
-            "Coupon has active coupon codes. Coudln't delete the coupon",
-          );
+        //mark all campaigns archive
+        await manager.update(
+          Campaign,
+          { coupon: { couponId } },
+          { status: campaignStatusEnum.ARCHIVE },
+        );
+
+        //mark all coupon codes archive
+        await manager.update(
+          CouponCode,
+          { coupon: { couponId } },
+          { status: couponCodeStatusEnum.ARCHIVE },
+        );
+
+        // delete the rows in couponitem table
+        await manager.delete(CouponItem, { coupon: { couponId } });
+
+        // mark coupon as archive
+        await manager.update(
+          Coupon,
+          { couponId },
+          { status: statusEnum.ARCHIVE },
+        );
+
+        this.logger.info('END: deleteCoupon service');
+      } catch (error) {
+        this.logger.error(`Error in deleteCoupon: ${error.message}`, error);
+
+        if (error instanceof NotFoundException) {
+          throw error;
         }
-      });
 
-      await this.couponRepository.delete(couponId);
-
-      this.logger.info('END: deleteCoupon service');
-      return this.couponConverter.convert(coupon);
-    } catch (error) {
-      this.logger.error(`Error in deleteCoupon: ${error.message}`, error);
-
-      if (
-        error instanceof NotFoundException ||
-        error instanceof BadRequestException
-      ) {
-        throw error;
+        throw new HttpException(
+          'Failed to delete coupon',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
       }
-
-      throw new HttpException(
-        'Failed to delete coupon',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    });
   }
 
   /**
@@ -325,6 +329,7 @@ export class CouponService {
         const coupon = await couponRepository.findOne({
           where: {
             couponId,
+            status: Not(statusEnum.ARCHIVE),
           },
         });
 
@@ -374,6 +379,7 @@ export class CouponService {
       const coupon = await this.couponRepository.findOne({
         where: {
           couponId,
+          status: Not(statusEnum.ARCHIVE),
         },
       });
 
@@ -410,6 +416,7 @@ export class CouponService {
         where: {
           organizationId,
           couponId,
+          status: Not(statusEnum.ARCHIVE),
         },
       });
 
@@ -448,6 +455,7 @@ export class CouponService {
         where: {
           organizationId,
           ...whereOptions,
+          status: Not(statusEnum.ARCHIVE),
         },
         skip,
         take,

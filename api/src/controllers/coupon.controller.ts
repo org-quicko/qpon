@@ -23,6 +23,7 @@ import {
 import { Permissions } from '../decorators/permission.decorator';
 import { Coupon } from '../entities/coupon.entity';
 import { CouponSummaryMv } from '../entities/coupon-summary.view';
+import { Not } from 'typeorm';
 
 @ApiTags('Coupon')
 @Controller('/organizations/:organization_id/coupons')
@@ -76,7 +77,7 @@ export class CouponController {
       take,
       {
         name,
-        status,
+        status: Not(statusEnum.ARCHIVE),
         discountType,
         itemConstraint,
         couponItems: {
@@ -186,10 +187,10 @@ export class CouponController {
   async deleteCoupon(@Param('coupon_id') couponId: string) {
     this.logger.info('START: deleteCoupon controller');
 
-    const result = await this.couponService.deleteCoupon(couponId);
+    await this.couponService.deleteCoupon(couponId);
 
     this.logger.info('END: deleteCoupon controller');
-    return { message: 'Successfully deleted coupon', result };
+    return { message: 'Successfully deleted coupon' };
   }
 
   /**
