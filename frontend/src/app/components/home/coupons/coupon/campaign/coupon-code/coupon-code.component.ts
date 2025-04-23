@@ -134,8 +134,8 @@ export class CouponCodeComponent implements OnInit {
     this.dialog.open(DeleteDialogComponent, {
       autoFocus: false,
       data: {
-        title: `Delete ‘Q${this.couponCode()?.code}’ coupon code?`,
-        description: `Are you sure you want to delete ‘Q${this.couponCode()?.code}’? You will lose all the data related to this coupon code!`,
+        title: `Delete ‘${this.couponCode()?.code}’ coupon code?`,
+        description: `Are you sure you want to delete ‘${this.couponCode()?.code}’? You will lose all the data related to this coupon code!`,
         onDelete: () => this.couponCodeStore.deleteCouponCode({
           organizationId: this.organization()?.organizationId!,
           couponId: this.couponId,
