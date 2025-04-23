@@ -7,6 +7,7 @@ import {
   Param,
   Query,
   Headers,
+  Delete,
 } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { CouponCodeService } from '../services/coupon-code.service';
@@ -20,6 +21,7 @@ import {
 } from 'src/enums';
 import { Permissions } from '../decorators/permission.decorator';
 import { CouponCode } from '../entities/coupon-code.entity';
+import { Not } from 'typeorm';
 
 @ApiTags('Coupon Code')
 @Controller('organizations/:organization_id')
@@ -86,7 +88,7 @@ export class CouponCodeController {
       skip,
       {
         code,
-        status,
+        status: Not(couponCodeStatusEnum.ARCHIVE),
         visibility,
         durationType,
         customerCouponCodes: {
@@ -177,7 +179,7 @@ export class CouponCodeController {
         organizationId,
         {
           code,
-          status,
+          status: Not(couponCodeStatusEnum.ARCHIVE),
           customerCouponCodes: {
             customer: {
               externalId: customerId,
@@ -192,7 +194,7 @@ export class CouponCodeController {
         organizationId,
         {
           code,
-          status,
+          status: Not(couponCodeStatusEnum.ARCHIVE),
           customerCouponCodes: {
             customer: {
               externalId: customerId,
@@ -260,5 +262,32 @@ export class CouponCodeController {
 
     this.logger.info('END: reactivateCouponCode controller');
     return { message: 'Successfully reactivated the coupon code' };
+  }
+
+  /**
+   * Delete coupon code
+   */
+  @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('delete', CouponCode)
+  @Delete(
+    'coupons/:coupon_id/campaigns/:campaign_id/coupon-codes/:coupon_code_id',
+  )
+  async deleteCouponCode(
+    @Param('organization_id') organizationId: string,
+    @Param('coupon_id') couponId: string,
+    @Param('campaign_id') campaignId: string,
+    @Param('coupon_code_id') couponCodeId: string,
+  ) {
+    this.logger.info('START: deleteCouponCode controller');
+
+    await this.couponCodeService.deleteCouponCode(
+      organizationId,
+      couponId,
+      campaignId,
+      couponCodeId,
+    );
+
+    this.logger.info('END: deleteCouponCode controller');
+    return { message: 'Successfully deleted the coupon code' };
   }
 }

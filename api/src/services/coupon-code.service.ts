@@ -7,7 +7,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, FindOptionsWhere, ILike, Repository } from 'typeorm';
+import { DataSource, FindOptionsWhere, ILike, Not, Repository } from 'typeorm';
 import { CouponCode } from '../entities/coupon-code.entity';
 import { CreateCouponCodeDto, UpdateCouponCodeDto } from '../dtos';
 import { LoggerService } from './logger.service';
@@ -218,6 +218,7 @@ export class CouponCodeService {
           organization: {
             organizationId,
           },
+          status: Not(couponCodeStatusEnum.ARCHIVE),
         },
       });
 
@@ -268,6 +269,7 @@ export class CouponCodeService {
           organization: {
             organizationId,
           },
+          status: Not(couponCodeStatusEnum.ARCHIVE),
         },
       });
 
@@ -320,6 +322,7 @@ export class CouponCodeService {
             organization: {
               organizationId,
             },
+            status: Not(couponCodeStatusEnum.ARCHIVE),
           },
         });
 
@@ -501,6 +504,7 @@ export class CouponCodeService {
         organization: {
           organizationId,
         },
+        status: Not(couponCodeStatusEnum.ARCHIVE),
       },
     });
 
@@ -552,6 +556,7 @@ export class CouponCodeService {
         organization: {
           organizationId,
         },
+        status: Not(couponCodeStatusEnum.ARCHIVE),
       },
     });
 
@@ -575,5 +580,43 @@ export class CouponCodeService {
     });
 
     this.logger.info('END: reactivateCouponCode service');
+  }
+
+  /**
+   * Delete coupon code
+   */
+  async deleteCouponCode(
+    organizationId: string,
+    couponId: string,
+    campaignId: string,
+    couponCodeId: string,
+  ) {
+    this.logger.info('START: deleteCouponCode service');
+
+    const couponCode = await this.couponCodeRepository.findOne({
+      where: {
+        couponCodeId,
+        campaign: {
+          campaignId,
+        },
+        coupon: {
+          couponId,
+        },
+        organization: {
+          organizationId,
+        },
+      },
+    });
+
+    if (!couponCode) {
+      this.logger.warn('Coupon code not found', { couponCodeId });
+      throw new NotFoundException('Coupon code not found');
+    }
+
+    await this.couponCodeRepository.update(couponCodeId, {
+      status: couponCodeStatusEnum.ARCHIVE,
+    });
+
+    this.logger.info('END: deleteCouponCode service');
   }
 }
