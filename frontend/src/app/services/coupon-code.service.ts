@@ -72,4 +72,9 @@ export class CouponCodeService {
     const url = this.endpoint + "/organizations/" + organizationId + "/coupons/" + couponId + "/campaigns/" + campaignId + "/coupon-codes/" + couponCodeId;
     return this.httpClient.patch<ApiResponse<CouponCodeDto>>(url, body);
   }
+
+  deleteCouponCode(organizationId: string, couponId: string, campaignId: string, couponCodeId: string) {
+    const url = this.endpoint + "/organizations/" + organizationId + "/coupons/" + couponId + "/campaigns/" + campaignId + "/coupon-codes/" + couponCodeId;
+    return this.httpClient.delete<ApiResponse<any>>(url);
+  }
 }

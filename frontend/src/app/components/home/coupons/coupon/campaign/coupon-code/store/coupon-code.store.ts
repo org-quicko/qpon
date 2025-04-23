@@ -1,13 +1,17 @@
 import { patchState, signalStore, withMethods, withState } from "@ngrx/signals";
 import { CouponCodeDto } from "../../../../../../../../dtos/coupon-code.dto";
 import { withDevtools } from "@angular-architects/ngrx-toolkit";
-import { inject } from "@angular/core";
+import { EventEmitter, inject } from "@angular/core";
 import { CouponCodeService } from "../../../../../../../services/coupon-code.service";
 import { rxMethod } from "@ngrx/signals/rxjs-interop";
-import { concatMap, pipe, tap } from "rxjs";
+import { concatMap, pipe, switchMap, tap } from "rxjs";
 import { tapResponse } from "@ngrx/operators";
 import { plainToInstance } from "class-transformer";
 import { HttpErrorResponse } from "@angular/common/http";
+import { SnackbarService } from "../../../../../../../services/snackbar.service";
+
+export const OnCouponCodeSuccess = new EventEmitter<boolean>();
+export const OnCouponCodeError = new EventEmitter<string>();
 
 type CouponCodeState = {
     couponCode: CouponCodeDto | null;
@@ -24,7 +28,7 @@ const initialState: CouponCodeState = {
 export const CouponCodeStore = signalStore(
     withState(initialState),
     withDevtools('coupon_code'),
-    withMethods((store, couponCodeService = inject(CouponCodeService)) => ({
+    withMethods((store, couponCodeService = inject(CouponCodeService), snackbarService = inject(SnackbarService)) => ({
         fetchCouponCode: rxMethod<{ organizationId: string, couponId: string, campaignId: string, couponCodeId: string }>(
             pipe(
                 tap(() => patchState(store, { isLoading: true, error: null })),
@@ -43,6 +47,34 @@ export const CouponCodeStore = signalStore(
                     )
                 })
             )
-        )
+        ),
+
+        deleteCouponCode: rxMethod<{ organizationId: string, couponId: string, campaignId: string, couponCodeId: string }>(
+            pipe(
+                tap(() => patchState(store, { isLoading: true, error: null })),
+                switchMap(({ organizationId, couponId, campaignId, couponCodeId }) => {
+                    return couponCodeService.deleteCouponCode(organizationId, couponId, campaignId, couponCodeId).pipe(
+                        tapResponse({
+                            next: (response) => {
+                                if (response.code == 200) {
+                                    patchState(store, {couponCode: null, isLoading: false});
+
+                                    snackbarService.openSnackBar('Coupon code successfully deleted', undefined);
+
+                                    OnCouponCodeSuccess.emit(true);
+                                }
+                            },
+                            error: (error: HttpErrorResponse) => {
+                                patchState(store, {error: error.message, isLoading: false});
+
+                                snackbarService.openSnackBar('Error deleting coupon code', undefined);
+                                
+                                OnCouponCodeError.emit(error.message);
+                            },
+                        })
+                    )
+                })
+            )
+        ),
     }))
 )

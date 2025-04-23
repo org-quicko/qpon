@@ -5,7 +5,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { CouponStore } from '../../store/coupon.store';
 import { CampaignStore } from '../store/campaign.store';
 import { OrganizationStore } from '../../../../../../store/organization.store';
-import { CouponCodeStore } from './store/coupon-code.store';
+import { CouponCodeStore, OnCouponCodeSuccess } from './store/coupon-code.store';
 import { SnackbarService } from '../../../../../../services/snackbar.service';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
@@ -14,6 +14,8 @@ import { CouponCodeDetailsComponent } from './coupon-code-details/coupon-code-de
 import { RedemptionListComponent } from './redemption-list/redemption-list.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { CustomerCouponCodeStore } from './store/customer-coupon-code.store';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteDialogComponent } from '../../../../common/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-coupon-code',
@@ -47,6 +49,7 @@ export class CouponCodeComponent implements OnInit {
     this.couponCodeId = '';
   }
 
+  dialog = inject(MatDialog);
   couponStore = inject(CouponStore);
   campaignStore = inject(CampaignStore);
   organizationStore = inject(OrganizationStore);
@@ -90,6 +93,13 @@ export class CouponCodeComponent implements OnInit {
       campaignId: this.campaignId,
       couponCodeId: this.couponCodeId
     })
+
+    OnCouponCodeSuccess.subscribe((res) => {
+      if(res) {
+        this.dialog.closeAll();
+        this.router.navigate([`../../`], { relativeTo: this.route })
+      }
+    })
   }
 
   onNavigateChild() {
@@ -118,5 +128,21 @@ export class CouponCodeComponent implements OnInit {
         this.couponId
       }/campaigns/${this.campaignId}/coupon-codes/${this.couponCodeId}/edit/code-details`,
     ]);
+  }
+
+  openDeleteDialog() {
+    this.dialog.open(DeleteDialogComponent, {
+      autoFocus: false,
+      data: {
+        title: `Delete ‘Q${this.couponCode()?.code}’ coupon code?`,
+        description: `Are you sure you want to delete ‘Q${this.couponCode()?.code}’? You will lose all the data related to this coupon code!`,
+        onDelete: () => this.couponCodeStore.deleteCouponCode({
+          organizationId: this.organization()?.organizationId!,
+          couponId: this.couponId,
+          campaignId: this.campaignId,
+          couponCodeId: this.couponCodeId
+        })
+      }
+    })
   }
 }
