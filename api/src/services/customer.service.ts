@@ -46,6 +46,7 @@ export class CustomersService {
           organization: {
             organizationId,
           },
+          status: statusEnum.ACTIVE,
         },
       });
 

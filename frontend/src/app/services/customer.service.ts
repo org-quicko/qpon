@@ -43,4 +43,9 @@ export class CustomerService {
     const url = this.endpoint + "/organizations/" + organizationId + "/customers/" + customerId;
     return this.httpClient.patch<ApiResponse<CustomerDto>>(url, body);
   }
+
+  deleteCustomer(organizationId: string, customerId: string) {
+    const url = this.endpoint + "/organizations/" + organizationId + "/customers/" + customerId;
+    return this.httpClient.delete<ApiResponse<any>>(url);
+  }
 }

@@ -15,7 +15,7 @@ import {
   MatPaginatorModule,
   PageEvent,
 } from '@angular/material/paginator';
-import { CustomersStore } from '../../../store/customers.store';
+import { CustomersStore, OnCustomerSuccess } from '../../../store/customers.store';
 import { OrganizationStore } from '../../../store/organization.store';
 import { CustomerDto } from '../../../../dtos/customer.dto';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -24,6 +24,8 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { Router } from '@angular/router';
 import { PaginationOptions } from '../../../types/PaginatedOptions';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { DeleteCustomerDialogComponent } from './delete-customer-dialog/delete-customer-dialog.component';
 
 @Component({
   selector: 'app-customers',
@@ -35,6 +37,7 @@ import { PaginationOptions } from '../../../types/PaginatedOptions';
     MatCheckboxModule,
     MatMenuModule,
     MatPaginatorModule,
+    MatDialogModule,
     CommonModule,
     NgxSkeletonLoaderModule,
     ReactiveFormsModule,
@@ -52,6 +55,7 @@ export class CustomersComponent implements OnInit {
     pageSize: 10,
   });
 
+  deleteDialog = inject(MatDialog);
   customersStore = inject(CustomersStore);
   organizationStore = inject(OrganizationStore);
 
@@ -90,6 +94,7 @@ export class CustomersComponent implements OnInit {
 
   ngOnInit(): void {
     this.customersStore.resetLoadedPages();
+    this.customersStore.resetCustomers();
 
     this.customersStore.fetchCustomers({
       organizationId: this.organizationStore.organizaiton()?.organizationId!,
@@ -107,6 +112,18 @@ export class CustomersComponent implements OnInit {
           },
         });
       });
+
+      OnCustomerSuccess.subscribe((res) => {
+        if(res) {
+          this.deleteDialog.closeAll();
+          this.customersStore.resetCustomers();
+          this.paginationOptions.set({
+            pageIndex: 0,
+            pageSize: 10
+          })
+          this.ngOnInit()
+        }
+      })
   }
 
   onAddCustomer() {
@@ -119,5 +136,16 @@ export class CustomersComponent implements OnInit {
     this.router.navigate([
       `/${this.organization()?.organizationId}/customers/${customerId}/edit`,
     ]);
+  }
+
+  openDeleteDialog(customer: CustomerDto) {
+    this.deleteDialog.open(DeleteCustomerDialogComponent, {
+      autoFocus: false,
+      data: {
+        onDelete: this.customersStore.deleteCustomer,
+        customer: customer,
+        organizationId: this.organization()?.organizationId
+      }
+    })
   }
 }
