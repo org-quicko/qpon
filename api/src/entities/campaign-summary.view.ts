@@ -1,4 +1,4 @@
-import { statusEnum } from 'src/enums';
+import { campaignStatusEnum } from 'src/enums';
 import { Index, ViewColumn, ViewEntity } from 'typeorm';
 
 @ViewEntity({
@@ -66,7 +66,7 @@ export class CampaignSummaryMv {
   activeCouponCodeCount: number;
 
   @ViewColumn()
-  status: statusEnum;
+  status: campaignStatusEnum;
 
   @ViewColumn({ name: 'created_at' })
   createdAt: Date;

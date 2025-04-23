@@ -6,6 +6,7 @@ import {
   Body,
   Param,
   Query,
+  Delete,
 } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { CampaignService } from '../services/campaign.service';
@@ -15,6 +16,7 @@ import { campaignStatusEnum, sortOrderEnum, statusEnum } from 'src/enums';
 import { Permissions } from '../decorators/permission.decorator';
 import { Campaign } from '../entities/campaign.entity';
 import { CampaignSummaryMv } from '../entities/campaign-summary.view';
+import { Not } from 'typeorm';
 
 @ApiTags('Campaign')
 @Controller('coupons/:coupon_id/campaigns')
@@ -109,7 +111,7 @@ export class CampaignController {
 
     const result = await this.campaignService.fetchCampaignsSummary(
       couponId,
-      { status, name },
+      { status: Not(campaignStatusEnum.ARCHIVE), name },
       sortBy,
       sortOrder,
       skip,
@@ -184,5 +186,23 @@ export class CampaignController {
 
     this.logger.info('END: reactivateCampaign controller');
     return { message: 'Successfully reactivated campaign' };
+  }
+
+  /**
+   * Delete campaign
+   */
+  @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('delete', Campaign)
+  @Delete(':campaign_id')
+  async deleteCampaign(
+    @Param('coupon_id') couponId: string,
+    @Param('campaign_id') campaignId: string,
+  ) {
+    this.logger.info('START: deleteCampaign controller');
+
+    await this.campaignService.deleteCampaign(couponId, campaignId);
+
+    this.logger.info('END: deleteCampaign controller');
+    return { message: 'Successfully deleted campaign' };
   }
 }

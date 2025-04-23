@@ -10,6 +10,7 @@ import {
   FindOptionsWhere,
   ILike,
   MoreThan,
+  Not,
   Repository,
 } from 'typeorm';
 import { Campaign } from '../entities/campaign.entity';
@@ -86,6 +87,8 @@ export class CampaignService {
 
       if (status) {
         whereOptions.status = status;
+      } else {
+        whereOptions.status = Not(campaignStatusEnum.ARCHIVE);
       }
 
       const campaigns = await this.campaignRepository.find({
@@ -134,6 +137,7 @@ export class CampaignService {
       const campaign = await this.campaignRepository.findOne({
         where: {
           campaignId,
+          status: Not(campaignStatusEnum.ARCHIVE),
         },
       });
 
@@ -206,6 +210,7 @@ export class CampaignService {
       const campaign = await this.campaignRepository.findOne({
         where: {
           campaignId,
+          status: Not(campaignStatusEnum.ARCHIVE),
         },
       });
 
@@ -246,7 +251,7 @@ export class CampaignService {
     return this.datasource.transaction(async (manager) => {
       try {
         const campaign = await manager.findOne(Campaign, {
-          where: { campaignId },
+          where: { campaignId, status: Not(campaignStatusEnum.ARCHIVE) },
         });
 
         if (!campaign) {
@@ -292,6 +297,7 @@ export class CampaignService {
       const campaign = await this.campaignRepository.findOne({
         where: {
           campaignId,
+          status: Not(campaignStatusEnum.ARCHIVE),
         },
       });
 
@@ -390,6 +396,7 @@ export class CampaignService {
         where: {
           couponId,
           campaignId,
+          status: Not(campaignStatusEnum.ARCHIVE),
         },
       });
 
@@ -406,10 +413,54 @@ export class CampaignService {
         error,
       );
 
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+
       throw new HttpException(
         'Failed to fetch campaign summary',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+  }
+
+  /**
+   * Delete campaign
+   */
+  async deleteCampaign(couponId: string, campaignId: string) {
+    this.logger.info('STAART: deleteCampaign service');
+    return this.datasource.transaction(async (manager) => {
+      try {
+        // mark all the coupon codes archive
+        await manager.update(
+          CouponCode,
+          {
+            coupon: { couponId },
+            campaign: { campaignId },
+          },
+          { status: couponCodeStatusEnum.ARCHIVE },
+        );
+
+        //mark the campaign archive
+        await manager.update(
+          Campaign,
+          {
+            campaignId,
+          },
+          { status: campaignStatusEnum.ARCHIVE },
+        );
+      } catch (error) {
+        this.logger.error(`Error in deleteCampaign: ${error.message}`, error);
+
+        if (error instanceof NotFoundException) {
+          throw error;
+        }
+
+        throw new HttpException(
+          'Failed to delete campaign',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
+    });
   }
 }

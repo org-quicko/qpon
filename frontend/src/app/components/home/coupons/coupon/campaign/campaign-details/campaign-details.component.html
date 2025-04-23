@@ -16,7 +16,7 @@
         <mat-icon>edit</mat-icon>
         <span>Edit</span>
       </button>
-      <button mat-icon-button>
+      <button mat-icon-button [mat-menu-trigger-for]="menu">
         <mat-icon>more_vert</mat-icon>
       </button>
     </div>
@@ -100,3 +100,12 @@
     </div>
   </div>
 </div>
+<mat-menu
+  #menu="matMenu"
+  class="w-[200px] min-w-[112px] max-w-[280px] rounded-[4px] bg-surface-container-lowest top-[208px] left-[3155px]"
+>
+  <button mat-menu-item class="h-[56px] py-8 flex gap-[12px]" (click)="openDeleteDialog()">
+    <mat-icon class="material-symbols-outlined">delete</mat-icon>
+    <span class="mat-body-large text-on-surface">Delete</span>
+  </button>
+</mat-menu>

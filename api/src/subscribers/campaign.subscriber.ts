@@ -17,6 +17,7 @@ export class CampaignSubscriber implements EntitySubscriberInterface<Campaign> {
 
     await event.queryRunner.query(`    
             REFRESH MATERIALIZED VIEW campaign_summary_mv WITH DATA;
+            REFRESH MATERIALIZED VIEW coupon_summary_mv WITH DATA; 
             REFRESH MATERIALIZED VIEW organization_summary_mv WITH DATA;    
     `);
   }
@@ -25,7 +26,8 @@ export class CampaignSubscriber implements EntitySubscriberInterface<Campaign> {
     await event.queryRunner.connect();
 
     await event.queryRunner.query(`    
-      REFRESH MATERIALIZED VIEW campaign_summary_mv WITH DATA; 
+      REFRESH MATERIALIZED VIEW campaign_summary_mv WITH DATA;
+      REFRESH MATERIALIZED VIEW coupon_summary_mv WITH DATA;  
       REFRESH MATERIALIZED VIEW organization_summary_mv WITH DATA;   
     `);
   }

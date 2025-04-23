@@ -104,4 +104,9 @@ export class CampaignService {
       this.endpoint + '/coupons/' + couponId + '/campaigns/' + campaignId;
     return this.httpClient.patch<ApiResponse<CampaignDto>>(url, body);
   }
+
+  deleteCampaign(couponId: string, campaignId: string) {
+    const url = this.endpoint + '/coupons/' + couponId + '/campaigns/' + campaignId;
+    return this.httpClient.delete<ApiResponse<any>>(url);
+  }
 }
