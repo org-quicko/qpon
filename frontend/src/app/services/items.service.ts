@@ -34,7 +34,7 @@ export class ItemsService {
   }
 
   deleteItem(organizationId: string, itemId: string) {
-    const url = this.endpoint + '/organizations/' + organizationId + '/items';
+    const url = this.endpoint + '/organizations/' + organizationId + '/items/' + itemId;
     return this.httpClient.delete<ApiResponse<any>>(url);
   }
 

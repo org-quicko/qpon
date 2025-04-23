@@ -15,7 +15,7 @@ import {
   MatPaginatorModule,
   PageEvent,
 } from '@angular/material/paginator';
-import { ItemsStore } from '../../../store/items.store';
+import { ItemsStore, OnItemSuccess } from '../../../store/items.store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ItemDto } from '../../../../dtos/item.dto';
 import { OrganizationStore } from '../../../store/organization.store';
@@ -90,6 +90,17 @@ export class ItemsComponent implements OnInit {
       organizationId: this.organizationStore.organizaiton()?.organizationId!,
       itemId: item.itemId!,
     });
+
+    OnItemSuccess.subscribe((res) => {
+      if(res) {
+        this.itemsStore.resetItems();
+        this.paginationOptions.set({
+          pageIndex: 0,
+          pageSize: 10
+        })
+        this.ngOnInit();
+      }
+    })
   }
 
   ngOnInit(): void {

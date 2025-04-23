@@ -1,4 +1,4 @@
-import { inject } from '@angular/core';
+import { EventEmitter, inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { ItemsService } from '../services/items.service';
@@ -10,12 +10,16 @@ import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { PaginatedList } from '../../dtos/paginated-list.dto';
 import { ItemFilter } from '../types/item-filter.interface';
 import { HttpErrorResponse } from '@angular/common/http';
+import { SnackbarService } from '../services/snackbar.service';
+
+export const OnItemSuccess = new EventEmitter<boolean>();
+export const OnItemError = new EventEmitter<string>();
 
 type ItemsState = {
   items: ItemDto[];
   skip?: number | null;
   take?: number | null;
-  count?: number | null;
+  count: number | null;
   isLoading: boolean;
   filter: { query: string } | null;
   loadedPages: Set<number>;
@@ -37,7 +41,7 @@ export const ItemsStore = signalStore(
   { providedIn: 'root' },
   withDevtools('items'),
   withState(initialState),
-  withMethods((store, itemsService = inject(ItemsService)) => ({
+  withMethods((store, itemsService = inject(ItemsService), snackbarService = inject(SnackbarService)) => ({
     fetchItems: rxMethod<{
       organizationId: string;
       skip?: number;
@@ -123,10 +127,16 @@ export const ItemsStore = signalStore(
                       .items()
                       .filter((item) => item.itemId !== itemId),
                   });
+
+                  snackbarService.openSnackBar('Item deleted successfully', undefined);
+
+                  OnItemSuccess.emit(true);
                 }
               },
               error: (error: any) => {
                 patchState(store, { isLoading: false, error: error.message });
+
+                snackbarService.openSnackBar('Error deleting item', undefined);
               },
             })
           );
@@ -139,5 +149,12 @@ export const ItemsStore = signalStore(
         loadedPages: new Set(),
       });
     },
+
+    resetItems() {
+      patchState(store, {
+        items: [],
+        count: null
+      })
+    }
   }))
 );
