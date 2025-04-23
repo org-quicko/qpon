@@ -223,7 +223,7 @@
                 <button
                   mat-menu-item
                   class="h-[56px] py-8 flex gap-[12px]"
-                  (click)="onDelete(item)"
+                  (click)="openDeleteDialog(item)"
                 >
                   <mat-icon class="material-symbols-outlined">delete</mat-icon>
                   <span class="mat-body-large text-on-surface">Delete</span>
@@ -261,7 +261,7 @@
         }
       </div>
       <div>
-        <mat-paginator [length]="count()" [pageSize]="take()" (page)="onPageChange($event)"></mat-paginator>
+        <mat-paginator [length]="count()" [pageSize]="paginationOptions().pageSize" [pageIndex]="paginationOptions().pageIndex" (page)="onPageChange($event)"></mat-paginator>
       </div>
     </div>
     }

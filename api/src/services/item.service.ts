@@ -13,7 +13,6 @@ import {
   FindOptionsWhere,
   ILike,
   In,
-  Like,
   Repository,
 } from 'typeorm';
 import { Item } from '../entities/item.entity';
@@ -43,7 +42,8 @@ export class ItemsService {
     try {
       const existingItem = await this.itemsRepository.findOne({
         where: {
-          name: Like(body.name),
+          name: ILike(body.name),
+          status: statusEnum.ACTIVE,
         },
       });
 

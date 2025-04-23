@@ -24,6 +24,8 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { CommonModule } from '@angular/common';
 import { PaginationOptions } from '../../../types/PaginatedOptions';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteItemDialogComponent } from './delete-item-dialog/delete-item-dialog.component';
 
 @Component({
   selector: 'app-items',
@@ -53,6 +55,7 @@ export class ItemsComponent implements OnInit {
     pageSize: 10
   });
 
+  deleteDialog = inject(MatDialog);
   itemsStore = inject(ItemsStore);
   organizationStore = inject(OrganizationStore);
 
@@ -90,21 +93,11 @@ export class ItemsComponent implements OnInit {
       organizationId: this.organizationStore.organizaiton()?.organizationId!,
       itemId: item.itemId!,
     });
-
-    OnItemSuccess.subscribe((res) => {
-      if(res) {
-        this.itemsStore.resetItems();
-        this.paginationOptions.set({
-          pageIndex: 0,
-          pageSize: 10
-        })
-        this.ngOnInit();
-      }
-    })
   }
 
   ngOnInit(): void {
     this.itemsStore.resetLoadedPages();
+    this.itemsStore.resetItems();
 
     this.itemsStore.fetchItems({
       organizationId: this.organization()?.organizationId!,
@@ -121,6 +114,18 @@ export class ItemsComponent implements OnInit {
           },
         });
       });
+
+      OnItemSuccess.subscribe((res) => {
+        if(res) {
+          this.deleteDialog.closeAll();
+          this.itemsStore.resetItems();
+          this.paginationOptions.set({
+            pageIndex: 0,
+            pageSize: 10
+          })
+          this.ngOnInit();
+        }
+      })
   }
 
   onPageChange(event: PageEvent) {
@@ -135,5 +140,16 @@ export class ItemsComponent implements OnInit {
 
   onAddItem() {
     this.router.navigate([`/${this.organization()?.organizationId}/items/create`])
+  }
+
+  openDeleteDialog(item: ItemDto) {
+    this.deleteDialog.open(DeleteItemDialogComponent, {
+      autoFocus: false,
+      data: {
+        organizationId: this.organization()?.organizationId,
+        item: item,
+        onDelete: this.itemsStore.deleteItem
+      }
+    })
   }
 }
