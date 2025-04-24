@@ -8,7 +8,7 @@ import { tapResponse } from '@ngrx/operators';
 import { plainToClass, plainToInstance } from 'class-transformer';
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { PaginatedList } from '../../dtos/paginated-list.dto';
-import { statusEnum } from '../../enums';
+import { sortOrderEnum, statusEnum } from '../../enums';
 import { CouponFilter } from '../types/coupon-filter.interface';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -46,6 +46,7 @@ export const CouponsStore = signalStore(
       skip?: number;
       take?: number;
       filter?: CouponFilter;
+      sortOptions?: {sortBy: string, sortOrder: sortOrderEnum},
       isSortOperation?: boolean;
     }>(
       pipe(
@@ -62,17 +63,20 @@ export const CouponsStore = signalStore(
             patchState(store, { isLoading: true });
           }
         }),
-        concatMap(({ organizationId, skip, take, filter, isSortOperation }) => {
+        concatMap(({ organizationId, skip, take, filter, isSortOperation, sortOptions }) => {
           const page = Math.floor((skip ?? 0) / (take ?? 10));
 
+          console.log(Object.keys(filter!).length > 0)
+          console.log("filter:", filter)
+
           // Skip if page already loaded and not sorting
-          if (store.loadedPages().has(page) && !isSortOperation && !filter) {
+          if (store.loadedPages().has(page) && !isSortOperation && Object.keys(filter!).length == 0) {
             patchState(store, { isLoading: false });
             return of(store.coupons());
           }
 
           return couponService
-            .fetchCoupons(organizationId, skip, take, filter)
+            .fetchCoupons(organizationId, skip, take, filter, sortOptions)
             .pipe(
               tapResponse({
                 next: (response) => {
@@ -93,11 +97,11 @@ export const CouponsStore = signalStore(
                     let updatedCoupons: CouponDto[];
 
                     // If sorting or first load, replace all data
-                    if (isSortOperation || store.coupons().length === 0) {
+                    if (isSortOperation)  {
                       updatedCoupons = [...coupons];
-                    } else {
+                    } else {  
                       // For pagination, merge without duplicates based on ID
-                      // const existingIds = new Set(store.coupons().map(c => c.couponId));
+                      // const existingIds = new Set(currentCoupons.map(c => c.couponId));
                       // const newCoupons = coupons.filter(c => !existingIds.has(c.couponId));
                       updatedCoupons = [...currentCoupons, ...coupons];
                     }
@@ -147,6 +151,13 @@ export const CouponsStore = signalStore(
     resetLoadedPages() {
       patchState(store, {
         loadedPages: new Set<number>(),
+      });
+    },
+
+    resetCoupons() {
+      patchState(store, {
+        count: null,
+        coupons: []
       });
     },
 

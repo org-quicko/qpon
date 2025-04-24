@@ -5,6 +5,4 @@ export interface CouponFilter {
   status?: statusEnum | null;
   itemConstraint?: itemConstraintEnum | null;
   discountType?: discountTypeEnum | null;
-  sortBy?: string;
-  sortOrder?: sortOrderEnum;
 }

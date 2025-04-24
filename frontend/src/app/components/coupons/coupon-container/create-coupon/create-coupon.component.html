@@ -38,6 +38,9 @@
             formControlName="discountValue"
             class="mat-display-medium text-on-surface focus:outline-none"
             placeholder="0%"
+            [ngClass]="{
+              'placeholder:text-outline-variant': discountType != 'percentage'
+            }"
           />
         </div>
       </mat-radio-button>
@@ -65,6 +68,9 @@
             formControlName="discountValue"
             class="mat-display-medium text-on-surface focus:outline-none"
             placeholder="₹0"
+            [ngClass]="{
+              'placeholder:text-outline-variant': discountType != 'fixed'
+            }"
           />
         </div>
       </mat-radio-button>

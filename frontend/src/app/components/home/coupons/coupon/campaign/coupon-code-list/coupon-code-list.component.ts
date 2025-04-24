@@ -134,19 +134,19 @@ export class CouponCodeListComponent implements OnInit {
       });
     });
 
-    this.couponCodesStore.fetchCouponCodes({
-      organizationId: this.organization()?.organizationId!,
-      couponId: this.couponId,
-      campaignId: this.campaignId,
-      filter: {
-        ...this.filter(),
-        sortBy: this.sortActive(),
-        sortOrder:
-          this.sortDirection() === 'asc'
-            ? sortOrderEnum.ASC
-            : sortOrderEnum.DESC,
-      },
-    });
+    // this.couponCodesStore.fetchCouponCodes({
+    //   organizationId: this.organization()?.organizationId!,
+    //   couponId: this.couponId,
+    //   campaignId: this.campaignId,
+    //   filter: {
+    //     ...this.filter(),
+    //     sortBy: this.sortActive(),
+    //     sortOrder:
+    //       this.sortDirection() === 'asc'
+    //         ? sortOrderEnum.ASC
+    //         : sortOrderEnum.DESC,
+    //   },
+    // });
 
     this.searchControl.valueChanges
       .pipe(debounceTime(500), distinctUntilChanged())
@@ -281,5 +281,9 @@ export class CouponCodeListComponent implements OnInit {
         'redirect': btoa(this.router.url)
       }
     });
+  }
+
+  onEdit() {
+    // this.router.navigate([`/${this.organization()?.organizationId}/coupons`])
   }
 }

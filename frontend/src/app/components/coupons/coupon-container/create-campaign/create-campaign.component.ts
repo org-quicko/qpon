@@ -87,6 +87,6 @@ export class CreateCampaignComponent implements OnInit {
     const campaign = new CreateCampaignDto();
     campaign.name = this.createCampaignForm.get('name')?.value;
     campaign.budget = this.createCampaignForm.get('budget')?.value;
-    this.couponCodeStore.createCampaign({couponId: this.couponId, campaign});
+    this.couponCodeStore.createCampaign({organizationId: this.organization()?.organizationId!, couponId: this.couponId, campaign});
   }
 }

@@ -26,7 +26,7 @@
             >local_activity</mat-icon
           >
         </div>
-        <p class="mat-title-large text-on-surface">No items to show</p>
+        <p class="mat-title-large text-on-surface">No coupons to show</p>
         <p class="mat-body-medium text-on-surface-variant">
           You haven't created any coupons yet.
         </p>
@@ -330,58 +330,3 @@
     }
   </div>
 </div>
-<mat-menu
-  #filterMenu="matMenu"
-  class="w-[400px] relative top-[-20px] bg-surface-container-lowest"
->
-  <form [formGroup]="filterForm">
-    <div class="py-2 px-4">
-      <p class="mat-body-large text-on-surface">Coupon status</p>
-      <mat-radio-group
-        formControlName="status"
-        class="flex gap-[24px]"
-        (click)="preventClose($event)"
-      >
-        <mat-radio-button value="active">Active</mat-radio-button>
-        <mat-radio-button value="inactive">Inactive</mat-radio-button>
-      </mat-radio-group>
-    </div>
-    <div class="py-2 px-4">
-      <p class="mat-body-large text-on-surface">Items</p>
-      <mat-radio-group
-        formControlName="itemConstraint"
-        class="flex gap-[24px]"
-        (click)="preventClose($event)"
-      >
-        <mat-radio-button value="all">All</mat-radio-button>
-        <mat-radio-button value="specific">Specific</mat-radio-button>
-      </mat-radio-group>
-    </div>
-    <div class="py-2 px-4">
-      <p class="mat-body-large text-on-surface">Discount type</p>
-      <mat-radio-group
-        formControlName="discountType"
-        class="flex gap-[24px]"
-        (click)="preventClose($event)"
-      >
-        <mat-radio-button value="percentage">Percentage</mat-radio-button>
-        <mat-radio-button value="fixed">Fixed</mat-radio-button>
-      </mat-radio-group>
-    </div>
-    <mat-divider
-      class="bg-outline-variant border border-outline-variant"
-    ></mat-divider>
-    <div class="flex justify-end gap-2 mat-label-large p-4">
-      <button mat-stroked-button class="rounded-[100px]" (click)="resetForm()">
-        Clear all
-      </button>
-      <button
-        mat-button
-        class="bg-primary text-on-primary"
-        (click)="applyFilters()"
-      >
-        Apply
-      </button>
-    </div>
-  </form>
-</mat-menu>

@@ -62,7 +62,7 @@ import { FiltersStore } from '../../../store/filters.store';
   templateUrl: './coupons.component.html',
   styleUrl: './coupons.component.html',
 })
-export class CouponsComponent implements OnInit, AfterViewInit {
+export class CouponsComponent implements OnInit {
   columns = [
     'name',
     'discount',
@@ -73,7 +73,6 @@ export class CouponsComponent implements OnInit, AfterViewInit {
   ];
   filterForm: FormGroup;
   searchControl = new FormControl('');
-  sort!: MatSort;
   isFilterApplied: boolean = false;
   tempDatasource: number[] = Array.from({ length: 10 }, (_, i) => i + 1);
   filter = signal<CouponFilter | null>(null);
@@ -136,56 +135,53 @@ export class CouponsComponent implements OnInit, AfterViewInit {
 
       this.couponDatasource.data = coupons.slice(start, end);
     });
+
+    effect(() => {
+      if(this.couponFilter()) {
+        this.filter.set({
+          ...this.couponFilter()
+        })
+      }
+    })
   }
 
   ngOnInit(): void {
-
+    this.couponsStore.resetCoupons();
     this.couponsStore.resetLoadedPages();
-
-    // this.couponsStore.fetchCoupons({
-    //   organizationId: this.organization()?.organizationId!,
-    //   filter: {
-    //     ...this.filter(),
-    //     sortBy: 'createdAt',
-    //     sortOrder: sortOrderEnum.DESC,
-    //   },
-    // });
 
     this.searchControl.valueChanges
       .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe((name) => {
         this.isFilterApplied = true;
+        this.filter.set({
+          ...this.filter(),
+          query: name?.trim()
+        });
         this.couponsStore.fetchCoupons({
           organizationId: this.organization()?.organizationId!,
           filter: {
-            query: name?.trim(),
+            ...this.filter(),
           },
         });
       });
 
       this.route.queryParams.subscribe((queryParams) => {
-        const mergedFilter: CouponFilter = {
-          ...queryParams,
-          sortBy: this.sortOptions().active,
-          sortOrder:
-            this.sortOptions().direction === 'asc'
-              ? sortOrderEnum.ASC
-              : sortOrderEnum.DESC,
-        };
+        const mergedFilter: CouponFilter = queryParams
     
         this.filter.set(mergedFilter);
-    
+
+        console.log("mergedFilter:", mergedFilter)
+
+        this.couponsStore.resetLoadedPages();
         this.couponsStore.fetchCoupons({
           organizationId: this.organization()?.organizationId!,
           filter: mergedFilter,
+          sortOptions: {
+            sortBy: this.sortOptions().active,
+            sortOrder: this.sortOptions().direction == 'asc' ? sortOrderEnum.ASC : sortOrderEnum.DESC
+          }
         });
       });
-  }
-
-  ngAfterViewInit(): void {
-    if (this.sort) {
-      this.couponDatasource.sort = this.sort;
-    }
   }
 
   openDialog(coupon: CouponDto) {
@@ -202,11 +198,11 @@ export class CouponsComponent implements OnInit, AfterViewInit {
 
   onPageChange(event: PageEvent) {
     this.paginationOptions.set({ pageIndex: event.pageIndex, pageSize: event.pageSize });
-
     this.couponsStore.fetchCoupons({
       organizationId: this.organization()?.organizationId!,
       skip: event.pageIndex * event.pageSize,
       take: this.paginationOptions().pageSize,
+      filter: this.filter()!,
     });
   }
 
@@ -220,18 +216,6 @@ export class CouponsComponent implements OnInit, AfterViewInit {
 
     this.couponsStore.fetchCoupons({
       organizationId: this.organization()?.organizationId!,
-    });
-  }
-
-  applyFilters() {
-    this.isFilterApplied = true;
-    if (this.couponDatasource.paginator) {
-      this.couponDatasource.paginator.firstPage();
-    }
-
-    this.couponsStore.fetchCoupons({
-      organizationId: this.organization()?.organizationId!,
-      filter: this.filterForm.value,
     });
   }
 
@@ -264,12 +248,10 @@ export class CouponsComponent implements OnInit, AfterViewInit {
       organizationId: this.organization()?.organizationId!,
       skip: this.paginationOptions().pageIndex * this.paginationOptions().pageSize,
       take: this.paginationOptions().pageSize,
-      filter: {
-        ...this.filter(),
+      filter: this.filter()!,
+      sortOptions: {
         sortBy: this.sortOptions().active,
-        sortOrder: this.sortOptions().direction === 'asc'
-          ? sortOrderEnum.ASC
-          : sortOrderEnum.DESC,
+        sortOrder: this.sortOptions().direction == 'asc' ? sortOrderEnum.ASC : sortOrderEnum.DESC
       },
       isSortOperation: true,
     });
@@ -289,6 +271,7 @@ export class CouponsComponent implements OnInit, AfterViewInit {
       .afterClosed()
       .pipe(take(1))
       .subscribe((params: CouponFilter) => {
+        this.isFilterApplied = true;
         this.router.navigate([], {
           relativeTo: this.route,
           queryParams: params,

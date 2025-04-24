@@ -21,12 +21,16 @@
         [ngClass]="{
           'text-primary bg-secondary-container border-primary border-[2px] ':
             budgetConstraintFormControl.value == 'limited',
-          'hover:bg-surface-dim':
+          'hover:bg-surface-dim text-outline-variant':
             budgetConstraintFormControl.value != 'limited'
         }"
       >
         <div
           class="flex cursor-pointer flex-col w-[226px] gap-[12px] text-on-surface mat-body-large p-[16px]"
+          [ngClass]="{
+            'text-outline-variant':
+            budgetConstraintFormControl.value != 'limited'
+          }"
         >
           <mat-icon
             class="material-symbols-outlined h-[24px] w-[24px] text-[24px]"
@@ -38,7 +42,10 @@
           >
          <div class="flex flex-col gap-1">
             <div class="mat-body-large">Limited budget</div>
-            <div class="mat-body-medium text-on-surface-variant">
+            <div class="mat-body-medium text-on-surface-variant" [ngClass]="{
+              'text-outline-variant':
+              budgetConstraintFormControl.value != 'limited'
+            }">
               Codes will get deactivated once budget is acceded.
             </div>
           </div>
@@ -57,6 +64,10 @@
       >
         <div
           class="flex cursor-pointer flex-col gap-[12px] w-[226px] text-on-surface mat-body-large p-[16px]"
+          [ngClass]="{
+            'text-outline-variant':
+            budgetConstraintFormControl.value != 'unlimited'
+          }"
         >
           <mat-icon
             class="material-symbols-outlined h-[24px] w-[24px] text-[24px]"
@@ -68,7 +79,10 @@
           >
           <div class="flex flex-col gap-1">
             <div class="mat-body-large">Unlimited budget</div>
-            <div class="mat-body-medium text-on-surface-variant">
+            <div class="mat-body-medium text-on-surface-variant" [ngClass]="{
+              'text-outline-variant':
+              budgetConstraintFormControl.value != 'unlimited'
+            }">
               Codes will be active until you manually deactivate them.
             </div>
           </div>

@@ -55,6 +55,7 @@ export class RedemptionLimitsComponent implements OnInit {
       const control = this.createCouponCodeForm.get('maxRedemptionPerCustomer');
       if (checked) {
         control?.enable();
+        control?.setValue(1);
       } else {
         control?.disable();
       }
