@@ -29,11 +29,11 @@ export const CampaignStore = signalStore(
     withState(initialState),
     withDevtools('campaign'),
     withMethods((store, campaignService = inject(CampaignService), snackbarService = inject(SnackbarService)) => ({
-        fetchCampaignSummary: rxMethod<{couponId: string, campaignId: string}>(
+        fetchCampaignSummary: rxMethod<{organizationId: string, couponId: string, campaignId: string}>(
             pipe(
                 tap(() => patchState(store, {isLoading: true})),
-                switchMap(({couponId, campaignId}) => {
-                    return campaignService.fetchCampaignSummary(couponId, campaignId).pipe(
+                switchMap(({organizationId, couponId, campaignId}) => {
+                    return campaignService.fetchCampaignSummary(organizationId, couponId, campaignId).pipe(
                         tapResponse({
                             next: (response) => {
                                 if(response.code == 200) {
@@ -54,15 +54,15 @@ export const CampaignStore = signalStore(
             )
         ),
 
-        deleteCampaign: rxMethod<{couponId: string, campaignId: string}>(
+        deleteCampaign: rxMethod<{organizationId: string, couponId: string, campaignId: string}>(
             pipe(
                 tap(() => {
                     patchState(store, {
                         isLoading: true,
                     })
                 }),
-                switchMap(({ couponId, campaignId }) => {
-                    return campaignService.deleteCampaign(couponId, campaignId).pipe(
+                switchMap(({ organizationId, couponId, campaignId }) => {
+                    return campaignService.deleteCampaign(organizationId, couponId, campaignId).pipe(
                         tapResponse({
                             next: (response) => {
                                 if (response.code == 200) {

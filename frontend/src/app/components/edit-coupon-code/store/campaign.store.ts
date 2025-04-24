@@ -25,15 +25,15 @@ export const CampaignStore = signalStore(
   withState(initialState),
   withDevtools('campaign'),
   withMethods((store, campaignService = inject(CampaignService)) => ({
-    fetchCampaign: rxMethod<{ couponId: string, campaignId: string }>(
+    fetchCampaign: rxMethod<{ organizationId: string, couponId: string, campaignId: string }>(
       pipe(
         tap(() =>
           patchState(store, {
             isLoading: true,
           })
         ),
-        switchMap(({ couponId, campaignId }) => {
-          return campaignService.fetchCampaign(couponId, campaignId).pipe(
+        switchMap(({ organizationId, couponId, campaignId }) => {
+          return campaignService.fetchCampaign(organizationId, couponId, campaignId).pipe(
             tapResponse({
               next: (response) => {
                 if (response.code == 200) {

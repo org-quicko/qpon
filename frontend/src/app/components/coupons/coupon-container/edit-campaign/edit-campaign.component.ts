@@ -87,6 +87,7 @@ export class EditCampaignComponent implements OnInit {
     });
 
     this.couponCodeStore.fetchCampaign({
+      organizationId: this.organization()?.organizationId!,
       couponId: this.couponId,
       campaignId: this.campaignId
     });
@@ -100,6 +101,7 @@ export class EditCampaignComponent implements OnInit {
     const updatedCampaign = new UpdateCampaignDto();
     updatedCampaign.name = this.updateCampaignForm.value['name'];
     this.couponCodeStore.updateCampaign({
+      organizationId: this.organization()?.organizationId!,
       couponId: this.couponId,
       campaignId: this.campaignId,
       body: updatedCampaign

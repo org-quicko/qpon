@@ -52,6 +52,7 @@ export class CampaignComponent implements OnInit {
       couponId: this.couponId,
     });
     this.campaignStore.fetchCampaignSummary({
+      organizationId: this.organization()?.organizationId!,
       couponId: this.couponId,
       campaignId: this.campaignId,
     });

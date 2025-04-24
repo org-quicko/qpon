@@ -81,6 +81,7 @@ export class EditCouponCodeComponent implements OnInit {
 
     if (this.campaign() == null) {
       this.campaignStore.fetchCampaign({
+        organizationId: this.organization()?.organizationId!,
         couponId: this.couponId,
         campaignId: this.campaignId,
       });

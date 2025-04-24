@@ -130,6 +130,7 @@ export class CampaignsComponent implements OnInit {
     });
 
     this.campaignsStore.fetchCampaingSummaries({
+      organizationId: this.organization()?.organizationId!,
       couponId: this.couponId,
       sortOptions: {
         sortBy: this.sortOptions().active,
@@ -144,6 +145,7 @@ export class CampaignsComponent implements OnInit {
       .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe((value: string) => {
         this.campaignsStore.fetchCampaingSummaries({
+          organizationId: this.organization()?.organizationId!,
           couponId: this.couponId,
           query: {
             name: value,
@@ -212,6 +214,7 @@ export class CampaignsComponent implements OnInit {
     });
 
     this.campaignsStore.fetchCampaingSummaries({
+      organizationId: this.organization()?.organizationId!,
       couponId: this.couponId,
       skip: event.pageIndex * event.pageSize,
       take: this.paginationOptions().pageSize,
@@ -232,6 +235,7 @@ export class CampaignsComponent implements OnInit {
     this.campaignsStore.resetLoadedPages();
 
     this.campaignsStore.fetchCampaingSummaries({
+      organizationId: this.organization()?.organizationId!,
       couponId: this.couponId,
       sortOptions: {
         sortBy: this.sortOptions().active,

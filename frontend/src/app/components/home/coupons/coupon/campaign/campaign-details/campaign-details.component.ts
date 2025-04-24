@@ -76,6 +76,7 @@ export class CampaignDetailsComponent implements OnInit {
           title: `Delete ‘${this.campaign()?.getName()}’ campaign?`,
           description: `Are you sure you want to delete ‘${this.campaign()?.getName()}’? All coupon codes associated with this campaign will be deleted!`,
           onDelete: () => this.campaignStore.deleteCampaign({
+            organizationId: this.organization()?.organizationId!,
             couponId: this.coupon()?.couponId!,
             campaignId: this.campaign()?.getCampaignId()!,
           })

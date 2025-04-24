@@ -305,6 +305,7 @@ export const CouponCodeStore = signalStore(
       ),      
 
       createCampaign: rxMethod<{
+        organizationId: string,
         couponId: string;
         campaign: CreateCampaignDto;
       }>(
@@ -317,9 +318,9 @@ export const CouponCodeStore = signalStore(
               },
             })
           ),
-          concatMap(({ couponId, campaign }) => {
+          concatMap(({ organizationId, couponId, campaign }) => {
             return campaignService
-              .createCampaign(couponId, instanceToPlain(campaign))
+              .createCampaign(organizationId, couponId, instanceToPlain(campaign))
               .pipe(
                 tapResponse({
                   next: (response) => {
@@ -351,7 +352,7 @@ export const CouponCodeStore = signalStore(
         )
       ),
 
-      fetchCampaign: rxMethod<{ couponId: string; campaignId: string }>(
+      fetchCampaign: rxMethod<{ organizationId: string, couponId: string; campaignId: string }>(
         pipe(
           tap(() =>
             patchState(store, {
@@ -361,8 +362,8 @@ export const CouponCodeStore = signalStore(
               },
             })
           ),
-          concatMap(({ couponId, campaignId }) => {
-            return campaignService.fetchCampaign(couponId, campaignId).pipe(
+          concatMap(({ organizationId, couponId, campaignId }) => {
+            return campaignService.fetchCampaign(organizationId, couponId, campaignId).pipe(
               tapResponse({
                 next: (response) => {
                   if (response.code == 200) {
@@ -688,7 +689,7 @@ export const CouponCodeStore = signalStore(
         )
       ),
 
-      updateCampaign: rxMethod<{couponId: string, campaignId: string, body: UpdateCampaignDto}>(
+      updateCampaign: rxMethod<{organizationId: string, couponId: string, campaignId: string, body: UpdateCampaignDto}>(
         pipe(
           tap(() => {
             patchState(store, {
@@ -698,8 +699,8 @@ export const CouponCodeStore = signalStore(
               }
             })
           }),
-          switchMap(({ couponId, campaignId, body }) => {
-            return campaignService.updateCampaign(couponId, campaignId, body).pipe(
+          switchMap(({ organizationId, couponId, campaignId, body }) => {
+            return campaignService.updateCampaign(organizationId, couponId, campaignId, body).pipe(
               tapResponse({
                 next: (response) => {
                   if(response.code == 200) {

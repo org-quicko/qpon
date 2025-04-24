@@ -42,6 +42,7 @@ export const CampaignsStore = signalStore(
   withDevtools('campaigns'),
   withMethods((store, campaignService = inject(CampaignService)) => ({
     fetchCampaingSummaries: rxMethod<{
+      organizationId: string,
       couponId: string;
       skip?: number;
       take?: number;
@@ -51,7 +52,7 @@ export const CampaignsStore = signalStore(
     }>(
       pipe(
         tap(() => patchState(store, { isLoading: true })),
-        concatMap(({ couponId, skip, take, query, sortOptions, isSortOperation }) => {
+        concatMap(({ organizationId, couponId, skip, take, query, sortOptions, isSortOperation }) => {
           const page = Math.floor((skip ?? 0) / (take ?? 10));
 
           if (store.loadedPages().has(page) && !query && !isSortOperation) {
@@ -61,6 +62,7 @@ export const CampaignsStore = signalStore(
 
           return campaignService
             .fetchCampaignSummaries(
+              organizationId,
               couponId,
               skip,
               take,
@@ -126,10 +128,10 @@ export const CampaignsStore = signalStore(
       )
     ),
 
-    activateCampaign: rxMethod<{ couponId: string; campaignId: string }>(
+    activateCampaign: rxMethod<{ organizationId: string, couponId: string; campaignId: string }>(
       pipe(
-        switchMap(({ couponId, campaignId }) => {
-          return campaignService.activateCampaign(couponId, campaignId).pipe(
+        switchMap(({ organizationId, couponId, campaignId }) => {
+          return campaignService.activateCampaign(organizationId, couponId, campaignId).pipe(
             tapResponse({
               next: (response) => {
                 if (response.code == 201) {
@@ -166,10 +168,10 @@ export const CampaignsStore = signalStore(
       )
     ),
 
-    deactivateCampaign: rxMethod<{ couponId: string; campaignId: string }>(
+    deactivateCampaign: rxMethod<{ organizationId: string, couponId: string; campaignId: string }>(
       pipe(
-        concatMap(({ couponId, campaignId }) => {
-          return campaignService.deactivateCampaign(couponId, campaignId).pipe(
+        concatMap(({ organizationId, couponId, campaignId }) => {
+          return campaignService.deactivateCampaign(organizationId, couponId, campaignId).pipe(
             tap(),
             tapResponse({
               next: (response) => {
