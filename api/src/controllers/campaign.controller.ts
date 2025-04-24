@@ -19,7 +19,7 @@ import { CampaignSummaryMv } from '../entities/campaign-summary.view';
 import { Not } from 'typeorm';
 
 @ApiTags('Campaign')
-@Controller('coupons/:coupon_id/campaigns')
+@Controller('organizations/:organization_id/coupons/:coupon_id/campaigns')
 export class CampaignController {
   constructor(
     private readonly campaignService: CampaignService,
@@ -33,12 +33,17 @@ export class CampaignController {
   @Permissions('create', Campaign)
   @Post()
   async createCampaign(
+    @Param('organization_id') organizationId: string,
     @Param('coupon_id') couponId: string,
     @Body() body: CreateCampaignDto,
   ) {
     this.logger.info('START: createCampaign controller');
 
-    const result = await this.campaignService.createCampaign(couponId, body);
+    const result = await this.campaignService.createCampaign(
+      organizationId,
+      couponId,
+      body,
+    );
 
     this.logger.info('END: createCampaign controller');
     return { message: 'Successfully created campaign', result };

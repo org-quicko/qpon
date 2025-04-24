@@ -42,7 +42,11 @@ export class CampaignService {
   /**
    * Create campaign
    */
-  async createCampaign(couponId: string, body: CreateCampaignDto) {
+  async createCampaign(
+    organizationId: string,
+    couponId: string,
+    body: CreateCampaignDto,
+  ) {
     this.logger.info('START: createCampaign service');
     try {
       const campaignEntity = this.campaignRepository.create({
@@ -51,6 +55,9 @@ export class CampaignService {
         externalId: body.externalId,
         coupon: {
           couponId,
+        },
+        organization: {
+          organizationId,
         },
       });
 
