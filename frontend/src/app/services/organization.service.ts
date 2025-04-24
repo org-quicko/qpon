@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { ApiResponse } from '../../dtos/api-response.dto';
 import { OrganizationDto } from '../../dtos/organization.dto';
+import { OrganizationMvDto } from '../../dtos/organizationsMv.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -16,5 +17,10 @@ export class OrganizationService {
   fetchOrganization(organizationId: string) {
     const url = this.endpoint + '/organizations/' + organizationId;
     return this.httpClient.get<ApiResponse<OrganizationDto>>(url);
+  }
+
+  fetchOrganizations() {
+    const url = this.endpoint + '/organizations';
+    return this.httpClient.get<ApiResponse<OrganizationMvDto>>(url);
   }
 }
