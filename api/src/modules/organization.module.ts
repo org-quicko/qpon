@@ -7,6 +7,8 @@ import { OrganizationUser } from '../entities/organization-user.entity';
 import { OrganizationSummaryMv } from '../entities/organization-summary.view';
 import { OrganizationConverter } from '../converters/organization.converter';
 import { OrganizationSummarySheetConverter } from '../converters/organization-summary-sheet.converter';
+import { OrganizationsMv } from 'src/entities/organizations_mv.entity';
+import { OrganizationsListConverter } from 'src/converters/organizations-list-converter';
 
 @Module({
   imports: [
@@ -14,6 +16,7 @@ import { OrganizationSummarySheetConverter } from '../converters/organization-su
       Organization,
       OrganizationUser,
       OrganizationSummaryMv,
+      OrganizationsMv,
     ]),
   ],
   controllers: [OrganizationController],
@@ -21,6 +24,7 @@ import { OrganizationSummarySheetConverter } from '../converters/organization-su
     OrganizationService,
     OrganizationConverter,
     OrganizationSummarySheetConverter,
+    OrganizationsListConverter,
   ],
   exports: [OrganizationService],
 })

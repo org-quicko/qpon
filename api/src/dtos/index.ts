@@ -8,3 +8,4 @@ export * from './user.dto';
 export * from './auth.dto';
 export * from './coupon-item.dto';
 export * from './organization-user.dto';
+export * from './organizationsMv.dto';

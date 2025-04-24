@@ -13,6 +13,8 @@ import { OrganizationConverter } from '../converters/organization.converter';
 import { QueryOptionsInterface } from '../interfaces/queryOptions.interface';
 import { OrganizationSummaryMv } from '../entities/organization-summary.view';
 import { OrganizationSummarySheetConverter } from '../converters/organization-summary-sheet.converter';
+import { OrganizationsMv } from 'src/entities/organizations_mv.entity';
+import { OrganizationsListConverter } from 'src/converters/organizations-list-converter';
 
 @Injectable()
 export class OrganizationService {
@@ -21,8 +23,11 @@ export class OrganizationService {
     private readonly organizationRepository: Repository<Organization>,
     @InjectRepository(OrganizationSummaryMv)
     private readonly organizationSummaryMvRepository: Repository<OrganizationSummaryMv>,
+    @InjectRepository(OrganizationsMv)
+    private readonly organizationsMvRepository: Repository<OrganizationsMv>,
     private organizationConverter: OrganizationConverter,
     private organizationSummarySheetConverter: OrganizationSummarySheetConverter,
+    private organizationsListConverter: OrganizationsListConverter,
     private logger: LoggerService,
   ) {}
 
@@ -81,12 +86,13 @@ export class OrganizationService {
         delete queryOptions['externalId'];
       }
 
-      const organizations = await this.organizationRepository.find({
-        where: {
-          ...whereOptions,
-        },
-        ...queryOptions,
-      });
+      const [organizations, count] =
+        await this.organizationsMvRepository.findAndCount({
+          where: {
+            ...whereOptions,
+          },
+          ...queryOptions,
+        });
 
       if (!organizations || organizations.length == 0) {
         this.logger.warn('Organizations not found');
@@ -94,8 +100,11 @@ export class OrganizationService {
       }
 
       this.logger.info('END: fetchOrganizations service');
-      return organizations.map((organization) =>
-        this.organizationConverter.convert(organization),
+      return this.organizationsListConverter.convert(
+        organizations,
+        count,
+        queryOptions.skip,
+        queryOptions.take,
       );
     } catch (error) {
       this.logger.error(`Error in fetchOrganization: ${error.message}`, error);
