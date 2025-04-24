@@ -19,13 +19,14 @@ export class CampaignService {
   constructor(private httpClient: HttpClient) {}
 
   fetchCampaignSummaries(
+    organizationId: string,
     couponId: string,
     skip: number = 0,
     take: number = 10,
     name?: string,
     sortOptions?: { sortBy: string; sortOrder: sortOrderEnum }
   ) {
-    const url = this.endpoint + '/coupons/' + couponId + '/campaigns/summary';
+    const url = this.endpoint + '/organizations/' + organizationId + '/coupons/' + couponId + '/campaigns/summary';
 
     let params = new HttpParams().set('skip', skip).set('take', take);
 
@@ -47,9 +48,9 @@ export class CampaignService {
     });
   }
 
-  fetchCampaignSummary(couponId: string, campaignId: string) {
+  fetchCampaignSummary(organizationId: string, couponId: string, campaignId: string) {
     const url =
-      this.endpoint +
+      this.endpoint + '/organizations/' + organizationId +
       '/coupons/' +
       couponId +
       '/campaigns/' +
@@ -62,9 +63,9 @@ export class CampaignService {
     });
   }
 
-  deactivateCampaign(couponId: string, campaignId: string) {
+  deactivateCampaign(organizationId: string, couponId: string, campaignId: string) {
     const url =
-      this.endpoint +
+      this.endpoint + '/organizations/' + organizationId +
       '/coupons/' +
       couponId +
       '/campaigns/' +
@@ -73,9 +74,9 @@ export class CampaignService {
     return this.httpClient.post<ApiResponse<any>>(url, null);
   }
 
-  activateCampaign(couponId: string, campaignId: string) {
+  activateCampaign(organizationId: string, couponId: string, campaignId: string) {
     const url =
-      this.endpoint +
+      this.endpoint + '/organizations/' + organizationId +
       '/coupons/' +
       couponId +
       '/campaigns/' +
@@ -84,29 +85,30 @@ export class CampaignService {
     return this.httpClient.post<ApiResponse<any>>(url, null);
   }
 
-  createCampaign(couponId: string, body: CreateCampaignDto) {
-    const url = this.endpoint + '/coupons/' + couponId + '/campaigns';
+  createCampaign(organizationId: string, couponId: string, body: CreateCampaignDto) {
+    const url = this.endpoint + '/organizations/' + organizationId + '/coupons/' + couponId + '/campaigns';
     return this.httpClient.post<ApiResponse<CampaignDto>>(url, body);
   }
 
-  fetchCampaign(couponId: string, campaignId: string) {
+  fetchCampaign(organizationId: string, couponId: string, campaignId: string) {
     const url =
-      this.endpoint + '/coupons/' + couponId + '/campaigns/' + campaignId;
+      this.endpoint + '/organizations/' + organizationId + '/coupons/' + couponId + '/campaigns/' + campaignId;
     return this.httpClient.get<ApiResponse<CampaignDto>>(url);
   }
 
   updateCampaign(
+    organizationId: string,
     couponId: string,
     campaignId: string,
     body: UpdateCampaignDto
   ) {
     const url =
-      this.endpoint + '/coupons/' + couponId + '/campaigns/' + campaignId;
+      this.endpoint + '/organizations/' + organizationId + '/coupons/' + couponId + '/campaigns/' + campaignId;
     return this.httpClient.patch<ApiResponse<CampaignDto>>(url, body);
   }
 
-  deleteCampaign(couponId: string, campaignId: string) {
-    const url = this.endpoint + '/coupons/' + couponId + '/campaigns/' + campaignId;
+  deleteCampaign(organizationId: string, couponId: string, campaignId: string) {
+    const url = this.endpoint + '/organizations/' + organizationId + '/coupons/' + couponId + '/campaigns/' + campaignId;
     return this.httpClient.delete<ApiResponse<any>>(url);
   }
 }
