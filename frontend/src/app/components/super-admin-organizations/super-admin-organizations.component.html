@@ -1,8 +1,15 @@
 <div class="py-10 px-12">
   <div class="flex flex-col gap-6">
     <div class="flex justify-between">
-      <div class="mat-headline-medium text-on-surface">Organisations</div>
-      <button mat-flat-button class="rounded-full">
+      <div class="mat-headline-medium text-on-surface">
+        @if(count()! > 0) { Organisations ({{ count() }}) } @else {
+        Organisations }
+      </div>
+      <button
+        mat-flat-button
+        class="rounded-full"
+        (click)="onCreateOrganization()"
+      >
         <div class="flex gap-2 items-center">
           <mat-icon class="text-on-primary">add</mat-icon>
           <div class="mat-label-large text-on-primary">
@@ -19,6 +26,7 @@
       </div>
       <input
         matInput
+        [formControl]="searchControl"
         class="focus:outline-none align-middle py-[4px] w-full mat-body-large text-outline"
         placeholder="Search organisations"
       />
@@ -27,7 +35,16 @@
       class="border-[1px] rounded-[5px] border-outline-variant overflow-hidden w-full"
     >
       @if(!isLoading()) {
-      <mat-table mat-table [dataSource]="datasource" class="table-fixed w-full">
+      <mat-table
+        mat-table
+        matSort
+        [matSortActive]="sortOptions().active"
+        [matSortDirection]="sortOptions().direction"
+        matSortDisableClear="true"
+        (matSortChange)="onSortChange($event)"
+        [dataSource]="datasource"
+        class="table-fixed w-full"
+      >
         <ng-container matColumnDef="name">
           <th
             mat-header-cell
@@ -83,6 +100,7 @@
           <th
             mat-header-cell
             *matHeaderCellDef
+            mat-sort-header
             class="mat-body-medium text-on-surface py-3 px-6 w-[382px]"
           >
             Created At
@@ -92,7 +110,7 @@
             *matCellDef="let organization"
             class="mat-body-medium text-on-surface truncate py-4 px-6 w-[382px]"
           >
-            {{ organization.createdAt }}
+            {{ organization.createdAt | custom_date : "" : true }}
           </td>
         </ng-container>
 
@@ -280,6 +298,7 @@
       [length]="count()"
       [pageIndex]="paginationOptions().pageIndex"
       [pageSize]="paginationOptions().pageSize"
+      (page)="onPageChange($event)"
     ></mat-paginator>
   </div>
 </div>

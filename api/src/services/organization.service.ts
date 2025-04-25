@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { Organization } from '../entities/organization.entity';
 import { CreateOrganizationDto, UpdateOrganizationDto } from '../dtos';
 import { LoggerService } from './logger.service';
@@ -15,6 +15,7 @@ import { OrganizationSummaryMv } from '../entities/organization-summary.view';
 import { OrganizationSummarySheetConverter } from '../converters/organization-summary-sheet.converter';
 import { OrganizationsMv } from 'src/entities/organizations_mv.entity';
 import { OrganizationsListConverter } from 'src/converters/organizations-list-converter';
+import { sortOrderEnum } from 'src/enums';
 
 @Injectable()
 export class OrganizationService {
@@ -75,7 +76,11 @@ export class OrganizationService {
   /**
    * Fetch organizations
    */
-  async fetchOrganizations(queryOptions: QueryOptionsInterface) {
+  async fetchOrganizations(
+    queryOptions: QueryOptionsInterface,
+    sortBy?: string,
+    sortOrder?: sortOrderEnum,
+  ) {
     this.logger.info('START: fetchOrganizations service');
     try {
       const whereOptions = {};
@@ -85,11 +90,20 @@ export class OrganizationService {
         delete queryOptions['externalId'];
       }
 
+      let nameFilter: string = '';
+
+      if (queryOptions.name) {
+        nameFilter = queryOptions.name;
+        delete queryOptions.name;
+      }
+
       const [organizations, count] =
         await this.organizationsMvRepository.findAndCount({
           where: {
             ...whereOptions,
+            ...(nameFilter && { name: ILike(`%${nameFilter}%`) }),
           },
+          ...(sortBy && { order: { [sortBy]: sortOrder } }),
           ...queryOptions,
         });
 

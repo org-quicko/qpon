@@ -15,6 +15,7 @@ import { LoggerService } from '../services/logger.service';
 import { Permissions } from 'src/decorators/permission.decorator';
 import { Organization } from 'src/entities/organization.entity';
 import { OrganizationSummaryMv } from 'src/entities/organization-summary.view';
+import { sortOrderEnum } from 'src/enums';
 
 @ApiTags('Organization')
 @Controller('/organizations')
@@ -47,16 +48,24 @@ export class OrganizationController {
   @Get()
   async fetchOrganizations(
     @Query('external_id') externalId?: string,
+    @Query('name') name?: string,
+    @Query('sort_by') sortBy?: string,
+    @Query('sort_order') sortOrder?: sortOrderEnum,
     @Query('take') take?: number,
     @Query('skip') skip?: number,
   ) {
     this.logger.info('START: fetchOrganizations controller');
 
-    const result = await this.organizationService.fetchOrganizations({
-      externalId,
-      skip,
-      take,
-    });
+    const result = await this.organizationService.fetchOrganizations(
+      {
+        externalId,
+        skip,
+        take,
+        name,
+      },
+      sortBy,
+      sortOrder,
+    );
 
     this.logger.info('END: fetchOrganizations controller');
     return { message: 'Succesfully fetched organizations', result };
