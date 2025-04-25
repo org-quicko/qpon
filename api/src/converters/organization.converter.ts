@@ -10,7 +10,6 @@ export class OrganizationConverter {
     organizationDto.organizationId = organization.organizationId;
     organizationDto.name = organization.name;
     organizationDto.currency = organization.currency;
-    organizationDto.themeColour = organization.themeColour;
     organizationDto.externalId = organization.externalId;
     organizationDto.createdAt = organization.createdAt;
     organizationDto.updatedAt = organization.updatedAt;

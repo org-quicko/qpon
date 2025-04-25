@@ -17,7 +17,7 @@
 
   @include mat.select-overrides(
     (
-      panel-background-color: var(--sys-surface-container-low),
+      panel-background-color: var(--sys-surface-container-lowest),
     )
   );
 

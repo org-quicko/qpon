@@ -13,11 +13,6 @@ export class OrganizationDto {
   @IsString()
   currency: string;
 
-  @Expose({ name: 'theme_colour' })
-  @Transform(({ value }) => value, { toClassOnly: true })
-  @IsString()
-  themeColour: string;
-
   @IsOptional()
   @Expose({ name: 'external_id' })
   @Transform(({ value }) => value, { toClassOnly: true })
@@ -41,11 +36,6 @@ export class CreateOrganizationDto {
 
   @IsString()
   currency: string;
-
-  @Expose({ name: 'theme_colour' })
-  @Transform(({ value }) => value, { toClassOnly: true })
-  @IsString()
-  themeColour: string;
 
   @IsOptional()
   @Expose({ name: 'external_id' })

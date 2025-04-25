@@ -1,3 +1,4 @@
+import { prop, required } from '@rxweb/reactive-form-validators';
 import { Expose, Transform } from 'class-transformer';
 import { IsString, IsDate, IsOptional } from 'class-validator';
 
@@ -11,11 +12,6 @@ export class OrganizationDto {
 
   @IsString()
   currency?: string;
-
-  @Expose({ name: 'theme_colour' })
-  @Transform(({ value }) => value, { toClassOnly: true })
-  @IsString()
-  themeColour?: string;
 
   @IsOptional()
   @Expose({ name: 'external_id' })
@@ -35,17 +31,17 @@ export class OrganizationDto {
 }
 
 export class CreateOrganizationDto {
+  @prop()
+  @required()
   @IsString()
   name?: string;
 
+  @prop()
+  @required()
   @IsString()
   currency?: string;
-
-  @Expose({ name: 'theme_colour' })
-  @Transform(({ value }) => value, { toClassOnly: true })
-  @IsString()
-  themeColour?: string;
-
+  
+  @prop()
   @IsOptional()
   @Expose({ name: 'external_id' })
   @Transform(({ value }) => value, { toClassOnly: true })
@@ -61,12 +57,6 @@ export class UpdateOrganizationDto {
   @IsOptional()
   @IsString()
   currency?: string;
-
-  @IsOptional()
-  @Expose({ name: 'theme_colour' })
-  @Transform(({ value }) => value, { toClassOnly: true })
-  @IsString()
-  themeColour?: string;
 
   @IsOptional()
   @Expose({ name: 'external_id' })

@@ -14,7 +14,6 @@ import { UserResolver } from './resolvers/user.resolver';
 import { CouponComponent } from './components/home/coupons/coupon/coupon.component';
 import { CampaignComponent } from './components/home/coupons/coupon/campaign/campaign.component';
 import { CouponCodeComponent } from './components/home/coupons/coupon/campaign/coupon-code/coupon-code.component';
-import { CreateOrganizationComponent } from './components/create-organization/create-organization.component';
 import { CouponContainerComponent } from './components/coupons/coupon-container/coupon-container.component';
 import { CreateCouponComponent } from './components/coupons/coupon-container/create-coupon/create-coupon.component';
 import { EditItemsComponent } from './components/coupons/coupon-container/edit-items/edit-items.component';
@@ -31,6 +30,12 @@ import { EditItemComponent } from './components/items/edit-item/edit-item.compon
 import { EditCustomerComponent } from './components/customers/edit-customer/edit-customer.component';
 import { CreateCustomersContainerComponent } from './components/customers/create-customers-container/create-customers-container.component';
 import { CreateCustomersComponent } from './components/customers/create-customers-container/create-customers/create-customers.component';
+import { SuperAdminOrganizationsComponent } from './components/super-admin-organizations/super-admin-organizations.component';
+import { DynamicComponentLoaderComponent } from './components/dynamic-component-loader/dynamic-component-loader.component';
+import { CreateOrganizationContainerComponent } from './components/create-organization-container/create-organization-container.component';
+import { CreateOrganizationComponent } from './components/create-organization-container/create-organization/create-organization.component';
+import { InviteTeamComponent } from './components/create-organization-container/invite-team/invite-team.component';
+import { SuccessComponent } from './components/create-organization-container/success/success.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -42,8 +47,26 @@ export const routes: Routes = [
       { path: '', pathMatch: 'full', redirectTo: 'organizations' },
       {
         path: 'organizations',
-        component: OrganizationsComponent,
-        children: [{ path: 'create', component: CreateOrganizationComponent }],
+        component: DynamicComponentLoaderComponent,
+        data: {
+          SuperAdminOrganizationsComponent: SuperAdminOrganizationsComponent,
+          OrganizationsComponent: OrganizationsComponent,
+        },
+      },
+      { 
+        path: 'organizations/create', 
+        component: CreateOrganizationContainerComponent,
+        children: [
+          {
+            path: '', component: CreateOrganizationComponent
+          },
+          {
+            path: ':organization_id/invite', component: InviteTeamComponent
+          },
+          {
+            path: ':organization_id/success', component: SuccessComponent
+          }
+        ] 
       },
       {
         resolve: { organization: OrganizationResolver },

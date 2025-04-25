@@ -25,10 +25,7 @@ export class Organization {
   @Column()
   currency: string;
 
-  @Column({ name: 'theme_colour' })
-  themeColour: string;
-
-  @Column({ name: 'external_id' })
+  @Column({ name: 'external_id', nullable: true })
   externalId: string;
 
   @CreateDateColumn({

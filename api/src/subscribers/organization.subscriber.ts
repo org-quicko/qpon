@@ -20,7 +20,8 @@ export class OrganizationSubscriber
     await event.queryRunner.connect();
 
     await event.queryRunner.query(`    
-            REFRESH MATERIALIZED VIEW organization_summary_mv WITH DATA;    
+            REFRESH MATERIALIZED VIEW organization_summary_mv WITH DATA; 
+            REFRESH MATERIALIZED VIEW organizations_mv WITH DATA;   
     `);
 
     await event.manager.transaction(async (manager) => {

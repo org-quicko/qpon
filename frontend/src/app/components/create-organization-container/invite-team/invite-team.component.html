@@ -1,0 +1,146 @@
+<div
+  class="flex flex-col"
+  [ngClass]="{
+    'gap-6': members()?.length ?? 0 > 0,
+    'gap-8': members()?.length ?? 0 == 0
+  }"
+>
+  <div class="flex flex-col gap-2">
+    <div class="mat-headline-small text-on-surface">Invite your team!</div>
+    <div class="mat-body-large text-on-surface-variant">
+      Get your team on Qpon and streamline your business together.
+    </div>
+  </div>
+
+  <!-- members display card -->
+  @for(member of members(); track member) {
+  <mat-card appearance="outlined">
+    <mat-card-content>
+      <div class="p-4 flex justify-between items-center">
+        <div class="flex gap-3 items-center">
+          <ngx-avatars
+            [name]="member.name"
+            bgColor="var(--sys-primary)"
+          ></ngx-avatars>
+          <div class="flex flex-col gap-1">
+            <div class="mat-body-large text-on-surface">{{ member.name }}</div>
+            <div
+              class="mat-body-medium text-on-surface-variant w-[200px] truncate"
+            >
+              {{ member.email }}
+            </div>
+          </div>
+        </div>
+        <div class="mat-body-large text-on-surface-variant">
+          {{ member.role | titlecase }}
+        </div>
+        <button mat-icon-button (click)="onRemove(member)">
+          <mat-icon class="text-on-surface-variant">close</mat-icon>
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  }
+
+  <div class="flex flex-col gap-4">
+    <div class="mat-body-large text-on-surface">Add team member</div>
+    <form [formGroup]="addMemberForm" class="flex flex-col gap-6">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Full name</mat-label>
+        <input matInput type="text" formControlName="name" />
+        <mat-error>Name is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Email</mat-label>
+        <div class="flex justify-between items-center">
+          <input
+            matInput
+            type="text"
+            formControlName="email"
+            class="w-[300px]"
+          />
+          <div
+            class="cursor-pointer flex items-center"
+            [mat-menu-trigger-for]="roleMenu"
+          >
+            <span class="font-sans mat-body-large text-on-surface-variant">{{
+              addMemberForm.controls["role"].value
+                ? (addMemberForm.controls["role"].value | titlecase)
+                : "Select role"
+            }}</span>
+            <mat-icon
+              class="material-symbols-outlined text-on-surface-variant w-[24px] h-[24px] text-[24px]"
+            >
+              expand_more
+            </mat-icon>
+          </div>
+        </div>
+        <mat-menu
+          class="w-[150px] bg-surface-container-lowest"
+          #roleMenu="matMenu"
+          xPosition="after"
+        >
+          <div class="max-h-[280px] overflow-y-auto">
+            <button
+              (click)="changeRole('admin')"
+              mat-menu-item
+              class="py-3 pl-[12px]"
+            >
+              <div class="flex justify-between items-center">
+                <div class="mat-body-large text-on-surface">Admin</div>
+                @if(addMemberForm.get('role')?.value == 'admin') {
+                <mat-icon class="text-on-surface w-[24px] h-[24px] text-[24px]"
+                  >done</mat-icon
+                >
+                }
+              </div>
+            </button>
+            <button
+              (click)="changeRole('editor')"
+              mat-menu-item
+              class="py-3 pl-[12px]"
+            >
+              <div class="flex justify-between items-center">
+                <div class="mat-body-large text-on-surface">Editor</div>
+                @if(addMemberForm.get('role')?.value == 'editor') {
+                <mat-icon class="text-on-surface w-[24px] h-[24px] text-[24px]"
+                  >done</mat-icon
+                >
+                }
+              </div>
+            </button>
+            <button
+              (click)="changeRole('viewer')"
+              mat-menu-item
+              class="py-3 pl-[12px]"
+            >
+              <div class="flex justify-between items-center">
+                <div class="mat-body-large text-on-surface">Viewer</div>
+                @if(addMemberForm.get('role')?.value == 'viewer') {
+                <mat-icon class="text-on-surface w-[24px] h-[24px] text-[24px]"
+                  >done</mat-icon
+                >
+                }
+              </div>
+            </button>
+          </div>
+        </mat-menu>
+        <mat-error>Email is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Set Password</mat-label>
+        <input matInput type="password" formControlName="password" />
+        <mat-error>Password is required</mat-error>
+      </mat-form-field>
+
+      <button mat-stroked-button (click)="onSave()">
+        <div class="text-primary flex justify-center items-center gap-2">
+          <mat-icon>add</mat-icon>
+          <span class="mat-label-large">Save and add another</span>
+        </div>
+      </button>
+    </form>
+  </div>
+</div>

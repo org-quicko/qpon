@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { ApiResponse } from '../../dtos/api-response.dto';
 import { environment } from '../../environments/environment';
 import { OrganizationUserDto } from '../../dtos/organization-user.dto';
-import { UserDto } from '../../dtos/user.dto';
+import { CreateUserDto, UserDto } from '../../dtos/user.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -30,5 +30,10 @@ export class UserService {
   fetchUser(userId: string) {
     let url = this.endpoint + "/users/" + userId;
     return this.httpClient.get<ApiResponse<UserDto>>(url);
+  }
+
+  createUser(organizationId: string, body: CreateUserDto) {
+    const url = this.endpoint + "/organizations/" + organizationId + "/users";
+    return this.httpClient.post(url, body);
   }
 }

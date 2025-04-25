@@ -1,6 +1,7 @@
 import { Expose, Transform } from 'class-transformer';
 import { IsString, IsEnum, IsDate, IsUUID, IsOptional } from 'class-validator';
 import { roleEnum } from '../enums';
+import { prop, required } from '@rxweb/reactive-form-validators';
 
 export class UserDto {
   @Expose({ name: 'user_id' })
@@ -39,15 +40,23 @@ export class UserDto {
 }
 
 export class CreateUserDto {
+  @prop()
+  @required()
   @IsString()
   name?: string;
 
+  @prop()
+  @required()
   @IsString()
   email?: string;
 
+  @prop()
+  @required()
   @IsString()
   password?: string;
 
+  @prop()
+  @required()
   @IsEnum(roleEnum)
   role?: roleEnum;
 }

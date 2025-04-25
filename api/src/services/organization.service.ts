@@ -40,7 +40,6 @@ export class OrganizationService {
       const organizationEntity = this.organizationRepository.create({
         name: body.name,
         currency: body?.currency,
-        themeColour: body.themeColour,
         externalId: body?.externalId,
       });
 
