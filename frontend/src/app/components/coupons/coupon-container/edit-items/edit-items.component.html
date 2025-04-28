@@ -84,21 +84,18 @@
             [matAutocomplete]="auto"
             [formControl]="searchControl"
           />
-          <mat-autocomplete
-            #auto="matAutocomplete"
-            [displayWith]="displayWithItems"
-          >
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayWithItems">
             @for(item of items(); track item) {
-            <mat-option (click)="$event.stopPropagation(); selectedItem(item)">
-              <mat-checkbox
-                (click)="$event.stopPropagation()"
-                (change)="selectedItem(item)"
-                [checked]="isItemSelected(item)"
-                [value]="item.itemId!"
-              >
-                {{ item.name }}
-              </mat-checkbox>
-            </mat-option>
+              <mat-option (click)="selectedItem(item)">
+                <mat-checkbox
+                  [checked]="isItemSelected(item)"
+                  [value]="item.itemId!"
+                  (click)="$event.stopPropagation()" 
+                  (change)="selectedItem(item)"
+                >
+                  {{ item.name }}
+                </mat-checkbox>
+              </mat-option>
             }
           </mat-autocomplete>
         </mat-form-field>

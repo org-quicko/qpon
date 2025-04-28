@@ -91,16 +91,6 @@ export class EditItemsComponent implements OnInit {
       if (this.isNextClicked()) {
         this.couponCodeStore.setOnNext();
         this.updateCouponWithItems();
-        CreateSuccess.subscribe((res) => {
-          if(res) {
-            if(this.redirectUri) {
-              this.router.navigate([atob(this.redirectUri)]);
-            } else {
-              this.couponCodeStore.nextStep();
-              this.router.navigate(['../../campaigns'], { relativeTo: this.route });
-            }
-            }
-        });
       }
     });
 
@@ -114,7 +104,7 @@ export class EditItemsComponent implements OnInit {
 
     effect(() => {
       if(this.couponItems()?.length! > 0) {
-        this.selectedItems = this.couponItems()!
+        this.selectedItems = [...this.couponItems()!]
       }
 
       if(this.coupon()) {
@@ -152,20 +142,32 @@ export class EditItemsComponent implements OnInit {
       });
     }
 
-    this.searchControl.valueChanges.subscribe((value) => {
+    this.searchControl.valueChanges.subscribe((value: string) => {
       this.itemsStore.fetchItems({
         organizationId: this.organization()?.organizationId!,
         filter: {
-          query: value.trim()
+          query: value?.trim()
         }
       })
     })
+
+    CreateSuccess.subscribe((res) => {
+      if(res) {
+        if(this.redirectUri) {
+          this.router.navigate([atob(this.redirectUri)]);
+        } else {
+          this.couponCodeStore.nextStep();
+          this.router.navigate(['../../campaigns'], { relativeTo: this.route });
+        }
+        }
+    });
   }
 
   displayWithItems = () => '';
 
   selectedItem(item: ItemDto) {
-    const index = this.selectedItems.indexOf(item);
+    const index = this.selectedItems.findIndex(selected => selected.itemId === item.itemId);
+    console.log(index)
     if (index == -1) {
       this.selectedItems.push(item);
     } else if (index !== -1) {
