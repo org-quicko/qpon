@@ -108,7 +108,7 @@ export const RedemptionsStore = signalStore(
                       patchState(store, {
                         redemptions: updatedRedemptions,
                         isLoading: false,
-                        count: parseInt(metadata.get('count')) ?? 0,
+                        count: Number(metadata.get('count')) ?? 0,
                         loadedPages: updatedPages
                       });
                     }
