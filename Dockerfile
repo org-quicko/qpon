@@ -3,7 +3,7 @@ FROM node:22-alpine as frontend-builder
 
 WORKDIR /app/frontend
 
-COPY frontend/package.json ./
+COPY frontend/package*.json ./
 COPY frontend/.npmrc ./
 RUN npm install --legacy-peer-deps --verbose
 
@@ -14,7 +14,7 @@ RUN npm run build
 # Build nestjs app
 FROM node:22-alpine as backend-builder
 WORKDIR /app/backend
-COPY api/package.json ./
+COPY api/package*.json ./
 COPY api/.npmrc ./
 RUN npm install --verbose
 COPY api .
