@@ -14,6 +14,7 @@ import { LoggerService } from './logger.service';
 import {
   campaignStatusEnum,
   couponCodeStatusEnum,
+  itemConstraintEnum,
   sortOrderEnum,
   statusEnum,
 } from '../enums';
@@ -208,14 +209,20 @@ export class CouponService {
         // Find the coupon
         const existingCoupon = await couponRepository.findOne({
           where: { couponId, status: Not(statusEnum.ARCHIVE) },
-          relations: {
-            couponItems: true,
-          },
         });
 
         if (!existingCoupon) {
           this.logger.warn('Coupon not found', couponId);
           throw new NotFoundException(`Coupon not found`);
+        }
+
+        if (
+          existingCoupon.itemConstraint == itemConstraintEnum.SPECIFIC &&
+          body.itemConstraint == itemConstraintEnum.ALL
+        ) {
+          await manager.delete(CouponItem, {
+            coupon: { couponId: existingCoupon.couponId },
+          });
         }
 
         // Update coupon fields
@@ -231,7 +238,7 @@ export class CouponService {
           existingCoupon.discountUpto = body.discountUpto;
         }
 
-        const updatedCoupon = await manager.save(existingCoupon);
+        const updatedCoupon = await manager.save(Coupon, existingCoupon);
 
         this.logger.info('END: updateCoupon service');
         return this.couponConverter.convert(updatedCoupon);

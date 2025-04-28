@@ -390,15 +390,6 @@ export class AuthorizationService {
             subjectCampaignId,
             subjectCouponCodeId,
           );
-        } else if (subject == CouponItem) {
-          if (action === 'read' || action === 'create') return subject;
-
-          if (!subjectCouponId) {
-            throw new BadRequestException(
-              `Error. Must provide an Coupon ID for performing action on CouponItem`,
-            );
-          }
-          return this.couponItemService.fetchItemForValidation(subjectCouponId);
         } else {
           return subject;
         }
