@@ -49,16 +49,16 @@
       class="text-on-surface w-full"
     >
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef class="px-6 py-4">Name</th>
-        <td mat-cell *matCellDef="let summary" class="px-6 py-4 mat-body-large">
+        <th mat-header-cell *matHeaderCellDef class="px-6 py-4 w-[25%]">Name</th>
+        <td mat-cell *matCellDef="let summary" class="px-6 py-4 mat-body-large w-[25%]">
           {{ convertToCampaignSummaryRow(summary).getName() | titlecase }}
         </td>
       </ng-container>
       <ng-container matColumnDef="totalBudget">
-        <th mat-header-cell *matHeaderCellDef class="px-6 py-4">
+        <th mat-header-cell *matHeaderCellDef class="px-6 py-4 w-auto">
           Total Budget
         </th>
-        <td mat-cell *matCellDef="let summary" class="px-6 py-4 mat-body-large">
+        <td mat-cell *matCellDef="let summary" class="px-6 py-4 mat-body-large w-auto">
           {{
             convertToCampaignSummaryRow(summary).getBudget()
               ? (convertToCampaignSummaryRow(summary).getBudget()
@@ -68,10 +68,10 @@
         </td>
       </ng-container>
       <ng-container matColumnDef="totalDiscount">
-        <th mat-header-cell *matHeaderCellDef class="px-6 py-4">
+        <th mat-header-cell *matHeaderCellDef class="px-6 py-4 w-auto">
           Total Discount
         </th>
-        <td mat-cell *matCellDef="let summary" class="px-6 py-4 mat-body-large">
+        <td mat-cell *matCellDef="let summary" class="px-6 py-4 mat-body-large w-auto">
           {{
             convertToCampaignSummaryRow(summary).getTotalRedemptionAmount() > 0
               ? (convertToCampaignSummaryRow(summary).getTotalRedemptionAmount()
@@ -81,19 +81,19 @@
         </td>
       </ng-container>
       <ng-container matColumnDef="redemptions">
-        <th mat-header-cell *matHeaderCellDef class="px-6 py-4">Redemptions</th>
-        <td mat-cell *matCellDef="let summary" class="px-6 py-4 mat-body-large">
+        <th mat-header-cell *matHeaderCellDef class="px-6 py-4 w-auto">Redemptions</th>
+        <td mat-cell *matCellDef="let summary" class="px-6 py-4 mat-body-large w-auto">
           <span class="px-[10.5px]">{{
             convertToCampaignSummaryRow(summary).getTotalRedemptionCount()
           }}</span>
         </td>
       </ng-container>
       <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <th mat-header-cell *matHeaderCellDef class="w-auto">Status</th>
         <td
           mat-cell
           *matCellDef="let summary"
-          class="text-on-surface mat-label-small"
+          class="text-on-surface mat-label-small w-auto"
           [ngClass]="{
             'text-outline':
               convertToCampaignSummaryRow(summary).getStatus() == 'inactive'
@@ -106,8 +106,8 @@
       </ng-container>
 
       <ng-container matColumnDef="createdAt">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="px-6 py-4">Created at</th>
-        <td mat-cell *matCellDef="let summary" class="px-6 py-4 mat-body-large">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="px-6 py-4 w-[25%]">Created at</th>
+        <td mat-cell *matCellDef="let summary" class="px-6 py-4 mat-body-large w-[25%]">
           {{
             convertToCampaignSummaryRow(summary).getCreatedAt()
               | custom_date : "" : true
@@ -120,11 +120,11 @@
           mat-header-cell
           *matHeaderCellDef
           aria-label="row actions"
-          class="py-6 pl-6 pr-4"
+          class="py-6 pl-6 pr-4 w-auto"
         >
           &nbsp;
         </th>
-        <td mat-cell *matCellDef="let summary" class="py-6 pl-6 pr-4">
+        <td mat-cell *matCellDef="let summary" class="py-6 pl-6 pr-4 w-auto">
           <button mat-icon-button>
             <mat-icon
               [matMenuTriggerFor]="menu"
