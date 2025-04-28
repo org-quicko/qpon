@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit } from '@angular/core';
 import { AvatarModule } from 'ngx-avatars';
 import { UserStore } from '../../../../../store/user.store';
 import { MatMenuModule } from '@angular/material/menu';
@@ -43,14 +43,19 @@ export class ProfileComponent implements OnInit {
   organizationStore = inject(OrganizationStore);
 
   user = this.userStore.user;
+  organizations = this.organizationUserStore.organizations;
 
   constructor(private router: Router, private authService: AuthService, private themeService: ThemeService) {
     this.selectedThemePreference = Theme.SYSTEM
+
+    effect(() => {
+      if(this.organizations()) {
+        this.getRole()
+      }
+    })
   }
 
   ngOnInit() {
-    this.getRole();
-
     this.theme$ = this.themeService.theme$;
 
     this.theme$.pipe(takeUntil(this.destroy$)).subscribe((res) => {
@@ -63,7 +68,7 @@ export class ProfileComponent implements OnInit {
   }
 
   getRole() {
-    this.organizationUserStore.organizations().map((organization) => {
+    this.organizations().map((organization) => {
       if (
         organization.organizationId ==
         this.organizationStore.organizaiton()?.organizationId
