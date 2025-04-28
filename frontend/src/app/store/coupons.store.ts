@@ -66,9 +66,6 @@ export const CouponsStore = signalStore(
         concatMap(({ organizationId, skip, take, filter, isSortOperation, sortOptions }) => {
           const page = Math.floor((skip ?? 0) / (take ?? 10));
 
-          console.log(Object.keys(filter!).length > 0)
-          console.log("filter:", filter)
-
           // Skip if page already loaded and not sorting
           if (store.loadedPages().has(page) && !isSortOperation && Object.keys(filter!).length == 0) {
             patchState(store, { isLoading: false });

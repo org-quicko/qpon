@@ -170,8 +170,6 @@ export class CouponsComponent implements OnInit {
     
         this.filter.set(mergedFilter);
 
-        console.log("mergedFilter:", mergedFilter)
-
         this.couponsStore.resetLoadedPages();
         this.couponsStore.fetchCoupons({
           organizationId: this.organization()?.organizationId!,
