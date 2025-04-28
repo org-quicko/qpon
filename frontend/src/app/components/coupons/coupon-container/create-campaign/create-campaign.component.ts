@@ -52,18 +52,6 @@ export class CreateCampaignComponent implements OnInit {
         }
 
         this.createCampaign();
-        CreateSuccess.subscribe((res) => {
-          if(res) {
-            this.createCampaignForm.reset();
-            this.budgetConstraintFormControl.reset();
-            this.couponCodeStore.nextStep();
-            if(this.redirectUri) {
-              this.router.navigate([atob(this.redirectUri)]);
-            } else {
-              this.router.navigate([`../${this.campaign()?.campaignId}/coupon-codes/create`], { relativeTo: this.route })
-            }
-          }
-        })
       }
     })
   }
@@ -80,6 +68,19 @@ export class CreateCampaignComponent implements OnInit {
 
     this.route.queryParams.subscribe((params: Params) => {
       this.redirectUri = params['redirect'];
+    })
+
+    CreateSuccess.subscribe((res) => {
+      if(res) {
+        this.createCampaignForm.reset();
+        this.budgetConstraintFormControl.reset();
+        this.couponCodeStore.nextStep();
+        if(this.redirectUri) {
+          this.router.navigate([atob(this.redirectUri)]);
+        } else {
+          this.router.navigate([`../${this.campaign()?.campaignId}/coupon-codes/create`], { relativeTo: this.route })
+        }
+      }
     })
   }
 

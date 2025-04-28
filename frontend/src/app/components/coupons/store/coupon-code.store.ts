@@ -797,7 +797,7 @@ export const CouponCodeStore = signalStore(
     }),
 
     animateBar1: computed(() => store.currentStep() === 1 || store.currentStep() === 2),
-    animateBar2: computed(() => store.lastAnimatedStep() === 2),
+    animateBar2: computed(() => store.lastAnimatedStep() >= 4),
     animateBar3: computed(
       () => store.currentStep() === 4 || store.currentStep() === 3
     ),

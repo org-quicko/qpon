@@ -27,7 +27,7 @@ import { MatRadioModule } from '@angular/material/radio';
   templateUrl: './create-coupon.component.html',
   styleUrls: ['./create-coupon.component.css'],
 })
-export class CreateCouponComponent {
+export class CreateCouponComponent implements OnInit {
   discountType: string = 'percentage';
   maxAmount: boolean = false;
   maxAmountFormControl: FormControl;
@@ -52,13 +52,16 @@ export class CreateCouponComponent {
       if (this.isNextClicked()) {
         this.couponCodeStore.setOnNext();
         this.createCoupon();
-        CreateSuccess.pipe(take(1)).subscribe((res) => {
-          this.couponCodeStore.nextStep();
-          this.router.navigate([`../${this.coupon()?.couponId}/items/edit`], {
-            relativeTo: this.route,
-          });
-        });
       }
+    });
+  }
+
+  ngOnInit(): void {
+    CreateSuccess.pipe(take(1)).subscribe((res) => {
+      this.couponCodeStore.nextStep();
+      this.router.navigate([`../${this.coupon()?.couponId}/items/edit`], {
+        relativeTo: this.route,
+      });
     });
   }
 

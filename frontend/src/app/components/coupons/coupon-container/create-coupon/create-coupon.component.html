@@ -39,7 +39,8 @@
             class="mat-display-medium text-on-surface focus:outline-none"
             placeholder="0%"
             [ngClass]="{
-              'placeholder:text-outline-variant': discountType != 'percentage'
+              'placeholder:text-outline-variant': discountType != 'percentage',
+              'text-outline-variant': discountType != 'percentage'
             }"
           />
         </div>
@@ -69,7 +70,8 @@
             class="mat-display-medium text-on-surface focus:outline-none"
             placeholder="₹0"
             [ngClass]="{
-              'placeholder:text-outline-variant': discountType != 'fixed'
+              'placeholder:text-outline-variant': discountType != 'fixed',
+              'text-outline-variant': discountType != 'fixed'
             }"
           />
         </div>
