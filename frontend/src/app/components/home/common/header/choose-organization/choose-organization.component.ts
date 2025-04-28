@@ -1,5 +1,5 @@
 import { CommonModule, TitleCasePipe } from '@angular/common';
-import { Component, inject, OnInit, signal, Signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal, Signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { ActivatedRoute, Params, RouterModule } from '@angular/router';
@@ -10,6 +10,7 @@ import { take } from 'rxjs';
 import { OrganizationUserStore } from '../../../../../store/organization-user.store';
 import { OrganizationDto } from '../../../../../../dtos/organization.dto';
 import { OrganizationUserDto } from '../../../../../../dtos/organization-user.dto';
+import { OrganizationStore } from '../../../../../store/organization.store';
 
 @Component({
   selector: 'app-choose-organization',
@@ -26,29 +27,32 @@ import { OrganizationUserDto } from '../../../../../../dtos/organization-user.dt
   styleUrl: './choose-organization.component.css',
 })
 export class ChooseOrganizationComponent implements OnInit {
-  organizations: any;
   currentOrganizationId: any
   currentOrganization = signal<OrganizationUserDto | null>(null)
 
   organizationUserStore = inject(OrganizationUserStore);
 
   isLoading = this.organizationUserStore.isLoading;
+  organizations = this.organizationUserStore.organizations
 
   constructor(private route: ActivatedRoute) {
-    this.organizations = this.organizationUserStore.organizations()
     this.currentOrganizationId = "";
+
+    effect(() => {
+      if(this.organizations().length > 0) {
+        this.getOrganizations()
+      }
+    })
   }
 
   ngOnInit(): void {
     this.route.params.pipe(take(1)).subscribe((params: Params) => {
       this.currentOrganizationId = params['organization_id']
     })
-    this.getOrganizations()
   }
 
   getOrganizations() {
-    this.organizations = this.organizationUserStore.organizations()
-    this.organizations.map((organization: OrganizationDto) => {
+    this.organizations().map((organization: OrganizationDto) => {
       if(organization.organizationId == this.currentOrganizationId) {
         this.currentOrganization.set(organization);
       }

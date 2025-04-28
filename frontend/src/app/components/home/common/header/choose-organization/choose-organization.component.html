@@ -1,59 +1,23 @@
-<div
-  *ngIf="!isLoading(); else Loading"
-  matRipple
-  class="flex gap-[12px] px-[16px] justify-between items-center rounded-[5px] h-[48px] w-[252px] cursor-pointer bg-surface-container-low"
-  [mat-menu-trigger-for]="options"
->
-  <div class="flex gap-[12px] items-center">
-    <div class="flex flex-col justify-center items-center">
-      <ng-container>
-        <ngx-avatars
-          size="30"
-          [round]="true"
-          [name]="currentOrganization()?.name"
-        >
-        </ngx-avatars>
-      </ng-container>
-      <ng-template #avatarProfile>
-        <ngx-avatars
-          size="30"
-          [textSizeRatio]="2.5"
-          [style]="{ fontWeight: '500' }"
-          [round]="true"
-          [name]="((currentOrganization()?.name?.split(' ')?.join(' ')| titlecase))"
-          bgColor="var(--sys-primary-fixed)"
-          fgColor="var(--sys-on-primary-fixed-variant)"
-        >
-        </ngx-avatars>
-      </ng-template>
-    </div>
-    <div class="flex flex-col">
-      <div class="text-on-surface mat-body-medium max-w-[142px] truncate">
-        {{ currentOrganization()?.name }}
-      </div>
-      <div class="flex gap-[4px]">
-        <div class="mat-body-small text-on-surface-variant">
-          You're the {{ currentOrganization()?.role!.replace('_', ' ') }}
-        </div>
-      </div>
-    </div>
+@if(isLoading() || !currentOrganization()) {
+<ngx-skeleton-loader
+  [theme]="{
+    height: '48px',
+    width: '252px',
+    margin: '0px',
+    padding: '0px'
+  }"
+></ngx-skeleton-loader>
+}@else {
+<div class="w-[252px] rounded-[5px] bg-surface-container-low py-0.5 pl-4 flex justify-between items-center gap-2 cursor-pointer" [mat-menu-trigger-for]="options">
+  <div class="flex flex-col">
+    <div class="mat-body-medium text-on-surface">{{ currentOrganization()?.name }}</div>
+    <div class="mat-body-small text-on-surface-variant">You’re the {{ currentOrganization()?.role?.replace('_', ' ') }}</div>
   </div>
-  <div class="flex items-center">
-    <mat-icon class="material-symbols-outlined text-on-surface-variant">expand_all</mat-icon>
+  <div class="py-2.5 px-2">
+    <mat-icon class="text-on-surface-variant">unfold_more</mat-icon>
   </div>
 </div>
-<ng-template #Loading>
-  <div class="mb-[-4px]">
-    <ngx-skeleton-loader
-      [theme]="{
-        height: '48px',
-        width: '252px',
-        margin: '0px',
-        padding: '0px'
-      }"
-    ></ngx-skeleton-loader>
-  </div>
-</ng-template>
+}
 
 <mat-menu
   class="w-[252px] mt-[12px] rounded-[5px]"
@@ -63,7 +27,7 @@
 >
   <ng-template matMenuContent>
     <div class="max-h-[480px] overflow-auto">
-      <ng-container *ngFor="let option of organizations; let i = index">
+      <ng-container *ngFor="let option of organizations(); let i = index">
         <button
           mat-menu-item
           class="h-[55px] py-2 px-4"
@@ -73,11 +37,7 @@
             <div class="flex gap-[12px]">
               <div class="flex flex-col justify-center items-center font-sans">
                 <ng-container>
-                  <ngx-avatars
-                    size="30"
-                    [round]="true"
-                    [name]="option?.name"
-                  >
+                  <ngx-avatars size="30" [round]="true" [name]="option?.name">
                   </ngx-avatars>
                 </ng-container>
                 <ng-template #avatarProfile>
@@ -86,7 +46,7 @@
                     [textSizeRatio]="2.5"
                     [style]="{ fontWeight: '500' }"
                     [round]="true"
-                    [name]="(option?.name | titlecase)"
+                    [name]="option?.name | titlecase"
                     bgColor="var(--sys-primary-fixed)"
                     fgColor="var(--sys-on-primary-fixed-variant)"
                   >
@@ -101,29 +61,19 @@
                 </div>
                 <div class="flex gap-[4px] font-sans">
                   <div class="mat-body-small text-on-surface-variant">
-                    {{ option?.role | titlecase }}
+                    {{ option?.role?.replace("_", " ") | titlecase }}
                   </div>
-                  <!-- <div class="text-on-surface-variant text-[8px] font-medium leading-3 w-[4px] items-center flex mb-[6px]">.</div> -->
-                  <div class="ml-4">
-                    <!-- <ul style="list-style-type: disc">
-                      <li class="mat-body-small text-on-surface-variant">
-                        {{ option?.getMembersCount() }}
-                        {{
-                          option?.getMembersCount() > 0 ? "member" : "members"
-                        }}
-                      </li>
-                    </ul> -->
-                  </div>
+                  <div class="ml-4"></div>
                 </div>
               </div>
             </div>
             <div
               class="flex items-center"
-              *ngIf="currentOrganization == option?.organizationId"
+              *ngIf="currentOrganization() == option?.organizationId"
             >
               <mat-icon
                 class="material-symbols-outlined w-[21px] h-[21px] text-[21px] flex items-center"
-                >check</mat-icon
+                >done</mat-icon
               >
             </div>
           </div>

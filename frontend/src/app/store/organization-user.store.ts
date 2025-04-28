@@ -3,7 +3,7 @@ import { OrganizationUserDto } from '../../dtos/organization-user.dto';
 import { inject } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { catchError, concatMap, EMPTY, pipe } from 'rxjs';
+import { catchError, concatMap, EMPTY, pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { plainToClass } from 'class-transformer';
 import { Router } from '@angular/router';
@@ -17,7 +17,7 @@ type OrganizationUser = {
 
 const initialState: OrganizationUser = {
   organizations: [],
-  isLoading: true,
+  isLoading: false,
   error: null,
 };
 
@@ -29,7 +29,12 @@ export const OrganizationUserStore = signalStore(
     (store, userService = inject(UserService), router = inject(Router)) => ({
       fetchOrganizationsForUser: rxMethod<{ userId: string }>(
         pipe(
-          concatMap(({ userId }) => {
+          tap(() => {
+            patchState(store, {
+              isLoading: true
+            })
+          }),
+          switchMap(({ userId }) => {
             return userService.fetchOrganizationsForUser(userId).pipe(
               tapResponse({
                 next: (response) => {
@@ -44,10 +49,6 @@ export const OrganizationUserStore = signalStore(
                 error: (error: any) => {
                   patchState(store, {isLoading: false, error: error.message})
                 },
-              }),
-              catchError((error) => {
-                patchState(store, {isLoading: false, error: error.message})
-                return EMPTY;
               })
             );
           })
