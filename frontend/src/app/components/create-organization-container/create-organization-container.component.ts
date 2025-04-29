@@ -42,9 +42,18 @@ export class CreateOrganizationContainerComponent implements OnInit {
   }
 
   getButtonText() {
+    if(this.currentStep() == 0) {
+      return "Create";
+    }
+
+    if(this.currentStep() == 1) {
+      return "Save";
+    }
+
     if(this.currentStep() == 2) {
       return "Launch Organisation"
     }
+    
     return 'Continue';
   }
 
