@@ -39,6 +39,7 @@ import { sortOrderEnum } from '../../../../../../../enums';
 import { FilterDialogComponent } from './filter-dialog/filter-dialog.component';
 import { FiltersStore } from '../../../../../../store/filters.store';
 import { CouponCodeFilter } from '../../../../../../types/coupon-code-filter.interface';
+import { PaginationOptions } from '../../../../../../types/PaginatedOptions';
 
 @Component({
   selector: 'app-coupon-code-list',
@@ -93,11 +94,13 @@ export class CouponCodeListComponent implements OnInit {
   readonly dialog = inject(MatDialog);
 
   couponCodes = this.couponCodesStore.couponCodes;
-  skip = this.couponCodesStore.skip!;
-  take = this.couponCodesStore.take!;
   count = this.couponCodesStore.count!;
   organization = this.organizationStore.organizaiton;
   isLoading = this.couponCodesStore.isLoading;
+  paginationOptions = signal<PaginationOptions>({
+    pageIndex: 0,
+    pageSize: 10
+  })
 
   constructor(private route: ActivatedRoute, private router: Router) {
     this.couponId = '';
@@ -106,12 +109,22 @@ export class CouponCodeListComponent implements OnInit {
     this.searchControl = new FormControl('');
 
     effect(() => {
-      this.datasource.data = this.couponCodes()!;
+      const couponCodes = this.couponCodes() ?? [];
+
+      const { pageIndex, pageSize } = this.paginationOptions();
+      const start = pageIndex * pageSize;
+      const end = Math.min(start + pageSize, couponCodes.length);
+
+      this.datasource.data = couponCodes.slice(start, end);
+
       this.couponCodeFilter = this.filtersStore.couponCodesFilter;
     });
   }
 
   ngOnInit() {
+    this.couponCodesStore.resetLoadedPages();
+    this.couponCodesStore.resetCouponCodes();
+
     this.route.params.pipe(take(1)).subscribe((params: Params) => {
       this.couponId = params['coupon_id'];
       this.campaignId = params['campaign_id'];
@@ -119,34 +132,20 @@ export class CouponCodeListComponent implements OnInit {
 
     this.route.queryParams.subscribe((queryParams) => {
       this.filter.set(Object.assign({}, queryParams));
+      this.couponCodesStore.resetLoadedPages();
+
       this.couponCodesStore.fetchCouponCodes({
         organizationId: this.organization()?.organizationId!,
         couponId: this.couponId,
         campaignId: this.campaignId,
-        filter: {
-          ...this.filter(),
+        filter: this.filter()!,
+        sortOptions: {
           sortBy: this.sortActive(),
-          sortOrder:
-            this.sortDirection() === 'asc'
-              ? sortOrderEnum.ASC
-              : sortOrderEnum.DESC,
+          sortOrder: this.sortDirection() == 'asc' ? sortOrderEnum.ASC : sortOrderEnum.DESC
         },
+        isFilterOperation: true
       });
     });
-
-    // this.couponCodesStore.fetchCouponCodes({
-    //   organizationId: this.organization()?.organizationId!,
-    //   couponId: this.couponId,
-    //   campaignId: this.campaignId,
-    //   filter: {
-    //     ...this.filter(),
-    //     sortBy: this.sortActive(),
-    //     sortOrder:
-    //       this.sortDirection() === 'asc'
-    //         ? sortOrderEnum.ASC
-    //         : sortOrderEnum.DESC,
-    //   },
-    // });
 
     this.searchControl.valueChanges
       .pipe(debounceTime(500), distinctUntilChanged())
@@ -170,38 +169,6 @@ export class CouponCodeListComponent implements OnInit {
     });
   }
 
-  private getOrdinalSuffix(day: number): string {
-    if (day > 3 && day < 21) return 'th';
-    switch (day % 10) {
-      case 1:
-        return 'st';
-      case 2:
-        return 'nd';
-      case 3:
-        return 'rd';
-      default:
-        return 'th';
-    }
-  }
-
-  transform(value: Date | string): string {
-    if (!value) return '';
-
-    const date = new Date(value);
-    const day = date.getDate();
-    const formattedDate = formatDate(
-      date,
-      `d'${this.getOrdinalSuffix(day)}' MMM, y`,
-      'en-US'
-    );
-
-    return formattedDate;
-  }
-
-  getFormattedDate(date: Date) {
-    return this.transform(date);
-  }
-
   openChangeStatusDialog(couponCode: CouponCodeDto) {
     this.dialog.open(CouponCodeChangeStatusDialogComponent, {
       data: {
@@ -217,12 +184,18 @@ export class CouponCodeListComponent implements OnInit {
   }
 
   onPageChange(event: PageEvent) {
+    this.paginationOptions.set({
+      pageIndex: event.pageIndex,
+      pageSize: 10
+    })
+
     this.couponCodesStore.fetchCouponCodes({
       organizationId: this.organization()?.organizationId!,
       couponId: this.couponId,
       campaignId: this.campaignId,
       skip: event.pageIndex * event.pageSize,
       take: event.pageSize,
+      filter: this.filter()!,
     });
   }
 
@@ -234,12 +207,21 @@ export class CouponCodeListComponent implements OnInit {
     this.sortActive.set(event.active);
     this.sortDirection.set(event.direction as 'asc' | 'desc');
 
+    this.paginationOptions.set({
+      pageIndex: 0,
+      pageSize: 10
+    });
+
+    this.couponCodesStore.resetLoadedPages();
+
     this.couponCodesStore.fetchCouponCodes({
       organizationId: this.organization()?.organizationId!,
       couponId: this.couponId,
       campaignId: this.campaignId,
       filter: {
         ...this.couponCodeFilter(),
+      },
+      sortOptions: {
         sortBy: event.active,
         sortOrder:
           event.direction == 'asc' ? sortOrderEnum.ASC : sortOrderEnum.DESC,

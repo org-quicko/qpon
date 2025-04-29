@@ -88,7 +88,7 @@ export class CouponCodeController {
       skip,
       {
         code,
-        status: Not(couponCodeStatusEnum.ARCHIVE),
+        status,
         visibility,
         durationType,
         customerCouponCodes: {

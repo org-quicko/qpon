@@ -148,6 +148,12 @@ export class CouponCodeService {
         delete whereOptions.code;
       }
 
+      if (!whereOptions.status) {
+        whereOptions.status = Not(couponCodeStatusEnum.ARCHIVE);
+      }
+
+      console.log('where', whereOptions);
+
       const [couponCodes, count] = await this.couponCodeRepository.findAndCount(
         {
           where: {

@@ -167,7 +167,6 @@ export class EditItemsComponent implements OnInit {
 
   selectedItem(item: ItemDto) {
     const index = this.selectedItems.findIndex(selected => selected.itemId === item.itemId);
-    console.log(index)
     if (index == -1) {
       this.selectedItems.push(item);
     } else if (index !== -1) {

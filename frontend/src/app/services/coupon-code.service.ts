@@ -6,6 +6,7 @@ import { PaginatedList } from '../../dtos/paginated-list.dto';
 import { CouponCodeDto, CreateCouponCodeDto, UpdateCouponCodeDto } from '../../dtos/coupon-code.dto';
 import { CouponCodeFilter } from '../types/coupon-code-filter.interface';
 import { instanceToPlain } from 'class-transformer';
+import { sortOrderEnum } from '../../enums';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class CouponCodeService {
 
   constructor(private httpClient: HttpClient) {}
 
-  fetchCouponCodes(organizationId: string, couponId: string, campaignId: string, filter?: CouponCodeFilter, skip:number = 0, take: number = 10) {
+  fetchCouponCodes(organizationId: string, couponId: string, campaignId: string, filter?: CouponCodeFilter, sortOptions?: { sortBy: string, sortOrder: sortOrderEnum }, skip:number = 0, take: number = 10) {
     const url = this.endpoint + "/organizations/" + organizationId + "/coupons/" + couponId + "/campaigns/" + campaignId + "/coupon-codes";
 
     let params = new HttpParams()
@@ -38,9 +39,9 @@ export class CouponCodeService {
       params = params.set('status', filter.status);
     }
 
-    if(filter && filter.sortBy && filter.sortOrder) {
-      params = params.set('sort_by', filter.sortBy);
-      params = params.set('sort_order', filter.sortOrder);
+    if(sortOptions) {
+      params = params.set('sort_by', sortOptions.sortBy);
+      params = params.set('sort_order', sortOptions.sortOrder);
     }
 
     return this.httpClient.get<ApiResponse<PaginatedList<CouponCodeDto>>>(url, {

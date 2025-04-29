@@ -4,32 +4,30 @@ import { withDevtools } from "@angular-architects/ngrx-toolkit";
 import { EventEmitter, inject } from "@angular/core";
 import { CouponCodeService } from "../../../../../../../services/coupon-code.service";
 import { rxMethod } from "@ngrx/signals/rxjs-interop";
-import { pipe, switchMap, tap } from "rxjs";
+import { of, pipe, switchMap, tap } from "rxjs";
 import { tapResponse } from "@ngrx/operators";
 import { plainToInstance } from "class-transformer";
 import { PaginatedList } from "../../../../../../../../dtos/paginated-list.dto";
 import { HttpErrorResponse } from "@angular/common/http";
 import { CouponCodeFilter } from "../../../../../../../types/coupon-code-filter.interface";
-import { statusEnum } from "../../../../../../../../enums";
+import { sortOrderEnum, statusEnum } from "../../../../../../../../enums";
 
 type CouponCodesState = {
     couponCodes: CouponCodeDto[] | null;
-    skip: number | null,
-    take: number | null,
     count: number | null,
     filter?: CouponCodeFilter,
     isLoading: boolean | null;
     isSorting: boolean | null;
+    loadedPages: Set<number>;
     error: string | null;
 }
 
 const initialState: CouponCodesState = {
     couponCodes: null,
     count: null,
-    skip: null,
-    take: null,
     isLoading: null,
     isSorting: null,
+    loadedPages: new Set(),
     error: null,
 }
 
@@ -39,7 +37,8 @@ export const CouponCodesStore = signalStore(
     withState(initialState),
     withDevtools('coupon_codes'),
     withMethods((store, couponCodeService = inject(CouponCodeService)) => ({
-        fetchCouponCodes: rxMethod<{organizationId: string, couponId: string, campaignId: string, skip?: number, take?: number, filter?: CouponCodeFilter, isSortOperation?: boolean}>(
+        fetchCouponCodes: rxMethod<{organizationId: string, couponId: string, campaignId: string, skip?: number, take?: number, filter?: CouponCodeFilter, sortOptions?: {  sortBy: string
+          sortOrder: sortOrderEnum}, isSortOperation?: boolean, isFilterOperation?: boolean}>(
             pipe(
                 tap(({isSortOperation}) => {
                     if (isSortOperation) {
@@ -48,13 +47,34 @@ export const CouponCodesStore = signalStore(
                       patchState(store, {isLoading: true});
                     }
                   }),
-                switchMap(({organizationId, couponId, campaignId, skip, take, filter}) => {
-                    return couponCodeService.fetchCouponCodes(organizationId, couponId, campaignId, filter, skip, take).pipe(
+                switchMap(({organizationId, couponId, campaignId, skip, take, filter, sortOptions, isSortOperation, isFilterOperation}) => {
+
+                    const page = Math.floor((skip ?? 0)/(take ?? 10));
+
+                    if(store.loadedPages().has(page) && !isSortOperation && !isFilterOperation) {
+                        patchState(store, { isLoading: false });
+                        return of(store.couponCodes());
+                    }
+
+                    return couponCodeService.fetchCouponCodes(organizationId, couponId, campaignId, filter, sortOptions,  skip, take).pipe(
                         tapResponse({
                             next: (response) => {
                                 if(response.code == 200) {
                                     const couponCodeList = plainToInstance(PaginatedList<CouponCodeDto>, response.data);
-                                    patchState(store, {couponCodes: couponCodeList.getItems()?.map((couponCode) => plainToInstance(CouponCodeDto, couponCode)), isLoading: false, skip: couponCodeList.getSkip(), take: couponCodeList.getTake(), count: couponCodeList.getCount()})
+                                    const couponCodes = couponCodeList.getItems()?.map((couponCode) => plainToInstance(CouponCodeDto, couponCode)) ?? [];
+
+                                    const currentCoupnCodes =  store.couponCodes() ?? [];
+                                    let updatedCouponCodes = [];
+
+                                    const updatedPages = store.loadedPages().add(page);
+
+                                    if(isSortOperation || isFilterOperation) {
+                                        updatedCouponCodes = [...couponCodes];
+                                    } else {
+                                        updatedCouponCodes = [...currentCoupnCodes, ...couponCodes]
+                                    }
+
+                                    patchState(store, {couponCodes: updatedCouponCodes, loadedPages: updatedPages, isLoading: false, count: couponCodeList.getCount()})
                                 }
                             },
                             error: (error: HttpErrorResponse) => {
@@ -83,13 +103,13 @@ export const CouponCodesStore = signalStore(
                                         return couponCode;
                                     })
 
-                                    patchState(store, {couponCodes: updatedCouponCodes, isLoading: false, skip: store.skip(), take: store.take(), count: store.count()})
+                                    patchState(store, {couponCodes: updatedCouponCodes, isLoading: false, count: store.count()})
 
                                     onChangeStatusSuccess.emit(true);
                                 }
                             },
                             error: (error:any) => {
-                                patchState(store, {couponCodes: store.couponCodes(), isLoading: false, skip: store.skip(), take: store.take(), count: store.count(), error: error.message})
+                                patchState(store, {error: error.message})
                             }
                         })
                     )
@@ -111,18 +131,31 @@ export const CouponCodesStore = signalStore(
                                         return couponCode;
                                     })
 
-                                    patchState(store, {couponCodes: updatedCouponCodes, isLoading: false, skip: store.skip(), take: store.take(), count: store.count()})
+                                    patchState(store, {couponCodes: updatedCouponCodes, isLoading: false, count: store.count()})
 
                                     onChangeStatusSuccess.emit(true);
                                 }
                             },
                             error: (error:any) => {
-                                patchState(store, {couponCodes: store.couponCodes(), isLoading: false, skip: store.skip(), take: store.take(), count: store.count(), error: error.message})
+                                patchState(store, {couponCodes: store.couponCodes(), isLoading: false, count: store.count(), error: error.message})
                             }
                         })
                     )
                 })
             )
-        )
+        ),
+
+        resetLoadedPages() {
+            patchState(store, {
+                loadedPages: new Set()
+            });
+        },
+
+        resetCouponCodes() {
+            patchState(store, {
+                couponCodes: null,
+                count: null,
+            })
+        }
     }))
 )

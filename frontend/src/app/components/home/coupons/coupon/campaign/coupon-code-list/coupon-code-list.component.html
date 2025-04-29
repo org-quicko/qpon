@@ -361,7 +361,8 @@
   <div class="flex justify-end">
     <mat-paginator
       [length]="count()"
-      [pageSize]="take()"
+      [pageSize]="paginationOptions().pageSize"
+      [pageIndex]="paginationOptions().pageIndex"
       (page)="onPageChange($event)"
     ></mat-paginator>
   </div>
