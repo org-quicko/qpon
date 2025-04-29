@@ -5,7 +5,7 @@ import { UserService } from '../services/user.service';
 import { catchError, concatMap, EMPTY, pipe, shareReplay, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { UserDto } from '../../dtos/user.dto';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { withDevtools } from "@angular-architects/ngrx-toolkit";
 
 type UserState = {
@@ -34,7 +34,7 @@ export const UserStore = signalStore(
               next: (response) => {
                 const user = response.data;
                 patchState(store, {
-                  user: plainToClass(UserDto, user),
+                  user: plainToInstance(UserDto, user),
                   isLoading: false,
                 });
               },

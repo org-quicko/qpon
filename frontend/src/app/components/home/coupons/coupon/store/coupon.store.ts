@@ -12,7 +12,7 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { catchError, concatMap, EMPTY, pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { CouponDto } from '../../../../../../dtos/coupon.dto';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { statusEnum } from '../../../../../../enums';
 import { SnackbarService } from '../../../../../services/snackbar.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -70,7 +70,7 @@ export const CouponStore = signalStore(
                   if (response.code == 200) {
                     patchState(store, {
                       coupon: {
-                        data: plainToClass(CouponDto, response.data!),
+                        data: plainToInstance(CouponDto, response.data!),
                         isLoading: false,
                       },
                     });
@@ -121,17 +121,16 @@ export const CouponStore = signalStore(
                 tapResponse({
                   next: (response) => {
                     if (response.code == 200) {
-                      const couponSummarySheet = plainToClass(
+                      const couponSummaryTable = plainToInstance(
                         CouponSummaryWorkbook,
                         response.data
-                      ).getCouponSummarySheet();
-                      const couponSummaryTable = plainToClass(
-                        CouponSummarySheet,
-                        couponSummarySheet
-                      ).getCouponSummaryTable();
+                      ).getCouponSummarySheet().getCouponSummaryTable();
+
+                      const updatedTable = Object.assign(new CouponSummaryTable(), couponSummaryTable);
+
                       patchState(store, {
                         couponStatistics: {
-                          data: couponSummaryTable,
+                          data: updatedTable,
                           isLoading: false,
                         },
                       });

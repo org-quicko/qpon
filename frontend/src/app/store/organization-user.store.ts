@@ -5,7 +5,7 @@ import { UserService } from '../services/user.service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { catchError, concatMap, EMPTY, pipe, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { Router } from '@angular/router';
 import { withDevtools } from "@angular-architects/ngrx-toolkit";
 
@@ -41,7 +41,7 @@ export const OrganizationUserStore = signalStore(
                   const organizations = response.data;
                   patchState(store, {
                     organizations: organizations?.map((organization) =>
-                      plainToClass(OrganizationUserDto, organization)
+                      plainToInstance(OrganizationUserDto, organization)
                     ),
                   });
                   patchState(store, { isLoading : false });

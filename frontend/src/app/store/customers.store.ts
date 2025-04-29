@@ -5,7 +5,7 @@ import { CustomerService } from '../services/customer.service';
 import { catchError, concatMap, EMPTY, of, pipe, shareReplay, switchMap, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { CustomerDto } from '../../dtos/customer.dto';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { PaginatedList } from '../../dtos/paginated-list.dto';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -60,14 +60,14 @@ export const CustomersStore = signalStore(
             .pipe(
               tapResponse({
                 next: (response) => {
-                  const customerList = plainToClass(
+                  const customerList = plainToInstance(
                     PaginatedList<CustomerDto>,
                     response.data
                   );
 
                   const customers = customerList
                     .getItems()
-                    ?.map((customer) => plainToClass(CustomerDto, customer));
+                    ?.map((customer) => plainToInstance(CustomerDto, customer));
 
                   const updatedPages = store.loadedPages().add(page);
                   const currentCustomers = store.customers() ?? [];

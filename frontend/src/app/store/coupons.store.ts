@@ -5,7 +5,7 @@ import { CouponService } from '../services/coupon.service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { catchError, concatMap, EMPTY, of, pipe, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
-import { plainToClass, plainToInstance } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { PaginatedList } from '../../dtos/paginated-list.dto';
 import { sortOrderEnum, statusEnum } from '../../enums';
@@ -79,7 +79,7 @@ export const CouponsStore = signalStore(
               tapResponse({
                 next: (response) => {
                   if (response.code == 200) {
-                    const couponList = plainToClass(
+                    const couponList = plainToInstance(
                       PaginatedList<CouponDto>,
                       response.data
                     );

@@ -5,7 +5,7 @@ import { ItemsService } from '../services/items.service';
 import { catchError, concatMap, EMPTY, of, pipe, shareReplay, tap } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { ItemDto } from '../../dtos/item.dto';
-import { plainToClass, plainToInstance } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { PaginatedList } from '../../dtos/paginated-list.dto';
 import { ItemFilter } from '../types/item-filter.interface';
@@ -63,7 +63,7 @@ export const ItemsStore = signalStore(
             .pipe(
               tapResponse({
                 next: (response) => {
-                  const itemList = plainToClass(
+                  const itemList = plainToInstance(
                     PaginatedList<ItemDto>,
                     response.data
                   );
