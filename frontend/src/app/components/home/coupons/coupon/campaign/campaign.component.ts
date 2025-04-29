@@ -9,6 +9,7 @@ import { CampaignDetailsComponent } from './campaign-details/campaign-details.co
 import { CampaignSummaryComponent } from './campaign-summary/campaign-summary.component';
 import { CouponCodeListComponent } from './coupon-code-list/coupon-code-list.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { onChangeStatusSuccess } from './coupon-code-list/store/coupon-codes.store';
 
 @Component({
   selector: 'app-campaign',
@@ -56,6 +57,16 @@ export class CampaignComponent implements OnInit {
       couponId: this.couponId,
       campaignId: this.campaignId,
     });
+
+    onChangeStatusSuccess.subscribe((res) => {
+      if(res) {
+        this.campaignStore.fetchCampaignSummary({
+          organizationId: this.organization()?.organizationId!,
+          couponId: this.couponId,
+          campaignId: this.campaignId,
+        });
+      }
+    })
   }
 
   onNavigateChild() {
