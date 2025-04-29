@@ -67,15 +67,16 @@
                 </div>
               </div>
             </div>
-            <div
-              class="flex items-center"
-              *ngIf="currentOrganization() == option?.organizationId"
-            >
-              <mat-icon
-                class="material-symbols-outlined w-[21px] h-[21px] text-[21px] flex items-center"
-                >done</mat-icon
+            @if(currentOrganization() == option?.organizationId) {
+              <div
+                class="flex items-center"
               >
-            </div>
+                <mat-icon
+                  class="material-symbols-outlined w-[21px] h-[21px] text-[21px] flex items-center"
+                  >done</mat-icon
+                >
+              </div>
+            }
           </div>
         </button>
       </ng-container>

@@ -48,6 +48,7 @@ export const CouponsStore = signalStore(
       filter?: CouponFilter;
       sortOptions?: {sortBy: string, sortOrder: sortOrderEnum},
       isSortOperation?: boolean;
+      isFilterOperation?: boolean;
     }>(
       pipe(
         tap(({ isSortOperation }) => {
@@ -63,11 +64,11 @@ export const CouponsStore = signalStore(
             patchState(store, { isLoading: true });
           }
         }),
-        concatMap(({ organizationId, skip, take, filter, isSortOperation, sortOptions }) => {
+        concatMap(({ organizationId, skip, take, filter, isSortOperation, sortOptions, isFilterOperation }) => {
           const page = Math.floor((skip ?? 0) / (take ?? 10));
 
           // Skip if page already loaded and not sorting
-          if (store.loadedPages().has(page) && !isSortOperation && Object.keys(filter!).length == 0) {
+          if (store.loadedPages().has(page) && !isSortOperation && !isFilterOperation) {
             patchState(store, { isLoading: false });
             return of(store.coupons());
           }
@@ -94,7 +95,7 @@ export const CouponsStore = signalStore(
                     let updatedCoupons: CouponDto[];
 
                     // If sorting or first load, replace all data
-                    if (isSortOperation)  {
+                    if (isSortOperation || isFilterOperation)  {
                       updatedCoupons = [...coupons];
                     } else {  
                       // For pagination, merge without duplicates based on ID

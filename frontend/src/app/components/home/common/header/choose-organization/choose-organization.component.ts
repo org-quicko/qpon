@@ -1,4 +1,4 @@
-import { CommonModule, TitleCasePipe } from '@angular/common';
+import { CommonModule, NgIf, TitleCasePipe } from '@angular/common';
 import { Component, effect, inject, OnInit, signal, Signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -21,7 +21,6 @@ import { OrganizationStore } from '../../../../../store/organization.store';
     AvatarModule,
     MatRippleModule,
     NgxSkeletonLoaderModule,
-    CommonModule
   ],
   templateUrl: './choose-organization.component.html',
   styleUrl: './choose-organization.component.css',

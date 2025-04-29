@@ -162,6 +162,7 @@ export class CouponsComponent implements OnInit {
           filter: {
             ...this.filter(),
           },
+          isFilterOperation: true
         });
       });
 
@@ -177,7 +178,8 @@ export class CouponsComponent implements OnInit {
           sortOptions: {
             sortBy: this.sortOptions().active,
             sortOrder: this.sortOptions().direction == 'asc' ? sortOrderEnum.ASC : sortOrderEnum.DESC
-          }
+          },
+          isFilterOperation: true
         });
       });
   }
