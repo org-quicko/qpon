@@ -155,6 +155,7 @@ export class CouponCodeListComponent implements OnInit {
           couponId: this.couponId,
           campaignId: this.campaignId,
           filter: { query: code.trim() },
+          isFilterOperation: true
         });
       });
   }
