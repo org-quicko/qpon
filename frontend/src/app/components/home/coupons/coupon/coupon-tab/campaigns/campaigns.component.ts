@@ -61,7 +61,6 @@ import { sortOrderEnum } from '../../../../../../../enums';
     NgxSkeletonLoaderComponent,
     ReactiveFormsModule,
   ],
-  providers: [CampaignsStore, CouponStore],
   templateUrl: './campaigns.component.html',
   styleUrl: './campaigns.component.css',
 })

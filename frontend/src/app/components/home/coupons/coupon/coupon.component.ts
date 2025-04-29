@@ -9,11 +9,12 @@ import { CouponDetailsComponent } from "./coupon-details/coupon-details.componen
 import { CouponSummaryComponent } from "./coupon-summary/coupon-summary.component";
 import { CouponTabComponent } from "./coupon-tab/coupon-tab.component";
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { CampaignsStore } from './coupon-tab/campaigns/store/campaigns.store';
 
 @Component({
   selector: 'app-coupon',
   imports: [MatIconModule, CouponDetailsComponent, CouponSummaryComponent, CouponTabComponent, NgxSkeletonLoaderModule],
-  providers: [CouponStore],
+  providers: [CouponStore, CampaignsStore],
   templateUrl: './coupon.component.html',
   styleUrl: './coupon.component.css',
 })
