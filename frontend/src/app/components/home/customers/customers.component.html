@@ -2,23 +2,13 @@
   <div class="flex flex-col gap-[26px]">
     <div class="flex items-center justify-between">
       <div>
-        <p class="mat-headline-medium text-on-surface w-full">
+        <div class="mat-headline-medium text-on-surface w-full m-0">
           @if (customers().length !== null && customers().length !== undefined)
           { @if (count()! > 0) { Customers {{ `(${count()!})` }}
           } @else { Customers } } @else { Customers }
-        </p>
+        </div>
       </div>
       <div class="flex gap-[8px]">
-        <button
-          mat-stroked-button
-          class="border-outline-variant rounded-[100px]"
-        >
-          <mat-icon
-            class="material-symbols-outlined mat-icon-button text-primary"
-            >file_download</mat-icon
-          >
-          <span class="mat-label-large text-primary">Import</span>
-        </button>
         <button mat-flat-button class="bg-primary w-auto rounded-[100px]" (click)="onAddCustomer()">
           <mat-icon class="material-symbols-outlined text-on-primary left-[3px]"
             >add</mat-icon
@@ -28,32 +18,37 @@
       </div>
     </div>
     @if(!isLoading() && customers().length == 0 && !isFilterApplied) {
-    <div class="flex justify-center items-center h-[600px]">
-      <div class="flex flex-col items-center gap-[10px] h-auto w-auto">
-        <div class="bg-surface-container rounded-[10px]">
-          <mat-icon
-            class="text-on-surface material-symbols-outlined !h-[64px] !w-auto !text-[64px] px-[8px]"
-            >group</mat-icon
+      <div class="flex justify-center items-center h-[600px]">
+        <div class="flex flex-col items-center gap-4 w-full">
+          <div
+            class="bg-surface-container rounded-full flex justify-center items-center p-3"
           >
-        </div>
-        <p class="mat-title-large text-on-surface">No customer to show</p>
-        <p class="mat-body-medium text-on-surface-variant">
-          You haven't added any customers yet.
-        </p>
-        <p class="mat-body-medium text-on-surface-variant">
-          Create customers or import them.
-        </p>
-        <div class="flex justify-center">
-          <button mat-flat-button class="bg-primary w-auto rounded-[100px]" (click)="onAddCustomer()">
             <mat-icon
-              class="material-symbols-outlined text-on-primary left-[3px]"
+              class="text-on-surface-variant material-symbols-outlined h-[48px] w-[48px] text-[48px]"
+              >group</mat-icon
+            >
+          </div>
+          <div class="flex flex-col justify-center items-center gap-1">
+            <div class="mat-title-large text-on-surface">No customers to show</div>
+            <div
+              class="flex flex-col gap-1 justify-center items-center mat-body-medium text-on-surface-variant"
+            >
+              <div>You haven’t added any customers yet.</div>
+              <div>Create customer or import them.</div>
+            </div>
+          </div>
+          <button
+            mat-flat-button
+            class="rounded-full mt-1"
+            (click)="onAddCustomer()"
+          >
+            <mat-icon class="material-symbols-outlined text-on-primary left-[3px]"
               >add</mat-icon
             >
             <span class="mat-large-font text-on-primary">Add customer</span>
           </button>
         </div>
       </div>
-    </div>
     } @else {
     <div
       class="flex flex-1 items-center gap-[10px] w-full border rounded-[4px] h-[56px] border-outline-variant"
@@ -64,7 +59,7 @@
       <input
         matInput
         [formControl]="searchControl"
-        class="focus:outline-none align-middle py-[4px] w-full mat-body-large text-outline"
+        class="focus:outline-none align-middle py-[4px] w-full mat-body-large placeholder:text-outline text-on-surface"
         placeholder="Search customers"
       />
     </div>

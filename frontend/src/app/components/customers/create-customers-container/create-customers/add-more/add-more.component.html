@@ -1,21 +1,19 @@
 <div class="flex flex-col gap-10">
   <div class="mat-headline-small text-on-surface">Add another customer</div>
   <div class="grid grid-cols-2 gap-4">
-    @for(customer of customers(); track customer.email) {
-    <mat-card appearance="outlined">
-      <mat-card-content>
-        <div class="w-[272px] py-8 px-4">
-          <div class="flex flex-col gap-1">
-            <div class="mat-body-large text-on-surface">
-              {{ customer.name }}
-            </div>
-            <div class="mat-body-medium text-on-surface-variant">
-              {{ customer.email }}
-            </div>
+    @for(customer of customers(); track customer; let index = $index) {
+      <mat-card appearance="outlined" class="bg-surface-container-lowest overflow-hidden">
+       <button mat-button class="px-4 py-8 flex justify-start gap-1 w-full h-full rounded-none" (click)="editUser(customer, index)">
+        <div class="flex flex-col items-start">
+          <div class="mat-body-large text-on-surface">
+            {{ customer.name }}
+          </div>
+          <div class="mat-body-medium text-on-surface-variant">
+            {{ customer.email }}
           </div>
         </div>
-      </mat-card-content>
-    </mat-card>
+       </button>
+      </mat-card>
     }
     <mat-card>
       <mat-card-content>

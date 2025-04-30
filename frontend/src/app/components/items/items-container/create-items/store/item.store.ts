@@ -132,7 +132,11 @@ export const ItemStore = signalStore(
                     error: error.message,
                   });
 
-                  snackbarService.openSnackBar('Error creating items', undefined);
+                  if(error.status == 409) {
+                    snackbarService.openSnackBar('Item already exists', undefined);
+                  } else {
+                    snackbarService.openSnackBar('Error creating items', undefined);
+                  }
 
                   onItemError.emit(error.message);
                 },
@@ -210,7 +214,18 @@ export const ItemStore = signalStore(
             )
           })
         )
-      )
+      ),
+
+      editItem(item: CreateItemDto, index: number) {
+        let items = store.items() ?? [];
+
+        items.splice(index, 1);
+        items.push(item);
+
+        patchState(store, {
+          items
+        })
+      }
     })
   )
 );

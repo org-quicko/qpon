@@ -3,6 +3,7 @@ import {
   effect,
   EventEmitter,
   inject,
+  Input,
   OnInit,
   Output,
 } from '@angular/core';
@@ -29,7 +30,10 @@ import { ItemStore } from '../store/item.store';
   templateUrl: './create-item.component.html',
   styleUrls: ['./create-item.component.css'],
 })
-export class CreateItemComponent {
+export class CreateItemComponent implements OnInit {
+  @Input() item?: CreateItemDto;
+  @Input() index?: number;
+
   @Output() currentScreenEvent = new EventEmitter<string>();
 
   createItemForm: FormGroup;
@@ -59,12 +63,39 @@ export class CreateItemComponent {
         if (this.createItemForm.invalid) {
           return;
         }
-        
-        this.setItem();
+
+        if (this.item !== undefined) {
+          this.editItem();  
+        } else {
+          this.setItem();
+        }
+
         this.itemStore.nextStep();
         this.currentScreenEvent.emit('add-more');
       }
     });
+  }
+
+  ngOnInit(): void {
+    if (this.item !== undefined) {
+      this.createItemForm.controls['name'].setValue(this.item.name);
+      this.createItemForm.controls['description'].setValue(
+        this.item.description
+      );
+      this.createItemForm.controls['externalId'].setValue(this.item.externalId);
+      this.item?.customFields &&
+        Object.entries(this.item.customFields).forEach(([key, value]) => {
+          this.customFields.push(
+            this.formBuilder.group({
+              key: [key],
+              value: [value],
+            })
+          );
+        });
+    } else {
+      this.createItemForm.reset();
+      this.customFields.reset();
+    }
   }
 
   get customFields(): FormArray<FormGroup> {
@@ -101,5 +132,15 @@ export class CreateItemComponent {
     createItem.externalId = this.createItemForm.value['externalId'];
     createItem.customFields = this.getCustomFieldsAsObject() ?? undefined;
     this.itemStore.setItem(createItem);
+  }
+
+  editItem() {
+    const updatedItem = new CreateItemDto();
+    updatedItem.name = this.createItemForm.value['name'];
+    updatedItem.description =
+      this.createItemForm.value['description'] ?? undefined;
+    updatedItem.externalId = this.createItemForm.value['externalId'];
+    updatedItem.customFields = this.getCustomFieldsAsObject() ?? undefined;
+    this.itemStore.editItem(updatedItem, this.index!);
   }
 }

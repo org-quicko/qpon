@@ -1,4 +1,4 @@
-import { prop, required } from '@rxweb/reactive-form-validators';
+import { email, prop, required } from '@rxweb/reactive-form-validators';
 import { Expose, Transform } from 'class-transformer';
 import { IsString, IsDate, IsUUID, IsOptional } from 'class-validator';
 
@@ -48,6 +48,7 @@ export class CreateCustomerDto {
 
   @prop()
   @required()
+  @email()
   @IsString()
   email?: string;
 

@@ -1,10 +1,11 @@
-import { Component, effect, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { Component, effect, EventEmitter, inject, Output } from '@angular/core';
 import { ItemStore, onItemSuccess } from '../store/item.store';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { OrganizationStore } from '../../../../../store/organization.store';
 import { Router } from '@angular/router';
+import { CreateItemDto } from '../../../../../../dtos/item.dto';
 
 @Component({
   selector: 'app-add-more',
@@ -14,6 +15,7 @@ import { Router } from '@angular/router';
 })
 export class AddMoreComponent {
   @Output() currentScreenEvent = new EventEmitter<string>();
+  @Output() itemToEditEvent = new EventEmitter<{item: CreateItemDto, index: number}>();
 
   itemStore = inject(ItemStore);
   organizationStore = inject(OrganizationStore);
@@ -48,7 +50,10 @@ export class AddMoreComponent {
 
   onAddMore() {
     this.itemStore.resetItem();
-    this.itemStore.resetCurrentStep();
     this.currentScreenEvent.emit('create-item');
+  }
+
+  onEditItem(item: CreateItemDto, index: number) {
+    this.itemToEditEvent.emit({item, index});
   }
 }

@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { OrganizationStore } from '../../../../../store/organization.store';
 import { Router } from '@angular/router';
+import { CreateCustomerDto } from '../../../../../../dtos/customer.dto';
 
 @Component({
   selector: 'app-add-more',
@@ -14,6 +15,7 @@ import { Router } from '@angular/router';
 })
 export class AddMoreComponent {
   @Output() currentScreenEvent = new EventEmitter<string>();
+  @Output() customerToEditEvent = new EventEmitter<{customer: CreateCustomerDto, index: number}>();
 
   organizationStore = inject(OrganizationStore);
   customerStore = inject(CustomerStore);
@@ -52,7 +54,11 @@ export class AddMoreComponent {
 
   onAddMore() {
     this.customerStore.resetCustomer();
-    this.customerStore.resetCurrentStep();
+    // this.customerStore.resetCurrentStep();
     this.currentScreenEvent.emit('create-customer');
+  }
+
+  editUser(customer: CreateCustomerDto ,index: number) {
+    this.customerToEditEvent.emit({customer, index});
   }
 }

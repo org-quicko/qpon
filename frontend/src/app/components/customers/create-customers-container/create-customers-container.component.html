@@ -10,8 +10,10 @@
     </div>
     <mat-divider class="border-outline-variant"></mat-divider>
   </div>
-  <div class="flex-grow !py-8 flex flex-col items-center justify-center">
-    <router-outlet></router-outlet>
+  <div class="flex-grow pt-[80px] pb-[120px] overflow-y-auto flex flex-col items-center justify-center">
+    <div class="w-full max-w-[560px] px-4">
+      <router-outlet></router-outlet>
+    </div>
   </div>
   <div
     class="flex flex-col bg-surface-container-lowest z-10 fixed bottom-0 w-full"

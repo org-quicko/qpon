@@ -142,7 +142,12 @@ export const CustomerStore = signalStore(
                     error: error.message,
                   });
 
-                  snackbarService.openSnackBar('Error creating customers', undefined);
+                  if(error.status == 409) {
+                    snackbarService.openSnackBar("Customer already exists", undefined);
+                  } else {
+                    snackbarService.openSnackBar('Error creating customers', undefined);
+                  }
+
 
                   onCustomerError.emit(error.message);
                 },
@@ -151,6 +156,16 @@ export const CustomerStore = signalStore(
           })
         )
       ),
+
+      updateCustomer(customer: CreateCustomerDto, index: number) {
+        const customers = store.customers() ?? [];
+        customers.splice(index, 1);
+        customers.push(customer);
+
+        patchState(store, {
+          customers: customers
+        })
+      }
     })
   )
 );

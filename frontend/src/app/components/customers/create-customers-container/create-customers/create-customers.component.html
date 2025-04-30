@@ -1,7 +1,9 @@
 @if(currentScreen == 'create-customer') {
 <app-create-customer
   (currentScreenEvent)="changeScreen($event)"
+  [editedCustomer]="customer"
+  [index]="index"
 ></app-create-customer>
 } @else {
-<app-add-more (currentScreenEvent)="changeScreen($event)"></app-add-more>
+<app-add-more (currentScreenEvent)="changeScreen($event)" (customerToEditEvent)="editCustomerForPrefilling($event)"></app-add-more>
 }

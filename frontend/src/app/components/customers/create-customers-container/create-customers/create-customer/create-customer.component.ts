@@ -3,6 +3,7 @@ import {
   effect,
   EventEmitter,
   inject,
+  Input,
   OnInit,
   Output,
 } from '@angular/core';
@@ -19,7 +20,10 @@ import { CustomerStore } from '../../store/customer.store';
   templateUrl: './create-customer.component.html',
   styleUrls: ['./create-customer.component.css'],
 })
-export class CreateCustomerComponent {
+export class CreateCustomerComponent implements OnInit {
+  @Input() editedCustomer?: CreateCustomerDto;
+  @Input() index?: number;
+  
   @Output() currentScreenEvent = new EventEmitter<string>();
 
   createCustomerForm: FormGroup;
@@ -33,13 +37,6 @@ export class CreateCustomerComponent {
     this.createCustomerForm = formBuilder.formGroup(new CreateCustomerDto());
 
     effect(() => {
-      const customer = this.customer();
-      if (customer && !this.createCustomerForm.dirty) {
-        this.createCustomerForm.patchValue({ ...customer });
-      }
-    });
-
-    effect(() => {
       if (this.isNextClicked()) {
         this.customerStore.setOnNext();
         this.createCustomerForm.markAllAsTouched();
@@ -48,11 +45,26 @@ export class CreateCustomerComponent {
           return;
         }
 
-        this.createCustomer();
+        if(this.editedCustomer) {
+          this.editCustomer();
+        } else {
+          this.createCustomer();
+        }
         this.customerStore.nextStep();
         this.currentScreenEvent.emit('add-more');
       }
     });
+  }
+
+  ngOnInit(): void {
+    if(this.editedCustomer !== undefined) {
+      this.createCustomerForm.controls['name'].setValue(this.editedCustomer.name);
+      this.createCustomerForm.controls['email'].setValue(this.editedCustomer.email);
+      this.createCustomerForm.controls['phone'].setValue(this.editedCustomer.phone);
+      this.createCustomerForm.controls['externalId'].setValue(this.editedCustomer.externalId);
+    } else {
+      this.createCustomerForm.reset();
+    }
   }
 
   createCustomer() {
@@ -61,5 +73,15 @@ export class CreateCustomerComponent {
     Object.assign(newCustomer, formValues);
 
     this.customerStore.setCustomer(newCustomer);
+  }
+
+  editCustomer() {
+    const formValues = this.createCustomerForm.getRawValue();
+    const updatedCustomer = new CreateCustomerDto();
+    Object.assign(updatedCustomer, formValues);
+
+    this.customerStore.updateCustomer(updatedCustomer, this.index!);
+    this.createCustomerForm.reset();
+    this.customerStore.resetCustomer();
   }
 }
