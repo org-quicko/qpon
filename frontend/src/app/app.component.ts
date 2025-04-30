@@ -18,7 +18,7 @@ export class AppComponent {
   constructor(private themeService: ThemeService, private iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer) {}
 
   ngOnInit() {
-    ColorUtil.setThemeFromSeed('#2962FF');
+    ColorUtil.setThemeFromSeed('#4D5C92');
 
     this.themeService.initializeTheme();
     registerIcons(this.iconRegistry, this.sanitizer);

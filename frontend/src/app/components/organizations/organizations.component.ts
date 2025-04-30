@@ -5,12 +5,19 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-organizations',
-  imports: [MatListModule, MatIconModule, CommonModule, NgxSkeletonLoaderModule],
+  imports: [
+    MatListModule,
+    MatIconModule,
+    MatDividerModule,
+    CommonModule,
+    NgxSkeletonLoaderModule,
+  ],
   templateUrl: './organizations.component.html',
-  styleUrl: './organizations.component.css'
+  styleUrl: './organizations.component.css',
 })
 export class OrganizationsComponent {
   organizationUserStore = inject(OrganizationUserStore);

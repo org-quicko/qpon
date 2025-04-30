@@ -50,6 +50,12 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin() {
+    this.loginFormGroup.markAllAsTouched();
+    
+    if(this.loginFormGroup.invalid) {
+      return;
+    }
+
     this.loginCredentials.email = this.loginFormGroup.controls['email'].value;
     this.loginCredentials.password =
       this.loginFormGroup.controls['password'].value;

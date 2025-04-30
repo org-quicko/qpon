@@ -8,29 +8,22 @@
         <p class="mat-body-medium text-on-surface-variant">
           Organisations you’re in
         </p>
-        <mat-list
-          class="border border-outline-variant rounded-[5px] p-[8px] divide-y divide-outline-variant "
+        <div
+          class="border border-outline-variant rounded-[5px] p-[8px] divide-y divide-outline-variant"
         >
         @if(!isLoading()) {
-          <mat-list-item
-            class="hover:bg-surface-container hover:cursor-pointer"
-            *ngFor="let organization of organizations(); let last = last"
-          >
-          <div class="px-6 py-4">
-            <div class="flex items-center justify-between w-full hover:cursor-pointer" (click)="onClick(organization.organizationId!)">
-              <div class="flex flex-col justify-between gap-2">
-                <span class="mat-body-large text-on-surface">
-                  {{ organization.name }}
-                </span>
-                <span class="mat-body-small text-on-surface-variant">
-                  You are the {{ organization.role?.replace("_", " ") }}
-                </span>
-              </div>
-              <mat-icon class="material-symbols-outlined"
+          @for(organization of organizations(); track organization) {
+            <div class="hover:bg-surface-container hover:cursor-pointer p-0" (click)="onClick(organization.organizationId!)">
+              <div class="py-4 px-6 flex items-center justify-between gap-8">
+                <div class="flex flex-col gap-2 w-full">
+                  <div class="mat-body-large text-on-surface">{{ organization.name }}</div>
+                  <div class="mat-body-small text-on-surface-variant"> You are the {{ organization.role?.replace("_", " ") }}</div>
+                </div>
+                <mat-icon class="material-symbols-outlined"
                 >chevron_right</mat-icon>
+              </div>
             </div>
-          </div>
-          </mat-list-item>
+          }
         } @else {
           @for(idx of [1,2,3,4,5]; track idx){
             <mat-list-item >
@@ -41,7 +34,7 @@
             </mat-list-item>
           } 
         }
-        </mat-list>
+        </div>
       </div>
     </div>
   </div>
