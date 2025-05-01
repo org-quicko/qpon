@@ -14,6 +14,7 @@ import { LoggerService } from './logger.service';
 import {
   couponCodeStatusEnum,
   customerConstraintEnum,
+  durationTypeEnum,
   sortOrderEnum,
 } from '../enums';
 import { CouponCodeConverter } from '../converters/coupon-code.converter';
@@ -335,6 +336,16 @@ export class CouponCodeService {
         if (!couponCode) {
           this.logger.warn('Coupon code not found', { couponCodeId });
           throw new NotFoundException('Coupon code not found');
+        }
+
+        if (
+          couponCode.durationType == durationTypeEnum.LIMITED &&
+          body.durationType == durationTypeEnum.FOREVER
+        ) {
+          body.expiresAt = undefined;
+          await manager.update(CouponCode, { couponCodeId }, {
+            expiresAt: null,
+          } as any);
         }
 
         if (
