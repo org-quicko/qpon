@@ -71,7 +71,7 @@
           Visibility
         </th>
         <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
-          {{ couponCode.visibility }}
+          {{ couponCode.visibility | titlecase }}
         </td>
       </ng-container>
 

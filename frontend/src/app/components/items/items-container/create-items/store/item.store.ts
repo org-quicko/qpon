@@ -206,9 +206,15 @@ export const ItemStore = signalStore(
                     isLoading: false,
                     error: error.message
                   });
-
-                  snackbarService.openSnackBar('Error updating item', undefined);
+                  
                   onItemError.emit(error.message);
+
+                  if(error.status == 409) {
+                    snackbarService.openSnackBar('Item with same name already exists', undefined);
+                  } else {
+                    snackbarService.openSnackBar('Error updating item', undefined);
+                  }
+
                 }
               })
             )

@@ -1,9 +1,9 @@
-<div class="flex flex-col gap-10">
+<div class="flex flex-col gap-10 w-[560px]">
   <div class="mat-headline-small text-on-surface">Add another customer</div>
   <div class="grid grid-cols-2 gap-4">
     @for(customer of customers(); track customer; let index = $index) {
-      <mat-card appearance="outlined" class="bg-surface-container-lowest overflow-hidden">
-       <button mat-button class="px-4 py-8 flex justify-start gap-1 w-full h-full rounded-none" (click)="editUser(customer, index)">
+      <mat-card appearance="outlined" class="bg-surface-container-lowest overflow-hidden !w-[272px] h-[112px]">
+       <button mat-button class="px-4 py-8 flex justify-start gap-1 h-full rounded-none" (click)="editUser(customer, index)">
         <div class="flex flex-col items-start">
           <div class="mat-body-large text-on-surface">
             {{ customer.name }}
@@ -19,7 +19,7 @@
       <mat-card-content>
         <button
           mat-button
-          class="w-[272px] h-auto py-4 flex flex-col justify-between items-center border border-dashed border-outline-variant rounded-[5px]"
+          class="w-[272px] h-[112px] py-4 flex flex-col justify-between items-center border border-dashed border-outline-variant rounded-[5px]"
           (click)="onAddMore()"
         >
           <div class="p-2 flex justify-between items-center w-full">
