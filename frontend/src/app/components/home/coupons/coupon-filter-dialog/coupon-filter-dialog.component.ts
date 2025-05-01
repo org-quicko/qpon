@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CouponFilter } from '../../../../types/coupon-filter.interface';
 import { FiltersStore } from '../../../../store/filters.store';
@@ -28,6 +28,8 @@ export class CouponFilterDialogComponent {
   readonly dialogRef = inject(MatDialogRef<CouponFilterDialogComponent>);
   readonly data = inject(MAT_DIALOG_DATA);
 
+  couponFilter = this.filtersStore.couponFilter;
+
   constructor() {
     this.filterForm = new FormGroup({
       status: new FormControl(this.data?.couponFilter?.status ?? ''),
@@ -38,6 +40,14 @@ export class CouponFilterDialogComponent {
         this.data?.couponFilter?.discountType ?? ''
       ),
     });
+
+    effect(() => {
+      if(this.couponFilter()) {
+        this.filter.set({
+          ...this.couponFilter()
+        });
+      }
+    })
   }
 
   onCancel() {

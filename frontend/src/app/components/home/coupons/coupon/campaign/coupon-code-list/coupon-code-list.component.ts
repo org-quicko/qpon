@@ -4,6 +4,7 @@ import {
   Component,
   effect,
   inject,
+  Input,
   OnInit,
   Signal,
   signal,
@@ -40,6 +41,9 @@ import { FilterDialogComponent } from './filter-dialog/filter-dialog.component';
 import { FiltersStore } from '../../../../../../store/filters.store';
 import { CouponCodeFilter } from '../../../../../../types/coupon-code-filter.interface';
 import { PaginationOptions } from '../../../../../../types/PaginatedOptions';
+import { CampaignsStore } from '../../coupon-tab/campaigns/store/campaigns.store';
+import { CampaignSummaryRow } from '../../../../../../../generated/sources/campaign_summary_workbook';
+import { InactiveMessageDialogComponent } from '../../../../common/inactive-message-dialog/inactive-message-dialog.component';
 
 @Component({
   selector: 'app-coupon-code-list',
@@ -63,6 +67,8 @@ import { PaginationOptions } from '../../../../../../types/PaginatedOptions';
   styleUrls: ['./coupon-code-list.component.css'],
 })
 export class CouponCodeListComponent implements OnInit {
+  @Input() campaign!: Signal<CampaignSummaryRow | null>;
+
   couponId: string;
   campaignId: string;
   searchControl: FormControl;
@@ -269,4 +275,24 @@ export class CouponCodeListComponent implements OnInit {
   onEdit() {
     // this.router.navigate([`/${this.organization()?.organizationId}/coupons`])
   }
+
+  openInactiveMessageDialogForCouponCode() {
+    this.dialog.open(InactiveMessageDialogComponent, {
+      autoFocus: false,
+      data: {
+        title: 'Campaign inactive!',
+        description: 'You can’t create coupon code because the campaign is marked inactive.'
+      }
+    })
+  }
+
+  openInvactiveMessageDialogForChangeStatus() {
+      this.dialog.open(InactiveMessageDialogComponent, {
+        autoFocus: false,
+        data: {
+          title: 'Campaign inactive!',
+          description: 'You can’t mark this coupon code as active because the campaign is marked inactive.'
+        }
+      })
+    }
 }

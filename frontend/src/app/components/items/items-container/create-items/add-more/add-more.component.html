@@ -17,9 +17,9 @@
               {{ item.name }}
             </div>
             <div
-              class="mat-body-medium text-on-surface-variant break-words w-full truncate"
+              class="mat-body-medium text-on-surface-variant w-full truncate"
             >
-              {{ item.description ?? "-" }}
+              {{ item.description?.length! > 0 ? item.description : "-"  }}
             </div>
           </div>
         </button>

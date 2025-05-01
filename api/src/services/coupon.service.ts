@@ -121,6 +121,10 @@ export class CouponService {
         delete whereOptions.name;
       }
 
+      if (!whereOptions.status) {
+        whereOptions.status = Not(statusEnum.ARCHIVE);
+      }
+
       const [coupons, count] = await this.couponRepository.findAndCount({
         where: {
           organization: {

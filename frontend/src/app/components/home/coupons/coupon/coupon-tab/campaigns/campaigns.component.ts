@@ -41,6 +41,7 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { PaginationOptions } from '../../../../../../types/PaginatedOptions';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { sortOrderEnum } from '../../../../../../../enums';
+import { InactiveMessageDialogComponent } from '../../../../common/inactive-message-dialog/inactive-message-dialog.component';
 
 @Component({
   selector: 'app-campaigns',
@@ -78,6 +79,8 @@ export class CampaignsComponent implements OnInit {
     active: 'createdAt',
     direction: 'desc',
   });
+
+  dialogRef = inject(MatDialog);
 
   couponStore = inject(CouponStore);
   campaignsStore = inject(CampaignsStore);
@@ -247,5 +250,25 @@ export class CampaignsComponent implements OnInit {
       },
       isSortOperation: true
     });
+  }
+
+  openInvactiveMessageDialogForCampaign() {
+    this.dialogRef.open(InactiveMessageDialogComponent, {
+      autoFocus: false,
+      data: {
+        title: 'Coupon inactive!',
+        description: 'You can’t create campaign because the coupon is marked inactive.'
+      }
+    })
+  }
+
+  openInvactiveMessageDialogForChangeStatus() {
+    this.dialogRef.open(InactiveMessageDialogComponent, {
+      autoFocus: false,
+      data: {
+        title: 'Coupon inactive!',
+        description: 'You can’t mark this campaign as active because the coupon is marked inactive.'
+      }
+    })
   }
 }

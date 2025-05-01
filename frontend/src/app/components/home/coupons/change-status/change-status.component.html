@@ -2,22 +2,23 @@
     @if(data.coupon.status == "active") {
         <div class="flex flex-col gap-6">
             <div class="flex flex-col gap-6">
-                <p class="mat-title-medium text-on-surface">Deactivate '{{ data.coupon.name }}' coupon?</p>
-                <p class="mat-body-medium text-on-surface-variant">Are you sure you want to deactivate “{{ data.coupon.name}}”? All campaigns and coupon codes associated with this coupon will be deactivated.</p>
+                <p class="mat-title-medium text-on-surface font-semibold">Mark coupon as inactive?</p>
+                <p class="mat-body-medium text-on-surface-variant">Are you sure you want to mark “{{ data.coupon.name }}” coupon as inactive? All campaigns and coupon codes associated with this coupon will also be marked inactive.</p>
             </div>
             <div class="flex justify-end gap-2 mat-label-large">
                 <button mat-button mat-dialog-close>Cancel</button>
-                <button mat-button class="bg-primary text-on-error" (click)="onDeactivate()" >Deactivate</button>
+                <button mat-flat-button class="text-on-error rounded-full" (click)="onDeactivate()">Confirm</button>
             </div>
         </div>
     } @else {
         <div class="flex flex-col gap-6">
-            <div>
-                <p class="mat-title-medium text-on-surface">Activate '{{ data.coupon.name }}' coupon?</p>
+            <div class="flex flex-col gap-6">
+                <p class="mat-title-medium text-on-surface font-semibold">Mark coupon as active?</p>
+                <p class="mat-body-medium text-on-surface-variant">Are you sure you want to mark “{{ data.coupon.name }}” coupon as active? All campaigns and coupon codes associated with this coupon will also be marked active.</p>
             </div>
             <div class="flex justify-end gap-2 mat-label-large">
                 <button mat-button mat-dialog-close>Cancel</button>
-                <button mat-button class="bg-primary text-on-error" (click)="onActivate()">Activate</button>
+                <button mat-flat-button class="text-on-error rounded-full" (click)="onActivate()">Confirm</button>
             </div>
         </div>
     }

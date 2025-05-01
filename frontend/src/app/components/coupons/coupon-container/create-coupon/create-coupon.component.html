@@ -3,7 +3,11 @@
     Let’s create a new coupon
   </div>
   <form [formGroup]="couponFormGroup" class="flex flex-col gap-4">
-    <mat-form-field appearance="outline" class="w-full" subscriptSizing="dynamic">
+    <mat-form-field
+      appearance="outline"
+      class="w-full"
+      subscriptSizing="dynamic"
+    >
       <mat-label>Coupon name</mat-label>
       <input matInput type="text" ng-trim="true" formControlName="name" />
       <mat-error>Coupon name is required</mat-error>
@@ -18,7 +22,10 @@
       <mat-radio-button
         matInput
         value="percentage"
-        (click)="discountType = 'percentage'; couponFormGroup.controls['discountType'].setValue(discountType)"
+        (click)="
+          discountType = 'percentage';
+          couponFormGroup.controls['discountType'].setValue(discountType)
+        "
         class="cursor-pointer justify-between border rounded-[5px] border-outline-variant hide-radio-button w-[272px]"
         [ngClass]="{
           'text-primary bg-secondary-container border-primary border-[2px] ':
@@ -51,7 +58,10 @@
       <mat-radio-button
         matInput
         value="fixed"
-        (click)="discountType = 'fixed'; couponFormGroup.controls['discountType'].setValue(discountType)"
+        (click)="
+          discountType = 'fixed';
+          couponFormGroup.controls['discountType'].setValue(discountType)
+        "
         class="cursor-pointer justify-between border rounded-[5px] border-outline-variant hide-radio-button w-[272px]"
         [ngClass]="{
           'text-primary bg-secondary-container border-primary border-[2px]':
@@ -75,7 +85,7 @@
                 'text-on-surface': discountType == 'fixed'
               }"
             >
-              ₹
+              {{ getCurrencySymbolOnly(organization()?.currency!) }}
             </span>
 
             <input
@@ -83,7 +93,6 @@
               type="number"
               formControlName="discountValue"
               class="mat-display-medium text-on-surface focus:outline-none pl-7 w-full leading-none"
-              placeholder="0"
               min="0"
               [ngClass]="{
                 'placeholder:text-outline-variant': discountType != 'fixed',
@@ -99,7 +108,11 @@
         Maximum amount that will be discounted*
       </div>
       <div class="flex flex-col gap-6">
-        <mat-radio-group class="flex gap-4" [disabled]="discountType == 'fixed'" [ngClass]="{'opacity-[38%]': discountType == 'fixed'}">
+        <mat-radio-group
+          class="flex gap-4"
+          [disabled]="discountType == 'fixed'"
+          [ngClass]="{ 'opacity-[38%]': discountType == 'fixed' }"
+        >
           <mat-radio-button
             matInput
             [value]="true"

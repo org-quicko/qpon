@@ -1,7 +1,7 @@
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { ItemDto } from '../../../../../../../../dtos/item.dto';
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
-import { inject } from '@angular/core';
+import { EventEmitter, inject } from '@angular/core';
 import { EligibleItemsService } from '../../../../../../../services/eligible-items.service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { of, pipe, switchMap, tap } from 'rxjs';
@@ -9,6 +9,10 @@ import { tapResponse } from '@ngrx/operators';
 import { plainToInstance } from 'class-transformer';
 import { PaginatedList } from '../../../../../../../../dtos/paginated-list.dto';
 import { HttpErrorResponse } from '@angular/common/http';
+import { SnackbarService } from '../../../../../../../services/snackbar.service';
+
+export const OnEligibleItemsSuccess = new EventEmitter<boolean>();
+export const OnEligibleItemsError = new EventEmitter<string>();
 
 type EligibleItemsState = {
   items: ItemDto[] | null;
@@ -30,7 +34,7 @@ const initialState: EligibleItemsState = {
 export const EligibleItemsStore = signalStore(
     withState(initialState),
     withDevtools('eligible_items'),
-    withMethods((store, eligibleItemService = inject(EligibleItemsService)) => ({
+    withMethods((store, eligibleItemService = inject(EligibleItemsService), snackbarService = inject(SnackbarService)) => ({
         fetchItems: rxMethod<{organizationId: string, couponId: string, skip?: number, take?: number, filter?: {name: string}}>(
             pipe(
                 tap(() => patchState(store, { isLoading: true })),
@@ -83,5 +87,51 @@ export const EligibleItemsStore = signalStore(
               loadedPages: new Set<number>(),
             });
           },
+
+        deleteItem: rxMethod<{organizationId: string, couponId: string, itemId: string}>(
+            pipe(
+                tap(() => {
+                    patchState(store, {
+                        isLoading: true
+                    })
+                }),
+                switchMap(({organizationId, couponId, itemId}) => {
+                    return eligibleItemService.deleteItemForCoupon(organizationId, couponId, itemId).pipe(
+                        tapResponse({
+                            next: (response) => {
+                                if(response.code == 200) {
+                                    const itemsList = plainToInstance(PaginatedList<ItemDto>, response.data).getItems();
+
+                                    const currentItems = store.items() ?? [];
+                                    const removedItem = plainToInstance(ItemDto, itemsList?.at(0));
+                                    const updatedItems = currentItems.filter((item) => item.itemId !== removedItem.itemId);
+
+                                    const currentCount = store.count() ?? 0;
+
+                                    const updatedCount = currentCount > 0 ? currentCount - 1 : 0;
+
+                                    patchState(store, {
+                                        items: updatedItems,
+                                        count: updatedCount,
+                                        isLoading: false,
+                                    })
+
+                                    snackbarService.openSnackBar('Item deleted successfully', undefined);
+                                    OnEligibleItemsSuccess.emit(true);
+                                }
+                            },
+                            error: (error: HttpErrorResponse) => {
+                                patchState(store, {
+                                    error: error.message
+                                })
+
+                                snackbarService.openSnackBar('Error deleting item', undefined);
+                                OnEligibleItemsError.emit(error.message);
+                            }
+                        })
+                    )
+                })
+            )
+        )
     }))
 )

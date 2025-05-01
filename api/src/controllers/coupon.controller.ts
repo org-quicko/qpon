@@ -23,7 +23,6 @@ import {
 import { Permissions } from '../decorators/permission.decorator';
 import { Coupon } from '../entities/coupon.entity';
 import { CouponSummaryMv } from '../entities/coupon-summary.view';
-import { Not } from 'typeorm';
 
 @ApiTags('Coupon')
 @Controller('/organizations/:organization_id/coupons')
@@ -77,7 +76,7 @@ export class CouponController {
       take,
       {
         name,
-        status: Not(statusEnum.ARCHIVE),
+        status,
         discountType,
         itemConstraint,
         couponItems: {

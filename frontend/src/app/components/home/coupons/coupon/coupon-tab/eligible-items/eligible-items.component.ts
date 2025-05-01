@@ -4,7 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CouponStore } from '../../store/coupon.store';
-import { EligibleItemsStore } from './store/eligible-items.store';
+import { EligibleItemsStore, OnEligibleItemsSuccess } from './store/eligible-items.store';
 import { OrganizationStore } from '../../../../../../store/organization.store';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ItemDto } from '../../../../../../../dtos/item.dto';
@@ -93,6 +93,16 @@ export class EligibleItemsComponent implements OnInit {
         },
       });
     })
+
+    OnEligibleItemsSuccess.subscribe((res) => {
+      if(res) {
+        this.eligibleItemsStore.resetLoadedPages();
+        this.paginationOptions.set({
+          pageIndex: 0,
+          pageSize: 10
+        })
+      }
+    })
   }
 
   onAddItem() {
@@ -115,5 +125,13 @@ export class EligibleItemsComponent implements OnInit {
       skip: event.pageIndex * event.pageSize,
       take: this.paginationOptions().pageSize,
     });
+  }
+
+  onDelete(item: ItemDto) {
+    this.eligibleItemsStore.deleteItem({
+      organizationId: this.organization()?.organizationId!,
+      couponId: this.couponId,
+      itemId: item.itemId!
+    })
   }
 }

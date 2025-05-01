@@ -1,4 +1,4 @@
-import { NgClass } from '@angular/common';
+import { CurrencyPipe, NgClass, getCurrencySymbol } from '@angular/common';
 import { Component, effect, inject, OnInit } from '@angular/core';
 import { Validators, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,8 +13,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { take, tap } from 'rxjs';
 import { instanceToPlain } from 'class-transformer';
 import { MatRadioModule } from '@angular/material/radio';
-import { Validator } from 'class-validator';
 import { SnackbarService } from '../../../../services/snackbar.service';
+import { getCountryCode, getCountryData } from 'countries-list';
 
 @Component({
   selector: 'app-create-coupon',
@@ -85,7 +85,7 @@ export class CreateCouponComponent implements OnInit {
   createCoupon() {
 
     if(this.couponFormGroup.invalid) {
-      if(this.couponFormGroup.controls['discountValue'].hasError('max')) {
+      if(this.couponFormGroup.controls['discountValue'].hasError('max') || this.couponFormGroup.controls['discountValue'].hasError('min')) {
         this.snackbarService.openSnackBar('Value should be between 0 to 100', undefined);
       }
       return;
@@ -115,5 +115,9 @@ export class CreateCouponComponent implements OnInit {
     const value = this.couponFormGroup.controls['discountValue'].value;
     // always at least placeholder length, else the current text length
     this.inputSize = Math.max(this.placeholder.length-1, value?.length-1 || 0);
+  }
+
+  getCurrencySymbolOnly(code: string): string {
+    return getCurrencySymbol(code, 'narrow');
   }
 }

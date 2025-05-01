@@ -26,21 +26,10 @@
         ></app-progress-bar>
       </div>
     </div>
-    @if(hideBackButton()) {
       <div class="flex justify-end items-center px-8 py-4">
         <button mat-flat-button (click)="onNext()" class="rounded-full">
           {{ getButtonText() }}
         </button>
       </div>  
-    } @else {
-      <div class="flex justify-between items-center px-8 py-4">
-        <button mat-stroked-button class="rounded-full" (click)="onBack()">
-          Back
-        </button>
-        <button mat-flat-button (click)="onNext()" [disabled]="isLoading()" class="rounded-full">
-          {{ getButtonText() }}
-        </button>
-      </div>
-    }
   </div>
 </div>

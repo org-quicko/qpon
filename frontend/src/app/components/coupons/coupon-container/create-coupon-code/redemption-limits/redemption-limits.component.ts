@@ -4,6 +4,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { getCurrencySymbol } from '@angular/common';
+import { OrganizationStore } from '../../../../../store/organization.store';
 
 @Component({
   selector: 'app-redemption-limits',
@@ -19,19 +21,23 @@ export class RedemptionLimitsComponent implements OnInit {
   minimumAmountChecked: FormControl;
   maxRedemptionsChecked: FormControl;
   maxRedemptionsPerCustomerChecked: FormControl;
+  placeholder: string;
 
+  organizationStore = inject(OrganizationStore);
   couponCodeStore = inject(CouponCodeStore);
 
   coupon = this.couponCodeStore.coupon.data;
   campaign = this.couponCodeStore.campaign.data;
   isNextClicked = this.couponCodeStore.onNext;
   isBackClicked = this.couponCodeStore.onBack;
+  organization = this.organizationStore.organizaiton;
 
   constructor() {
 
     this.minimumAmountChecked = new FormControl(false);
     this.maxRedemptionsChecked = new FormControl(false);
     this.maxRedemptionsPerCustomerChecked = new FormControl(false);
+    this.placeholder = '';
 
     this.minimumAmountChecked.valueChanges.subscribe(checked => {
       const control = this.createCouponCodeForm.get('minimumAmount');
@@ -84,7 +90,7 @@ export class RedemptionLimitsComponent implements OnInit {
         const nextIndex = this.couponCodeStore.couponCodeScreenIndex() + 1;
         this.couponCodeStore.setCouponCodeScreenIndex(nextIndex);
         this.currentScreenEvent.emit('customer-constraint')
-      } 
+      }
     })
 
     effect(() => {
@@ -108,6 +114,12 @@ export class RedemptionLimitsComponent implements OnInit {
     if (!this.maxRedemptionsPerCustomerChecked.value) {
       this.createCouponCodeForm.get('maxRedemptionPerCustomer')?.disable();
     }
+
+    this.placeholder = `${this.getCurrencySymbolOnly(this.organization()?.currency!)}250`
+  }
+
+  getCurrencySymbolOnly(code: string): string {
+    return getCurrencySymbol(code, 'narrow');
   }
 
 }

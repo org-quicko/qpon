@@ -37,4 +37,9 @@ export class EligibleItemsService {
     const url = this.endpoint + "/organizations/" + organizationId + "/coupons/" + couponId + "/items";
     return this.httpClient.patch<ApiResponse<CouponItemDto>>(url, {"items": items});
   }
+
+  deleteItemForCoupon(organizationId: string, couponId: string, itemId: string) {
+    const url = this.endpoint + "/organizations/" + organizationId + "/coupons/" + couponId + "/items/" + itemId;
+    return this.httpClient.delete<ApiResponse<PaginatedList<ItemDto>>>(url);
+  }
 }

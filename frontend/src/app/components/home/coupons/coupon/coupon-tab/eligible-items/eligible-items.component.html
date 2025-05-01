@@ -13,9 +13,8 @@
       </mat-list>
       <button
         mat-flat-button
-        class="bg-primary rounded-[100px] mat-label-large text-on-primary"
+        class="rounded-[100px] mat-label-large text-on-primary"
         (click)="onAddItem()"
-        [disabled]="coupon()?.status == 'inactive'"
       >
         <mat-icon>add</mat-icon>
         <span>Add items</span>
@@ -86,6 +85,19 @@
                 >
               </button>
             </div>
+            <mat-menu
+            #options="matMenu"
+            class="w-[200px] min-w-[112px] max-w-[280px] rounded-[4px] bg-surface-container-lowest top-[208px] left-[3155px] font-sans"
+          >
+            <button
+              mat-menu-item
+              class="h-[56px] py-8 flex gap-[12px]"
+              (click)="onDelete(item)"
+            >
+              <mat-icon class="material-symbols-outlined">delete</mat-icon>
+              <span class="mat-body-large text-on-surface">Delete</span>
+            </button>
+          </mat-menu>
           </td>
         </ng-container>
 
@@ -106,9 +118,7 @@
                       >category</mat-icon
                     >
                   </div>
-                  <p class="text-on-surface mat-body-large">
-                    No items to show
-                  </p>
+                  <p class="text-on-surface mat-body-large">No items to show</p>
                 </div>
               </div>
             </div>
@@ -116,73 +126,68 @@
         </tr>
       </table>
       } @else {
-        <table mat-table [dataSource]="tempDatasource" class="text-on-surface w-full">
-          <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef>Name</th>
-            <td mat-cell *matCellDef="let item">
-              <ngx-skeleton-loader
-            [theme]="{
-              height: '24px',
-              width: '100px',
-              margin: '0px',
-              padding: '0px'
-            }"
-          ></ngx-skeleton-loader>
-            </td>
-          </ng-container>
-  
-          <ng-container matColumnDef="description">
-            <th mat-header-cell *matHeaderCellDef>Description</th>
-            <td mat-cell *matCellDef="let item">
-              <ngx-skeleton-loader
-            [theme]="{
-              height: '24px',
-              width: '100px',
-              margin: '0px',
-              padding: '0px'
-            }"
-          ></ngx-skeleton-loader>
-            </td>
-          </ng-container>
-  
-          <ng-container matColumnDef="menu">
-            <th mat-header-cell *matHeaderCellDef aria-label="row actions">
-              &nbsp;
-            </th>
-            <td mat-cell *matCellDef="let item">
-              <div class="flex justify-end">
-                <button mat-icon-button>
-                  <mat-icon
-                    [matMenuTriggerFor]="options"
-                    class="hover:cursor-pointer"
-                    >more_vert</mat-icon
-                  >
-                </button>
-              </div>
-            </td>
-          </ng-container>
-  
-          <tr mat-header-row *matHeaderRowDef="columns"></tr>
-          <tr mat-row *matRowDef="let row; columns: columns"></tr>
-        </table>
+      <table
+        mat-table
+        [dataSource]="tempDatasource"
+        class="text-on-surface w-full"
+      >
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <td mat-cell *matCellDef="let item">
+            <ngx-skeleton-loader
+              [theme]="{
+                height: '24px',
+                width: '100px',
+                margin: '0px',
+                padding: '0px'
+              }"
+            ></ngx-skeleton-loader>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef>Description</th>
+          <td mat-cell *matCellDef="let item">
+            <ngx-skeleton-loader
+              [theme]="{
+                height: '24px',
+                width: '100px',
+                margin: '0px',
+                padding: '0px'
+              }"
+            ></ngx-skeleton-loader>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="menu">
+          <th mat-header-cell *matHeaderCellDef aria-label="row actions">
+            &nbsp;
+          </th>
+          <td mat-cell *matCellDef="let item">
+            <div class="flex justify-end">
+              <button mat-icon-button>
+                <mat-icon
+                  class="hover:cursor-pointer"
+                  >more_vert</mat-icon
+                >
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns"></tr>
+      </table>
       }
     </div>
     <div>
-      <mat-paginator [length]="count()" [pageSize]="paginationOptions().pageSize" (page)="onPageChange($event)"></mat-paginator>
+      <mat-paginator
+        [length]="count()"
+        [pageIndex]="paginationOptions().pageIndex"
+        [pageSize]="paginationOptions().pageSize"
+        (page)="onPageChange($event)"
+      ></mat-paginator>
     </div>
   </div>
   }
 </div>
-<mat-menu
-  #options="matMenu"
-  class="w-[200px] min-w-[112px] max-w-[280px] rounded-[4px] bg-surface-container-lowest top-[208px] left-[3155px] font-sans"
->
-  <button mat-menu-item class="h-[56px] py-8 flex gap-[12px]">
-    <mat-icon class="material-symbols-outlined">edit</mat-icon>
-    <span class="mat-body-large text-on-surface">Edit</span>
-  </button>
-  <button mat-menu-item class="h-[56px] py-8 flex gap-[12px]">
-    <mat-icon class="material-symbols-outlined">delete</mat-icon>
-    <span class="mat-body-large text-on-surface">Delete</span>
-  </button>
-</mat-menu>

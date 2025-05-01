@@ -4,7 +4,7 @@
     <button
       mat-flat-button
       class="rounded-[100px] text-on-primary mat-label-large"
-      (click)="onCreateCouponCode()"
+      (click)="campaign()?.getStatus() == 'inactive' ? openInactiveMessageDialogForCouponCode() : onCreateCouponCode()"
     >
       <mat-icon>add</mat-icon>
       <span>Create coupon code</span>
@@ -152,7 +152,7 @@
             <button
               mat-menu-item
               class="h-[56px] py-8 flex gap-[12px]"
-              (click)="openChangeStatusDialog(couponCode)"
+              (click)="campaign()?.getStatus() == 'inactive' ?  openInvactiveMessageDialogForChangeStatus() : openChangeStatusDialog(couponCode)"
             >
               <mat-icon
                 svgIcon="regime_preference"

@@ -7,9 +7,8 @@
     </div>
     <button
       mat-flat-button
-      class="bg-primary rounded-[100px] text-on-primary"
-      (click)="onCreateCampaign()"
-      [disabled]="coupon()?.status == 'inactive'"
+      class="rounded-[100px] text-on-primary"
+      (click)="coupon()?.status == 'inactive' ? openInvactiveMessageDialogForCampaign() : onCreateCampaign()"
     >
       <mat-icon>add</mat-icon>
       <span>Create campaign</span>
@@ -119,10 +118,8 @@
           &nbsp;
         </th>
         <td mat-cell *matCellDef="let summary" class="py-6 pl-6 pr-4 w-auto">
-          <button mat-icon-button>
+          <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
             <mat-icon
-              [matMenuTriggerFor]="menu"
-              (click)="$event.stopPropagation()"
               class="hover:cursor-pointer"
               >more_vert</mat-icon
             >
@@ -146,7 +143,7 @@
             <button
               mat-menu-item
               class="h-[56px] py-8 flex gap-[12px]"
-              (click)="openDialog(convertToCampaignSummaryRow(summary))"
+              (click)="coupon()?.status == 'inactive' ? openInvactiveMessageDialogForChangeStatus() : openDialog(convertToCampaignSummaryRow(summary))"
             >
               <mat-icon
                 svgIcon="regime_preference"
