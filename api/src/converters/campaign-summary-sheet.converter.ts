@@ -45,13 +45,15 @@ export class CampaignSummarySheetConverter {
     const campaignSummaryWorkbook = new CampaignSummaryWorkbook();
     campaignSummaryWorkbook.addCampaignSummarySheet(campaignSummarySheet);
 
-    campaignSummaryTable.metadata = new JSONObject({
-      organization_id: campaignSummaryMv[0].organizationId,
-      coupon_id: campaignSummaryMv[0].couponId,
-      count: count,
-      skip: skip,
-      take: take,
-    });
+    if (campaignSummaryMv.length > 0) {
+      campaignSummaryTable.metadata = new JSONObject({
+        organization_id: campaignSummaryMv[0]?.organizationId,
+        coupon_id: campaignSummaryMv[0].couponId,
+        count: count,
+        skip: skip,
+        take: take,
+      });
+    }
 
     return campaignSummaryWorkbook;
   }

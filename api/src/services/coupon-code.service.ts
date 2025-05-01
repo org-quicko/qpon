@@ -153,8 +153,6 @@ export class CouponCodeService {
         whereOptions.status = Not(couponCodeStatusEnum.ARCHIVE);
       }
 
-      console.log('where', whereOptions);
-
       const [couponCodes, count] = await this.couponCodeRepository.findAndCount(
         {
           where: {
@@ -178,7 +176,6 @@ export class CouponCodeService {
 
       if (!couponCodes || couponCodes.length == 0) {
         this.logger.warn('Coupon codes not found', { campaignId, couponId });
-        throw new NotFoundException('Coupon codes not found');
       }
 
       this.logger.info('END: fetchCouponCodes service');

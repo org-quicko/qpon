@@ -178,7 +178,6 @@ export class RedemptionsService {
 
       if (!redemptions || redemptions.length == 0) {
         this.logger.warn('Redemptions not found');
-        throw new NotFoundException('Redemptions not found');
       }
 
       this.logger.info('END: fetchRedemptions service');

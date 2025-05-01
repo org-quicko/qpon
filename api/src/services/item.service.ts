@@ -113,7 +113,6 @@ export class ItemsService {
 
       if (!items || items.length == 0) {
         this.logger.warn('Items not found', organizationId);
-        throw new NotFoundException('Items not found');
       }
 
       this.logger.info('END: fetchItems service');

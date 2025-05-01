@@ -6,7 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, FindOptionsWhere, Repository } from 'typeorm';
+import { DataSource, FindOptionsWhere, Not, Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
 import { CreateUserDto, UpdateUserDto, UpdateUserRoleDto } from '../dtos';
 import { LoggerService } from './logger.service';
@@ -137,6 +137,7 @@ export class UserService {
             organization: {
               organizationId,
             },
+            role: Not(roleEnum.SUPER_ADMIN),
           },
           ...whereOptions,
         },
@@ -145,9 +146,6 @@ export class UserService {
 
       if (!users || users.length == 0) {
         this.logger.warn('Users not found');
-        throw new NotFoundException(
-          `Users not found for organization: ${organizationId}`,
-        );
       }
 
       return users.map((user) =>
@@ -444,7 +442,6 @@ export class UserService {
 
       if (!organizationUsers || organizationUsers.length == 0) {
         this.logger.warn('Organizations not found for user', { userId });
-        throw new NotFoundException('Organizations not found for this user');
       }
 
       this.logger.info('END: fetchOrganizationsForUser service');

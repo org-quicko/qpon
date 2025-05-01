@@ -131,7 +131,6 @@ export class CustomerCouponCodeService {
 
       if (!customers) {
         this.logger.info('Customers not found');
-        throw new NotFoundException('Customers not found for this coupon code');
       }
 
       this.logger.info('END: fetchCustomers service');
@@ -179,7 +178,6 @@ export class CustomerCouponCodeService {
 
       if (!customers) {
         this.logger.info('Customers not found');
-        throw new NotFoundException('Customers not found for this coupon code');
       }
 
       this.logger.info('END: fetchCustomerForValidation service');

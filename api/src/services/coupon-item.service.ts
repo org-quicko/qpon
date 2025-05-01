@@ -19,6 +19,8 @@ export class CouponItemService {
   constructor(
     @InjectRepository(CouponItem)
     private readonly couponItemRepository: Repository<CouponItem>,
+    @InjectRepository(Coupon)
+    private readonly couponRepository: Repository<Coupon>,
     private couponItemConverter: CouponItemConverter,
     private itemService: ItemsService,
     private logger: LoggerService,
@@ -85,6 +87,17 @@ export class CouponItemService {
         delete whereOptions.name;
       }
 
+      const coupon = await this.couponRepository.findOne({
+        where: {
+          couponId,
+        },
+      });
+
+      if (!coupon) {
+        this.logger.warn('Coupon not found');
+        throw new NotFoundException('Coupon not found');
+      }
+
       const [couponItems, count] = await this.couponItemRepository.findAndCount(
         {
           relations: {
@@ -115,7 +128,6 @@ export class CouponItemService {
 
       if (!couponItems || couponItems.length == 0) {
         this.logger.warn('No items found for this coupon', couponId);
-        throw new NotFoundException('Items not found for coupon');
       }
 
       this.logger.info('END: fetchItems service');
@@ -152,7 +164,6 @@ export class CouponItemService {
 
       if (!couponItems) {
         this.logger.warn('No items found for this coupon', couponId);
-        throw new NotFoundException('Items not found for coupon');
       }
 
       this.logger.info('END: fetchItemForValidation service');

@@ -109,7 +109,6 @@ export class OrganizationService {
 
       if (!organizations || organizations.length == 0) {
         this.logger.warn('Organizations not found');
-        throw new NotFoundException('Organizations not found');
       }
 
       this.logger.info('END: fetchOrganizations service');

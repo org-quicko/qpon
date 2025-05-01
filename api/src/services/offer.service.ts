@@ -44,16 +44,18 @@ export class OffersService {
         },
       );
 
-      if (externalItemId || externalCustomerId) {
-        query
-          .andWhere(
-            '(offer.external_item_id = :externalItemId OR offer.external_item_id IS NULL)',
-            { externalItemId },
-          )
-          .andWhere(
-            '(offer.external_customer_id = :externalCustomerId OR offer.external_customer_id IS NULL)',
-            { externalCustomerId },
-          );
+      if (externalItemId) {
+        query.andWhere(
+          '(offer.external_item_id = :externalItemId OR offer.external_item_id IS NULL)',
+          { externalItemId },
+        );
+      }
+
+      if (externalCustomerId) {
+        query.andWhere(
+          '(offer.external_customer_id = :externalCustomerId OR offer.external_customer_id IS NULL)',
+          { externalCustomerId },
+        );
       }
 
       if (discountType) {
@@ -72,11 +74,15 @@ export class OffersService {
 
       if (!offers || offers.length == 0) {
         this.logger.warn('Offers not found');
-        throw new NotFoundException('Offers not found');
       }
 
       this.logger.info('END: fetchOffers service');
-      return this.offerSheetConverter.convert(offers, organizationId);
+      return this.offerSheetConverter.convert(
+        offers,
+        organizationId,
+        skip,
+        take,
+      );
     } catch (error) {
       this.logger.error(`Error in fetchOffers: ${error.message}`, error);
 

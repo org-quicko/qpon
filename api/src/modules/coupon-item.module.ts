@@ -8,9 +8,10 @@ import { CouponItemService } from '../services/coupon-item.service';
 import { ItemsService } from '../services/item.service';
 import { ItemConverter } from 'src/converters/item.converter';
 import { ItemsListConverter } from 'src/converters/items-list.converter';
+import { Coupon } from 'src/entities/coupon.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CouponItem, Item])],
+  imports: [TypeOrmModule.forFeature([CouponItem, Item, Coupon])],
   controllers: [CouponItemController],
   providers: [
     CouponItemService,

@@ -114,7 +114,6 @@ export class CampaignService {
 
       if (!campaigns || campaigns.length == 0) {
         this.logger.warn('No campaigns found for the given coupon', couponId);
-        throw new NotFoundException('Campaigns not found for this coupon');
       }
 
       this.logger.info('END: fetchCampaigns service');
@@ -366,7 +365,6 @@ export class CampaignService {
 
       if (!campaignSummaryMv || campaignSummaryMv.length == 0) {
         this.logger.warn('Unable to find campaign summaries');
-        throw new NotFoundException('Unable to find campaign summaries');
       }
 
       this.logger.info('END: fetchCampaignsSummary service');

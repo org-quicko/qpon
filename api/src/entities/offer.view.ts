@@ -10,33 +10,34 @@ import { ViewColumn, ViewEntity } from 'typeorm';
 @ViewEntity({
   name: 'offer',
   expression: `
-    SELECT
-        c.organization_id,
-        c.coupon_id,
-        cc.code,
-        c.discount_type,
-        c.discount_value,
-        c.discount_upto,
-        c.item_constraint,
-        cc.customer_constraint,
-        cc.minimum_amount,
-        cc.visibility,
-        cc.expires_at,
-        ct.item_id,
-        t.external_id AS external_item_id,
-        cust.external_id AS external_customer_id,
-        ccc.customer_id,
-        camp.external_id AS external_campaign_id,
-        cc.status AS coupon_code_status,
-        now() as created_at,
-        clock_timestamp() as updated_at
-    FROM coupon c
-    LEFT JOIN campaign camp ON camp.coupon_id = c.coupon_id
-    LEFT JOIN coupon_code cc ON c.coupon_id = cc.coupon_id
-    LEFT JOIN coupon_item ct ON c.coupon_id = ct.coupon_id
-    LEFT JOIN item t ON ct.item_id = t.item_id
-    LEFT JOIN customer_coupon_code ccc on ccc.coupon_code_id = cc.coupon_code_id
-    LEFT JOIN customer cust ON cust.customer_id = ccc.customer_id;
+      SELECT DISTINCT ON (cc.coupon_code_id)
+          c.organization_id,
+          c.coupon_id,
+          cc.code,
+          c.discount_type,
+          c.discount_value,
+          c.discount_upto,
+          c.item_constraint,
+          cc.customer_constraint,
+          cc.minimum_amount,
+          cc.visibility,
+          cc.expires_at,
+          ct.item_id,
+          t.external_id AS external_item_id,
+          cust.external_id AS external_customer_id,
+          ccc.customer_id,
+          camp.external_id AS external_campaign_id,
+          cc.status AS coupon_code_status,
+          now() as created_at,
+          clock_timestamp() as updated_at
+      FROM coupon c
+      LEFT JOIN campaign camp ON camp.coupon_id = c.coupon_id
+      LEFT JOIN coupon_code cc ON c.coupon_id = cc.coupon_id
+      LEFT JOIN coupon_item ct ON c.coupon_id = ct.coupon_id
+      LEFT JOIN item t ON ct.item_id = t.item_id
+      LEFT JOIN customer_coupon_code ccc ON ccc.coupon_code_id = cc.coupon_code_id
+      LEFT JOIN customer cust ON cust.customer_id = ccc.customer_id
+      WHERE cc.status = 'active';
     `,
 })
 export class Offer {

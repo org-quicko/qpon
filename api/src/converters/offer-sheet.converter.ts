@@ -12,7 +12,12 @@ import { offerTitleBuilder } from '../utils/offer-title.builder';
 
 @Injectable()
 export class OfferSheetConverter {
-  convert(offers: Offer[], organizationId: string): OfferWorkbook {
+  convert(
+    offers: Offer[],
+    organizationId: string,
+    skip?: number,
+    take?: number,
+  ): OfferWorkbook {
     const offerTable = new OfferTable();
     offers.map((offer) => {
       const offerRow = new OfferRow([]);
@@ -37,9 +42,18 @@ export class OfferSheetConverter {
 
     const offerWorkbook = new OfferWorkbook();
     offerWorkbook.addOfferSheet(offerSheet);
-    offerWorkbook.metadata = new JSONObject({
-      organization_id: organizationId,
-    });
+
+    if (skip! >= 0 && take! > 0) {
+      offerWorkbook.metadata = new JSONObject({
+        organization_id: organizationId,
+        skip,
+        take,
+      });
+    } else {
+      offerWorkbook.metadata = new JSONObject({
+        organization_id: organizationId,
+      });
+    }
 
     return offerWorkbook;
   }

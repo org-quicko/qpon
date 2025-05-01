@@ -118,7 +118,6 @@ export class CustomersService {
 
       if (!customers || customers.length == 0) {
         this.logger.warn('Customers not found');
-        throw new NotFoundException('Customers not found');
       }
 
       this.logger.info('END: fetchCustomers service');

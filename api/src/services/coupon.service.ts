@@ -136,7 +136,6 @@ export class CouponService {
 
       if (!coupons || coupons.length == 0) {
         this.logger.warn('Coupons not found');
-        throw new NotFoundException('Coupons not found');
       }
 
       this.logger.info('END: fetchCoupons service');
@@ -470,7 +469,6 @@ export class CouponService {
 
       if (!couponSummaries || couponSummaries.length == 0) {
         this.logger.warn('Unable to find summary for coupons');
-        throw new NotFoundException('Coupon summary not found');
       }
 
       this.logger.info('END: fetchCouponsSummary service');
