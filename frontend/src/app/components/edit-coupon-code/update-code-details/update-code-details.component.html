@@ -20,18 +20,6 @@
         <mat-label>Code</mat-label>
         <div class="flex justify-between items-center">
           <input matInput type="text" [disabled]="true" [value]="couponCode()?.code"/>
-          <button
-            class="hover:cursor-pointer"
-            (click)="$event.stopPropagation()"
-          >
-            <div class="flex items-center gap-1">
-              <mat-icon
-                svgIcon="autofill"
-                class="h-4 w-4 text-[16px]"
-              ></mat-icon>
-              <span class="mat-label-large text-primary">generate</span>
-            </div>
-          </button>
         </div>    
       </mat-form-field>
       <mat-form-field appearance="outline">

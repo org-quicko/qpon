@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, effect, inject, OnInit } from '@angular/core';
+import { Component, effect, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatOptionModule } from '@angular/material/core';
@@ -25,6 +25,7 @@ import {
 } from '../store/customer-coupon-code.store';
 import { MatListModule } from '@angular/material/list';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-update-customer-constraint',
@@ -37,6 +38,7 @@ import { ActivatedRoute, Router } from '@angular/router';
     MatDividerModule,
     MatButtonModule,
     MatListModule,
+    MatChipsModule,
     ReactiveFormsModule,
     NgClass,
   ],
@@ -44,6 +46,9 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./update-customer-constraint.component.css'],
 })
 export class UpdateCustomerConstraintComponent implements OnInit {
+
+  @ViewChild('customersInput') customersInput!: ElementRef<HTMLInputElement>;
+
   customerConstraint: string;
   selectedCustomers: CustomerDto[];
   updateCouponCodeForm: FormGroup;
@@ -137,12 +142,13 @@ export class UpdateCustomerConstraintComponent implements OnInit {
   displayWithItems = () => '';
 
   selectedCustomer(customer: CustomerDto) {
-    const index = this.selectedCustomers.indexOf(customer);
+    const index = this.selectedCustomers.findIndex(selected => selected.customerId === customer.customerId);
     if (index == -1) {
       this.selectedCustomers.push(customer);
     } else if (index !== -1) {
       this.selectedCustomers.splice(index, 1);
     }
+    this.customersInput.nativeElement.value = '';
     this.eligibleCustomersForm.get('customers')?.setValue(null);
   }
 

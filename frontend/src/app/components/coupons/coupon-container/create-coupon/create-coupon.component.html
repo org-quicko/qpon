@@ -3,7 +3,7 @@
     Let’s create a new coupon
   </div>
   <form [formGroup]="couponFormGroup" class="flex flex-col gap-4">
-    <mat-form-field appearance="outline" class="w-full">
+    <mat-form-field appearance="outline" class="w-full" subscriptSizing="dynamic">
       <mat-label>Coupon name</mat-label>
       <input matInput type="text" ng-trim="true" formControlName="name" />
     </mat-form-field>
@@ -51,7 +51,7 @@
         (click)="discountType = 'fixed'"
         class="cursor-pointer justify-between border rounded-[5px] border-outline-variant hide-radio-button w-[272px]"
         [ngClass]="{
-          'text-primary bg-secondary-container border-primary border-[2px] ':
+          'text-primary bg-secondary-container border-primary border-[2px]':
             discountType == 'fixed',
           'hover:bg-surface-dim': discountType != 'fixed'
         }"
@@ -63,17 +63,30 @@
           }"
         >
           <div class="mat-body-large text-on-surface">Fixed amount</div>
-          <input
-            matInput
-            type="number"
-            formControlName="discountValue"
-            class="mat-display-medium text-on-surface focus:outline-none"
-            placeholder="₹0"
-            [ngClass]="{
-              'placeholder:text-outline-variant': discountType != 'fixed',
-              'text-outline-variant': discountType != 'fixed'
-            }"
-          />
+
+          <div class="relative w-full">
+            <span
+              class="absolute left-0 top-[35%] -translate-y-1/2 pl-0.5 mat-display-medium leading-none"
+              [ngClass]="{
+                'text-outline-variant': discountType != 'fixed',
+                'text-on-surface': discountType == 'fixed'
+              }"
+            >
+              ₹
+            </span>
+
+            <input
+              matInput
+              type="number"
+              formControlName="discountValue"
+              class="mat-display-medium text-on-surface focus:outline-none pl-7 w-full leading-none"
+              placeholder="0"
+              [ngClass]="{
+                'placeholder:text-outline-variant': discountType != 'fixed',
+                'text-outline-variant': discountType != 'fixed'
+              }"
+            />
+          </div>
         </div>
       </mat-radio-button>
     </mat-radio-group>

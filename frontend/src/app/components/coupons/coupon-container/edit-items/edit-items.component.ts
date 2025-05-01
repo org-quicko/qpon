@@ -31,6 +31,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { UpdateCouponDto } from '../../../../../dtos/coupon.dto';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-edit-items',
@@ -43,6 +44,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatAutocompleteModule,
     MatDividerModule,
     MatButtonModule,
+    MatChipsModule,
     ReactiveFormsModule,
     NgClass,
   ],

@@ -1,11 +1,13 @@
 import {
   Component,
   effect,
+  ElementRef,
   EventEmitter,
   inject,
   Input,
   OnInit,
   Output,
+  ViewChild,
 } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -27,6 +29,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { CreateCouponCodeDto } from '../../../../../../dtos/coupon-code.dto';
 import { customerConstraintEnum, durationTypeEnum, visibilityEnum } from '../../../../../../enums';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-customer-constraint',
@@ -39,6 +42,7 @@ import { customerConstraintEnum, durationTypeEnum, visibilityEnum } from '../../
     MatAutocompleteModule,
     MatDividerModule,
     MatButtonModule,
+    MatChipsModule,
     ReactiveFormsModule,
     NgClass,
   ],
@@ -48,6 +52,8 @@ import { customerConstraintEnum, durationTypeEnum, visibilityEnum } from '../../
 export class CustomerConstraintComponent implements OnInit {
   @Input() createCouponCodeForm!: FormGroup;
   @Output() currentScreenEvent = new EventEmitter<string>();
+
+  @ViewChild('customersInput') customersInput!: ElementRef<HTMLInputElement>;
 
   customerConstraint: string;
   selectedCustomers: CustomerDto[];
@@ -122,12 +128,13 @@ export class CustomerConstraintComponent implements OnInit {
   displayWithItems = () => '';
 
   selectedCustomer(customer: CustomerDto) {
-    const index = this.selectedCustomers.indexOf(customer);
+    const index = this.selectedCustomers.findIndex(selected => selected.customerId === customer.customerId);
     if (index == -1) {
       this.selectedCustomers.push(customer);
     } else if (index !== -1) {
       this.selectedCustomers.splice(index, 1);
     }
+    this.customersInput.nativeElement.value = '';
     this.eligibleCustomersForm.get('customers')?.setValue(null);
   }
 
@@ -151,5 +158,9 @@ export class CustomerConstraintComponent implements OnInit {
     this.couponCodeStore.setCouponCodes(
       newCouponCode
     );
+  }
+
+  isCustomerSelected(customer: CustomerDto): boolean {
+      return this.selectedCustomers.some(selected => selected.customerId === customer.customerId);
   }
 }

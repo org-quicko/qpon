@@ -11,12 +11,16 @@
   </div>
   <form [formGroup]="createCouponCodeForm" class="flex flex-col gap-8">
     <div class="flex flex-col gap-4">
-      <mat-checkbox
-        class="mat-body-large text-on-surface"
-        [formControl]="minimumAmountChecked"
-        >Set minimum purchase amount</mat-checkbox
+      <mat-checkbox [formControl]="minimumAmountChecked"
+        ><span class="mat-body-large text-on-surface">
+          Set minimum purchase amount
+        </span></mat-checkbox
       >
-      <mat-form-field appearance="outline" class="w-full">
+      <mat-form-field
+        appearance="outline"
+        class="w-full"
+        subscriptSizing="dynamic"
+      >
         <input
           type="text"
           matInput
@@ -30,9 +34,16 @@
       <mat-checkbox
         class="mat-body-large text-on-surface"
         [formControl]="maxRedemptionsChecked"
-        >Set max redemptions</mat-checkbox
       >
-      <mat-form-field appearance="outline" class="w-full">
+        <span class="mat-body-large text-on-surface">
+          Set max redemptions
+        </span>
+      </mat-checkbox>
+      <mat-form-field
+        appearance="outline"
+        class="w-full"
+        subscriptSizing="dynamic"
+      >
         <input
           type="text"
           matInput
@@ -46,9 +57,17 @@
       <mat-checkbox
         class="mat-body-large text-on-surface"
         [formControl]="maxRedemptionsPerCustomerChecked"
-        >Set max redemptions per customer</mat-checkbox
+        >
+        <span class="mat-body-large text-on-surface">
+          Set max redemptions per customer
+        </span>
+        </mat-checkbox
       >
-      <mat-form-field appearance="outline" class="w-full">
+      <mat-form-field
+        appearance="outline"
+        class="w-full"
+        subscriptSizing="dynamic"
+      >
         <input
           type="text"
           matInput

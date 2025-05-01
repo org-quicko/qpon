@@ -206,3 +206,11 @@
     )
   );
 }
+
+.constraint-chip {
+  @include mat.chips-overrides(
+  (
+    outline-width: 0
+  )
+  )
+}

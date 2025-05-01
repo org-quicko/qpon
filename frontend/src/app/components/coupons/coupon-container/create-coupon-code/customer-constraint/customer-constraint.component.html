@@ -83,12 +83,23 @@
         <form class="w-full" [formGroup]="eligibleCustomersForm">
           <mat-form-field appearance="outline" class="w-full">
             <mat-label class="mat-body-large">Search customers by email</mat-label>
+            <mat-chip-grid #chipGrid>
+              @for(customer of selectedCustomers; let index = $index; track customer.customerId!) {
+                <mat-chip-row (removed)="selectedCustomer(customer)" class="bg-surface-container constraint-chip">
+                  {{ customer.name }}
+                  <button matChipRemove>
+                    <mat-icon class="material-symbols-outlined">close</mat-icon>
+                  </button>
+                </mat-chip-row>
+              }
+            </mat-chip-grid>
             <input
               matInput
-              #itemsInput
+              #customersInput
               placeholder="Search customers by email"
               class="placeholder:text-outline-variant pl-4"
               [matAutocomplete]="auto"
+              [matChipInputFor]="chipGrid"
               [formControl]="searchControl"
             />
             <mat-autocomplete
@@ -100,7 +111,7 @@
                 <mat-checkbox
                   (click)="$event.stopPropagation()"
                   (change)="selectedCustomer(customer)"
-                  [checked]="selectedCustomers.includes(customer)"
+                  [checked]="isCustomerSelected(customer)"
                   [value]="customer.customerId!"
                 >
                 <div class="flex flex-col">
@@ -114,19 +125,6 @@
           </mat-form-field>
         </form>
       </div>
-      @if(selectedCustomers.length > 0) {
-        @for(customer of selectedCustomers; track customer.customerId) {
-          <div class="flex justify-between items-center">
-            <div class="mat-body-medium text-on-surface">
-              {{ customer.name }}
-            </div>
-            <button mat-icon-button (click)="selectedCustomer(customer)">
-              <mat-icon>close</mat-icon>
-            </button>
-          </div>
-          <mat-divider></mat-divider>
-        }
-      }
     </div>
     }
 </div>

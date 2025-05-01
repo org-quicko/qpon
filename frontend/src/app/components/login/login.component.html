@@ -50,6 +50,7 @@
               mat-icon-button
               matSuffix
               (click)="hidePassword = !hidePassword"
+              (keydown)="$event.stopPropagation()"
             >
               <mat-icon class="material-symbols-outlined text-on-surface">{{
                 hidePassword ? "visibility_off" : "visibility"

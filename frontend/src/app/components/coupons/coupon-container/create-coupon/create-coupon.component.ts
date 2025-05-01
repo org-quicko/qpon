@@ -10,7 +10,7 @@ import { CouponCodeStore, CreateSuccess } from '../../store/coupon-code.store';
 import { OrganizationStore } from '../../../../store/organization.store';
 import { discountTypeEnum, itemConstraintEnum } from '../../../../../enums';
 import { ActivatedRoute, Router } from '@angular/router';
-import { take } from 'rxjs';
+import { take, tap } from 'rxjs';
 import { instanceToPlain } from 'class-transformer';
 import { MatRadioModule } from '@angular/material/radio';
 
@@ -32,6 +32,8 @@ export class CreateCouponComponent implements OnInit {
   maxAmount: boolean = false;
   maxAmountFormControl: FormControl;
   couponFormGroup: FormGroup;
+  inputSize: number
+  placeholder = "0";
 
   couponCodeStore = inject(CouponCodeStore);
   organizationStore = inject(OrganizationStore);
@@ -47,6 +49,7 @@ export class CreateCouponComponent implements OnInit {
   ) {
     this.maxAmountFormControl = new FormControl(false);
     this.couponFormGroup = this.formBuilder.formGroup(new CreateCouponDto());
+    this.inputSize = 0;
 
     effect(() => {
       if (this.isNextClicked()) {
@@ -63,6 +66,8 @@ export class CreateCouponComponent implements OnInit {
         relativeTo: this.route,
       });
     });
+
+    this.couponFormGroup.controls['discountValue'].valueChanges.subscribe(() => this.adjustSize());
   }
 
   createCoupon() {
@@ -83,5 +88,12 @@ export class CreateCouponComponent implements OnInit {
       organizationId: this.organization()?.organizationId!,
       coupon: instanceToPlain(coupon),
     });
+  }
+
+
+  adjustSize() {
+    const value = this.couponFormGroup.controls['discountValue'].value;
+    // always at least placeholder length, else the current text length
+    this.inputSize = Math.max(this.placeholder.length-1, value?.length-1 || 0);
   }
 }

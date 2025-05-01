@@ -145,7 +145,11 @@ export class UpdateCodeDetailsComponent implements OnInit {
     updatedCouponCode.description = couponCode.description;
     updatedCouponCode.visibility = couponCode.visibility;
     updatedCouponCode.durationType = couponCode.durationType;
-    updatedCouponCode.expiresAt = couponCode.expiresAt ? new Date(couponCode.expiresAt).toISOString() : undefined;
+    if(couponCode.durationType == durationTypeEnum.FOREVER) {
+      updatedCouponCode.expiresAt = undefined;
+    } else {
+      updatedCouponCode.expiresAt = couponCode.expiresAt ? new Date(couponCode.expiresAt).toISOString() : undefined;
+    }
 
     this.couponCodeStore.updateCouponCode({
       organizationId: this.organization()?.organizationId!,

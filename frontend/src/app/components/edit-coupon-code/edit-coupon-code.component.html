@@ -1,12 +1,11 @@
 <div class="min-h-screen flex flex-col overflow-hidden">
-  <div class="flex justify-between px-8 py-4 fixed top-0 w-full">
+  <div class="flex justify-between items-center px-8 py-4 bg-surface-container-lowest">
     <div class="text-on-surface mat-title-large">
       {{ organization()?.name }}
     </div>
-    <button mat-stroked-button class="rounded-full" (click)="onExit()">
-      Exit
-    </button>
+    <button mat-stroked-button class="rounded-full" (click)="onExit()">Exit</button>
   </div>
+  <mat-divider class="border-outline-variant"></mat-divider>
   <div class="flex-grow !py-8 flex flex-col items-center justify-center">
     <router-outlet></router-outlet>
   </div>

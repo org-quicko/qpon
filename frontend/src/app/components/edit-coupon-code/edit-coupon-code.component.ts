@@ -9,10 +9,11 @@ import { ProgressBarComponent } from '../../layouts/progress-bar/progress-bar.co
 import { CustomersStore } from './store/customers.store';
 import { CustomerCouponCodeStore } from './store/customer-coupon-code.store';
 import { filter } from 'rxjs';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-edit-coupon-code',
-  imports: [RouterOutlet, ProgressBarComponent, MatButtonModule],
+  imports: [RouterOutlet, ProgressBarComponent, MatButtonModule, MatDividerModule],
   providers: [
     CouponStore,
     CampaignStore,
