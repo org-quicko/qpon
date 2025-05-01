@@ -340,10 +340,15 @@ export const CouponCodeStore = signalStore(
                     }
                   },
                   error: (error: HttpErrorResponse) => {
-                    snackbarService.openSnackBar(
-                      'Unable to create campaign',
-                      undefined
-                    );
+
+                    if(error.status == 409) {
+                      snackbarService.openSnackBar('Campaign already exists', undefined);  
+                    } else {
+                      snackbarService.openSnackBar(
+                        'Unable to create campaign',
+                        undefined
+                      );
+                    }
                     CreateError.emit(error.message);
                   },
                 })
@@ -681,7 +686,12 @@ export const CouponCodeStore = signalStore(
                   })
 
                   CreateError.emit(error.message);
-                  snackbarService.openSnackBar('Error updating coupon', undefined);
+
+                  if(error.status == 409) {
+                    snackbarService.openSnackBar('Coupon already exists', undefined);
+                  } else {
+                    snackbarService.openSnackBar('Error updating coupon', undefined);
+                  }
                 }
               })
             )
@@ -726,7 +736,12 @@ export const CouponCodeStore = signalStore(
                   });
 
                   CreateError.emit(error.message);
-                  snackbarService.openSnackBar('Error updating campaign', undefined);
+
+                  if(error.status == 409) {
+                    snackbarService.openSnackBar('Campaign already exists', undefined);
+                  } else {
+                    snackbarService.openSnackBar('Error updating campaign', undefined);
+                  }
                 }
               })
             )

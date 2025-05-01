@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -49,6 +50,24 @@ export class CampaignService {
   ) {
     this.logger.info('START: createCampaign service');
     try {
+      if (body.name) {
+        const campaign = await this.campaignRepository
+          .createQueryBuilder('campaign')
+          .where(
+            `LOWER(campaign.name) = LOWER(:name) AND status != 'archive' AND coupon_id = :coupon_id`,
+            {
+              name: body.name,
+              coupon_id: couponId,
+            },
+          )
+          .getOne();
+
+        if (campaign) {
+          this.logger.warn('Campaign with same name exists');
+          throw new ConflictException('Campaign with same name exists');
+        }
+      }
+
       const campaignEntity = this.campaignRepository.create({
         name: body.name,
         budget: body.budget,
@@ -67,6 +86,10 @@ export class CampaignService {
       return this.campaignConverter.convert(savedCampaign);
     } catch (error) {
       this.logger.error(`Error in createCampaign: ${error.message}`, error);
+
+      if (error instanceof ConflictException) {
+        throw error;
+      }
 
       throw new HttpException(
         'Failed to create campaign',
@@ -225,6 +248,23 @@ export class CampaignService {
         throw new NotFoundException('Campaign not found');
       }
 
+      if (body.name) {
+        const campaign = await this.campaignRepository
+          .createQueryBuilder('campaign')
+          .where(
+            `LOWER(campaign.name) = LOWER(:name) AND status != 'archive'`,
+            {
+              name: body.name,
+            },
+          )
+          .getOne();
+
+        if (campaign) {
+          this.logger.warn('Campaign with same name exists');
+          throw new ConflictException('Campaign with same name exists');
+        }
+      }
+
       await this.campaignRepository.update(campaignId, body);
 
       const updatedCampaign = await this.campaignRepository.findOne({
@@ -238,7 +278,10 @@ export class CampaignService {
     } catch (error) {
       this.logger.error(`Error in updateCampaign: ${error.message}`, error);
 
-      if (error instanceof NotFoundException) {
+      if (
+        error instanceof NotFoundException ||
+        error instanceof ConflictException
+      ) {
         throw error;
       }
 

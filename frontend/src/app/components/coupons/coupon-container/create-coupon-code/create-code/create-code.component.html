@@ -189,6 +189,8 @@
         <input
           matInput
           [matDatepicker]="picker"
+          [min]="minDate"
+          readonly
           formControlName="expiresAt"
           (click)="$event.stopPropagation(); picker.open()"
         />

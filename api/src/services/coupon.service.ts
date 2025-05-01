@@ -215,6 +215,24 @@ export class CouponService {
           throw new NotFoundException(`Coupon not found`);
         }
 
+        if (body.name) {
+          const coupon = await manager
+            .getRepository(Coupon)
+            .createQueryBuilder('coupon')
+            .where(
+              `LOWER(coupon.name) = LOWER(:name) AND status != 'archive'`,
+              {
+                name: body.name,
+              },
+            )
+            .getOne();
+
+          if (coupon) {
+            this.logger.warn('Coupon with same name exists');
+            throw new ConflictException('Coupon with same name exists');
+          }
+        }
+
         if (
           existingCoupon.itemConstraint == itemConstraintEnum.SPECIFIC &&
           body.itemConstraint == itemConstraintEnum.ALL
@@ -246,7 +264,8 @@ export class CouponService {
 
         if (
           error instanceof BadRequestException ||
-          error instanceof NotFoundException
+          error instanceof NotFoundException ||
+          error instanceof ConflictException
         ) {
           throw error;
         }

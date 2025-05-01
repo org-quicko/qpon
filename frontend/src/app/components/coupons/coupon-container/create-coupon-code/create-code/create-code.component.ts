@@ -52,8 +52,7 @@ export class CreateCodeComponent {
   @Input() createCouponCodeForm!: FormGroup;
   @Output() currentScreenEvent = new EventEmitter<string>();
 
-
-  expiry: Date;
+  minDate: Date;
   visibility: string;
   validity: string;
   errorMessage = signal<string>(''); 
@@ -67,7 +66,7 @@ export class CreateCodeComponent {
   isBackClicked = this.couponCodeStore.onBack;
 
   constructor() {
-    this.expiry = new Date();
+    this.minDate = new Date();
     this.visibility = this.couponCodeStore.couponCode.data()?.visibility ? this.couponCodeStore.couponCode.data()?.visibility! : "";
     this.validity = this.couponCodeStore.couponCode.data()?.durationType ? this.couponCodeStore.couponCode.data()?.durationType! : "";
 

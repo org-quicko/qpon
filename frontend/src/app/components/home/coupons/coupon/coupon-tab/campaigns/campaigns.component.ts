@@ -79,6 +79,7 @@ export class CampaignsComponent implements OnInit {
     direction: 'desc',
   });
 
+  couponStore = inject(CouponStore);
   campaignsStore = inject(CampaignsStore);
   organizationStore = inject(OrganizationStore);
   datasource = new MatTableDataSource<CampaignSummaryRow>();
@@ -87,6 +88,7 @@ export class CampaignsComponent implements OnInit {
   count = this.campaignsStore.count;
   organization = this.organizationStore.organizaiton;
   isLoading = this.campaignsStore.isLoading;
+  coupon = this.couponStore.coupon.data;
 
   columns = [
     'name',

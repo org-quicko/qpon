@@ -55,16 +55,19 @@ export class CouponDto {
 
 export class CreateCouponDto {
   @prop()
+  @required()
   @IsString()
   name?: string;
 
   @prop()
+  @required()
   @Expose({ name: 'discount_type' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsEnum(discountTypeEnum)
   discountType?: discountTypeEnum;
 
   @prop()
+  @required()
   @Expose({ name: 'discount_value' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsNumber()

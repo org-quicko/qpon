@@ -15,6 +15,7 @@
         mat-flat-button
         class="bg-primary rounded-[100px] mat-label-large text-on-primary"
         (click)="onAddItem()"
+        [disabled]="coupon()?.status == 'inactive'"
       >
         <mat-icon>add</mat-icon>
         <span>Add items</span>

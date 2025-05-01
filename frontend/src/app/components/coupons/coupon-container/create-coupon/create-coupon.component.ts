@@ -1,6 +1,6 @@
 import { NgClass } from '@angular/common';
 import { Component, effect, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Validators, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CouponDto, CreateCouponDto } from '../../../../../dtos/coupon.dto';
@@ -13,6 +13,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { take, tap } from 'rxjs';
 import { instanceToPlain } from 'class-transformer';
 import { MatRadioModule } from '@angular/material/radio';
+import { Validator } from 'class-validator';
+import { SnackbarService } from '../../../../services/snackbar.service';
 
 @Component({
   selector: 'app-create-coupon',
@@ -45,7 +47,8 @@ export class CreateCouponComponent implements OnInit {
   constructor(
     private formBuilder: RxFormBuilder,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private snackbarService: SnackbarService
   ) {
     this.maxAmountFormControl = new FormControl(false);
     this.couponFormGroup = this.formBuilder.formGroup(new CreateCouponDto());
@@ -67,10 +70,27 @@ export class CreateCouponComponent implements OnInit {
       });
     });
 
-    this.couponFormGroup.controls['discountValue'].valueChanges.subscribe(() => this.adjustSize());
+    this.couponFormGroup.controls['discountValue'].valueChanges.subscribe((value) => {
+    });
+
+    this.couponFormGroup.controls['discountType'].valueChanges.subscribe((type) => {
+      if(type == discountTypeEnum.PERCENTAGE) {
+        this.couponFormGroup.controls['discountValue'].setValidators([Validators.min(0), Validators.max(100)]);
+      } else {
+        this.couponFormGroup.controls['discountValue'].setValidators([Validators.min(0)])
+      }
+    })
   }
 
   createCoupon() {
+
+    if(this.couponFormGroup.invalid) {
+      if(this.couponFormGroup.controls['discountValue'].hasError('max')) {
+        this.snackbarService.openSnackBar('Value should be between 0 to 100', undefined);
+      }
+      return;
+    }
+
     const coupon = new CreateCouponDto();
     coupon.name = this.couponFormGroup.value['name'];
     coupon.discountType =
