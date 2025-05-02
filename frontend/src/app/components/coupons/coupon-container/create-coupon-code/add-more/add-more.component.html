@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-10">
+<div class="flex flex-col gap-10 w-[560px]">
   <div class="flex flex-col gap-2">
     <div class="flex flex-col gap-2">
       <div class="flex gap-1 items-center mat-label-medium text-on-surface">
@@ -20,43 +20,48 @@
     </div>
   </div>
   <div class="flex flex-col gap-4">
-    @for(couponCode of couponCodes(); track couponCode) {
-    <mat-card appearance="outlined" class="bg-surface-container-lowest">
+    @for(couponCode of couponCodes(); track couponCode; let index = $index;) {
+    <mat-card appearance="outlined" matRipple class="w-full hover:bg-surface-dim hover:cursor-pointer" (click)="onEdit(couponCode, index)">
       <mat-card-content>
-        <div class="flex text-on-surface p-6">
-          <div class="flex flex-col gap-1">
-            <div class="mat-body-large">{{ couponCode.code }}</div>
-            <div class="flex gap-1 mat-body-medium text-on-surface-variant">
-              <div>
-               @if(couponCode.customerConstraint == 'specific') {
-                @if(couponCodeStore.codesWithSpecificCustomers()?.get(couponCode.code!)?.length! > 1) {
-                  Limited to {{couponCodeStore.codesWithSpecificCustomers()?.get(couponCode.code!)?.length!}} people
+        <div class="w-full p-6 text-left">
+          <div class="flex justify-between items-center w-full">
+            <div class="flex flex-col gap-1 items-start">
+              <div class="mat-body-large">{{ couponCode.code }}</div>
+              <div class="flex w-full gap-1 mat-body-medium text-on-surface-variant">
+                <div>
+                 @if(couponCode.customerConstraint == 'specific') {
+                  @if(couponCodeStore.codesWithSpecificCustomers()?.get(couponCode.code!)?.length! > 1) {
+                    Limited to {{couponCodeStore.codesWithSpecificCustomers()?.get(couponCode.code!)?.length!}} people
+                  } @else {
+                    Limited to {{couponCodeStore.codesWithSpecificCustomers()?.get(couponCode.code!)?.at(0)?.name}}
+                  }
                 } @else {
-                  Limited to {{couponCodeStore.codesWithSpecificCustomers()?.get(couponCode.code!)?.at(0)?.name}}
-                }
-              } @else {
-                Everyone
-              } 
-              </div>
-              <div>•</div>
-              <div>
-                {{ couponCode.maxRedemptions && couponCode.maxRedemptions > 0 ? `Max ${couponCode.maxRedemptions} uses` : "No Limit" }}
-              </div>
-              <div>•</div>
-              <div>
-                {{
-                  couponCode.expiresAt
-                    ? (couponCode.expiresAt | custom_date: "": false)
-                    : "Never Expires"
-                }}
+                  Everyone
+                } 
+                </div>
+                <div>•</div>
+                <div>
+                  {{ couponCode.maxRedemptions && couponCode.maxRedemptions > 0 ? `Max ${couponCode.maxRedemptions} uses` : "No Limit" }}
+                </div>
+                <div>•</div>
+                <div>
+                  {{
+                    couponCode.expiresAt
+                      ? (couponCode.expiresAt | custom_date: "": false)
+                      : "Never Expires"
+                  }}
+                </div>
               </div>
             </div>
+            <button mat-icon-button (click)="$event.stopPropagation(); onRemoveCouponCode(index)">
+              <mat-icon>close</mat-icon>
+            </button> 
           </div>
         </div>
       </mat-card-content>
     </mat-card>
     }
-    <mat-card class="border-dashed" appearance="outlined" class="bg-surface-container-lowest">
+    <mat-card class="border-dashed" appearance="outlined" class="bg-surface-container-lowest hover:bg-surface-dim hover:cursor-pointer">
       <mat-card-content>
         <div class="">
           <button mat-button class="w-full flex justify-start h-[97px] p-6 hover:rounded-none" (click)="onAddMore()">

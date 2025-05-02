@@ -6,7 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, FindOptionsWhere, Not, Repository } from 'typeorm';
+import { DataSource, FindOptionsWhere, ILike, Not, Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
 import { CreateUserDto, UpdateUserDto, UpdateUserRoleDto } from '../dtos';
 import { LoggerService } from './logger.service';
@@ -15,6 +15,7 @@ import { OrganizationUser } from '../entities/organization-user.entity';
 import { QueryOptionsInterface } from '../interfaces/queryOptions.interface';
 import { roleEnum } from '../enums';
 import { OrganizationUserConverter } from '../converters/organization-user.converter';
+import { UserListConverter } from 'src/converters/user-list.converter';
 
 @Injectable()
 export class UserService {
@@ -25,6 +26,7 @@ export class UserService {
     private readonly organizationUserRepository: Repository<OrganizationUser>,
     private userConverter: UserConverter,
     private organizationUserConverter: OrganizationUserConverter,
+    private userListConverter: UserListConverter,
     private datasource: DataSource,
     private logger: LoggerService,
   ) {}
@@ -115,11 +117,11 @@ export class UserService {
   /**
    * Fetch users
    */
-  async fetchUsers(
+  async fetchUsersOfAnOrganization(
     organizationId: string,
     queryOptions: QueryOptionsInterface,
   ) {
-    this.logger.info('START: fetchUsers service');
+    this.logger.info('START: fetchUsersOfAnOrganization service');
     try {
       const whereOptions = {};
 
@@ -157,11 +159,60 @@ export class UserService {
         ),
       );
     } catch (error) {
-      this.logger.error(`Error in fetchUsers: ${error.message}`, error);
+      this.logger.error(
+        `Error in fetchUsersOfAnOrganization: ${error.message}`,
+        error,
+      );
 
       if (error instanceof NotFoundException) {
         throw error;
       }
+
+      throw new HttpException(
+        'Failed to fetch users',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  /**
+   * Fetch users
+   */
+  async fetchUsers(
+    whereOptions: FindOptionsWhere<User> = {},
+    skip: number = 0,
+    take: number = 10,
+  ) {
+    try {
+      this.logger.info('START: fetchUsers service');
+
+      let emailFilter: string = '';
+
+      if (whereOptions.email) {
+        emailFilter = whereOptions.email as string;
+        delete whereOptions.email;
+      }
+
+      const [users, count] = await this.userRepository.findAndCount({
+        where: {
+          role: Not(roleEnum.SUPER_ADMIN),
+          ...(emailFilter && { name: ILike(`%${emailFilter}%`) }),
+        },
+        skip,
+        take,
+        order: {
+          createdAt: 'DESC',
+        },
+      });
+
+      if (users.length == 0 || !users) {
+        this.logger.warn('Users not found');
+      }
+
+      this.logger.info('END: fetchUsers service');
+      return this.userListConverter.convert(users, count, skip, take);
+    } catch (error) {
+      this.logger.error(`Error in fetchUsers: ${error.message}`, error);
 
       throw new HttpException(
         'Failed to fetch users',

@@ -30,7 +30,7 @@
     </div>
 
     <div class="flex justify-end items-center px-8 pt-2">
-      @if(this.currentStep() == 1) {
+      @if(this.router.url.endsWith('invite')) {
         <div class="flex gap-3">
           <button mat-stroked-button (click)="onSkip()" class="rounded-full">
             Skip

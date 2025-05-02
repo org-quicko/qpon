@@ -20,10 +20,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
+import { MatRippleModule } from '@angular/material/core';
+import { SnackbarService } from '../../../../../services/snackbar.service';
+import { CreateCouponCodeDto } from '../../../../../../dtos/coupon-code.dto';
 
 @Component({
   selector: 'app-add-more',
-  imports: [MatIconModule, MatCardModule, MatButtonModule, CustomDatePipe],
+  imports: [MatIconModule, MatCardModule, MatButtonModule, MatRippleModule, CustomDatePipe],
   templateUrl: './add-more.component.html',
   styleUrls: ['./add-more.component.css'],
 })
@@ -45,7 +48,7 @@ export class AddMoreComponent implements OnInit, OnDestroy {
 
   couponCodes = this.couponCodeStore.couponCodes;
 
-  constructor(private router: Router, private route: ActivatedRoute) {
+  constructor(private router: Router, private route: ActivatedRoute, private snackbarService: SnackbarService) {
 
     this.redirectUri = '';
     this.destroy$ = new Subject();
@@ -60,27 +63,18 @@ export class AddMoreComponent implements OnInit, OnDestroy {
     effect(() => {
       if (this.isNextClicked()) {
         this.couponCodeStore.setOnNext();
+
+        if(this.couponCodes()?.length == 0) {
+          snackbarService.openSnackBar('No coupon codes to create', undefined);
+          return;
+        }
+
         this.couponCodeStore.createCouponCodes({
           organizationId: this.organization()?.organizationId!,
           couponId: this.coupon()?.couponId!,
           campaignId: this.campaign()?.campaignId!,
           couponCodes: this.couponCodeStore.couponCodes()!,
           customersMap: this.couponCodeStore.codesWithSpecificCustomers()!,
-        });
-
-        CreateSuccess.subscribe((success) => {
-          if (success) {
-            if(this.redirectUri.length > 0) {
-              this.router.navigate([atob(this.redirectUri)]);
-            } else {
-              this.router.navigate([
-                `/${this.organization()?.organizationId}/home/coupons/${this.coupon()?.couponId}/campaigns/${this.campaign()?.campaignId}`,
-              ]);
-            }
-            this.createCouponCodeForm.reset();
-            this.couponCodeStore.setCouponCodeToNull();
-            this.couponCodeStore.resetCouponCodes();
-          }
         });
       }
 
@@ -100,12 +94,35 @@ export class AddMoreComponent implements OnInit, OnDestroy {
     this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe((params: Params) => {
       this.redirectUri = params['redirect'] ?? '';
     })
+
+    CreateSuccess.subscribe((success) => {
+      if (success) {
+        if(this.redirectUri.length > 0) {
+          this.router.navigate([atob(this.redirectUri)]);
+        } else {
+          this.router.navigate([
+            `/${this.organization()?.organizationId}/home/coupons/${this.coupon()?.couponId}/campaigns/${this.campaign()?.campaignId}`,
+          ]);
+        }
+        this.createCouponCodeForm.reset();
+        this.couponCodeStore.setCouponCodeToNull();
+        this.couponCodeStore.resetCouponCodes();
+      }
+    });
   }
 
   onAddMore() {
     this.couponCodeStore.setCouponCodeToNull();
     this.createCouponCodeForm.reset();
     this.couponCodeStore.resetCouponCodeScreens()
+    this.currentScreenEvent.emit('code');
+  }
+
+  onRemoveCouponCode(index: number) {
+    this.couponCodeStore.removeCouponCode(index)
+  }
+
+  onEdit(couponCode: CreateCouponCodeDto, index: number) {
     this.currentScreenEvent.emit('code');
   }
 

@@ -5,6 +5,7 @@ import { OrganizationStore } from '../../store/organization.store';
 import { MatButtonModule } from '@angular/material/button';
 import { ProgressBarComponent } from '../../layouts/progress-bar/progress-bar.component';
 import { CreateOrganizationStore } from './store/create-organization.store';
+import { UsersStore } from './store/users.store';
 
 @Component({
   selector: 'app-create-organization-container',
@@ -14,7 +15,7 @@ import { CreateOrganizationStore } from './store/create-organization.store';
     MatDividerModule,
     MatButtonModule,
   ],
-  providers: [CreateOrganizationStore],
+  providers: [CreateOrganizationStore, UsersStore],
   templateUrl: './create-organization-container.component.html',
   styleUrls: ['./create-organization-container.component.css'],
 })
@@ -24,7 +25,7 @@ export class CreateOrganizationContainerComponent implements OnInit {
 
   currentStep = this.createOrganizationStore.currentStep;
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(public router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.router.events

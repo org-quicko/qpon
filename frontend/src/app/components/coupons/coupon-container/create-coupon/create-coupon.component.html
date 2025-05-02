@@ -40,19 +40,29 @@
           }"
         >
           <div class="mat-body-large text-on-surface">Percentage</div>
-          <input
-            matInput
-            type="number"
-            min="0"
-            max="100"
-            formControlName="discountValue"
-            class="mat-display-medium text-on-surface focus:outline-none"
-            placeholder="0%"
-            [ngClass]="{
-              'placeholder:text-outline-variant': discountType != 'percentage',
-              'text-outline-variant': discountType != 'percentage'
-            }"
-          />
+          <div class="percentage-input-container">
+            <input
+              #percentInput
+              matInput
+              type="number"
+              min="0"
+              max="100"
+              formControlName="discountValue"
+              class="mat-display-medium text-on-surface focus:outline-none bg-transparent"
+              placeholder="0"
+              (input)="updatePercentageWidth(percentInput)"
+              (focus)="updatePercentageWidth(percentInput)"
+              style="width: 1ch;"
+              [ngClass]="{
+                'placeholder:text-outline-variant': discountType != 'percentage',
+                'text-outline-variant': discountType != 'percentage'
+              }"
+            />
+            <span class="percentage-symbol mat-display-medium" [ngClass]="{
+              'text-outline-variant': discountType != 'percentage',
+              'text-on-surface': discountType == 'percentage'
+            }">%</span>
+          </div>
         </div>
       </mat-radio-button>
       <mat-radio-button
@@ -94,6 +104,7 @@
               formControlName="discountValue"
               class="mat-display-medium text-on-surface focus:outline-none pl-7 w-full leading-none"
               min="0"
+              placeholder="0"
               [ngClass]="{
                 'placeholder:text-outline-variant': discountType != 'fixed',
                 'text-outline-variant': discountType != 'fixed'

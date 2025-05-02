@@ -27,138 +27,144 @@
         <input matInput type="text" formControlName="description" />
       </mat-form-field>
     </div>
-    <mat-radio-group class="flex gap-4" formControlName="visibility">
-      <mat-radio-button
-        matInput
-        value="public"
-        class="cursor-pointer justify-between border rounded-[5px] border-outline-variant hide-radio-button"
-        (click)="visibility = 'public'"
-        [ngClass]="{
-          'text-primary bg-secondary-container border-primary border-[2px] ':
-            visibility == 'public',
-          'hover:bg-surface-dim': visibility != 'public'
-        }"
-      >
-        <div
-          class="flex cursor-pointer flex-col w-[226px] gap-[12px] text-on-surface mat-body-large p-[16px]"
-          [ngClass]="{ 'text-on-surface-variant': visibility != 'public' }"
+    <div class="flex flex-col gap-4">
+      <div class="mat-body-large text-on-surface">Visibility</div>
+      <mat-radio-group class="flex gap-4" formControlName="visibility">
+        <mat-radio-button
+          matInput
+          value="public"
+          class="cursor-pointer justify-between border rounded-[5px] border-outline-variant hide-radio-button"
+          (click)="visibility = 'public'"
+          [ngClass]="{
+            'text-primary bg-secondary-container border-primary border-[2px] ':
+              visibility == 'public',
+            'hover:bg-surface-dim': visibility != 'public'
+          }"
         >
-          <mat-icon
-            class="material-symbols-outlined h-[24px] w-[24px] text-[24px]"
-            [ngClass]="{
-              'text-primary': visibility == 'public'
-            }"
+          <div
+            class="flex cursor-pointer flex-col w-[226px] gap-[12px] text-on-surface mat-body-large p-[16px]"
+            [ngClass]="{ 'text-on-surface-variant': visibility != 'public' }"
           >
-            public
-          </mat-icon>
-
-          <div class="flex flex-col gap-1">
-            <div class="mat-body-large">Public</div>
-            <div class="mat-body-medium text-on-surface-variant">
-              Coupon code will be visible to everyone
+            <mat-icon
+              class="material-symbols-outlined h-[24px] w-[24px] text-[24px]"
+              [ngClass]="{
+                'text-primary': visibility == 'public'
+              }"
+            >
+              public
+            </mat-icon>
+  
+            <div class="flex flex-col gap-1">
+              <div class="mat-body-large">Public</div>
+              <div class="mat-body-medium text-on-surface-variant">
+                Coupon code will be visible to everyone
+              </div>
             </div>
           </div>
-        </div>
-      </mat-radio-button>
-      <mat-radio-button
-        matInput
-        value="private"
-        class="cursor-pointer justify-between border rounded-[5px] border-outline-variant hide-radio-button"
-        (click)="visibility = 'private'"
-        [ngClass]="{
-          'text-primary bg-secondary-container border-primary border-[2px] ':
-            visibility == 'private',
-          'hover:bg-surface-dim': visibility != 'private'
-        }"
-      >
-        <div
-          class="flex cursor-pointer flex-col w-[226px] gap-[12px] text-on-surface mat-body-large p-[16px]"
-          [ngClass]="{ 'text-on-surface-variant': visibility != 'private' }"
+        </mat-radio-button>
+        <mat-radio-button
+          matInput
+          value="private"
+          class="cursor-pointer justify-between border rounded-[5px] border-outline-variant hide-radio-button"
+          (click)="visibility = 'private'"
+          [ngClass]="{
+            'text-primary bg-secondary-container border-primary border-[2px] ':
+              visibility == 'private',
+            'hover:bg-surface-dim': visibility != 'private'
+          }"
         >
-          <mat-icon
-            class="material-symbols-outlined h-[24px] w-[24px] text-[24px]"
-            [ngClass]="{
-              'text-primary': visibility == 'private'
-            }"
+          <div
+            class="flex cursor-pointer flex-col w-[226px] gap-[12px] text-on-surface mat-body-large p-[16px]"
+            [ngClass]="{ 'text-on-surface-variant': visibility != 'private' }"
           >
-            lock
-          </mat-icon>
-
-          <div class="flex flex-col gap-1">
-            <div class="mat-body-large">Private</div>
-            <div class="mat-body-medium text-on-surface-variant">
-              Only people with coupon code will be able to redeem
+            <mat-icon
+              class="material-symbols-outlined h-[24px] w-[24px] text-[24px]"
+              [ngClass]="{
+                'text-primary': visibility == 'private'
+              }"
+            >
+              lock
+            </mat-icon>
+  
+            <div class="flex flex-col gap-1">
+              <div class="mat-body-large">Private</div>
+              <div class="mat-body-medium text-on-surface-variant">
+                Only people with coupon code will be able to redeem
+              </div>
             </div>
           </div>
-        </div>
-      </mat-radio-button>
-    </mat-radio-group>
-    <mat-radio-group class="flex gap-4" formControlName="durationType">
-      <mat-radio-button
-        matInput
-        value="forever"
-        class="cursor-pointer justify-between border rounded-[5px] border-outline-variant hide-radio-button"
-        (click)="validity = 'forever'"
-        [ngClass]="{
-          'text-primary bg-secondary-container border-primary border-[2px] ':
-            validity == 'forever',
-          'hover:bg-surface-dim': validity != 'forever'
-        }"
-      >
-        <div
-          class="flex cursor-pointer flex-col w-[226px] gap-[12px] text-on-surface mat-body-large p-[16px]"
-          [ngClass]="{ 'text-on-surface-variant': validity != 'forever' }"
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div class="flex flex-col gap-4">
+      <div class="mat-body-large text-on-surface">Validity</div>
+      <mat-radio-group class="flex gap-4" formControlName="durationType">
+        <mat-radio-button
+          matInput
+          value="forever"
+          class="cursor-pointer justify-between border rounded-[5px] border-outline-variant hide-radio-button"
+          (click)="validity = 'forever'"
+          [ngClass]="{
+            'text-primary bg-secondary-container border-primary border-[2px] ':
+              validity == 'forever',
+            'hover:bg-surface-dim': validity != 'forever'
+          }"
         >
-          <mat-icon
-            class="material-symbols-outlined h-[24px] w-[24px] text-[24px]"
-            [ngClass]="{
-              'text-primary': validity == 'forever'
-            }"
+          <div
+            class="flex cursor-pointer flex-col w-[226px] gap-[12px] text-on-surface mat-body-large p-[16px]"
+            [ngClass]="{ 'text-on-surface-variant': validity != 'forever' }"
           >
-            autorenew
-          </mat-icon>
-
-          <div class="flex flex-col gap-1">
-            <div class="mat-body-large">Forever</div>
-            <div class="mat-body-medium text-on-surface-variant">
-              No expiry date. Valid forever.
+            <mat-icon
+              class="material-symbols-outlined h-[24px] w-[24px] text-[24px]"
+              [ngClass]="{
+                'text-primary': validity == 'forever'
+              }"
+            >
+              autorenew
+            </mat-icon>
+  
+            <div class="flex flex-col gap-1">
+              <div class="mat-body-large">Forever</div>
+              <div class="mat-body-medium text-on-surface-variant">
+                No expiry date. Valid forever.
+              </div>
             </div>
           </div>
-        </div>
-      </mat-radio-button>
-      <mat-radio-button
-        matInput
-        value="limited"
-        class="cursor-pointer justify-between border rounded-[5px] border-outline-variant hide-radio-button"
-        (click)="validity = 'limited'"
-        [ngClass]="{
-          'text-primary bg-secondary-container border-primary border-[2px] ':
-            validity == 'limited',
-          'hover:bg-surface-dim': validity != 'limited'
-        }"
-      >
-        <div
-          class="flex cursor-pointer flex-col w-[226px] gap-[12px] text-on-surface mat-body-large p-[16px]"
-          [ngClass]="{ 'text-on-surface-variant': validity != 'limited' }"
+        </mat-radio-button>
+        <mat-radio-button
+          matInput
+          value="limited"
+          class="cursor-pointer justify-between border rounded-[5px] border-outline-variant hide-radio-button"
+          (click)="validity = 'limited'"
+          [ngClass]="{
+            'text-primary bg-secondary-container border-primary border-[2px] ':
+              validity == 'limited',
+            'hover:bg-surface-dim': validity != 'limited'
+          }"
         >
-          <mat-icon
-            class="material-symbols-outlined h-[24px] w-[24px] text-[24px]"
-            [ngClass]="{
-              'text-primary': validity == 'limited'
-            }"
+          <div
+            class="flex cursor-pointer flex-col w-[226px] gap-[12px] text-on-surface mat-body-large p-[16px]"
+            [ngClass]="{ 'text-on-surface-variant': validity != 'limited' }"
           >
-            hourglass_top
-          </mat-icon>
-
-          <div class="flex flex-col gap-1">
-            <div class="mat-body-large">Limited</div>
-            <div class="mat-body-medium text-on-surface-variant">
-              Valid till certain expiry date.
+            <mat-icon
+              class="material-symbols-outlined h-[24px] w-[24px] text-[24px]"
+              [ngClass]="{
+                'text-primary': validity == 'limited'
+              }"
+            >
+              hourglass_top
+            </mat-icon>
+  
+            <div class="flex flex-col gap-1">
+              <div class="mat-body-large">Limited</div>
+              <div class="mat-body-medium text-on-surface-variant">
+                Valid till certain expiry date.
+              </div>
             </div>
           </div>
-        </div>
-      </mat-radio-button>
-    </mat-radio-group>
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
 
     @if(validity == 'limited') {
     <div class="flex flex-col gap-4">

@@ -35,7 +35,6 @@ import { EligibleItemsService } from '../../../services/eligible-items.service';
 import { CustomerDto } from '../../../../dtos/customer.dto';
 import { CustomerCouponCodeService } from '../../../services/customer-coupon-code.service';
 import { CreateCustomerCouponCodeDto } from '../../../../dtos/customer-coupon-code.dto';
-import { CouponItemDto, UpdateCouponItemDto } from '../../../../dtos/coupon-item.dto';
 import { ItemDto } from '../../../../dtos/item.dto';
 import { PaginatedList } from '../../../../dtos/paginated-list.dto';
 
@@ -790,6 +789,16 @@ export const CouponCodeStore = signalStore(
           })
         )
       ),
+
+      removeCouponCode(index: number) {
+        const couponCodes = store.couponCodes() ?? [];
+        couponCodes.splice(index, 1);
+        const updatedCouponCodes = [...couponCodes]; 
+
+        patchState(store, {
+          couponCodes: updatedCouponCodes
+        })
+      }
     }),
   ),
   withComputed((store) => ({

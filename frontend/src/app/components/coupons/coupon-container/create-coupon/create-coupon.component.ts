@@ -85,8 +85,12 @@ export class CreateCouponComponent implements OnInit {
   createCoupon() {
 
     if(this.couponFormGroup.invalid) {
-      if(this.couponFormGroup.controls['discountValue'].hasError('max') || this.couponFormGroup.controls['discountValue'].hasError('min')) {
+      if(this.couponFormGroup.controls['discountValue'].hasError('max')) {
         this.snackbarService.openSnackBar('Value should be between 0 to 100', undefined);
+      }
+
+      if(this.couponFormGroup.controls['discountValue'].hasError('min')) {
+        this.snackbarService.openSnackBar('Value should be greater than 0', undefined);
       }
       return;
     }
@@ -119,5 +123,11 @@ export class CreateCouponComponent implements OnInit {
 
   getCurrencySymbolOnly(code: string): string {
     return getCurrencySymbol(code, 'narrow');
+  }
+
+  updatePercentageWidth(input: HTMLInputElement): void {
+    const value = input.value;
+    const length = value ? value.length-0.25 : 1;
+    input.style.width = `${length}ch`;
   }
 }

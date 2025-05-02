@@ -57,7 +57,7 @@ export class CouponContainerComponent implements OnInit, OnDestroy {
         this.couponCodeStore.currentStep() == 0 ||
         this.couponCodeStore.currentStep() == 2 ||
         (this.couponCodeStore.currentStep() == 3 &&
-          this.couponCodeStore.couponCodeScreenIndex() == 0)
+          (this.couponCodeStore.couponCodeScreenIndex() == 0 || this.couponCodeStore.couponCodeScreenIndex() == 3))
       ) {
         this.hideBackButton.set(true);
       } else {

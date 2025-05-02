@@ -45,7 +45,7 @@ export class ChooseOrganizationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.params.pipe(take(1)).subscribe((params: Params) => {
+    this.route.params.subscribe((params: Params) => {
       this.currentOrganizationId = params['organization_id']
     })
   }

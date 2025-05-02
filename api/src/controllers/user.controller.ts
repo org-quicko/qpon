@@ -89,24 +89,46 @@ export class UserController {
   }
 
   /**
-   * Fetch users
+   * Fetch users of an organization
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
   @Permissions('read_all', User)
   @Get('/organizations/:organization_id/users')
-  async fetchUsers(
+  async fetchUsersOfAnOrganization(
     @Param('organization_id') organizationId: string,
     @Query('external_id') externalId?: string,
     @Query('take') take?: number,
     @Query('skip') skip?: number,
   ) {
+    this.logger.info('START: fetchUsersOfAnOrganization controller');
+
+    const result = await this.userService.fetchUsersOfAnOrganization(
+      organizationId,
+      {
+        externalId,
+        skip,
+        take,
+      },
+    );
+
+    this.logger.info('END: fetchUsersOfAnOrganization controller');
+    return { message: 'Successfully fetched users', result };
+  }
+
+  /**
+   * Fetch users
+   */
+  @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('read_all', User)
+  @Get('users')
+  async fetchUsers(
+    @Query('take') take?: number,
+    @Query('skip') skip?: number,
+    @Query('email') email?: string,
+  ) {
     this.logger.info('START: fetchUsers controller');
 
-    const result = await this.userService.fetchUsers(organizationId, {
-      externalId,
-      skip,
-      take,
-    });
+    const result = await this.userService.fetchUsers({ email }, skip, take);
 
     this.logger.info('END: fetchUsers controller');
     return { message: 'Successfully fetched users', result };

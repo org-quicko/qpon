@@ -68,3 +68,17 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance:textfield; /* Firefox */
 }
+
+.percentage-input-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.percentage-input-container input {
+  width: 0; /* Default width for single digit '0' */
+  transition: width 0.1s;
+}
+.percentage-symbol {
+  white-space: nowrap;
+}

@@ -247,6 +247,10 @@ export class CouponCodeListComponent implements OnInit {
       .afterClosed()
       .pipe(take(1))
       .subscribe((params: CouponCodeFilter) => {
+        this.paginationOptions.set({
+          pageIndex: 0,
+          pageSize: 10
+        })
         this.router.navigate([], {
           relativeTo: this.route,
           queryParams: params,
@@ -272,8 +276,12 @@ export class CouponCodeListComponent implements OnInit {
     });
   }
 
-  onEdit() {
-    // this.router.navigate([`/${this.organization()?.organizationId}/coupons`])
+  onEdit(couponCode: CouponCodeDto) {
+    this.router.navigate([
+      `/${this.organization()?.organizationId}/coupons/${
+        this.couponId
+      }/campaigns/${this.campaignId}/coupon-codes/${couponCode.couponCodeId}/edit/code-details`,
+    ]);
   }
 
   openInactiveMessageDialogForCouponCode() {

@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { getCurrencySymbol } from '@angular/common';
 import { OrganizationStore } from '../../../../../store/organization.store';
+import { SnackbarService } from '../../../../../services/snackbar.service';
 
 @Component({
   selector: 'app-redemption-limits',
@@ -18,10 +19,10 @@ export class RedemptionLimitsComponent implements OnInit {
   @Input() createCouponCodeForm!: FormGroup;
   @Output() currentScreenEvent = new EventEmitter<string>();
 
-  minimumAmountChecked: FormControl;
-  maxRedemptionsChecked: FormControl;
-  maxRedemptionsPerCustomerChecked: FormControl;
-  placeholder: string;
+  minimumAmountChecked!: FormControl;
+  maxRedemptionsChecked!: FormControl;
+  maxRedemptionsPerCustomerChecked!: FormControl;
+  placeholder!: string;
 
   organizationStore = inject(OrganizationStore);
   couponCodeStore = inject(CouponCodeStore);
@@ -32,44 +33,20 @@ export class RedemptionLimitsComponent implements OnInit {
   isBackClicked = this.couponCodeStore.onBack;
   organization = this.organizationStore.organizaiton;
 
-  constructor() {
-
+  constructor(private snackbarService: SnackbarService) {
     this.minimumAmountChecked = new FormControl(false);
     this.maxRedemptionsChecked = new FormControl(false);
     this.maxRedemptionsPerCustomerChecked = new FormControl(false);
-    this.placeholder = '';
-
-    this.minimumAmountChecked.valueChanges.subscribe(checked => {
-      const control = this.createCouponCodeForm.get('minimumAmount');
-      if (checked) {
-        control?.enable();
-      } else {
-        control?.disable();
-      }
-    });
-
-    this.maxRedemptionsChecked.valueChanges.subscribe(checked => {
-      const control = this.createCouponCodeForm.get('maxRedemptions');
-      if (checked) {
-        control?.enable();
-      } else {
-        control?.disable();
-      }
-    });
-
-    this.maxRedemptionsPerCustomerChecked.valueChanges.subscribe(checked => {
-      const control = this.createCouponCodeForm.get('maxRedemptionPerCustomer');
-      if (checked) {
-        control?.enable();
-        control?.setValue(1);
-      } else {
-        control?.disable();
-      }
-    });
 
     effect(() => {
       if(this.isNextClicked()) {
         this.couponCodeStore.setOnNext();
+
+        if((this.minimumAmountChecked.value && !this.createCouponCodeForm.get('minimumAmount')?.value) || (this.maxRedemptionsChecked.value && !this.createCouponCodeForm.get('maxRedemptions')?.value) || (this.maxRedemptionsPerCustomerChecked.value && !this.createCouponCodeForm.get('maxRedemptionPerCustomer')?.value)) {
+          this.snackbarService.openSnackBar('Enter the value', undefined);
+          return;
+        }
+
         if(this.minimumAmountChecked.value && this.createCouponCodeForm.get('minimumAmount')?.value) {
           this.couponCodeStore.setCouponCode({minimumAmount: this.createCouponCodeForm.get('minimumAmount')?.value})
         } else if(!this.minimumAmountChecked.value) {
@@ -104,8 +81,13 @@ export class RedemptionLimitsComponent implements OnInit {
    }
 
   ngOnInit() {
+
+    this.minimumAmountChecked.setValue(this.createCouponCodeForm.controls['minimumAmount'].value > 0 ? true : false);
+    this.maxRedemptionsChecked.setValue(this.createCouponCodeForm.controls['maxRedemptions'].value > 0 ? true : false);
+    this.maxRedemptionsPerCustomerChecked.setValue(this.createCouponCodeForm.controls['maxRedemptionPerCustomer'].value > 0 ? true : false);
+
      // Disable all inputs initially if checkboxes are not checked
-     if (!this.minimumAmountChecked.value) {
+     if (!this.minimumAmountChecked.value || this.createCouponCodeForm.controls['minimumAmount'].value == 0) {
       this.createCouponCodeForm.get('minimumAmount')?.disable();
     }
     if (!this.maxRedemptionsChecked.value) {
@@ -116,6 +98,34 @@ export class RedemptionLimitsComponent implements OnInit {
     }
 
     this.placeholder = `${this.getCurrencySymbolOnly(this.organization()?.currency!)}250`
+
+    this.minimumAmountChecked.valueChanges.subscribe(checked => {
+      const control = this.createCouponCodeForm.get('minimumAmount');
+      if (checked) {
+        control?.enable();
+      } else {
+        control?.disable();
+      }
+    });
+
+    this.maxRedemptionsChecked.valueChanges.subscribe(checked => {
+      const control = this.createCouponCodeForm.get('maxRedemptions');
+      if (checked) {
+        control?.enable();
+      } else {
+        control?.disable();
+      }
+    });
+
+    this.maxRedemptionsPerCustomerChecked.valueChanges.subscribe(checked => {
+      const control = this.createCouponCodeForm.get('maxRedemptionPerCustomer');
+      if (checked) {
+        control?.enable();
+        control?.setValue(1);
+      } else {
+        control?.disable();
+      }
+    });
   }
 
   getCurrencySymbolOnly(code: string): string {
