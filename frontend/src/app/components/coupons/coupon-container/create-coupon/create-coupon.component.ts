@@ -127,7 +127,7 @@ export class CreateCouponComponent implements OnInit {
 
   updatePercentageWidth(input: HTMLInputElement): void {
     const value = input.value;
-    const length = value ? value.length-0.25 : 1;
+    const length = value ? value.length : 1;
     input.style.width = `${length}ch`;
   }
 }
