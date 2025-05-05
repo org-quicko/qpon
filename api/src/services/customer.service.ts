@@ -114,6 +114,9 @@ export class CustomersService {
         },
         skip,
         take,
+        order: {
+          createdAt: 'DESC',
+        },
       });
 
       if (!customers || customers.length == 0) {

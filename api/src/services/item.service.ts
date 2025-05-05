@@ -109,6 +109,9 @@ export class ItemsService {
         },
         skip,
         take,
+        order: {
+          createdAt: 'DESC',
+        },
       });
 
       if (!items || items.length == 0) {

@@ -79,6 +79,7 @@ export class UpdateCustomerDto {
   name?: string;
 
   @prop()
+  @email()
   @IsOptional()
   @IsString()
   email?: string;

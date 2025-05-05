@@ -75,6 +75,10 @@ export class EditCustomerComponent implements OnInit {
   }
 
   onSave() {
+    if(this.updateCustomerForm.invalid) {
+      return;
+    }
+
     const formValues = this.updateCustomerForm.getRawValue();
     const updatedCustomer = new UpdateCustomerDto();
     Object.assign(updatedCustomer, formValues);

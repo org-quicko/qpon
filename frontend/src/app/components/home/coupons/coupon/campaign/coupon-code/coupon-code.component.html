@@ -100,9 +100,11 @@
         </div>
         <div class="w-[728px]">
           @if(!loading()) {
-          <p class="mat-body-large text-on-surface truncate">
-            {{ couponCode()?.description ?? "-" }}
-          </p>
+            @if(couponCode()?.description?.length! > 0) {
+              <p class="mat-body-large text-on-surface truncate">
+                {{ couponCode()?.description ?? "-" }}
+              </p>
+            }
           } @else {
           <ngx-skeleton-loader
             [theme]="{
