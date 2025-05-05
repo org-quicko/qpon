@@ -2,7 +2,7 @@ import { CommonModule, NgIf, TitleCasePipe } from '@angular/common';
 import { Component, effect, inject, OnInit, signal, Signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { ActivatedRoute, Params, RouterModule } from '@angular/router';
+import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
 import { AvatarModule } from 'ngx-avatars';
 import { MatRippleModule } from '@angular/material/core';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
@@ -35,7 +35,7 @@ export class ChooseOrganizationComponent implements OnInit {
   isLoading = this.organizationUserStore.isLoading;
   organizations = this.organizationUserStore.organizations
 
-  constructor(private route: ActivatedRoute, private permissionService: PermissionsService) {
+  constructor(private route: ActivatedRoute, private permissionService: PermissionsService, private router: Router) {
     this.currentOrganizationId = "";
 
     effect(() => {
@@ -62,5 +62,9 @@ export class ChooseOrganizationComponent implements OnInit {
 
   changeOrganization(organization: OrganizationDto) {
     window.location.href = `${window.location.origin}/` + organization.organizationId + "/home/dashboard";
+  }
+
+  onViewAllOrganization() {
+    this.router.navigate(['/organizations']);
   }
 }
