@@ -118,61 +118,110 @@ export function defineUserAbilities(role: roleEnum): UserAbility {
       [OrganizationDto, CreateOrganizationDto]
     ).because('Only super admin can create or delete an organization');
 
-    if (role == roleEnum.VIEWER) {
-      forbid(
-        [
-          'create',
-          'update',
-          'delete',
-          'invite_user',
-          'remove_user',
-          'change_role',
-        ],
-        [
-          CustomerDto,
-          ItemDto,
-          CouponCodeDto,
-          CouponDto,
-          CouponItemDto,
-          CampaignDto,
-          CreateCustomerDto,
-          UpdateCustomerDto,
-          CreateItemDto,
-          UpdateItemDto,
-          UpdateCouponDto,
-          UpdateCampaignDto,
-          UpdateCouponCodeDto,
-          CreateCouponItemDto,
-          UpdateCouponItemDto,
-          CreateCampaignDto,
-          UpdateCampaignDto,
-          CreateCouponCodeDto,
-          UpdateCouponCodeDto,
-          CreateCustomerCouponCodeDto,
-          UpdateCustomerCouponCodeDto,
-          CreateUserDto,
-          CreateOrganizationDto,
-          CreateCouponDto
-        ]
-      ).because('Only editors and admins are allowed to edit, create or delete.');
-    } else if (role == roleEnum.EDITOR) {
-      forbid(
-        ['create', 'delete'],
-        [OrganizationDto, CreateOrganizationDto]
-      ).because('Only super admin is allowed to create or edit oeganizations.');
+    forbid(
+      [
+        'create',
+        'update',
+        'delete',
+        'invite_user',
+        'remove_user',
+        'change_role',
+      ],
+      [
+        CustomerDto,
+        ItemDto,
+        CouponCodeDto,
+        CouponDto,
+        CouponItemDto,
+        CampaignDto,
+        CreateCustomerDto,
+        UpdateCustomerDto,
+        CreateItemDto,
+        UpdateItemDto,
+        UpdateCouponDto,
+        UpdateCampaignDto,
+        UpdateCouponCodeDto,
+        CreateCouponItemDto,
+        UpdateCouponItemDto,
+        CreateCampaignDto,
+        UpdateCampaignDto,
+        CreateCouponCodeDto,
+        UpdateCouponCodeDto,
+        CreateCustomerCouponCodeDto,
+        UpdateCustomerCouponCodeDto,
+        CreateUserDto,
+        CreateOrganizationDto,
+        CreateCouponDto
+      ]
+    ).because('Only editors and admins are allowed to edit, create or delete.');
 
-      forbid('change_role', OrganizationUserDto).because(
-        'Only admins are allowed to change role of a user.'
-      );
+    forbid('change_role', OrganizationUserDto).because(
+      'Only admins are allowed to change role of a user.'
+    );
 
-      forbid(['invite_user', 'remove_user'], [CreateUserDto, UserDto]).because(
-        'Only admins are allowed to invite or remove the user from organization'
-      );
-    } else if (role == roleEnum.ADMIN) {
-      forbid(
-        ['create', 'delete'],
-        [OrganizationDto, CreateOrganizationDto]
-      ).because('Only super admin is allowed to create or edit oeganizations.');
+    forbid(['invite_user', 'remove_user'], [CreateUserDto, UserDto]).because(
+      'Only admins are allowed to invite or remove the user from organization'
+    );
+
+    if(role === roleEnum.ADMIN) {
+      allow('manage', [
+        CreateCustomerDto,
+        UpdateCustomerDto,
+        CustomerDto, 
+        CreateItemDto,
+        UpdateItemDto,
+        ItemDto,
+        CreateCouponDto,
+        UpdateCouponDto,
+        CouponDto,
+        CreateCouponItemDto,
+        UpdateCouponItemDto,
+        CouponItemDto,
+        CreateCampaignDto,
+        UpdateCampaignDto,
+        CampaignDto,
+        CampaignSummaryRow,
+        CouponSummaryRow,
+        CreateCouponCodeDto,
+        UpdateCouponCodeDto,
+        CouponCodeDto,
+        CreateCustomerCouponCodeDto,
+        UpdateCustomerCouponCodeDto,
+        CustomerCouponCodeDto,
+        RedemptionRow,
+        CreateUserDto,
+        UserDto,
+        OrganizationDto,
+        OrganizationUserDto
+      ])
+    } else if(role === roleEnum.EDITOR) {
+      allow('manage', [
+        CreateCustomerDto,
+        UpdateCustomerDto,
+        CustomerDto, 
+        CreateItemDto,
+        UpdateItemDto,
+        ItemDto,
+        CreateCouponDto,
+        UpdateCouponDto,
+        CouponDto,
+        CreateCouponItemDto,
+        UpdateCouponItemDto,
+        CouponItemDto,
+        CreateCampaignDto,
+        UpdateCampaignDto,
+        CampaignDto,
+        CampaignSummaryRow,
+        CouponSummaryRow,
+        CreateCouponCodeDto,
+        UpdateCouponCodeDto,
+        CouponCodeDto,
+        CreateCustomerCouponCodeDto,
+        UpdateCustomerCouponCodeDto,
+        CustomerCouponCodeDto,
+        RedemptionRow,
+        UserDto,
+      ])
     }
   }
 
