@@ -47,6 +47,7 @@ import { NotAllowedDialogBoxComponent } from '../../../../../common/not-allowed-
 import { UserAbility, UserAbilityTuple } from '../../../../../../permissions/ability';
 import { PureAbility } from '@casl/ability';
 import { AbilityServiceSignal } from '@casl/angular';
+import { onChangeStatusSuccess } from '../store/campaign.store';
 
 @Component({
   selector: 'app-coupon-code-list',
@@ -171,6 +172,22 @@ export class CouponCodeListComponent implements OnInit {
           isFilterOperation: true
         });
       });
+
+    onChangeStatusSuccess.subscribe((res) => {
+      if(res) {
+        this.couponCodesStore.fetchCouponCodes({
+          organizationId: this.organization()?.organizationId!,
+          couponId: this.couponId,
+          campaignId: this.campaignId,
+          filter: this.filter()!,
+          sortOptions: {
+            sortBy: this.sortActive(),
+            sortOrder: this.sortDirection() == 'asc' ? sortOrderEnum.ASC : sortOrderEnum.DESC
+          },
+          isFilterOperation: true
+        });
+      }
+    })
   }
 
   copyToClipboard(value: string, field: string) {

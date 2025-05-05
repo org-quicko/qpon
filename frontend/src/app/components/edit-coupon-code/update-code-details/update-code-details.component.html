@@ -8,7 +8,7 @@
       <div>{{ campaign()?.name }}</div>
     </div>
     <div class="flex flex-col gap-1 text-on-surface">
-      <div class="meat-headline-small">Edit Coupon code details</div>
+      <div class="mat-headline-small">Edit Coupon code details</div>
       <div class="mat-body-large">
         Enter code that your customers can easily remember
       </div>
@@ -16,13 +16,13 @@
   </div>
   <form [formGroup]="updateCouponCodeForm" class="flex flex-col gap-8">
     <div class="flex flex-col gap-6">
-      <mat-form-field appearance="outline" class="opacity-[38%]">
+      <mat-form-field appearance="outline" class="opacity-[38%]" subscriptSizing="dynamic">
         <mat-label>Code</mat-label>
         <div class="flex justify-between items-center">
           <input matInput type="text" [disabled]="true" [value]="couponCode()?.code"/>
         </div>    
       </mat-form-field>
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
         <mat-label>Description</mat-label>
         <input matInput type="text" formControlName="description" />
       </mat-form-field>

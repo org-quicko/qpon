@@ -5,14 +5,13 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { CampaignsStore } from '../store/campaigns.store';
-import { onChangeStatusSuccess } from '../store/campaigns.store';
+import { OnCampaignSuccess, onChangeStatusSuccess } from '../store/campaign.store';
 
 @Component({
   selector: 'app-campaigns-change-status',
   imports: [MatDialogModule, MatButtonModule],
-  templateUrl: './change-status.component.html',
-  styleUrl: './change-status.component.css',
+  templateUrl: './campaign-change-status-dialog.html',
+  styleUrl: './campaign-change-status-dialog.css',
 })
 export class ChangeStatusComponent implements OnInit {
   readonly dialogRef = inject(MatDialogRef<ChangeStatusComponent>);

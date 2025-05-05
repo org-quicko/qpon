@@ -1,6 +1,6 @@
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { CouponDto } from '../../dtos/coupon.dto';
-import { inject } from '@angular/core';
+import { EventEmitter, inject } from '@angular/core';
 import { CouponService } from '../services/coupon.service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { catchError, concatMap, EMPTY, of, pipe, tap } from 'rxjs';
@@ -11,6 +11,9 @@ import { PaginatedList } from '../../dtos/paginated-list.dto';
 import { sortOrderEnum, statusEnum } from '../../enums';
 import { CouponFilter } from '../types/coupon-filter.interface';
 import { HttpErrorResponse } from '@angular/common/http';
+
+export const OnCouponsSuccess = new EventEmitter<boolean>();
+export const OnCouponsError = new EventEmitter<string>();
 
 type CouponsState = {
   coupons: CouponDto[];
@@ -175,16 +178,15 @@ export const CouponsStore = signalStore(
                           : coupon
                       ),
                   });
+
+                  OnCouponsSuccess.emit(true);
                 }
               },
-              error: (error: any) => {
-                patchState(store, { error: error.message });
+              error: (error: HttpErrorResponse) => {
+                patchState(store, { error: error.message, isLoading: false });
+                 OnCouponsError.emit(error.message)
               },
             }),
-            catchError((error) => {
-              patchState(store, { error: error.message });
-              return EMPTY;
-            })
           );
         })
       )
@@ -206,16 +208,15 @@ export const CouponsStore = signalStore(
                           : coupon
                       ),
                   });
+
+                  OnCouponsSuccess.emit(true);
                 }
               },
-              error: (error: any) => {
-                patchState(store, { error: error.message });
+              error: (error: HttpErrorResponse) => {
+                patchState(store, { error: error.message, isLoading: false });
+                OnCouponsError.emit(error.message)
               },
             }),
-            catchError((error) => {
-              patchState(store, { error: error.message });
-              return EMPTY;
-            })
           );
         })
       )

@@ -42,11 +42,18 @@ import { PaginationOptions } from '../../../../../../types/PaginatedOptions';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { sortOrderEnum } from '../../../../../../../enums';
 import { InactiveMessageDialogComponent } from '../../../../common/inactive-message-dialog/inactive-message-dialog.component';
-import { UserAbility, UserAbilityTuple } from '../../../../../../permissions/ability';
+import {
+  UserAbility,
+  UserAbilityTuple,
+} from '../../../../../../permissions/ability';
 import { AbilityServiceSignal } from '@casl/angular';
 import { PureAbility } from '@casl/ability';
-import { CreateCampaignDto, UpdateCampaignDto } from '../../../../../../../dtos/campaign.dto';
+import {
+  CreateCampaignDto,
+  UpdateCampaignDto,
+} from '../../../../../../../dtos/campaign.dto';
 import { NotAllowedDialogBoxComponent } from '../../../../../common/not-allowed-dialog-box/not-allowed-dialog-box.component';
+import { OnCouponsSuccess } from '../../../../../../store/coupons.store';
 
 @Component({
   selector: 'app-campaigns',
@@ -106,10 +113,10 @@ export class CampaignsComponent implements OnInit {
     'menu',
   ];
 
-  private readonly abilityService = inject<AbilityServiceSignal<UserAbility>>(AbilityServiceSignal);
-	protected readonly can = this.abilityService.can;
-	private readonly ability = inject<PureAbility<UserAbilityTuple>>(PureAbility);
-
+  private readonly abilityService =
+    inject<AbilityServiceSignal<UserAbility>>(AbilityServiceSignal);
+  protected readonly can = this.abilityService.can;
+  private readonly ability = inject<PureAbility<UserAbilityTuple>>(PureAbility);
 
   constructor(
     private route: ActivatedRoute,
@@ -164,6 +171,22 @@ export class CampaignsComponent implements OnInit {
           },
         });
       });
+
+    OnCouponsSuccess.subscribe((res) => {
+      console.log(res);
+      this.campaignsStore.resetStore();
+      this.campaignsStore.fetchCampaingSummaries({
+        organizationId: this.organization()?.organizationId!,
+        couponId: this.couponId,
+        sortOptions: {
+          sortBy: this.sortOptions().active,
+          sortOrder:
+            this.sortOptions().direction == 'asc'
+              ? sortOrderEnum.ASC
+              : sortOrderEnum.DESC,
+        },
+      });
+    });
   }
 
   convertToCampaignSummaryRow(row: any[]) {
@@ -171,7 +194,7 @@ export class CampaignsComponent implements OnInit {
   }
 
   openDialog(campaign: CampaignSummaryRow) {
-    if(this.can('update', UpdateCampaignDto)) {
+    if (this.can('update', UpdateCampaignDto)) {
       this.dialog.open(ChangeStatusComponent, {
         data: {
           couponId: this.couponId,
@@ -198,7 +221,7 @@ export class CampaignsComponent implements OnInit {
   }
 
   onCreateCampaign() {
-    if(this.can('create', CreateCampaignDto)) {
+    if (this.can('create', CreateCampaignDto)) {
       this.router.navigate(
         [`../../../coupons/${this.couponId}/campaigns/create`],
         {
@@ -215,7 +238,7 @@ export class CampaignsComponent implements OnInit {
   }
 
   onEditCampaign(campaignId: string) {
-    if(this.can('update', UpdateCampaignDto)) {
+    if (this.can('update', UpdateCampaignDto)) {
       this.router.navigate(
         [
           `/${this.organization()?.organizationId}/coupons/${
@@ -271,7 +294,7 @@ export class CampaignsComponent implements OnInit {
             ? sortOrderEnum.ASC
             : sortOrderEnum.DESC,
       },
-      isSortOperation: true
+      isSortOperation: true,
     });
   }
 
@@ -280,9 +303,10 @@ export class CampaignsComponent implements OnInit {
       autoFocus: false,
       data: {
         title: 'Coupon inactive!',
-        description: 'You can’t create campaign because the coupon is marked inactive.'
-      }
-    })
+        description:
+          'You can’t create campaign because the coupon is marked inactive.',
+      },
+    });
   }
 
   openInvactiveMessageDialogForChangeStatus() {
@@ -290,16 +314,17 @@ export class CampaignsComponent implements OnInit {
       autoFocus: false,
       data: {
         title: 'Coupon inactive!',
-        description: 'You can’t mark this campaign as active because the coupon is marked inactive.'
-      }
-    })
+        description:
+          'You can’t mark this campaign as active because the coupon is marked inactive.',
+      },
+    });
   }
 
   openNotAllowedDialogBox(restrictionReason: string) {
-		this.dialog.open(NotAllowedDialogBoxComponent, {
-			data: {
-				description: restrictionReason,
-			}
-		});
-	}
+    this.dialog.open(NotAllowedDialogBoxComponent, {
+      data: {
+        description: restrictionReason,
+      },
+    });
+  }
 }

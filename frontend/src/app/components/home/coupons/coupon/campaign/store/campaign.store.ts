@@ -13,6 +13,8 @@ import { HttpErrorResponse } from "@angular/common/http";
 export const OnCampaignSuccess = new EventEmitter<boolean>();
 export const OnCampaignError = new EventEmitter<string>();
 
+export const onChangeStatusSuccess = new EventEmitter<boolean>();
+
 type CampaignState = {
     campaign: CampaignSummaryRow | null;
     isLoading: boolean | null;
@@ -84,6 +86,64 @@ export const CampaignStore = signalStore(
                     )
                 })
             )
-        )
+        ),
+
+        activateCampaign: rxMethod<{ organizationId: string, couponId: string; campaignId: string }>(
+              pipe(
+                switchMap(({ organizationId, couponId, campaignId }) => {
+                  return campaignService.activateCampaign(organizationId, couponId, campaignId).pipe(
+                    tapResponse({
+                      next: (response) => {
+                        if (response.code == 201) {
+                            const campaignSummaryRow = store.campaign();
+
+                            campaignSummaryRow?.setStatus('active');
+        
+                          patchState(store, {
+                            campaign: campaignSummaryRow,
+                          });
+        
+                          onChangeStatusSuccess.emit(true);
+                        }
+                      },
+                      error: (error: any) => {
+                        patchState(store, { error: error.message });
+        
+                        onChangeStatusSuccess.emit(false);
+                      },
+                    }),
+                  );
+                })
+              )
+            ),
+        
+            deactivateCampaign: rxMethod<{ organizationId: string, couponId: string; campaignId: string }>(
+              pipe(
+                switchMap(({ organizationId, couponId, campaignId }) => {
+                  return campaignService.deactivateCampaign(organizationId, couponId, campaignId).pipe(
+                    tap(),
+                    tapResponse({
+                      next: (response) => {
+                        if (response.code == 201) {
+                            const campaignSummaryRow = store.campaign();
+
+                            campaignSummaryRow?.setStatus('inactive');
+        
+                          patchState(store, {
+                            campaign: campaignSummaryRow,
+                          });
+        
+                          onChangeStatusSuccess.emit(true);
+                        }
+                      },
+                      error: (error: any) => {
+                        patchState(store, { error: error.message });
+                        onChangeStatusSuccess.emit(false);
+                      },
+                    }),
+                  );
+                })
+              )
+            ),
     }))
 )

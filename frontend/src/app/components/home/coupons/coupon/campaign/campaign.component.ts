@@ -10,6 +10,7 @@ import { CampaignSummaryComponent } from './campaign-summary/campaign-summary.co
 import { CouponCodeListComponent } from './coupon-code-list/coupon-code-list.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { onChangeStatusSuccess } from './coupon-code-list/store/coupon-codes.store';
+import { CampaignsStore } from '../coupon-tab/campaigns/store/campaigns.store';
 
 @Component({
   selector: 'app-campaign',

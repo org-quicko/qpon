@@ -2,7 +2,7 @@
   <div class="mat-headline-small text-on-surface">
     Let’s create a new coupon
   </div>
-  <form [formGroup]="couponFormGroup" class="flex flex-col gap-4">
+  <form [formGroup]="couponFormGroup" class="flex flex-col gap-8">
     <mat-form-field
       appearance="outline"
       class="w-full"
@@ -12,12 +12,13 @@
       <input matInput type="text" ng-trim="true" formControlName="name" />
       <mat-error>Coupon name is required</mat-error>
     </mat-form-field>
-    <div class="flex flex-col gap-1">
-      <div class="mat-body-large text-on-surface">Discount type</div>
-      <div class="mat-body-medium text-on-surface-variant">
-        Choose whether you want to give percentage or fixed amount discount
+    <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-1">
+        <div class="mat-body-large text-on-surface">Discount type</div>
+        <div class="mat-body-medium text-on-surface-variant">
+          Choose whether you want to give percentage or fixed amount discount
+        </div>
       </div>
-    </div>
     <mat-radio-group class="flex gap-4" formControlName="discountType">
       <mat-radio-button
         matInput
@@ -114,6 +115,7 @@
         </div>
       </mat-radio-button>
     </mat-radio-group>
+    </div>
     <div class="flex flex-col gap-4">
       <div class="mat-body-large text-on-surface">
         Maximum amount that will be discounted*

@@ -21,6 +21,7 @@ import { UserAbility, UserAbilityTuple } from '../../../../../permissions/abilit
 import { PureAbility } from '@casl/ability';
 import { AbilityServiceSignal } from '@casl/angular';
 import { NotAllowedDialogBoxComponent } from '../../../../common/not-allowed-dialog-box/not-allowed-dialog-box.component';
+import { CouponsStore } from '../../../../../store/coupons.store';
 
 @Component({
   selector: 'app-coupon-details',
@@ -51,6 +52,8 @@ export class CouponDetailsComponent implements OnInit {
 	protected readonly can = this.abilityService.can;
 	private readonly ability = inject<PureAbility<UserAbilityTuple>>(PureAbility);
 
+  couponsStore = inject(CouponsStore);
+
   constructor(private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
@@ -66,7 +69,7 @@ export class CouponDetailsComponent implements OnInit {
     return new Date(date).toDateString();
   }
 
-  openDialog(coupon: CouponDto) {
+  openDeleteDialog(coupon: CouponDto) {
     if(this.can('delete', CouponDto)) {
       this.dialog.open(DeleteDialogComponent, {
         data: {
@@ -86,6 +89,25 @@ export class CouponDetailsComponent implements OnInit {
     }
   }
 
+
+  openChangeStatusDialog(coupon: CouponDto) {
+    if(this.can('update', UpdateCouponDto)) {
+      this.dialog.open(ChangeStatusComponent, {
+        data: {
+          coupon,
+          organizationId: this.organization()?.organizationId,
+          activateCoupon: this.couponsStore.activateCoupon,
+          deactivateCoupon: this.couponsStore.deactivateCoupon,
+        },
+        autoFocus: false,
+      });
+    } else {
+      const rule = this.ability.relevantRuleFor('update', UpdateCouponDto);
+      this.openNotAllowedDialogBox(rule?.reason!);
+    }
+  }
+
+  
   onEdit() {
     if(this.can('update', UpdateCouponDto)) {
       this.router.navigate(

@@ -212,5 +212,17 @@ export const CampaignsStore = signalStore(
         loadedPages: new Set<number>(),
       });
     },
+
+    resetStore() {
+      patchState(store, {
+        campaignSummaries: null,
+        count: null,
+        isLoading: null, 
+        loadedPages: new Set(),
+        skip: null,
+        take: null,
+        error: null,
+      })
+    }
   }))
 );

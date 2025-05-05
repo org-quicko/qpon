@@ -13,6 +13,7 @@ import { ViewColumn, ViewEntity } from 'typeorm';
       SELECT DISTINCT ON (cc.coupon_code_id)
           c.organization_id,
           c.coupon_id,
+          camp.campaign_id,
           cc.code,
           c.discount_type,
           c.discount_value,
@@ -46,6 +47,9 @@ export class Offer {
 
   @ViewColumn({ name: 'organization_id' })
   organizationId: string;
+
+  @ViewColumn({ name: 'campaign_id' })
+  campaignId: string;
 
   @ViewColumn()
   code: string;

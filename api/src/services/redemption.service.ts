@@ -54,7 +54,12 @@ export class RedemptionsService {
   /**
    * Redeem coupon code
    */
-  async redeemCouponCode(organizationId: string, body: CreateRedemptionDto) {
+  async redeemCouponCode(
+    organizationId: string,
+    couponId: string,
+    campaignId: string,
+    body: CreateRedemptionDto,
+  ) {
     this.logger.info('START: redeemCouponCode service');
     return this.datasource.transaction(async (manager) => {
       try {
@@ -68,6 +73,12 @@ export class RedemptionsService {
             status: couponCodeStatusEnum.ACTIVE,
             organization: {
               organizationId,
+            },
+            coupon: {
+              couponId,
+            },
+            campaign: {
+              campaignId,
             },
           },
         });

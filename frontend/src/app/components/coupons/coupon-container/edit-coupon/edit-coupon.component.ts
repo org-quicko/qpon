@@ -10,7 +10,7 @@ import { UpdateCouponDto } from '../../../../../dtos/coupon.dto';
 import { AlertTileComponent } from '../common/alert-tile/alert-tile.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
-import { NgClass } from '@angular/common';
+import { getCurrencySymbol, NgClass } from '@angular/common';
 import { discountTypeEnum } from '../../../../../enums';
 
 @Component({
@@ -110,5 +110,15 @@ export class EditCouponComponent implements OnInit {
       couponId: this.couponId,
       body: updatedCoupon
     })
+  }
+
+  getCurrencySymbolOnly(code: string): string {
+    return getCurrencySymbol(code, 'narrow');
+  }
+
+  updatePercentageWidth() {
+    const value = this.coupon()?.discountValue;
+    const length = value ? value.length : 1;
+    return length;
   }
 }

@@ -13,10 +13,17 @@ import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialogComponent } from '../../../../common/delete-dialog/delete-dialog.component';
 import { CampaignStore, OnCampaignSuccess } from '../store/campaign.store';
 import { NotAllowedDialogBoxComponent } from '../../../../../common/not-allowed-dialog-box/not-allowed-dialog-box.component';
-import { UserAbility, UserAbilityTuple } from '../../../../../../permissions/ability';
+import {
+  UserAbility,
+  UserAbilityTuple,
+} from '../../../../../../permissions/ability';
 import { PureAbility } from '@casl/ability';
 import { AbilityServiceSignal } from '@casl/angular';
-import { CampaignDto, UpdateCampaignDto } from '../../../../../../../dtos/campaign.dto';
+import {
+  CampaignDto,
+  UpdateCampaignDto,
+} from '../../../../../../../dtos/campaign.dto';
+import { ChangeStatusComponent } from '../campaign-change-status-dialog/campaign-change-status-dialog';
 
 @Component({
   selector: 'app-campaign-details',
@@ -27,7 +34,7 @@ import { CampaignDto, UpdateCampaignDto } from '../../../../../../../dtos/campai
     NgxSkeletonLoaderModule,
     NgClass,
     TitleCasePipe,
-    CustomDatePipe
+    CustomDatePipe,
   ],
   templateUrl: './campaign-details.component.html',
   styleUrls: ['./campaign-details.component.css'],
@@ -44,9 +51,10 @@ export class CampaignDetailsComponent implements OnInit {
   organization = this.organizationStore.organizaiton;
   coupon = this.couponStore.coupon.data;
 
-  private readonly abilityService = inject<AbilityServiceSignal<UserAbility>>(AbilityServiceSignal);
-	protected readonly can = this.abilityService.can;
-	private readonly ability = inject<PureAbility<UserAbilityTuple>>(PureAbility);
+  private readonly abilityService =
+    inject<AbilityServiceSignal<UserAbility>>(AbilityServiceSignal);
+  protected readonly can = this.abilityService.can;
+  private readonly ability = inject<PureAbility<UserAbilityTuple>>(PureAbility);
 
   constructor(private router: Router, private route: ActivatedRoute) {}
 
@@ -64,7 +72,7 @@ export class CampaignDetailsComponent implements OnInit {
   }
 
   onEdit() {
-    if(this.can('update', UpdateCampaignDto)) {
+    if (this.can('update', UpdateCampaignDto)) {
       this.router.navigate(
         [
           `/${this.organization()?.organizationId}/coupons/${
@@ -84,19 +92,20 @@ export class CampaignDetailsComponent implements OnInit {
   }
 
   openDeleteDialog() {
-    if(this.can('delete', CampaignDto)) {
+    if (this.can('delete', CampaignDto)) {
       this.dialog.open(DeleteDialogComponent, {
         autoFocus: false,
         data: {
           title: `Delete ‘${this.campaign()?.getName()}’ campaign?`,
           description: `Are you sure you want to delete ‘${this.campaign()?.getName()}’? All coupon codes associated with this campaign will be deleted!`,
-          onDelete: () => this.campaignStore.deleteCampaign({
-            organizationId: this.organization()?.organizationId!,
-            couponId: this.coupon()?.couponId!,
-            campaignId: this.campaign()?.getCampaignId()!,
-          })
-        }
-      })
+          onDelete: () =>
+            this.campaignStore.deleteCampaign({
+              organizationId: this.organization()?.organizationId!,
+              couponId: this.coupon()?.couponId!,
+              campaignId: this.campaign()?.getCampaignId()!,
+            }),
+        },
+      });
     } else {
       const rule = this.ability.relevantRuleFor('delete', CampaignDto);
       this.openNotAllowedDialogBox(rule?.reason!);
@@ -104,10 +113,27 @@ export class CampaignDetailsComponent implements OnInit {
   }
 
   openNotAllowedDialogBox(restrictionReason: string) {
-		this.dialog.open(NotAllowedDialogBoxComponent, {
-			data: {
-				description: restrictionReason,
-			}
-		});
-	}
+    this.dialog.open(NotAllowedDialogBoxComponent, {
+      data: {
+        description: restrictionReason,
+      },
+    });
+  }
+
+  openChangeStatusDialog(campaign: CampaignSummaryRow) {
+    if (this.can('update', UpdateCampaignDto)) {
+      this.dialog.open(ChangeStatusComponent, {
+        data: {
+          couponId: this.couponStore.coupon.data()?.couponId,
+          campaign,
+          deactivateCampaign: this.campaignStore.deactivateCampaign,
+          activateCampaign: this.campaignStore.activateCampaign,
+        },
+        autoFocus: false,
+      });
+    } else {
+      const rule = this.ability.relevantRuleFor('update', UpdateCampaignDto);
+      this.openNotAllowedDialogBox(rule?.reason!);
+    }
+  }
 }

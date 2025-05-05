@@ -22,14 +22,14 @@
           <div class="w-[175px] h-auto px-[16px] pt-[16px]">
             <div class="flex flex-col gap-[4px]">
               <div class="flex gap-[8px] items-center text-on-surface">
-                <p class="mat-body-large">{{ user()?.name | titlecase }}</p>
-                <p
-                  class="bg-surface-container mat-label-small px-[8px] py-[4px]"
+                <div class="mat-body-large">{{ user()?.name | titlecase }}</div>
+                <div
+                  class="bg-surface-container-highest mat-label-small px-[8px] py-[4px]"
                 >
                   {{ role?.replace("_", " ") | titlecase }}
-                </p>
+                </div>
               </div>
-              <p class="mat-body-medium text-outline">{{ user()?.email }}</p>
+              <div class="mat-body-medium text-outline">{{ user()?.email }}</div>
             </div>
           </div>
           <div class="h-[48px] px-[16px] pb-[20px]">

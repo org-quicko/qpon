@@ -34,6 +34,8 @@ export class OfferSheetConverter {
       offerRow.setCustomerId(offer.customerId);
       offerRow.setCampaignExternalId(offer.externalCampaignId);
       offerRow.setVisibility(offer.visibility);
+      offerRow.setCampaignId(offer.campaignId);
+      offerRow.setCouponId(offer.couponId);
       offerTable.addRow(offerRow);
     });
 

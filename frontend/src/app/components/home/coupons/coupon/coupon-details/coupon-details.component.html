@@ -24,8 +24,8 @@
         <span>Edit</span>
       </button>
 
-      <button mat-icon-button>
-        <mat-icon [matMenuTriggerFor]="menu" class="hover:cursor-pointer text-on-surface"
+      <button [matMenuTriggerFor]="menu"  mat-icon-button>
+        <mat-icon class="hover:cursor-pointer text-on-surface"
           >more_vert</mat-icon
         >
       </button>
@@ -134,10 +134,17 @@
   #menu="matMenu"
   class="w-[200px] min-w-[112px] max-w-[280px] rounded-[4px] bg-surface-container-lowest top-[208px] left-[3155px]"
 >
-  <button mat-menu-item class="h-[56px] py-8 flex gap-[12px]" (click)="openDialog(coupon()!)">
+  <button mat-menu-item class="h-[56px] py-8 flex gap-[12px]" (click)="openDeleteDialog(coupon()!)">
     <mat-icon
       class="material-symbols-outlined text-on-surface"
     >delete</mat-icon>
     <span class="mat-body-large text-on-surface">Delete</span>
+  </button>
+  <button mat-menu-item class="h-[56px] py-8 flex gap-[12px]" (click)="openChangeStatusDialog(coupon()!)">
+    <mat-icon
+      class="material-symbols-outlined text-on-surface"
+      svgIcon="regime_preference"
+    ></mat-icon>
+    <span class="mat-body-large text-on-surface">Change Status</span>
   </button>
 </mat-menu>

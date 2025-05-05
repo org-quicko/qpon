@@ -10,6 +10,7 @@ import { CouponSummaryComponent } from "./coupon-summary/coupon-summary.componen
 import { CouponTabComponent } from "./coupon-tab/coupon-tab.component";
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { CampaignsStore } from './coupon-tab/campaigns/store/campaigns.store';
+import { OnCouponsSuccess } from '../../../../store/coupons.store';
 
 @Component({
   selector: 'app-coupon',
@@ -41,6 +42,12 @@ export class CouponComponent implements OnInit {
       this.couponId = params['coupon_id'];
     });
     this.loadData();
+
+    OnCouponsSuccess.subscribe((res) => {
+      if(res) {
+        this.loadData();
+      }
+    })
   }
 
   loadData() {
