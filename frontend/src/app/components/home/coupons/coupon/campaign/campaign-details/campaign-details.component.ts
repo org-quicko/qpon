@@ -24,6 +24,7 @@ import {
   UpdateCampaignDto,
 } from '../../../../../../../dtos/campaign.dto';
 import { ChangeStatusComponent } from '../campaign-change-status-dialog/campaign-change-status-dialog';
+import { InactiveMessageDialogComponent } from '../../../../common/inactive-message-dialog/inactive-message-dialog.component';
 
 @Component({
   selector: 'app-campaign-details',
@@ -135,5 +136,17 @@ export class CampaignDetailsComponent implements OnInit {
       const rule = this.ability.relevantRuleFor('update', UpdateCampaignDto);
       this.openNotAllowedDialogBox(rule?.reason!);
     }
+  }
+
+  
+  openInvactiveMessageDialogForCampaign() {
+    this.dialog.open(InactiveMessageDialogComponent, {
+      autoFocus: false,
+      data: {
+        title: 'Coupon inactive!',
+        description:
+          'You can’t create campaign because the coupon is marked inactive.',
+      },
+    });
   }
 }

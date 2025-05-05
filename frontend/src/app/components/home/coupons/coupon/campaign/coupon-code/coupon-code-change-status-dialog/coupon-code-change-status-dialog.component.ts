@@ -1,13 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { onChangeStatusSuccess } from '../store/coupon-code.store';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { onChangeStatusSuccess } from '../store/coupon-codes.store';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-coupon-codes-change-status',
+  selector: 'app-coupon-code-change-status-dialog',
   imports: [MatButtonModule],
-  templateUrl: './coupon-code-change-status.component.html',
-  styleUrls: ['./coupon-code-change-status.component.css']
+  templateUrl: './coupon-code-change-status-dialog.component.html',
+  styleUrls: ['./coupon-code-change-status-dialog.component.css']
 })
 export class CouponCodeChangeStatusDialogComponent implements OnInit {
 
@@ -49,5 +49,4 @@ export class CouponCodeChangeStatusDialogComponent implements OnInit {
       }
     });
   }
-
 }

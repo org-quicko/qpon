@@ -21,6 +21,8 @@ import { PureAbility } from '@casl/ability';
 import { AbilityServiceSignal } from '@casl/angular';
 import { CouponCodeDto, UpdateCouponCodeDto } from '../../../../../../../dtos/coupon-code.dto';
 import { NotAllowedDialogBoxComponent } from '../../../../../common/not-allowed-dialog-box/not-allowed-dialog-box.component';
+import { InactiveMessageDialogComponent } from '../../../../common/inactive-message-dialog/inactive-message-dialog.component';
+import { CouponCodeChangeStatusDialogComponent } from './coupon-code-change-status-dialog/coupon-code-change-status-dialog.component';
 
 @Component({
   selector: 'app-coupon-code',
@@ -173,4 +175,34 @@ export class CouponCodeComponent implements OnInit {
 			}
 		});
 	}
+
+  
+  openInvactiveMessageDialogForChangeStatus() {
+    this.dialog.open(InactiveMessageDialogComponent, {
+      autoFocus: false,
+      data: {
+        title: 'Campaign inactive!',
+        description: 'You can’t mark this coupon code as active because the campaign is marked inactive.'
+      }
+    })
+}
+
+  openChangeStatusDialog(couponCode: CouponCodeDto) {
+      if(this.can('update', UpdateCouponCodeDto)) {
+        this.dialog.open(CouponCodeChangeStatusDialogComponent, {
+          data: {
+            couponCode,
+            campaignId: this.campaignId,
+            couponId: this.couponId,
+            organizationId: this.organization()?.organizationId,
+            activateCouponCode: this.couponCodeStore.activateCouponCode,
+            deactivateCouponCode: this.couponCodeStore.deactivateCouponCode,
+          },
+          autoFocus: false,
+        });
+      } else {
+        const rule = this.ability.relevantRuleFor('update', UpdateCouponCodeDto);
+        this.openNotAllowedDialogBox(rule?.reason!);
+      }
+    }
 }

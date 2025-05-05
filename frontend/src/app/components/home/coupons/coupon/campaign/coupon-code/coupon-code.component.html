@@ -229,4 +229,8 @@
     <mat-icon class="material-symbols-outlined">delete</mat-icon>
     <span class="mat-body-large text-on-surface">Delete</span>
   </button>
+  <button mat-menu-item class="h-[56px] py-8 flex gap-[12px]" (click)="campaign()?.getStatus() == 'inactive' ? openInvactiveMessageDialogForChangeStatus() : openChangeStatusDialog(couponCode()!)">
+    <mat-icon class="material-symbols-outlined" svgIcon="regime_preference"></mat-icon>
+    <span class="mat-body-large text-on-surface">Change status</span>
+  </button>
 </mat-menu>

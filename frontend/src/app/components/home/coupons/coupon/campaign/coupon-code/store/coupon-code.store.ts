@@ -9,9 +9,12 @@ import { tapResponse } from "@ngrx/operators";
 import { plainToInstance } from "class-transformer";
 import { HttpErrorResponse } from "@angular/common/http";
 import { SnackbarService } from "../../../../../../../services/snackbar.service";
+import { statusEnum } from "../../../../../../../../enums";
 
 export const OnCouponCodeSuccess = new EventEmitter<boolean>();
 export const OnCouponCodeError = new EventEmitter<string>();
+
+export const onChangeStatusSuccess = new EventEmitter<boolean>();
 
 type CouponCodeState = {
     couponCode: CouponCodeDto | null;
@@ -76,5 +79,65 @@ export const CouponCodeStore = signalStore(
                 })
             )
         ),
+
+        activateCouponCode: rxMethod<{organizationId: string, couponId: string, campaignId: string, couponCodeId: string}>(
+                    pipe(
+                        switchMap(({organizationId, couponId, campaignId, couponCodeId}) => {
+                            return couponCodeService.activateCouponCode(organizationId, couponId, campaignId, couponCodeId).pipe(
+                                tapResponse({
+                                    next: (response) => {
+                                        if(response.code == 200) {
+                                            const currentCouponCode = store.couponCode();
+
+                                            const updatedCouponCode = {
+                                                ...currentCouponCode,
+                                                status: statusEnum.ACTIVE 
+                                            }
+        
+                                            patchState(store, {couponCode: updatedCouponCode, isLoading: false})
+        
+                                            onChangeStatusSuccess.emit(true);
+                                        }
+                                    },
+                                    error: (error:HttpErrorResponse) => {
+                                        patchState(store, {isLoading: false, error: error.message})
+
+                                        onChangeStatusSuccess.emit(false);
+                                    }
+                                })
+                            )
+                        })
+                    )
+                ),
+        
+                deactivateCouponCode: rxMethod<{organizationId: string, couponId: string, campaignId: string, couponCodeId: string}>(
+                    pipe(
+                        switchMap(({organizationId, couponId, campaignId, couponCodeId}) => {
+                            return couponCodeService.deactivateCouponCode(organizationId, couponId, campaignId, couponCodeId).pipe(
+                                tapResponse({
+                                    next: (response) => {
+                                        if(response.code == 200) {
+                                            const currentCouponCode = store.couponCode();
+
+                                            const updatedCouponCode = {
+                                                ...currentCouponCode,
+                                                status: statusEnum.INACTIVE 
+                                            }
+        
+                                            patchState(store, {couponCode: updatedCouponCode, isLoading: false})
+        
+                                            onChangeStatusSuccess.emit(true);
+                                        }
+                                    },
+                                    error: (error:HttpErrorResponse) => {
+                                        patchState(store, {isLoading: false, error: error.message})
+
+                                        onChangeStatusSuccess.emit(false);
+                                    }
+                                })
+                            )
+                        })
+                    )
+                ),
     }))
 )
