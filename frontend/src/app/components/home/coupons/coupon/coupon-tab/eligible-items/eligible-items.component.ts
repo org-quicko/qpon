@@ -15,6 +15,12 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { PaginationOptions } from '../../../../../../types/PaginatedOptions';
+import { MatDialog } from '@angular/material/dialog';
+import { NotAllowedDialogBoxComponent } from '../../../../../common/not-allowed-dialog-box/not-allowed-dialog-box.component';
+import { UserAbility, UserAbilityTuple } from '../../../../../../permissions/ability';
+import { PureAbility } from '@casl/ability';
+import { AbilityServiceSignal } from '@casl/angular';
+import { CouponItemDto, CreateCouponItemDto } from '../../../../../../../dtos/coupon-item.dto';
 
 @Component({
   selector: 'app-eligible-items',
@@ -43,6 +49,8 @@ export class EligibleItemsComponent implements OnInit {
     pageSize: 10
   })
 
+  dialog = inject(MatDialog) 
+
   couponStore = inject(CouponStore);
   eligibleItemsStore = inject(EligibleItemsStore);
   organizationStore = inject(OrganizationStore);
@@ -54,6 +62,10 @@ export class EligibleItemsComponent implements OnInit {
   count = this.eligibleItemsStore.count;
 
   datasource = new MatTableDataSource<ItemDto>();
+
+  private readonly abilityService = inject<AbilityServiceSignal<UserAbility>>(AbilityServiceSignal);
+	protected readonly can = this.abilityService.can;
+	private readonly ability = inject<PureAbility<UserAbilityTuple>>(PureAbility);
 
   constructor(private route: ActivatedRoute, private router: Router) {
     this.couponId = '';
@@ -106,11 +118,16 @@ export class EligibleItemsComponent implements OnInit {
   }
 
   onAddItem() {
-    this.router.navigate([`/${this.organization()?.organizationId}/coupons/${this.couponId}/items/edit`], {
-      queryParams: {
-        'redirect': btoa(this.router.url)
-      }
-    })
+    if(this.can('create', CreateCouponItemDto)) {
+      this.router.navigate([`/${this.organization()?.organizationId}/coupons/${this.couponId}/items/edit`], {
+        queryParams: {
+          'redirect': btoa(this.router.url)
+        }
+      })
+    } else {
+      const rule = this.ability.relevantRuleFor('create', CreateCouponItemDto);
+      this.openNotAllowedDialogBox(rule?.reason!);
+    }
   }
 
   onPageChange(event: PageEvent) {
@@ -128,10 +145,23 @@ export class EligibleItemsComponent implements OnInit {
   }
 
   onDelete(item: ItemDto) {
-    this.eligibleItemsStore.deleteItem({
-      organizationId: this.organization()?.organizationId!,
-      couponId: this.couponId,
-      itemId: item.itemId!
-    })
+    if(this.can('delete', CouponItemDto)) {
+      this.eligibleItemsStore.deleteItem({
+        organizationId: this.organization()?.organizationId!,
+        couponId: this.couponId,
+        itemId: item.itemId!
+      })
+    } else {
+      const rule = this.ability.relevantRuleFor('delete', CouponItemDto);
+      this.openNotAllowedDialogBox(rule?.reason!);
+    }
   }
+
+  openNotAllowedDialogBox(restrictionReason: string) {
+		this.dialog.open(NotAllowedDialogBoxComponent, {
+			data: {
+				description: restrictionReason,
+			}
+		});
+	}
 }

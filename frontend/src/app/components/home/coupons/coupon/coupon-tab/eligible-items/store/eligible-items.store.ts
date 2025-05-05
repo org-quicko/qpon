@@ -122,7 +122,8 @@ export const EligibleItemsStore = signalStore(
                             },
                             error: (error: HttpErrorResponse) => {
                                 patchState(store, {
-                                    error: error.message
+                                    error: error.message,
+                                    isLoading: false
                                 })
 
                                 snackbarService.openSnackBar('Error deleting item', undefined);

@@ -16,7 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { debounceTime, distinctUntilChanged, take } from 'rxjs';
-import { CouponCodeDto } from '../../../../../../../dtos/coupon-code.dto';
+import { CouponCodeDto, CreateCouponCodeDto, UpdateCouponCodeDto } from '../../../../../../../dtos/coupon-code.dto';
 import { CouponCodesStore } from './store/coupon-codes.store';
 import { OrganizationStore } from '../../../../../../store/organization.store';
 import {
@@ -41,9 +41,12 @@ import { FilterDialogComponent } from './filter-dialog/filter-dialog.component';
 import { FiltersStore } from '../../../../../../store/filters.store';
 import { CouponCodeFilter } from '../../../../../../types/coupon-code-filter.interface';
 import { PaginationOptions } from '../../../../../../types/PaginatedOptions';
-import { CampaignsStore } from '../../coupon-tab/campaigns/store/campaigns.store';
 import { CampaignSummaryRow } from '../../../../../../../generated/sources/campaign_summary_workbook';
 import { InactiveMessageDialogComponent } from '../../../../common/inactive-message-dialog/inactive-message-dialog.component';
+import { NotAllowedDialogBoxComponent } from '../../../../../common/not-allowed-dialog-box/not-allowed-dialog-box.component';
+import { UserAbility, UserAbilityTuple } from '../../../../../../permissions/ability';
+import { PureAbility } from '@casl/ability';
+import { AbilityServiceSignal } from '@casl/angular';
 
 @Component({
   selector: 'app-coupon-code-list',
@@ -107,6 +110,10 @@ export class CouponCodeListComponent implements OnInit {
     pageIndex: 0,
     pageSize: 10
   })
+
+  private readonly abilityService = inject<AbilityServiceSignal<UserAbility>>(AbilityServiceSignal);
+	protected readonly can = this.abilityService.can;
+	private readonly ability = inject<PureAbility<UserAbilityTuple>>(PureAbility);
 
   constructor(private route: ActivatedRoute, private router: Router) {
     this.couponId = '';
@@ -177,17 +184,22 @@ export class CouponCodeListComponent implements OnInit {
   }
 
   openChangeStatusDialog(couponCode: CouponCodeDto) {
-    this.dialog.open(CouponCodeChangeStatusDialogComponent, {
-      data: {
-        couponCode,
-        campaignId: this.campaignId,
-        couponId: this.couponId,
-        organizationId: this.organization()?.organizationId,
-        activateCouponCode: this.couponCodesStore.activateCouponCode,
-        deactivateCouponCode: this.couponCodesStore.deactivateCouponCode,
-      },
-      autoFocus: false,
-    });
+    if(this.can('update', UpdateCouponCodeDto)) {
+      this.dialog.open(CouponCodeChangeStatusDialogComponent, {
+        data: {
+          couponCode,
+          campaignId: this.campaignId,
+          couponId: this.couponId,
+          organizationId: this.organization()?.organizationId,
+          activateCouponCode: this.couponCodesStore.activateCouponCode,
+          deactivateCouponCode: this.couponCodesStore.deactivateCouponCode,
+        },
+        autoFocus: false,
+      });
+    } else {
+      const rule = this.ability.relevantRuleFor('update', UpdateCouponCodeDto);
+      this.openNotAllowedDialogBox(rule?.reason!);
+    }
   }
 
   onPageChange(event: PageEvent) {
@@ -265,23 +277,33 @@ export class CouponCodeListComponent implements OnInit {
   }
 
   onCreateCouponCode() {
-    this.router.navigate([
-      `/${this.organization()?.organizationId}/coupons/${
-        this.couponId
-      }/campaigns/${this.campaignId}/coupon-codes/create`,
-    ], {
-      queryParams: {
-        'redirect': btoa(this.router.url)
-      }
-    });
+    if(this.can('create', CreateCouponCodeDto)) {
+      this.router.navigate([
+        `/${this.organization()?.organizationId}/coupons/${
+          this.couponId
+        }/campaigns/${this.campaignId}/coupon-codes/create`,
+      ], {
+        queryParams: {
+          'redirect': btoa(this.router.url)
+        }
+      });
+    } else {
+      const rule = this.ability.relevantRuleFor('create', CreateCouponCodeDto);
+      this.openNotAllowedDialogBox(rule?.reason!);
+    }
   }
 
   onEdit(couponCode: CouponCodeDto) {
-    this.router.navigate([
-      `/${this.organization()?.organizationId}/coupons/${
-        this.couponId
-      }/campaigns/${this.campaignId}/coupon-codes/${couponCode.couponCodeId}/edit/code-details`,
-    ]);
+    if(this.can('update', UpdateCouponCodeDto)) {
+      this.router.navigate([
+        `/${this.organization()?.organizationId}/coupons/${
+          this.couponId
+        }/campaigns/${this.campaignId}/coupon-codes/${couponCode.couponCodeId}/edit/code-details`,
+      ]);
+    } else {
+      const rule = this.ability.relevantRuleFor('update', UpdateCouponCodeDto);
+      this.openNotAllowedDialogBox(rule?.reason!);
+    }
   }
 
   openInactiveMessageDialogForCouponCode() {
@@ -302,5 +324,13 @@ export class CouponCodeListComponent implements OnInit {
           description: 'You can’t mark this coupon code as active because the campaign is marked inactive.'
         }
       })
-    }
+  }
+
+  openNotAllowedDialogBox(restrictionReason: string) {
+		this.dialog.open(NotAllowedDialogBoxComponent, {
+			data: {
+				description: restrictionReason,
+			}
+		});
+	}
 }

@@ -1,6 +1,6 @@
 import { Component, effect, inject, Input, OnInit, Signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { CouponCodeDto } from '../../../../../../../../dtos/coupon-code.dto';
+import { CouponCodeDto, UpdateCouponCodeDto } from '../../../../../../../../dtos/coupon-code.dto';
 import { TitleCasePipe } from '@angular/common';
 import { CustomDatePipe } from '../../../../../../../pipe/date.pipe';
 import { MatDividerModule } from '@angular/material/divider';
@@ -11,6 +11,12 @@ import { OrganizationStore } from '../../../../../../../store/organization.store
 import { CustomerCouponCodeStore } from '../store/customer-coupon-code.store';
 import { customerConstraintEnum } from '../../../../../../../../enums';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatDialog } from '@angular/material/dialog';
+import { NotAllowedDialogBoxComponent } from '../../../../../../common/not-allowed-dialog-box/not-allowed-dialog-box.component';
+import { UserAbility, UserAbilityTuple } from '../../../../../../../permissions/ability';
+import { PureAbility } from '@casl/ability';
+import { AbilityServiceSignal } from '@casl/angular';
+import { UpdateCustomerCouponCodeDto } from '../../../../../../../../dtos/customer-coupon-code.dto';
 
 @Component({
   selector: 'app-coupon-code-details',
@@ -35,11 +41,18 @@ export class CouponCodeDetailsComponent implements OnInit {
   couponCodeId: string;
   customerConstraint: string;
 
+  dialog = inject(MatDialog);
+
   organizationStore = inject(OrganizationStore);
   customerCouponCodeStore = inject(CustomerCouponCodeStore);
 
   organization = this.organizationStore.organizaiton;
   customers = this.customerCouponCodeStore.data;
+
+  private readonly abilityService = inject<AbilityServiceSignal<UserAbility>>(AbilityServiceSignal);
+	protected readonly can = this.abilityService.can;
+	private readonly ability = inject<PureAbility<UserAbilityTuple>>(PureAbility);
+
 
   constructor(private route: ActivatedRoute, private router: Router) {
     this.couponId = '';
@@ -64,18 +77,36 @@ export class CouponCodeDetailsComponent implements OnInit {
   }
 
   onEditCodeDetails() {
-    this.router.navigate([`/${this.organization()?.organizationId}/coupons/${this.couponId}/campaigns/${this.campaignId}/coupon-codes/${this.couponCodeId}/edit/code-details`], {
-      queryParams: {
-        'redirect': btoa(this.router.url)
-      }
-    })
+    if(this.can('update', UpdateCouponCodeDto)) {
+      this.router.navigate([`/${this.organization()?.organizationId}/coupons/${this.couponId}/campaigns/${this.campaignId}/coupon-codes/${this.couponCodeId}/edit/code-details`], {
+        queryParams: {
+          'redirect': btoa(this.router.url)
+        }
+      })
+    } else {
+      const rule = this.ability.relevantRuleFor('update', UpdateCouponCodeDto);
+      this.openNotAllowedDialogBox(rule?.reason!);
+    }
   }
 
   onEditCustomerConstraint() {
-    this.router.navigate([`/${this.organization()?.organizationId}/coupons/${this.couponId}/campaigns/${this.campaignId}/coupon-codes/${this.couponCodeId}/edit/customer-constraint`], {
-      queryParams: {
-        'redirect': btoa(this.router.url)
-      }
-    })
+    if(this.can('update', UpdateCouponCodeDto)) {
+      this.router.navigate([`/${this.organization()?.organizationId}/coupons/${this.couponId}/campaigns/${this.campaignId}/coupon-codes/${this.couponCodeId}/edit/customer-constraint`], {
+        queryParams: {
+          'redirect': btoa(this.router.url)
+        }
+      })
+    } else {
+      const rule = this.ability.relevantRuleFor('update', UpdateCouponCodeDto);
+      this.openNotAllowedDialogBox(rule?.reason!);
+    }
   }
+
+  openNotAllowedDialogBox(restrictionReason: string) {
+		this.dialog.open(NotAllowedDialogBoxComponent, {
+			data: {
+				description: restrictionReason,
+			}
+		});
+	}
 }

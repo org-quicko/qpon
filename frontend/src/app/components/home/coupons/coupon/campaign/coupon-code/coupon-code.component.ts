@@ -16,6 +16,11 @@ import { MatMenuModule } from '@angular/material/menu';
 import { CustomerCouponCodeStore } from './store/customer-coupon-code.store';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialogComponent } from '../../../../common/delete-dialog/delete-dialog.component';
+import { UserAbility, UserAbilityTuple } from '../../../../../../permissions/ability';
+import { PureAbility } from '@casl/ability';
+import { AbilityServiceSignal } from '@casl/angular';
+import { CouponCodeDto, UpdateCouponCodeDto } from '../../../../../../../dtos/coupon-code.dto';
+import { NotAllowedDialogBoxComponent } from '../../../../../common/not-allowed-dialog-box/not-allowed-dialog-box.component';
 
 @Component({
   selector: 'app-coupon-code',
@@ -38,6 +43,10 @@ export class CouponCodeComponent implements OnInit {
   campaignId: string;
   couponCodeId: string;
   copiedField: string | null = null;
+
+  private readonly abilityService = inject<AbilityServiceSignal<UserAbility>>(AbilityServiceSignal);
+	protected readonly can = this.abilityService.can;
+	private readonly ability = inject<PureAbility<UserAbilityTuple>>(PureAbility);
 
   constructor(
     private router: Router,
@@ -124,26 +133,44 @@ export class CouponCodeComponent implements OnInit {
   }
 
   onEdit() {
-    this.router.navigate([
-      `/${this.organization()?.organizationId}/coupons/${
-        this.couponId
-      }/campaigns/${this.campaignId}/coupon-codes/${this.couponCodeId}/edit/code-details`,
-    ]);
+    if(this.can('update', UpdateCouponCodeDto)) {
+      this.router.navigate([
+        `/${this.organization()?.organizationId}/coupons/${
+          this.couponId
+        }/campaigns/${this.campaignId}/coupon-codes/${this.couponCodeId}/edit/code-details`,
+      ]);
+    } else {
+      const rule = this.ability.relevantRuleFor('update', UpdateCouponCodeDto);
+      this.openNotAllowedDialogBox(rule?.reason!);
+    }
   }
 
   openDeleteDialog() {
-    this.dialog.open(DeleteDialogComponent, {
-      autoFocus: false,
-      data: {
-        title: `Delete ‘${this.couponCode()?.code}’ coupon code?`,
-        description: `Are you sure you want to delete ‘${this.couponCode()?.code}’? You will lose all the data related to this coupon code!`,
-        onDelete: () => this.couponCodeStore.deleteCouponCode({
-          organizationId: this.organization()?.organizationId!,
-          couponId: this.couponId,
-          campaignId: this.campaignId,
-          couponCodeId: this.couponCodeId
-        })
-      }
-    })
+    if(this.can('delete', CouponCodeDto)) {
+      this.dialog.open(DeleteDialogComponent, {
+        autoFocus: false,
+        data: {
+          title: `Delete ‘${this.couponCode()?.code}’ coupon code?`,
+          description: `Are you sure you want to delete ‘${this.couponCode()?.code}’? You will lose all the data related to this coupon code!`,
+          onDelete: () => this.couponCodeStore.deleteCouponCode({
+            organizationId: this.organization()?.organizationId!,
+            couponId: this.couponId,
+            campaignId: this.campaignId,
+            couponCodeId: this.couponCodeId
+          })
+        }
+      })
+    } else {
+      const rule = this.ability.relevantRuleFor('delete', CouponCodeDto);
+      this.openNotAllowedDialogBox(rule?.reason!);
+    }
   }
+
+  openNotAllowedDialogBox(restrictionReason: string) {
+		this.dialog.open(NotAllowedDialogBoxComponent, {
+			data: {
+				description: restrictionReason,
+			}
+		});
+	}
 }

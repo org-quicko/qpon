@@ -42,6 +42,11 @@ import { PaginationOptions } from '../../../../../../types/PaginatedOptions';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { sortOrderEnum } from '../../../../../../../enums';
 import { InactiveMessageDialogComponent } from '../../../../common/inactive-message-dialog/inactive-message-dialog.component';
+import { UserAbility, UserAbilityTuple } from '../../../../../../permissions/ability';
+import { AbilityServiceSignal } from '@casl/angular';
+import { PureAbility } from '@casl/ability';
+import { CreateCampaignDto, UpdateCampaignDto } from '../../../../../../../dtos/campaign.dto';
+import { NotAllowedDialogBoxComponent } from '../../../../../common/not-allowed-dialog-box/not-allowed-dialog-box.component';
 
 @Component({
   selector: 'app-campaigns',
@@ -80,8 +85,6 @@ export class CampaignsComponent implements OnInit {
     direction: 'desc',
   });
 
-  dialogRef = inject(MatDialog);
-
   couponStore = inject(CouponStore);
   campaignsStore = inject(CampaignsStore);
   organizationStore = inject(OrganizationStore);
@@ -102,6 +105,11 @@ export class CampaignsComponent implements OnInit {
     'createdAt',
     'menu',
   ];
+
+  private readonly abilityService = inject<AbilityServiceSignal<UserAbility>>(AbilityServiceSignal);
+	protected readonly can = this.abilityService.can;
+	private readonly ability = inject<PureAbility<UserAbilityTuple>>(PureAbility);
+
 
   constructor(
     private route: ActivatedRoute,
@@ -163,15 +171,20 @@ export class CampaignsComponent implements OnInit {
   }
 
   openDialog(campaign: CampaignSummaryRow) {
-    this.dialog.open(ChangeStatusComponent, {
-      data: {
-        couponId: this.couponId,
-        campaign,
-        deactivateCampaign: this.campaignsStore.deactivateCampaign,
-        activateCampaign: this.campaignsStore.activateCampaign,
-      },
-      autoFocus: false,
-    });
+    if(this.can('update', UpdateCampaignDto)) {
+      this.dialog.open(ChangeStatusComponent, {
+        data: {
+          couponId: this.couponId,
+          campaign,
+          deactivateCampaign: this.campaignsStore.deactivateCampaign,
+          activateCampaign: this.campaignsStore.activateCampaign,
+        },
+        autoFocus: false,
+      });
+    } else {
+      const rule = this.ability.relevantRuleFor('update', UpdateCampaignDto);
+      this.openNotAllowedDialogBox(rule?.reason!);
+    }
   }
 
   resetForm() {
@@ -185,30 +198,40 @@ export class CampaignsComponent implements OnInit {
   }
 
   onCreateCampaign() {
-    this.router.navigate(
-      [`../../../coupons/${this.couponId}/campaigns/create`],
-      {
-        relativeTo: this.route,
-        queryParams: {
-          redirect: btoa(this.router.url),
-        },
-      }
-    );
+    if(this.can('create', CreateCampaignDto)) {
+      this.router.navigate(
+        [`../../../coupons/${this.couponId}/campaigns/create`],
+        {
+          relativeTo: this.route,
+          queryParams: {
+            redirect: btoa(this.router.url),
+          },
+        }
+      );
+    } else {
+      const rule = this.ability.relevantRuleFor('create', CreateCampaignDto);
+      this.openNotAllowedDialogBox(rule?.reason!);
+    }
   }
 
   onEditCampaign(campaignId: string) {
-    this.router.navigate(
-      [
-        `/${this.organization()?.organizationId}/coupons/${
-          this.couponId
-        }/campaigns/${campaignId}/edit`,
-      ],
-      {
-        queryParams: {
-          redirect: btoa(this.router.url),
-        },
-      }
-    );
+    if(this.can('update', UpdateCampaignDto)) {
+      this.router.navigate(
+        [
+          `/${this.organization()?.organizationId}/coupons/${
+            this.couponId
+          }/campaigns/${campaignId}/edit`,
+        ],
+        {
+          queryParams: {
+            redirect: btoa(this.router.url),
+          },
+        }
+      );
+    } else {
+      const rule = this.ability.relevantRuleFor('update', UpdateCampaignDto);
+      this.openNotAllowedDialogBox(rule?.reason!);
+    }
   }
 
   onPageChange(event: PageEvent) {
@@ -253,7 +276,7 @@ export class CampaignsComponent implements OnInit {
   }
 
   openInvactiveMessageDialogForCampaign() {
-    this.dialogRef.open(InactiveMessageDialogComponent, {
+    this.dialog.open(InactiveMessageDialogComponent, {
       autoFocus: false,
       data: {
         title: 'Coupon inactive!',
@@ -263,7 +286,7 @@ export class CampaignsComponent implements OnInit {
   }
 
   openInvactiveMessageDialogForChangeStatus() {
-    this.dialogRef.open(InactiveMessageDialogComponent, {
+    this.dialog.open(InactiveMessageDialogComponent, {
       autoFocus: false,
       data: {
         title: 'Coupon inactive!',
@@ -271,4 +294,12 @@ export class CampaignsComponent implements OnInit {
       }
     })
   }
+
+  openNotAllowedDialogBox(restrictionReason: string) {
+		this.dialog.open(NotAllowedDialogBoxComponent, {
+			data: {
+				description: restrictionReason,
+			}
+		});
+	}
 }

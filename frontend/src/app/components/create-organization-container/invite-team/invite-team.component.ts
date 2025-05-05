@@ -57,9 +57,7 @@ export class InviteTeamComponent implements OnInit {
     effect(() => {
       if(this.isNextClicked()) {
         this.createOrganizationStore.setOnNext();
-
-        console.log(this.members());
-
+        
         if(this.members()?.length == 0 || this.members() == null) {
           this.snackbarService.openSnackBar('Add members to invite', undefined);
           return;
@@ -109,9 +107,6 @@ export class InviteTeamComponent implements OnInit {
   }
 
   onSave() {
-
-    console.log(this.addMemberForm.value)
-
     if(!this.addMemberForm.dirty || this.addMemberForm.invalid) {
       return;
     }

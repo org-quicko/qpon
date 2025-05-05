@@ -13,6 +13,8 @@ import { RxFormBuilder } from '@rxweb/reactive-form-validators';
 import { RequestInterceptor } from './interceptors/request.interceptor';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
+import { createMongoAbility, PureAbility } from '@casl/ability';
+import { UserAbility } from './permissions/ability';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -34,6 +36,10 @@ export const appConfig: ApplicationConfig = {
       provide: 'ICON_REGISTRATION',
       useFactory: registerIcons,
       deps: [MatIconRegistry, DomSanitizer],
+    },
+    {
+      provide: PureAbility,
+      useFactory: () => createMongoAbility<UserAbility>()
     },
     provideAnimationsAsync(),
   ],

@@ -12,6 +12,11 @@ import { CustomDatePipe } from '../../../../../../pipe/date.pipe';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialogComponent } from '../../../../common/delete-dialog/delete-dialog.component';
 import { CampaignStore, OnCampaignSuccess } from '../store/campaign.store';
+import { NotAllowedDialogBoxComponent } from '../../../../../common/not-allowed-dialog-box/not-allowed-dialog-box.component';
+import { UserAbility, UserAbilityTuple } from '../../../../../../permissions/ability';
+import { PureAbility } from '@casl/ability';
+import { AbilityServiceSignal } from '@casl/angular';
+import { CampaignDto, UpdateCampaignDto } from '../../../../../../../dtos/campaign.dto';
 
 @Component({
   selector: 'app-campaign-details',
@@ -39,6 +44,10 @@ export class CampaignDetailsComponent implements OnInit {
   organization = this.organizationStore.organizaiton;
   coupon = this.couponStore.coupon.data;
 
+  private readonly abilityService = inject<AbilityServiceSignal<UserAbility>>(AbilityServiceSignal);
+	protected readonly can = this.abilityService.can;
+	private readonly ability = inject<PureAbility<UserAbilityTuple>>(PureAbility);
+
   constructor(private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
@@ -55,21 +64,27 @@ export class CampaignDetailsComponent implements OnInit {
   }
 
   onEdit() {
-    this.router.navigate(
-      [
-        `/${this.organization()?.organizationId}/coupons/${
-          this.coupon()?.couponId
-        }/campaigns/${this.campaign()?.getCampaignId()}/edit`,
-      ],
-      {
-        queryParams: {
-          redirect: btoa(this.router.url),
-        },
-      }
-    );
+    if(this.can('update', UpdateCampaignDto)) {
+      this.router.navigate(
+        [
+          `/${this.organization()?.organizationId}/coupons/${
+            this.coupon()?.couponId
+          }/campaigns/${this.campaign()?.getCampaignId()}/edit`,
+        ],
+        {
+          queryParams: {
+            redirect: btoa(this.router.url),
+          },
+        }
+      );
+    } else {
+      const rule = this.ability.relevantRuleFor('update', UpdateCampaignDto);
+      this.openNotAllowedDialogBox(rule?.reason!);
+    }
   }
 
-   openDeleteDialog() {
+  openDeleteDialog() {
+    if(this.can('delete', CampaignDto)) {
       this.dialog.open(DeleteDialogComponent, {
         autoFocus: false,
         data: {
@@ -82,5 +97,17 @@ export class CampaignDetailsComponent implements OnInit {
           })
         }
       })
+    } else {
+      const rule = this.ability.relevantRuleFor('delete', CampaignDto);
+      this.openNotAllowedDialogBox(rule?.reason!);
     }
+  }
+
+  openNotAllowedDialogBox(restrictionReason: string) {
+		this.dialog.open(NotAllowedDialogBoxComponent, {
+			data: {
+				description: restrictionReason,
+			}
+		});
+	}
 }

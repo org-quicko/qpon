@@ -17,7 +17,7 @@ import {
 } from '@angular/material/paginator';
 import { CustomersStore, OnCustomerSuccess } from '../../../store/customers.store';
 import { OrganizationStore } from '../../../store/organization.store';
-import { CustomerDto } from '../../../../dtos/customer.dto';
+import { CreateCustomerDto, CustomerDto, UpdateCustomerDto } from '../../../../dtos/customer.dto';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
@@ -26,6 +26,10 @@ import { Router } from '@angular/router';
 import { PaginationOptions } from '../../../types/PaginatedOptions';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DeleteCustomerDialogComponent } from './delete-customer-dialog/delete-customer-dialog.component';
+import { UserAbility, UserAbilityTuple } from '../../../permissions/ability';
+import { AbilityServiceSignal } from '@casl/angular';
+import { PureAbility } from '@casl/ability';
+import { NotAllowedDialogBoxComponent } from '../../common/not-allowed-dialog-box/not-allowed-dialog-box.component';
 
 @Component({
   selector: 'app-customers',
@@ -55,12 +59,16 @@ export class CustomersComponent implements OnInit {
     pageSize: 10,
   });
 
-  deleteDialog = inject(MatDialog);
+  dialog = inject(MatDialog);
   customersStore = inject(CustomersStore);
   organizationStore = inject(OrganizationStore);
 
   organization = this.organizationStore.organizaiton;
   isLoading = this.customersStore.isLoading;
+
+  private readonly abilityService = inject<AbilityServiceSignal<UserAbility>>(AbilityServiceSignal);
+	protected readonly can = this.abilityService.can;
+	private readonly ability = inject<PureAbility<UserAbilityTuple>>(PureAbility);
 
   customerDataSource = new MatTableDataSource<CustomerDto>();
 
@@ -115,7 +123,7 @@ export class CustomersComponent implements OnInit {
 
       OnCustomerSuccess.subscribe((res) => {
         if(res) {
-          this.deleteDialog.closeAll();
+          this.dialog.closeAll();
           this.customersStore.resetCustomers();
           this.paginationOptions.set({
             pageIndex: 0,
@@ -127,25 +135,49 @@ export class CustomersComponent implements OnInit {
   }
 
   onAddCustomer() {
-    this.router.navigate([
-      `/${this.organization()?.organizationId}/customers/create`,
-    ]);
+    if(this.can('create', CreateCustomerDto)) {
+      this.router.navigate([
+        `/${this.organization()?.organizationId}/customers/create`,
+      ]);
+    } else {
+      const rule = this.ability.relevantRuleFor('create', CreateCustomerDto);
+      this.openNotAllowedDialogBox(rule?.reason!);
+    }
   }
 
+  
+	openNotAllowedDialogBox(restrictionReason: string) {
+		this.dialog.open(NotAllowedDialogBoxComponent, {
+			data: {
+				description: restrictionReason,
+			}
+		});
+	}
+
   onEditCustomer(customerId: string) {
-    this.router.navigate([
-      `/${this.organization()?.organizationId}/customers/${customerId}/edit`,
-    ]);
+    if(this.can('update', UpdateCustomerDto)) {
+      this.router.navigate([
+        `/${this.organization()?.organizationId}/customers/${customerId}/edit`,
+      ]);
+    } else {
+      const rule = this.ability.relevantRuleFor('update', UpdateCustomerDto);
+      this.openNotAllowedDialogBox(rule?.reason!);
+    }
   }
 
   openDeleteDialog(customer: CustomerDto) {
-    this.deleteDialog.open(DeleteCustomerDialogComponent, {
-      autoFocus: false,
-      data: {
-        onDelete: this.customersStore.deleteCustomer,
-        customer: customer,
-        organizationId: this.organization()?.organizationId
-      }
-    })
+    if(this.can('delete', CustomerDto)) {
+      this.dialog.open(DeleteCustomerDialogComponent, {
+        autoFocus: false,
+        data: {
+          onDelete: this.customersStore.deleteCustomer,
+          customer: customer,
+          organizationId: this.organization()?.organizationId
+        }
+      })
+    } else {
+      const rule = this.ability.relevantRuleFor('delete', CustomerDto);
+      this.openNotAllowedDialogBox(rule?.reason!)
+    }
   }
 }

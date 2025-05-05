@@ -11,6 +11,7 @@ import { OrganizationUserStore } from '../../../../../store/organization-user.st
 import { OrganizationDto } from '../../../../../../dtos/organization.dto';
 import { OrganizationUserDto } from '../../../../../../dtos/organization-user.dto';
 import { OrganizationStore } from '../../../../../store/organization.store';
+import { PermissionsService } from '../../../../../services/permission.service';
 
 @Component({
   selector: 'app-choose-organization',
@@ -34,7 +35,7 @@ export class ChooseOrganizationComponent implements OnInit {
   isLoading = this.organizationUserStore.isLoading;
   organizations = this.organizationUserStore.organizations
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private permissionService: PermissionsService) {
     this.currentOrganizationId = "";
 
     effect(() => {
@@ -51,9 +52,10 @@ export class ChooseOrganizationComponent implements OnInit {
   }
 
   getOrganizations() {
-    this.organizations().map((organization: OrganizationDto) => {
+    this.organizations().map((organization: OrganizationUserDto) => {
       if(organization.organizationId == this.currentOrganizationId) {
         this.currentOrganization.set(organization);
+        this.permissionService.setAbilityForRole(organization.role!)
       }
     })
   }

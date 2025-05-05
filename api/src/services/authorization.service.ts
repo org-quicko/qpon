@@ -190,6 +190,8 @@ export class AuthorizationService {
             organizationId: organizationId,
           });
 
+          allow('read', Organization);
+
           allow(
             ['read', 'read_all'],
             [Coupon, Campaign, CouponCode, Customer, Item, Redemption, ApiKey],

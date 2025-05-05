@@ -17,7 +17,7 @@ import {
 } from '@angular/material/paginator';
 import { ItemsStore, OnItemSuccess } from '../../../store/items.store';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ItemDto } from '../../../../dtos/item.dto';
+import { CreateItemDto, ItemDto, UpdateItemDto } from '../../../../dtos/item.dto';
 import { OrganizationStore } from '../../../store/organization.store';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
@@ -26,6 +26,10 @@ import { CommonModule } from '@angular/common';
 import { PaginationOptions } from '../../../types/PaginatedOptions';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteItemDialogComponent } from './delete-item-dialog/delete-item-dialog.component';
+import { PureAbility } from '@casl/ability';
+import { UserAbility, UserAbilityTuple } from '../../../permissions/ability';
+import { AbilityServiceSignal } from '@casl/angular';
+import { NotAllowedDialogBoxComponent } from '../../common/not-allowed-dialog-box/not-allowed-dialog-box.component';
 
 @Component({
   selector: 'app-items',
@@ -55,9 +59,14 @@ export class ItemsComponent implements OnInit {
     pageSize: 10
   });
 
-  deleteDialog = inject(MatDialog);
+  dialog = inject(MatDialog);
   itemsStore = inject(ItemsStore);
   organizationStore = inject(OrganizationStore);
+
+  private readonly abilityService = inject<AbilityServiceSignal<UserAbility>>(AbilityServiceSignal);
+  protected readonly can = this.abilityService.can;
+  private readonly ability = inject<PureAbility<UserAbilityTuple>>(PureAbility);
+  
 
   constructor(private router: Router, private route: ActivatedRoute) {
     this.isFilterApplied = false;
@@ -83,9 +92,14 @@ export class ItemsComponent implements OnInit {
   isLoading = this.itemsStore.isLoading;
 
   onEdit(item: ItemDto) {
-    this.router.navigate([`../../items/${item.itemId}/edit`], {
-      relativeTo: this.route,
-    });
+    if(this.can('update', UpdateItemDto)){
+      this.router.navigate([`../../items/${item.itemId}/edit`], {
+        relativeTo: this.route,
+      });
+    } else {
+      const rule = this.ability.relevantRuleFor('update', UpdateItemDto);
+      this.openNotAllowedDialogBox(rule?.reason!);
+    }
   }
 
   onDelete(item: ItemDto) {
@@ -117,7 +131,7 @@ export class ItemsComponent implements OnInit {
 
       OnItemSuccess.subscribe((res) => {
         if(res) {
-          this.deleteDialog.closeAll();
+          this.dialog.closeAll();
           this.itemsStore.resetItems();
           this.paginationOptions.set({
             pageIndex: 0,
@@ -139,17 +153,36 @@ export class ItemsComponent implements OnInit {
   }
 
   onAddItem() {
-    this.router.navigate([`/${this.organization()?.organizationId}/items/create`])
+    if(this.can('create', CreateItemDto)) {
+      this.router.navigate([`/${this.organization()?.organizationId}/items/create`])
+    } else {
+      const rule = this.ability.relevantRuleFor('create', CreateItemDto);
+      this.openNotAllowedDialogBox(rule?.reason!);
+    }
   }
 
   openDeleteDialog(item: ItemDto) {
-    this.deleteDialog.open(DeleteItemDialogComponent, {
-      autoFocus: false,
-      data: {
-        organizationId: this.organization()?.organizationId,
-        item: item,
-        onDelete: this.itemsStore.deleteItem
-      }
-    })
+    if(this.can('delete', ItemDto)) {
+      this.dialog.open(DeleteItemDialogComponent, {
+        autoFocus: false,
+        data: {
+          organizationId: this.organization()?.organizationId,
+          item: item,
+          onDelete: this.itemsStore.deleteItem
+        }
+      })
+    } else {
+      const rule = this.ability.relevantRuleFor('delete', ItemDto);
+      this.openNotAllowedDialogBox(rule?.reason!);
+    }
   }
+
+  
+	openNotAllowedDialogBox(restrictionReason: string) {
+		this.dialog.open(NotAllowedDialogBoxComponent, {
+			data: {
+				description: restrictionReason,
+			}
+		});
+	}
 }

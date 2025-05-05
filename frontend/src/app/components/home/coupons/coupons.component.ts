@@ -20,7 +20,7 @@ import { OrganizationStore } from '../../../store/organization.store';
 import { CouponsStore } from '../../../store/coupons.store';
 import { CustomDatePipe } from '../../../pipe/date.pipe';
 import { ChangeStatusComponent } from './change-status/change-status.component';
-import { CouponDto } from '../../../../dtos/coupon.dto';
+import { CouponDto, CreateCouponDto, UpdateCouponDto } from '../../../../dtos/coupon.dto';
 import { MatDividerModule } from '@angular/material/divider';
 import {
   FormBuilder,
@@ -38,6 +38,10 @@ import { PaginationOptions } from '../../../types/PaginatedOptions';
 import { sortOrderEnum } from '../../../../enums';
 import { CouponFilterDialogComponent } from './coupon-filter-dialog/coupon-filter-dialog.component';
 import { FiltersStore } from '../../../store/filters.store';
+import { UserAbility, UserAbilityTuple } from '../../../permissions/ability';
+import { AbilityServiceSignal } from '@casl/angular';
+import { PureAbility } from '@casl/ability';
+import { NotAllowedDialogBoxComponent } from '../../common/not-allowed-dialog-box/not-allowed-dialog-box.component';
 @Component({
   selector: 'app-coupons',
   standalone: true,
@@ -101,6 +105,10 @@ export class CouponsComponent implements OnInit {
   take = this.couponsStore.take!;
   skip = this.couponsStore.skip!;
   couponFilter = this.filtersStore.couponFilter;
+
+  private readonly abilityService = inject<AbilityServiceSignal<UserAbility>>(AbilityServiceSignal);
+	protected readonly can = this.abilityService.can;
+	private readonly ability = inject<PureAbility<UserAbilityTuple>>(PureAbility);
 
   constructor(
     private formBuilder: FormBuilder,
@@ -185,15 +193,20 @@ export class CouponsComponent implements OnInit {
   }
 
   openDialog(coupon: CouponDto) {
-    this.dialog.open(ChangeStatusComponent, {
-      data: {
-        coupon,
-        organizationId: this.organization()?.organizationId,
-        activateCoupon: this.couponsStore.activateCoupon,
-        deactivateCoupon: this.couponsStore.deactivateCoupon,
-      },
-      autoFocus: false,
-    });
+    if(this.can('update', UpdateCouponDto)) {
+      this.dialog.open(ChangeStatusComponent, {
+        data: {
+          coupon,
+          organizationId: this.organization()?.organizationId,
+          activateCoupon: this.couponsStore.activateCoupon,
+          deactivateCoupon: this.couponsStore.deactivateCoupon,
+        },
+        autoFocus: false,
+      });
+    } else {
+      const rule = this.ability.relevantRuleFor('update', UpdateCouponDto);
+      this.openNotAllowedDialogBox(rule?.reason!);
+    }
   }
 
   onPageChange(event: PageEvent) {
@@ -258,8 +271,21 @@ export class CouponsComponent implements OnInit {
   }
 
   onAddCoupon() {
-    this.router.navigate(['../../coupons/create'], { relativeTo: this.route });
+    if(this.can('create', CreateCouponDto)) {
+      this.router.navigate(['../../coupons/create'], { relativeTo: this.route });
+    } else {
+      const rule = this.ability.relevantRuleFor('create', CreateCouponDto);
+      this.openNotAllowedDialogBox(rule?.reason!);
+    }
   }
+
+  openNotAllowedDialogBox(restrictionReason: string) {
+		this.dialog.open(NotAllowedDialogBoxComponent, {
+			data: {
+				description: restrictionReason,
+			}
+		});
+	}
 
   openFilterDialog() {
     const dialogRef = this.dialog.open(CouponFilterDialogComponent, {
@@ -280,13 +306,18 @@ export class CouponsComponent implements OnInit {
   }
 
   onEdit(couponId: string) {
-    this.router.navigate(
-      [`/${this.organization()?.organizationId}/coupons/${couponId}/edit`],
-      {
-        queryParams: {
-          redirect: btoa(this.router.url),
-        },
-      }
-    );
+    if(this.can('update', UpdateCouponDto)) {
+      this.router.navigate(
+        [`/${this.organization()?.organizationId}/coupons/${couponId}/edit`],
+        {
+          queryParams: {
+            redirect: btoa(this.router.url),
+          },
+        }
+      );
+    } else {
+      const rule = this.ability.relevantRuleFor('update', UpdateCouponDto);
+      this.openNotAllowedDialogBox(rule?.reason!);
+    }
   }
 }
