@@ -462,6 +462,22 @@ export const CouponCodeStore = signalStore(
         });
       },
 
+      removeCodeWithSpecificCustomers: (code: string) => {
+        const existingMap = store.codesWithSpecificCustomers();
+        existingMap?.delete(code);
+
+        const updatedMap = new Map(
+          Array.from(existingMap?.entries() ?? []).map(([key, value]) => [
+            key,
+            JSON.parse(JSON.stringify(value)),
+          ])
+        );
+
+        patchState(store, {
+          codesWithSpecificCustomers: updatedMap,
+        });
+      },
+
       setCustomerConstraint(value: string) {
         patchState(store, {
           couponCode: {

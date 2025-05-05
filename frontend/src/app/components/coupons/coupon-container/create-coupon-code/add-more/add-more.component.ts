@@ -33,6 +33,7 @@ import { CreateCouponCodeDto } from '../../../../../../dtos/coupon-code.dto';
 export class AddMoreComponent implements OnInit, OnDestroy {
   @Input() createCouponCodeForm!: FormGroup;
   @Output() currentScreenEvent = new EventEmitter<string>();
+  @Output() couponCodeToEdit = new EventEmitter<{couponCode: CreateCouponCodeDto}>();
 
   redirectUri: string;
   destroy$: Subject<void>;
@@ -123,7 +124,7 @@ export class AddMoreComponent implements OnInit, OnDestroy {
   }
 
   onEdit(couponCode: CreateCouponCodeDto, index: number) {
-    this.currentScreenEvent.emit('code');
+    this.couponCodeToEdit.emit({couponCode});
   }
 
   ngOnDestroy(): void {

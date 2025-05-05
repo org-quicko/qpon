@@ -3,10 +3,11 @@ import { CouponCodeStore } from '../../../store/coupon-code.store';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { getCurrencySymbol } from '@angular/common';
 import { OrganizationStore } from '../../../../../store/organization.store';
 import { SnackbarService } from '../../../../../services/snackbar.service';
+import { CreateCouponCodeDto } from '../../../../../../dtos/coupon-code.dto';
 
 @Component({
   selector: 'app-redemption-limits',
@@ -17,6 +18,7 @@ import { SnackbarService } from '../../../../../services/snackbar.service';
 export class RedemptionLimitsComponent implements OnInit {
 
   @Input() createCouponCodeForm!: FormGroup;
+  @Input() couponToEdit!: CreateCouponCodeDto;
   @Output() currentScreenEvent = new EventEmitter<string>();
 
   minimumAmountChecked!: FormControl;
@@ -44,6 +46,13 @@ export class RedemptionLimitsComponent implements OnInit {
 
         if((this.minimumAmountChecked.value && !this.createCouponCodeForm.get('minimumAmount')?.value) || (this.maxRedemptionsChecked.value && !this.createCouponCodeForm.get('maxRedemptions')?.value) || (this.maxRedemptionsPerCustomerChecked.value && !this.createCouponCodeForm.get('maxRedemptionPerCustomer')?.value)) {
           this.snackbarService.openSnackBar('Enter the value', undefined);
+          return;
+        }
+
+        if(this.createCouponCodeForm.controls['maxRedemptions'].hasError('min') || 
+        this.createCouponCodeForm.controls['minimumAmount'].hasError('min') ||
+        this.createCouponCodeForm.controls['maxRedemptionPerCustomer'].hasError('min')) {
+          this.snackbarService.openSnackBar('Values should be greater than 0', undefined);
           return;
         }
 
@@ -85,6 +94,10 @@ export class RedemptionLimitsComponent implements OnInit {
     this.minimumAmountChecked.setValue(this.createCouponCodeForm.controls['minimumAmount'].value > 0 ? true : false);
     this.maxRedemptionsChecked.setValue(this.createCouponCodeForm.controls['maxRedemptions'].value > 0 ? true : false);
     this.maxRedemptionsPerCustomerChecked.setValue(this.createCouponCodeForm.controls['maxRedemptionPerCustomer'].value > 0 ? true : false);
+
+    this.createCouponCodeForm.controls['maxRedemptions'].setValidators(Validators.min(0));
+    this.createCouponCodeForm.controls['minimumAmount'].setValidators(Validators.min(0));
+    this.createCouponCodeForm.controls['maxRedemptionPerCustomer'].setValidators(Validators.min(0));
 
      // Disable all inputs initially if checkboxes are not checked
      if (!this.minimumAmountChecked.value || this.createCouponCodeForm.controls['minimumAmount'].value == 0) {

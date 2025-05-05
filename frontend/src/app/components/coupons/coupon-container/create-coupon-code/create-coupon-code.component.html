@@ -5,5 +5,5 @@
 } @else if(currentScreen == 'customer-constraint') {
   <app-customer-constraint [createCouponCodeForm]="createCouponCodeForm" (currentScreenEvent)="changeScreen($event)"></app-customer-constraint>
 } @else {
-  <app-add-more [createCouponCodeForm]="createCouponCodeForm" (currentScreenEvent)="changeScreen($event)"></app-add-more>
+  <app-add-more [createCouponCodeForm]="createCouponCodeForm" (currentScreenEvent)="changeScreen($event)" (couponCodeToEdit)="editCouponCode($event)"></app-add-more>
 }

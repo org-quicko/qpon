@@ -26,6 +26,7 @@ export class CreateCouponCodeComponent implements OnInit {
   campaignId: string;
   createCouponCodeForm: FormGroup;
   currentScreen = 'code';
+  couponCodeToEdit!: CreateCouponCodeDto;
   
   couponCodeStore = inject(CouponCodeStore);
   organizationStore = inject(OrganizationStore);
@@ -86,5 +87,21 @@ export class CreateCouponCodeComponent implements OnInit {
       default:
         break;
     }
+  }
+
+  editCouponCode(value: {couponCode: CreateCouponCodeDto}) {
+    this.couponCodeToEdit = value.couponCode;
+    this.createCouponCodeForm.patchValue({
+      code: value.couponCode.code,
+      description: value.couponCode.description,
+      visibility: value.couponCode.visibility,
+      durationType: value.couponCode.durationType,
+      maxRedemptions: value.couponCode.maxRedemptions,
+      minimumAmount: value.couponCode.minimumAmount,
+      maxRedemptionPerCustomer: value.couponCode.maxRedemptionPerCustomer,
+      customerConstraint: value.couponCode.customerConstraint,
+      expiresAt: value.couponCode.expiresAt
+    });
+    this.currentScreen = 'code';
   }
 }

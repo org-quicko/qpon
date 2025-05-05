@@ -73,8 +73,9 @@ export class CustomerConstraintComponent implements OnInit {
   organization = this.organizationStore.organizaiton;
 
   constructor(private formBuilder: RxFormBuilder) {
-    this.customerConstraint =
-      this.couponCodeStore.couponCode.data()?.customerConstraint ? this.couponCodeStore.couponCode.data()?.customerConstraint! : 'all';
+    
+    this.customerConstraint = '';
+
     this.selectedCustomers =
       this.couponCodeStore
         .codesWithSpecificCustomers()
@@ -123,6 +124,8 @@ export class CustomerConstraintComponent implements OnInit {
           },
         });
       });
+
+    this.customerConstraint = this.createCouponCodeForm.controls['customerConstraint'].value
   }
 
   displayWithItems = () => '';
@@ -139,25 +142,32 @@ export class CustomerConstraintComponent implements OnInit {
   }
 
   setCouponCode() {
-      const newCouponCode = new CreateCouponCodeDto();
-      newCouponCode.code = this.createCouponCodeForm.value['code'];
-      newCouponCode.visibility = this.couponCode()?.visibility == 'public' ? visibilityEnum.PUBLIC : visibilityEnum.PRIVATE;
-      newCouponCode.durationType = this.couponCode()?.durationType == 'forever' ? durationTypeEnum.FOREVER : durationTypeEnum.LIMITED;
-      newCouponCode.customerConstraint = this.customerConstraint == 'all' ? customerConstraintEnum.ALL : customerConstraintEnum.SPECIFIC;
-      newCouponCode.expiresAt = this.couponCode()?.expiresAt;
-      newCouponCode.description = this.createCouponCodeForm.value['description'] || null;
-      newCouponCode.maxRedemptionPerCustomer = this.createCouponCodeForm.value['maxRedemptionPerCustomer'];
-      newCouponCode.maxRedemptions = this.createCouponCodeForm.value['maxRedemptions'];
-      newCouponCode.minimumAmount = this.createCouponCodeForm.value['minimumAmount']
+    const newCouponCode = new CreateCouponCodeDto();
+    newCouponCode.code = this.createCouponCodeForm.value['code'];
+    newCouponCode.visibility = this.couponCode()?.visibility == 'public' ? visibilityEnum.PUBLIC : visibilityEnum.PRIVATE;
+    newCouponCode.durationType = this.couponCode()?.durationType == 'forever' ? durationTypeEnum.FOREVER : durationTypeEnum.LIMITED;
+    newCouponCode.customerConstraint = this.customerConstraint == 'all' ? customerConstraintEnum.ALL : customerConstraintEnum.SPECIFIC;
+    newCouponCode.expiresAt = this.couponCode()?.expiresAt;
+    newCouponCode.description = this.createCouponCodeForm.value['description'] || null;
+    newCouponCode.maxRedemptionPerCustomer = this.createCouponCodeForm.value['maxRedemptionPerCustomer'];
+    newCouponCode.maxRedemptions = this.createCouponCodeForm.value['maxRedemptions'];
+    newCouponCode.minimumAmount = this.createCouponCodeForm.value['minimumAmount']
     this.couponCodeStore.setCustomerConstraint(this.customerConstraint);
-    const code = this.couponCodeStore.couponCode.data()?.code!;
-    this.couponCodeStore.setCodeWithSpecificCustomers(
-      code,
-      this.selectedCustomers
-    );
+
+    if(this.customerConstraint == 'all') {
+      this.couponCodeStore.removeCodeWithSpecificCustomers(this.createCouponCodeForm.value['code'])
+    } else {
+      const code = this.couponCodeStore.couponCode.data()?.code!;
+      this.couponCodeStore.setCodeWithSpecificCustomers(
+        code,
+        this.selectedCustomers
+      );
+    }
+
     this.couponCodeStore.setCouponCodes(
       newCouponCode
     );
+    this.createCouponCodeForm.reset();
   }
 
   isCustomerSelected(customer: CustomerDto): boolean {

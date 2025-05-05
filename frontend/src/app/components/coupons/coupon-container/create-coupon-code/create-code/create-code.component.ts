@@ -9,11 +9,9 @@ import { MatRadioModule } from '@angular/material/radio';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatTimepickerModule} from '@angular/material/timepicker';
 import { provideMomentDateAdapter } from "@angular/material-moment-adapter";
-import * as moment from 'moment';
 import { CommonModule } from '@angular/common';
 import { CreateCouponCodeDto } from '../../../../../../dtos/coupon-code.dto';
 import { durationTypeEnum, visibilityEnum } from '../../../../../../enums';
-import { instanceToPlain, plainToInstance } from 'class-transformer';
 
 export const MY_FORMATS = {
   parse: {
@@ -94,7 +92,7 @@ export class CreateCodeComponent {
             this.showValidationError.set(true);
             return;
           }
-          couponCode.expiresAt = this.createCouponCodeForm.value['expiresAt'].toDate().toISOString();
+          couponCode.expiresAt = new Date(this.createCouponCodeForm.value['expiresAt']).toISOString();
         }
         this.couponCodeStore.setCouponCode(couponCode);
         this.showValidationError.set(false);
