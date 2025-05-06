@@ -2,7 +2,7 @@ version: "3"
 
 services:
   qpon-app:
-    image: "891612547769.dkr.ecr.ap-south-1.amazonaws.com/org.quicko.qpon-prod:latest"
+    image: "891612547769.dkr.ecr.ap-south-1.amazonaws.com/org.quicko.qpon-dev:latest"
     ports:
       - "3000:3000"
     environment:
