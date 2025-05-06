@@ -11,7 +11,10 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ForbiddenError } from '@casl/ability';
-import { AuthorizationService } from '../services/authorization.service';
+import {
+  AppAbility,
+  AuthorizationService,
+} from '../services/authorization.service';
 import { CHECK_PERMISSIONS_KEY } from '../decorators/permission.decorator';
 import { UserService } from '../services/user.service';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
@@ -28,10 +31,8 @@ export class PermissionGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();
-
-    if (request.headers['x-api-key'] && request.headers['x-api-secret']) {
-      return true;
-    }
+    const apiKeyId = request.headers.api_key_id as string;
+    const organizationId = request.headers.organization_id as string;
 
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),
@@ -51,15 +52,20 @@ export class PermissionGuard implements CanActivate {
       return true;
     }
 
-    const userId = request.headers.userId;
+    let ability: AppAbility;
 
-    const user = await this.userService.fetchUserForValidation({ userId });
+    if (apiKeyId) {
+      ability = this.authorizationService.getApiUserAbility(organizationId);
+    } else {
+      const userId = request.headers.userId;
 
-    if (!user) {
-      throw new ForbiddenException('User not authenticated');
+      const user = await this.userService.fetchUserForValidation({ userId });
+
+      if (!user) {
+        throw new ForbiddenException('User not authenticated');
+      }
+      ability = this.authorizationService.getUserAbility(user);
     }
-
-    const ability = this.authorizationService.getUserAbility(user);
 
     try {
       const subjectObjects = await this.authorizationService.getSubjectTypes(

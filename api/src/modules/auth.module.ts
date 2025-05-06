@@ -13,6 +13,8 @@ import { CustomersModule } from './customer.module';
 import { ItemsModule } from './item.module';
 import { CustomerCouponCodeModule } from './customer-coupon-code.module';
 import { CouponItemModule } from './coupon-item.module';
+import { ApiKeyGuard } from 'src/guards/apiKey.guard';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Global()
 @Module({
@@ -34,7 +36,7 @@ import { CouponItemModule } from './coupon-item.module';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, AuthorizationService],
-  exports: [AuthService, AuthorizationService],
+  providers: [AuthService, AuthorizationService, AuthGuard, ApiKeyGuard],
+  exports: [AuthService, AuthorizationService, AuthGuard, ApiKeyGuard],
 })
 export class AuthModule {}

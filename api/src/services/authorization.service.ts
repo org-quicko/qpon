@@ -227,6 +227,49 @@ export class AuthorizationService {
     return ability;
   }
 
+  getApiUserAbility(organizationId: string): AppAbility {
+    const { can: allow, build } = new AbilityBuilder<AppAbility>(createAbility);
+
+    allow('read', Organization, {
+      organizationId: organizationId,
+    });
+
+    allow(['invite_user', 'read_all', 'read', 'remove_user'], User);
+
+    allow(['change_role', 'read_all'], OrganizationUser, {
+      organizationId: organizationId,
+    });
+
+    allow(
+      'manage',
+      [Coupon, Campaign, CouponCode, Customer, Item, Redemption, ApiKey],
+      ['organization.organizationId'],
+    );
+
+    allow(
+      'read',
+      [CouponSummaryMv, CampaignSummaryMv, OrganizationSummaryMv, Offer],
+      {
+        organizationId,
+      },
+    );
+
+    allow(['read', 'update', 'delete'], User);
+
+    allow('manage', CustomerCouponCode, [
+      'couponCode.organization.organizationId',
+    ]);
+
+    allow('manage', CouponItem, ['coupon.organization.organizationId']);
+
+    const ability = build({
+      detectSubjectType: (item) =>
+        item.constructor as ExtractSubjectType<subjectsType>,
+    });
+
+    return ability;
+  }
+
   async getSubjectTypes(
     request: any,
     requiredPermissions: { action: actionsType; subject: subjectsType }[],

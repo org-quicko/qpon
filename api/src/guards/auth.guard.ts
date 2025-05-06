@@ -8,14 +8,14 @@ import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
-import { ApiKeyService } from '../services/api-key.service';
 import { LoggerService } from '../services/logger.service';
+import { ApiKeyGuard } from './apiKey.guard';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
     private jwtService: JwtService,
-    private apiKeyService: ApiKeyService,
+    private apiKeyGuard: ApiKeyGuard,
     private reflector: Reflector,
     private logger: LoggerService,
   ) {}
@@ -38,13 +38,7 @@ export class AuthGuard implements CanActivate {
     const secret: string = request.headers['x-api-secret'] as string;
 
     if (key && secret) {
-      const apiKey = await this.apiKeyService.validateKeyAndSecret(key, secret);
-      if (apiKey) {
-        request.headers.api_key_id = apiKey.apiKeyId;
-
-        return true;
-      }
-      throw new UnauthorizedException('Invalid API key or secret.');
+      return this.apiKeyGuard.canActivate(context);
     }
 
     const token = this.extractTokenFromHeader(request);

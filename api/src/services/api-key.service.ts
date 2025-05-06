@@ -111,6 +111,9 @@ export class ApiKeyService {
       this.logger.info(`START: validateKeyAndSecret service`);
 
       const apiKey = await this.apiKeyRepository.findOne({
+        relations: {
+          organization: true,
+        },
         where: {
           key,
         },
