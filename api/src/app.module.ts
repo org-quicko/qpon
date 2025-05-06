@@ -26,30 +26,27 @@ import { PermissionGuard } from './guards/permission.guard';
 import { CouponCodeSubscriber } from './subscribers/coupon-code.subscriber';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { typeOrmConfig } from './config/typeorm.config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', '..', 'public'),
     }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.DB_HOST,
-      poolSize: 10,
-      port: parseInt(process.env.DB_PORT ?? '5432'),
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
-      autoLoadEntities: true,
-      subscribers: [
-        RedemptionSubscriber,
-        CampaignSubscriber,
-        CouponSubscriber,
-        OrganizationSubscriber,
-        CouponCodeSubscriber,
-      ],
-      synchronize: true,
-      logging: process.env.NODE_ENV !== 'production',
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        ...typeOrmConfig(configService),
+        subscribers: [
+          RedemptionSubscriber,
+          CampaignSubscriber,
+          CouponSubscriber,
+          OrganizationSubscriber,
+          CouponCodeSubscriber,
+        ],
+      }),
     }),
     LoggerModule,
     ApiKeyModule,
