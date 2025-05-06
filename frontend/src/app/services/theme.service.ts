@@ -58,7 +58,7 @@ export class ThemeService {
 
         this.updateThemingClasses(theme);
 
-        this.cookieService.set("theme", theme, undefined, '/', `localhost`, true, 'Strict');
+        this.cookieService.set("theme", theme, undefined, '/', undefined, true, 'Strict');
 
     }
 
