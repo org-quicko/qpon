@@ -144,7 +144,7 @@ export class EligibleItemsComponent implements OnInit {
     });
   }
 
-  onDelete(item: ItemDto) {
+  onRemove(item: ItemDto) {
     if(this.can('delete', CouponItemDto)) {
       this.eligibleItemsStore.deleteItem({
         organizationId: this.organization()?.organizationId!,
