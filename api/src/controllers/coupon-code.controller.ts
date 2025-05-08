@@ -69,7 +69,7 @@ export class CouponCodeController {
     @Query('code') code?: string,
     @Query('status') status?: couponCodeStatusEnum,
     @Query('visibility') visibility?: visibilityEnum,
-    @Query('external_id') externalId?: string,
+    @Query('external_customer_id') externalId?: string,
     @Query('duration_type') durationType?: durationTypeEnum,
     @Query('sort_by') sortBy?: string,
     @Query('sort_order') sortOrder: sortOrderEnum = sortOrderEnum.DESC,
