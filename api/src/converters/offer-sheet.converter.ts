@@ -36,6 +36,7 @@ export class OfferSheetConverter {
       offerRow.setVisibility(offer.visibility);
       offerRow.setCampaignId(offer.campaignId);
       offerRow.setCouponId(offer.couponId);
+      offerRow.setExpiresAt(offer.expiresAt.toString());
       offerTable.addRow(offerRow);
     });
 
