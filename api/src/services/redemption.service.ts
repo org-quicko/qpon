@@ -118,7 +118,7 @@ export class RedemptionsService {
           body.baseOrderValue,
         );
 
-        const savedRedemption = this.saveRedemption(
+        const savedRedemption = await this.saveRedemption(
           manager,
           couponCode,
           organizationId,
