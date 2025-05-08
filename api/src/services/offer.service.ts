@@ -65,7 +65,7 @@ export class OffersService {
       if (sort) {
         query.orderBy(`offer.discount_value`, sort);
       } else {
-        query.orderBy('offer.created_at', 'DESC');
+        query.orderBy('offer.discount_value', 'DESC');
       }
 
       query.skip(skip).take(take);
