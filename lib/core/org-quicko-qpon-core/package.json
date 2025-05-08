@@ -1,0 +1,54 @@
+{
+  "name": "@org.quicko.qpon/core",
+  "version": "1.0.0-alpha.0",
+  "description": "A library in typescript for common entities of Qpon",
+  "author": "Dev Parikh <dev.parikh@quicko.com>",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "clean": "npm cache clean --force",
+    "publish-snapshot": "npm --userconfig ~/npmrc/snapshot.npmrc publish --registry=https://artifacts.quicko.org.in/repository/npm-snapshots/",
+    "publish-release": "npm --userconfig ~/npmrc/release.npmrc publish --registry=https://artifacts.quicko.org.in/repository/npm-releases/",
+    "publish-local": "npm --userconfig ~/npmrc/local.npmrc publish --registry=http://127.0.0.1:8081/repository/npm-snapshots/",
+    "build-release": "tsc --build && npm ci --omit=dev",
+    "prebuild": "rm -rf dist && npm run clean && eslint .",
+    "build": "tsc --build"
+  },
+  "license": "ISC",
+  "files": [
+    "dist/*"
+  ],
+  "exports": {
+		".": "./dist/index.js",
+		"./beans": "./dist/src/beans/index.js",
+		"./enums": "./dist/src/enums/index.js"
+	},
+  "typesVersions": {
+		"*": {
+			"beans": [
+				"dist/src/beans/index.d.ts"
+			],
+			"enums": [
+				"dist/src/enums/index.d.ts"
+			]
+		}
+	},
+	"directories": {
+		"lib": "./dist"
+	},
+  "dependencies": {
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.2"
+  },
+  "devDependencies": {
+		"@types/node": "^22.7.0",
+		"@typescript-eslint/eslint-plugin": "^8.17.0",
+		"@typescript-eslint/parser": "^8.17.0",
+		"esbuild-plugin-eslint": "^0.3.7",
+		"eslint": "^8.2.0",
+		"eslint-config-airbnb": "^19.0.4",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-import-resolver-typescript": "^3.7.0",
+		"typescript": "^5.6.2"
+	}
+}

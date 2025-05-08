@@ -1,0 +1,6 @@
+dist
+node_modules
+.eslintrc.js
+*.config.js
+
+tests

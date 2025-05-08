@@ -1,0 +1,77 @@
+{
+	"name": "@org.quicko.qpon/sheet-core",
+	"version": "1.0.0-alpha.0",
+	"description": "A library in typescript for common sheet entities of Qpon",
+	"author": "Dev Parikh <dev.parikh@quicko.com>",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"scripts": {
+		"clean": "npm cache clean --force",
+		"install-local": "npm --userconfig ~/npmrc/local.npmrc install",
+		"install-snapshot": "npm --userconfig ~/npmrc/snapshot.npmrc install",
+		"install-release": "npm --userconfig ~/npmrc/release.npmrc install",
+		"update-local": "npm --userconfig ~/npmrc/local.npmrc update",
+		"update-snapshot": "npm --userconfig ~/npmrc/snapshot.npmrc update",
+		"update-release": "npm --userconfig ~/npmrc/release.npmrc update",
+		"publish-snapshot": "npm --userconfig ~/npmrc/snapshot.npmrc publish --registry=https://artifacts.quicko.org.in/repository/npm-snapshots/",
+		"publish-release": "npm --userconfig ~/npmrc/release.npmrc publish --registry=https://artifacts.quicko.org.in/repository/npm-releases/",
+		"publish-local": "npm --userconfig ~/npmrc/local.npmrc publish --registry=http://127.0.0.1:8081/repository/npm-snapshots/",
+		"build-release": "tsc --build && npm ci --omit=dev",
+		"prebuild": "rm -rf dist && npm run clean && npm run generate",
+		"build": "tsc --build",
+		"generate": "npm run generateSchema && npm run generateObjects",
+		"generateSchema": "excel-to-schema --input ./resources/excel/ --output ./generated/schemas/",
+		"generateObjects": "schema-to-objects --input ./generated/schemas/ --output ./generated/sources"
+	},
+	"license": "ISC",
+	"files": [
+		"dist/*/**"
+	],
+	"exports": {
+		".": "./dist/index.js",
+		"./campaign_summary_workbook/beans": "./dist/generated/sources/campaign_summary_workbook/index.js",
+		"./coupon_code_workbook/beans": "./dist/generated/sources/coupon_code_workbook/index.js",
+		"./coupon_summary_workbook/beans": "./dist/generated/sources/coupon_summary_workbook/index.js",
+		"./offer_workbook/beans": "./dist/generated/sources/offer_workbook/index.js",
+		"./organization_summary_workbook/beans": "./dist/generated/sources/organization_summary_workbook/index.js",
+		"./redemption_report_workbook/beans": "./dist/generated/sources/redemption_report_workbook/index.js",
+		"./redemption_workbook/beans": "./dist/generated/sources/redemption_workbook/index.js"
+	},
+	"typesVersions": {
+		"*": {
+			"campaign_summary_workbook/beans": [
+				"dist/generated/sources/campaign_summary_workbook/index.d.ts"
+			],
+			"coupon_code_workbook/beans": [
+				"dist/generated/sources/coupon_code_workbook/index.d.ts"
+			],
+			"offer_workbook/beans": [
+				"dist/generated/sources/offer_workbook/index.d.ts"
+			],
+			"organization_summary_workbook/beans": [
+				"dist/generated/sources/organization_summary_workbook/index.d.ts"
+			],
+			"redemption_report_workbook/beans": [
+				"dist/generated/sources/redemption_report_workbook/index.d.ts"
+			],
+			"redemption_workbook/beans": [
+				"dist/generated/sources/redemption_workbook/index.d.ts"
+			]
+		}
+	},
+	"directories": {
+		"lib": "./dist"
+	},
+	"devDependencies": {
+		"@org.quicko/sheet-generator": "^6.0.2",
+		"@types/node": "^22.7.0",
+		"@typescript-eslint/eslint-plugin": "^8.17.0",
+		"@typescript-eslint/parser": "^8.17.0",
+		"esbuild-plugin-eslint": "^0.3.7",
+		"eslint": "^8.2.0",
+		"eslint-config-airbnb": "^19.0.4",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-import-resolver-typescript": "^3.7.0",
+		"typescript": "^5.6.2"
+	}
+}

@@ -1,0 +1,62 @@
+{
+  "name": "@org.quicko.qpon/client",
+  "version": "1.0.0-alpha.0",
+  "description": "Library to access Qpon APIs",
+  "author": "Dev Parikh <dev.parikh@quicko.com>",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "clean": "npm cache clean -force",
+    "install-local": "npm --userconfig ~/npmrc/local.npmrc install",
+    "install-snapshot": "npm --userconfig ~/npmrc/snapshot.npmrc install",
+    "install-release": "npm --userconfig ~/npmrc/release.npmrc install",
+    "publish-local": "npm --userconfig ~/npmrc/local.npmrc publish --registry=http://127.0.0.1:8081/",
+    "publish-snapshot": "npm --userconfig ~/npmrc/snapshot.npmrc publish --registry=https://artifacts.quicko.org.in/repository/npm-snapshots/",
+    "publish-release": "npm --userconfig ~/npmrc/release.npmrc publish --registry=https://artifacts.quicko.org.in/repository/npm-releases/",
+    "lint": "eslint --fix .",
+    "prebuild": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "build-release": "rm -rf ./dist && npm run prebuild && tsc --build && copyfiles -u 1 ./environment/* dist/environment && npm ci --omit=dev",
+    "build": "tsc --build && copyfiles -u 1 ./environment/* dist/environment",
+    "test-createCoupon": "set NODE_ENV=local && ts-node ./tests/coupon/createCoupon.test.ts",
+    "test-getAllCoupons": "set NODE_ENV=local && ts-node ./tests/coupon/getAllCoupons.test.ts",
+    "test-fetchOffers": "set NODE_ENV=local && ts-node ./tests/offer/fetchOffers.test.ts",
+    "test-redeemCouponCode": "set NODE_ENV=local && ts-node ./tests/redemption/redeemCouponCode.test.ts"
+  },
+  "license": "ISC",
+  "files": [
+    "dist/*"
+  ],
+  "directories": {
+    "lib": "./dist"
+  },
+  "engines": {
+    "node": ">=12"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@org.quicko.qpon/core": "^1.0.0-alpha.0",
+    "@org.quicko.qpon/sheet-core": "^1.0.0-alpha.0",
+    "@org.quicko/core": "8.1.0-beta.0",
+    "axios": "^1.7.7",
+    "class-transformer": "^0.5.1",
+    "dotenv": "^16.4.5",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.5",
+    "@types/jsdom": "^16.2.7",
+    "@types/node": "^22.7.0",
+    "@typescript-eslint/eslint-plugin": "^8.17.0",
+    "@typescript-eslint/parser": "^8.17.0",
+    "esbuild-plugin-eslint": "^0.3.7",
+    "eslint": "^8.2.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-import-resolver-typescript": "^3.7.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.6.2"
+  }
+}
