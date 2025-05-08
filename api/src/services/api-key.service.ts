@@ -36,19 +36,7 @@ export class ApiKeyService {
       });
 
       if (existingApiKey) {
-        await this.apiKeyRepository.update(existingApiKey.apiKeyId, {
-          key,
-          secret,
-        });
-
-        const updatedApiKey = await this.apiKeyRepository.findOne({
-          where: {
-            apiKeyId: existingApiKey.apiKeyId,
-          },
-        });
-
-        this.logger.info('END: createApiKey service');
-        return this.apiKeyConverter.convert(updatedApiKey!, secret);
+        await this.apiKeyRepository.delete(existingApiKey.apiKeyId);
       }
 
       const apiKeyEntity = this.apiKeyRepository.create({
@@ -122,6 +110,7 @@ export class ApiKeyService {
       if (!apiKey) return null;
 
       this.logger.info(`END: validateKeyAndSecret service`);
+
       const isValid = await bcrypt.compare(secret, apiKey.secret);
       return isValid ? apiKey : null;
     } catch (error) {
