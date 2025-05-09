@@ -57,10 +57,22 @@ export class Offer {
   @ViewColumn({ name: 'discount_type' })
   discountType: discountTypeEnum;
 
-  @ViewColumn({ name: 'discount_value' })
+  @ViewColumn({
+    name: 'discount_value',
+    transformer: {
+      from: (value) => Number(value),
+      to: (value) => value,
+    },
+  })
   discountValue: number;
 
-  @ViewColumn({ name: 'discount_upto' })
+  @ViewColumn({
+    name: 'discount_upto',
+    transformer: {
+      from: (value) => Number(value),
+      to: (value) => value,
+    },
+  })
   discountUpto: number;
 
   @ViewColumn({ name: 'item_constraint' })
@@ -69,7 +81,13 @@ export class Offer {
   @ViewColumn({ name: 'customer_constraint' })
   customerConstraint: customerConstraintEnum;
 
-  @ViewColumn({ name: 'minimum_amount' })
+  @ViewColumn({
+    name: 'minimum_amount',
+    transformer: {
+      from: (value) => Number(value),
+      to: (value) => value,
+    },
+  })
   minimumAmount: number;
 
   @ViewColumn()

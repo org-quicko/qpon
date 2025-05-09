@@ -53,16 +53,40 @@ export class CampaignSummaryMv {
   @ViewColumn()
   name: string;
 
-  @ViewColumn()
+  @ViewColumn({
+    name: 'budget',
+    transformer: {
+      from: (value) => value,
+      to: (value) => value,
+    },
+  })
   budget: number | null;
 
-  @ViewColumn({ name: 'total_redemption_count' })
+  @ViewColumn({
+    name: 'total_redemption_count',
+    transformer: {
+      from: (value) => Number(value),
+      to: (value) => value,
+    },
+  })
   totalRedemptionCount: number;
 
-  @ViewColumn({ name: 'total_redemption_amount' })
+  @ViewColumn({
+    name: 'total_redemption_amount',
+    transformer: {
+      from: (value) => Number(value),
+      to: (value) => value,
+    },
+  })
   totalRedemptionAmount: number;
 
-  @ViewColumn({ name: 'active_coupon_code_count' })
+  @ViewColumn({
+    name: 'active_coupon_code_count',
+    transformer: {
+      from: (value) => Number(value),
+      to: (value) => value,
+    },
+  })
   activeCouponCodeCount: number;
 
   @ViewColumn()

@@ -43,6 +43,10 @@ export class OfferSheetConverter {
       offerTable.addRow(offerRow);
     });
 
+    if (offerTable.getRows().length === 0) {
+      offerTable.addRow(new OfferRow([]));
+    }
+
     const offerSheet = new OfferSheet();
     offerSheet.addOfferTable(offerTable);
 
