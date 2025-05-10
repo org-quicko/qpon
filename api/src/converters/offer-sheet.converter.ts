@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { JSONObject } from '@org.quicko/core';
+import { JSONArray, JSONObject } from '@org.quicko/core';
 import {
   OfferRow,
   OfferSheet,
@@ -19,32 +19,33 @@ export class OfferSheetConverter {
     take?: number,
   ): OfferWorkbook {
     const offerTable = new OfferTable();
-    offers.map((offer) => {
-      const offerRow = new OfferRow([]);
-      const title = offerTitleBuilder(offer);
-      const description = offerDescriptionBuilder(offer);
 
-      offerRow.setTitle(title);
-      offerRow.setDescription(description);
-      offerRow.setCouponCode(offer.code);
-      offerRow.setDiscountType(offer.discountType);
-      offerRow.setDiscountValue(offer.discountValue);
-      offerRow.setItemConstraint(offer.itemConstraint);
-      offerRow.setMinimumAmount(offer.minimumAmount);
-      offerRow.setCustomerId(offer.customerId);
-      offerRow.setCampaignExternalId(offer.externalCampaignId);
-      offerRow.setVisibility(offer.visibility);
-      offerRow.setCampaignId(offer.campaignId);
-      offerRow.setCouponId(offer.couponId);
+    if (offers.length === 0) {
+      offerTable.rows = new JSONArray();
+    } else {
+      offers.map((offer) => {
+        const offerRow = new OfferRow([]);
+        const title = offerTitleBuilder(offer);
+        const description = offerDescriptionBuilder(offer);
 
-      if (offer.expiresAt) {
-        offerRow.setExpiresAt(offer.expiresAt.toISOString());
-      }
-      offerTable.addRow(offerRow);
-    });
+        offerRow.setTitle(title);
+        offerRow.setDescription(description);
+        offerRow.setCouponCode(offer.code);
+        offerRow.setDiscountType(offer.discountType);
+        offerRow.setDiscountValue(offer.discountValue);
+        offerRow.setItemConstraint(offer.itemConstraint);
+        offerRow.setMinimumAmount(offer.minimumAmount);
+        offerRow.setCustomerId(offer.customerId);
+        offerRow.setCampaignExternalId(offer.externalCampaignId);
+        offerRow.setVisibility(offer.visibility);
+        offerRow.setCampaignId(offer.campaignId);
+        offerRow.setCouponId(offer.couponId);
 
-    if (offerTable.getRows().length === 0) {
-      offerTable.addRow(new OfferRow([]));
+        if (offer.expiresAt) {
+          offerRow.setExpiresAt(offer.expiresAt.toISOString());
+        }
+        offerTable.addRow(offerRow);
+      });
     }
 
     const offerSheet = new OfferSheet();
