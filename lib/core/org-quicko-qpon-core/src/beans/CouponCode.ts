@@ -84,4 +84,116 @@ export class CouponCode {
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsDate()
   updatedAt?: Date;
+
+  getCouponCodeId(): string | undefined {
+    return this.couponCodeId;
+  }
+
+  setCouponCodeId(couponCodeId: string): void {
+    this.couponCodeId = couponCodeId;
+  }
+
+  getCode(): string | undefined {
+    return this.code;
+  }
+
+  setCode(code: string): void {
+    this.code = code;
+  }
+
+  getDescription(): string | undefined {
+    return this.description;
+  }
+
+  setDescription(description: string): void {
+    this.description = description;
+  }
+
+  getCustomerConstraint(): CustomerConstraint | undefined {
+    return this.customerConstraint;
+  }
+
+  setCustomerConstraint(customerConstraint: CustomerConstraint): void {
+    this.customerConstraint = customerConstraint;
+  }
+
+  getMaxRedemptions(): number | undefined {
+    return this.maxRedemptions;
+  }
+
+  setMaxRedemptions(maxRedemptions: number): void {
+    this.maxRedemptions = maxRedemptions;
+  }
+
+  getMinimumAmount(): number | undefined {
+    return this.minimumAmount;
+  }
+
+  setMinimumAmount(minimumAmount: number): void {
+    this.minimumAmount = minimumAmount;
+  }
+
+  getMaxRedemptionPerCustomer(): number | undefined {
+    return this.maxRedemptionPerCustomer;
+  }
+
+  setMaxRedemptionPerCustomer(maxRedemptionPerCustomer: number): void {
+    this.maxRedemptionPerCustomer = maxRedemptionPerCustomer;
+  }
+
+  getVisibility(): Visibility | undefined {
+    return this.visibility;
+  }
+
+  setVisibility(visibility: Visibility): void {
+    this.visibility = visibility;
+  }
+
+  getDurationType(): DurationType | undefined {
+    return this.durationType;
+  }
+
+  setDurationType(durationType: DurationType): void {
+    this.durationType = durationType;
+  }
+
+  getExpiresAt(): Date | undefined {
+    return this.expiresAt;
+  }
+
+  setExpiresAt(expiresAt: Date): void {
+    this.expiresAt = expiresAt;
+  }
+
+  getRedemptionCount(): number | undefined {
+    return this.redemptionCount;
+  }
+
+  setRedemptionCount(redemptionCount: number): void {
+    this.redemptionCount = redemptionCount;
+  }
+
+  getStatus(): CouponCodeStatus | undefined {
+    return this.status;
+  }
+
+  setStatus(status: CouponCodeStatus): void {
+    this.status = status;
+  }
+
+  getCreatedAt(): Date | undefined {
+    return this.createdAt;
+  }
+
+  setCreatedAt(createdAt: Date): void {
+    this.createdAt = createdAt;
+  }
+
+  getUpdatedAt(): Date | undefined {
+    return this.updatedAt;
+  }
+
+  setUpdatedAt(updatedAt: Date): void {
+    this.updatedAt = updatedAt;
+  }
 }

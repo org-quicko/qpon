@@ -41,4 +41,60 @@ export class Campaign {
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsDate()
   updatedAt?: Date;
+
+  getCampaignId(): string | undefined {
+    return this.campaignId;
+  }
+
+  setCampaignId(campaignId: string): void {
+    this.campaignId = campaignId;
+  }
+
+  getName(): string | undefined {
+    return this.name;
+  }
+
+  setName(name: string): void {
+    this.name = name;
+  }
+
+  getBudget(): number | undefined {
+    return this.budget;
+  }
+
+  setBudget(budget: number): void {
+    this.budget = budget;
+  }
+
+  getExternalId(): string | undefined {
+    return this.externalId;
+  }
+
+  setExternalId(externalId: string): void {
+    this.externalId = externalId;
+  }
+
+  getStatus(): CampaignStatus | undefined {
+    return this.status;
+  }
+
+  setStatus(status: CampaignStatus): void {
+    this.status = status;
+  }
+
+  getCreatedAt(): Date | undefined {
+    return this.createdAt;
+  }
+
+  setCreatedAt(createdAt: Date): void {
+    this.createdAt = createdAt;
+  }
+
+  getUpdatedAt(): Date | undefined {
+    return this.updatedAt;
+  }
+
+  setUpdatedAt(updatedAt: Date): void {
+    this.updatedAt = updatedAt;
+  }
 }

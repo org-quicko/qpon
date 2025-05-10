@@ -28,4 +28,52 @@ export class CreateRedemption {
   @IsOptional()
   @IsString()
   externalId?: string;
+
+  getCode(): string | undefined {
+    return this.code;
+  }
+
+  setCode(code: string): void {
+    this.code = code;
+  }
+
+  getBaseOrderValue(): number | undefined {
+    return this.baseOrderValue;
+  }
+
+  setBaseOrderValue(baseOrderValue: number): void {
+    this.baseOrderValue = baseOrderValue;
+  }
+
+  getDiscount(): number | undefined {
+    return this.discount;
+  }
+
+  setDiscount(discount: number): void {
+    this.discount = discount;
+  }
+
+  getExternalCustomerId(): string | undefined {
+    return this.externalCustomerId;
+  }
+
+  setExternalCustomerId(externalCustomerId: string): void {
+    this.externalCustomerId = externalCustomerId;
+  }
+
+  getExternalItemId(): string | undefined {
+    return this.externalItemId;
+  }
+
+  setExternalItemId(externalItemId: string): void {
+    this.externalItemId = externalItemId;
+  }
+
+  getExternalId(): string | undefined {
+    return this.externalId;
+  }
+
+  setExternalId(externalId: string): void {
+    this.externalId = externalId;
+  }
 }

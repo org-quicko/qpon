@@ -37,4 +37,68 @@ export class Customer {
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsDate()
   updatedAt?: Date;
+
+  getCustomerId(): string | undefined {
+    return this.customerId;
+  }
+
+  setCustomerId(customerId: string): void {
+    this.customerId = customerId;
+  }
+
+  getName(): string | undefined {
+    return this.name;
+  }
+
+  setName(name: string): void {
+    this.name = name;
+  }
+
+  getEmail(): string | undefined {
+    return this.email;
+  }
+
+  setEmail(email: string): void {
+    this.email = email;
+  }
+
+  getIsdCode(): string | undefined {
+    return this.isdCode;
+  }
+
+  setIsdCode(isdCode: string): void {
+    this.isdCode = isdCode;
+  }
+
+  getPhone(): string | undefined {
+    return this.phone;
+  }
+
+  setPhone(phone: string): void {
+    this.phone = phone;
+  }
+
+  getExternalId(): string | undefined {
+    return this.externalId;
+  }
+
+  setExternalId(externalId: string): void {
+    this.externalId = externalId;
+  }
+
+  getCreatedAt(): Date | undefined {
+    return this.createdAt;
+  }
+
+  setCreatedAt(createdAt: Date): void {
+    this.createdAt = createdAt;
+  }
+
+  getUpdatedAt(): Date | undefined {
+    return this.updatedAt;
+  }
+
+  setUpdatedAt(updatedAt: Date): void {
+    this.updatedAt = updatedAt;
+  }
 }
