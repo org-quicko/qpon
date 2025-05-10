@@ -8,14 +8,31 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { Offer } from '../entities/offer.view';
 import { LoggerService } from './logger.service';
-import { discountTypeEnum, sortOrderEnum } from '../enums';
+import {
+  customerConstraintEnum,
+  discountTypeEnum,
+  itemConstraintEnum,
+  sortOrderEnum,
+} from '../enums';
 import { OfferSheetConverter } from '../converters/offer-sheet.converter';
+import { CustomerCouponCode } from 'src/entities/customer-coupon-code.entity';
+import { CouponItem } from 'src/entities/coupon-item.entity';
+import { Customer } from 'src/entities/customer.entity';
+import { Item } from 'src/entities/item.entity';
 
 @Injectable()
 export class OffersService {
   constructor(
     @InjectRepository(Offer)
     private readonly offersRepository: Repository<Offer>,
+    @InjectRepository(CustomerCouponCode)
+    private readonly customerCouponCodeRepository: Repository<CustomerCouponCode>,
+    @InjectRepository(CouponItem)
+    private readonly couponItemRepository: Repository<CouponItem>,
+    @InjectRepository(Customer)
+    private readonly customerRepository: Repository<Customer>,
+    @InjectRepository(Item)
+    private readonly itemRepository: Repository<Item>,
     private offerSheetConverter: OfferSheetConverter,
     private logger: LoggerService,
   ) {}
@@ -108,34 +125,87 @@ export class OffersService {
   ) {
     this.logger.info('START: fetchOffer service');
     try {
-      const query: SelectQueryBuilder<Offer> =
-        this.offersRepository.createQueryBuilder('offer');
+      const offer = await this.offersRepository.findOne({
+        where: {
+          organizationId,
+          code,
+        },
+      });
 
-      query.where(
-        `offer.organization_id = '${organizationId}' AND offer.code = '${code}' AND offer.coupon_code_status = 'active'`,
-      );
-
-      if (externalItemId && externalItemId !== 'all') {
-        query.andWhere(`offer.external_item_id = '${externalItemId}'`);
-      } else {
-        query.andWhere(`offer.item_constraint = 'all'`);
-      }
-
-      if (externalCustomerId) {
-        query.andWhere(`offer.external_customer_id = '${externalCustomerId}'`);
-      } else {
-        query.andWhere(`offer.customer_constraint = 'all'`);
-      }
-
-      const offers = await query.getOne();
-
-      if (!offers) {
+      if (!offer) {
         this.logger.warn('Offer not found');
         throw new NotFoundException('Offer not found');
       }
 
+      if (offer.itemConstraint === itemConstraintEnum.SPECIFIC) {
+        const item = await this.itemRepository.findOne({
+          where: {
+            externalId: externalItemId,
+            organization: {
+              organizationId,
+            },
+          },
+        });
+
+        if (!item) {
+          this.logger.warn('Item not found');
+          throw new NotFoundException('Item not found');
+        }
+
+        const couponItem = await this.couponItemRepository.findOne({
+          where: {
+            itemId: item.itemId,
+            coupon: {
+              couponId: offer.couponId,
+              organization: {
+                organizationId,
+              },
+            },
+          },
+        });
+
+        if (!couponItem) {
+          this.logger.warn('Offer not found');
+          throw new NotFoundException('Offer not found');
+        }
+      }
+
+      if (offer.customerConstraint === customerConstraintEnum.SPECIFIC) {
+        const customer = await this.customerRepository.findOne({
+          where: {
+            externalId: externalCustomerId,
+            organization: {
+              organizationId,
+            },
+          },
+        });
+
+        if (!customer) {
+          this.logger.warn('Customer not found');
+          throw new NotFoundException('Customer not found');
+        }
+
+        const customerCouponCode =
+          await this.customerCouponCodeRepository.findOne({
+            where: {
+              couponCode: {
+                code: offer.code,
+                organization: {
+                  organizationId,
+                },
+              },
+              customerId: customer.customerId,
+            },
+          });
+
+        if (!customerCouponCode) {
+          this.logger.warn('Offer not found');
+          throw new NotFoundException('Offer not found');
+        }
+      }
+
       this.logger.info('END: fetchOffer service');
-      return this.offerSheetConverter.convert([offers], organizationId);
+      return this.offerSheetConverter.convert([offer], organizationId);
     } catch (error) {
       this.logger.error(`Error in fetchOffer: ${error.message}`, error);
 

@@ -16,6 +16,7 @@ import { SnackbarService } from '../../../services/snackbar.service';
 import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { UsersStore } from '../store/users.store';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-invite-team',
@@ -77,6 +78,10 @@ export class InviteTeamComponent implements OnInit {
     })
 
     this.usersStore.fetchUsers({});
+
+    this.addMemberForm.controls['email'].valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe((email: string) => {
+      this.usersStore.fetchUsers({ email: email.trim() });
+    } )
 
     OnMemberSuccess.subscribe((res) => {
       if(res) {

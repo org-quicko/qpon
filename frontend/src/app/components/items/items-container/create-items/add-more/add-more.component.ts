@@ -50,6 +50,7 @@ export class AddMoreComponent {
 
   onAddMore() {
     this.itemStore.resetItem();
+    this.itemStore.resetCurrentStep();
     this.currentScreenEvent.emit('create-item');
   }
 

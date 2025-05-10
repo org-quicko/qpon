@@ -39,7 +39,7 @@ export class CouponCodeService {
    * Create coupon code
    */
   async createCouponCode(
-    organizationId,
+    organizationId: string,
     couponId: string,
     campaignId: string,
     body: CreateCouponCodeDto,
@@ -68,11 +68,8 @@ export class CouponCodeService {
           where: {
             code: body.code,
             status: couponCodeStatusEnum.ACTIVE,
-            coupon: {
-              couponId,
-            },
-            campaign: {
-              campaignId,
+            organization: {
+              organizationId,
             },
           },
         });

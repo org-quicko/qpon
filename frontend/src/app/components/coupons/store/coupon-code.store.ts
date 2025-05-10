@@ -564,22 +564,6 @@ export const CouponCodeStore = signalStore(
               
                       return of(response); // fallback
                     }),
-                    catchError((error: HttpErrorResponse) => {
-                      snackbarService.openSnackBar(
-                        'Failed to create some coupon codes',
-                        undefined
-                      );
-              
-                      patchState(store, {
-                        createdCouponCodes: {
-                          ...store.createdCouponCodes(),
-                          isLoading: false,
-                          error: error.message,
-                        },
-                      });
-              
-                      return of({ data: null, code: 500 }); // return dummy error response for forkJoin
-                    })
                   )
               );
 
@@ -606,10 +590,16 @@ export const CouponCodeStore = signalStore(
                     CreateSuccess.emit(true);
                   },
                   error: (error: HttpErrorResponse) => {
-                    snackbarService.openSnackBar(
-                      'Failed to create some coupon codes',
-                      undefined
-                    );
+
+                    if(error.status == 409) {
+                      snackbarService.openSnackBar('Coupon code already exists', undefined);
+                    } else {
+                      snackbarService.openSnackBar(
+                        'Failed to create some coupon codes',
+                        undefined
+                      );
+                    }
+
                     patchState(store, {
                       createdCouponCodes: {
                         ...store.createdCouponCodes(),

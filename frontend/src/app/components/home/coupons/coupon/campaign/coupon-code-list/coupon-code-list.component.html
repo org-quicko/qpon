@@ -138,8 +138,8 @@
       <ng-container matColumnDef="menu">
         <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">&nbsp;</th>
         <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
-          <button mat-icon-button (click)="$event.stopPropagation()">
-            <mat-icon [matMenuTriggerFor]="menu">more_vert</mat-icon>
+          <button mat-icon-button (click)="$event.stopPropagation()" [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu
             #menu="matMenu"
@@ -320,8 +320,8 @@
       <ng-container matColumnDef="menu">
         <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">&nbsp;</th>
         <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
-          <button mat-icon-button (click)="$event.stopPropagation()">
-            <mat-icon [matMenuTriggerFor]="menu">more_vert</mat-icon>
+          <button mat-icon-button (click)="$event.stopPropagation()" [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu
             #menu="matMenu"

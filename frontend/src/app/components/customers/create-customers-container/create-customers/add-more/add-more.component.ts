@@ -54,7 +54,7 @@ export class AddMoreComponent {
 
   onAddMore() {
     this.customerStore.resetCustomer();
-    // this.customerStore.resetCurrentStep();
+    this.customerStore.resetCurrentStep();
     this.currentScreenEvent.emit('create-customer');
   }
 
