@@ -1,6 +1,6 @@
 import { ClientException, LoggerFactory } from '@org.quicko/core';
 import winston from 'winston';
-import { User as UserBean } from '@org.quicko.qpon/core';
+import { OrganizationUser, PaginatedList, User as UserBean } from '@org.quicko.qpon/core';
 import { instanceToPlain } from 'class-transformer';
 import { APIURL } from '../../resource';
 import { QponCredentials } from '../../beans';
@@ -14,7 +14,7 @@ export class User extends RestClient {
     this.logger = this.getLogger();
   }
 
-  async getUser(userId: string) {
+  async getUser(userId: string) : Promise<UserBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.getUser.name}`);
       this.logger.debug(`Request`, { user_id: userId });
@@ -24,13 +24,13 @@ export class User extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.getUser.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to get user', error);
     }
   }
 
-  async getAllUsers(skip: number = 0, take: number = 10) {
+  async getAllUsers(skip: number = 0, take: number = 10) : Promise<PaginatedList<UserBean>> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.getAllUsers.name}`);
       this.logger.debug(`Request`, { skip, take });
@@ -44,13 +44,13 @@ export class User extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.getAllUsers.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to get users', error);
     }
   }
 
-  async createUser(organizationId: string, data: UserBean) {
+  async createUser(organizationId: string, data: UserBean) : Promise<UserBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.createUser.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, data });
@@ -60,13 +60,13 @@ export class User extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.createUser.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to create user', error);
     }
   }
 
-  async deleteUser(organizationId: string, userId: string) {
+  async deleteUser(organizationId: string, userId: string) : Promise<UserBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.deleteUser.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, user_id: userId });
@@ -76,7 +76,7 @@ export class User extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.deleteUser.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to delete user', error);
     }
@@ -86,7 +86,7 @@ export class User extends RestClient {
     organizationId: string,
     userId: string,
     data: Pick<UserBean, 'name' | 'email' | 'password'>
-  ) {
+  ) : Promise<UserBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateUser.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, user_id: userId, data });
@@ -98,13 +98,13 @@ export class User extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.updateUser.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to update user', error);
     }
   }
 
-  async updateUserRole(organizationId: string, userId: string, data: Pick<UserBean, 'role'>) {
+  async updateUserRole(organizationId: string, userId: string, data: Pick<UserBean, 'role'>) : Promise<UserBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateUserRole.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, user_id: userId, data });
@@ -116,13 +116,13 @@ export class User extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.updateUserRole.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to update user role', error);
     }
   }
 
-  async fetchOrganizationsForUser(userId: string) {
+  async fetchOrganizationsForUser(userId: string) : Promise<OrganizationUser[]> {
     try {
       this.logger.info(
         `Start Client : ${this.constructor.name},${this.fetchOrganizationsForUser.name}`
@@ -136,13 +136,13 @@ export class User extends RestClient {
         `End Client : ${this.constructor.name},${this.fetchOrganizationsForUser.name}`
       );
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to fetch organizations for user', error);
     }
   }
 
-  async fetchUsersOfAnOrganization(organizationId: string) {
+  async fetchUsersOfAnOrganization(organizationId: string) : Promise<UserBean[]> {
     try {
       this.logger.info(
         `Start Client : ${this.constructor.name},${this.fetchUsersOfAnOrganization.name}`
@@ -159,7 +159,7 @@ export class User extends RestClient {
         `End Client : ${this.constructor.name},${this.fetchUsersOfAnOrganization.name}`
       );
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to fetch users for an organization', error);
     }

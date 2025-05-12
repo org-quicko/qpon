@@ -16,7 +16,7 @@
     "lint": "eslint --fix .",
     "prebuild": "eslint . --ext .js,.jsx,.ts,.tsx",
     "build-release": "rm -rf ./dist && npm run prebuild && tsc --build && copyfiles -u 1 ./environment/* dist/environment && npm ci --omit=dev",
-    "build": "tsc --build && copyfiles -u 1 ./environment/* dist/environment",
+    "build": "rm -rf dist && tsc --build && copyfiles -u 1 ./environment/* dist/environment",
     "test-createCoupon": "set NODE_ENV=local && ts-node ./tests/coupon/createCoupon.test.ts",
     "test-getAllCoupons": "set NODE_ENV=local && ts-node ./tests/coupon/getAllCoupons.test.ts",
     "test-fetchOffers": "set NODE_ENV=local && ts-node ./tests/offer/fetchOffers.test.ts",

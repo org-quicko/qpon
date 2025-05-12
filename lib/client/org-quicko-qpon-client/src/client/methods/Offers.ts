@@ -1,5 +1,6 @@
 import { ClientException, LoggerFactory } from '@org.quicko/core';
 import { DiscountType, SortOrder } from '@org.quicko.qpon/core';
+import { OfferWorkbook } from '@org.quicko.qpon/sheet-core/offer_workbook/beans';
 import winston from 'winston';
 import { APIURL } from '../../resource';
 import { QponCredentials } from '../../beans';
@@ -18,7 +19,7 @@ export class Offer extends RestClient {
     externalCustomerId?: string,
     code?: string,
     externalItemId?: string
-  ) {
+  ) : Promise<OfferWorkbook> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.getOffer.name}`);
       this.logger.debug(`Request`, {
@@ -47,7 +48,7 @@ export class Offer extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.getOffer.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to get offer', error);
     }
@@ -61,7 +62,7 @@ export class Offer extends RestClient {
     discountType?: DiscountType,
     skip: number = 0,
     take: number = 10
-  ) {
+  ) : Promise<OfferWorkbook> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.getAllOffers.name}`);
       this.logger.debug(`Request`, {
@@ -98,7 +99,7 @@ export class Offer extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.getAllOffers.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to get offers', error);
     }

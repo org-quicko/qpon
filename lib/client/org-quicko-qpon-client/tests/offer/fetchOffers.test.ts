@@ -1,8 +1,8 @@
 import * as winston from "winston";
+import { LoggerFactory } from "@org.quicko/core";
+import { DiscountType, SortOrder } from "@org.quicko.qpon/core";
 import { QponCredentials } from "../../src/beans";
 import { Qpon } from "../../src/client/Qpon";
-import { LoggerFactory } from "@org.quicko/core";
-import { DiscountType } from "@org.quicko.qpon/core";
 
 async function test() {
   LoggerFactory.setLogger('logger', winston.createLogger());
@@ -13,7 +13,7 @@ async function test() {
 
   const qpon: Qpon = new Qpon(config, 'https://dev-qpon.quicko.com/api');
 
-  const result = await qpon.OFFERS.getAllOffers("677908f1-691d-42b7-a473-678114dcd6f9", "1234567890", undefined, undefined, DiscountType.FIXED, 0, 10);
+  const result = await qpon.OFFERS.getAllOffers("4d7b44de-da71-4555-a7d3-71df8f30b212", "184F8385D39B45F5E0630100007F2EE2", "2227362000000050497", SortOrder.DESC, DiscountType.FIXED, 0, 10);
 
   console.log(result);
 }

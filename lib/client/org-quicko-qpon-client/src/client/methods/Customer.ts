@@ -4,7 +4,7 @@ import {
   UUIDGenerator,
 } from '@org.quicko/core';
 import winston from 'winston';
-import { Customer as CustomerBean } from '@org.quicko.qpon/core';
+import { Customer as CustomerBean, PaginatedList } from '@org.quicko.qpon/core';
 import { instanceToPlain } from 'class-transformer';
 import { APIURL } from '../../resource';
 import { QponCredentials } from '../../beans';
@@ -18,7 +18,7 @@ export class Customer extends RestClient {
     this.logger = this.getLogger()!;
   }
 
-  async getCustomer(organizationId: string, customerId: string) {
+  async getCustomer(organizationId: string, customerId: string) : Promise<CustomerBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.getCustomer.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, customer_id: customerId });
@@ -28,13 +28,13 @@ export class Customer extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.getCustomer.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to get customer', error);
     }
   }
 
-  async getAllCustomers(organizationId: string, skip: number = 0, take: number = 10) {
+  async getAllCustomers(organizationId: string, skip: number = 0, take: number = 10) : Promise<PaginatedList<CustomerBean>> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.getAllCustomers.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, skip, take });
@@ -48,13 +48,13 @@ export class Customer extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.getAllCustomers.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to get customers', error);
     }
   }
 
-  async createCustomer(organizationId: string, data: Pick<CustomerBean, 'name' | 'email' | 'phone' | 'externalId'>) {
+  async createCustomer(organizationId: string, data: Pick<CustomerBean, 'name' | 'email' | 'phone' | 'externalId'>) : Promise<CustomerBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.createCustomer.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, data });
@@ -64,13 +64,13 @@ export class Customer extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.createCustomer.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to create customer', error);
     }
   }
 
-  async deleteCustomer(organizationId: string, customerId: string) {
+  async deleteCustomer(organizationId: string, customerId: string) : Promise<CustomerBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.deleteCustomer.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, customer_id: customerId });
@@ -80,13 +80,13 @@ export class Customer extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.deleteCustomer.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to delete customer', error);
     }
   }
 
-  async updateCustomer(organizationId: string, customerId: string, data: Pick<CustomerBean, 'name' | 'email' | 'phone' | 'externalId'>) {
+  async updateCustomer(organizationId: string, customerId: string, data: Pick<CustomerBean, 'name' | 'email' | 'phone' | 'externalId'>) : Promise<CustomerBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateCustomer.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, customer_id: customerId, data });
@@ -96,7 +96,7 @@ export class Customer extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.updateCustomer.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to update customer', error);
     }

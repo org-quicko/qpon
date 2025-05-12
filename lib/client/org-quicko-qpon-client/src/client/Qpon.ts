@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { QponCredentials } from '../beans';
-import { ApiKey, Campaign, Coupon, CouponCode, CouponItem, Customer, CustomerCouponCode, Item, Offer, Organization, Redemption, User } from './methods';
+import { Campaign, Coupon, CouponCode, CouponItem, Customer, CustomerCouponCode, Item, Offer, Organization, Redemption, User } from './methods';
 
 export class Qpon {
   public COUPONS: Coupon;
@@ -14,8 +14,6 @@ export class Qpon {
   public USERS: User;
 
   public CUSTOMERS: Customer;
-
-  public APIKEY: ApiKey;
 
   public COUPONITEM: CouponItem;
 
@@ -31,7 +29,6 @@ export class Qpon {
     this.ORGANIZATIONS = new Organization(config, baseUrl);
     this.USERS = new User(config, baseUrl);
     this.CUSTOMERS = new Customer(config, baseUrl);
-    this.APIKEY = new ApiKey(config, baseUrl);
     this.COUPONS = new Coupon(config, baseUrl);
     this.OFFERS = new Offer(config, baseUrl);
     this.REDEMPTIONS = new Redemption(config, baseUrl);

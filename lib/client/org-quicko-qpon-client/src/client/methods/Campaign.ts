@@ -1,7 +1,8 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import * as winston from 'winston';
 import { ClientException, LoggerFactory } from '@org.quicko/core';
-import { Campaign as CampaignBean } from '@org.quicko.qpon/core';
+import { Campaign as CampaignBean, PaginatedList } from '@org.quicko.qpon/core';
+import { CampaignSummaryWorkbook } from '@org.quicko.qpon/sheet-core/campaign_summary_workbook/beans';
 import { instanceToPlain } from 'class-transformer';
 import { APIURL } from '../../resource';
 import { QponCredentials } from '../../beans';
@@ -15,7 +16,7 @@ export class Campaign extends RestClient {
     this.logger = this.getLogger()!;
   }
 
-  async createCampaign(organizationId: string, couponId: string, data: Pick<CampaignBean, 'name' | 'budget' | 'externalId'>) {
+  async createCampaign(organizationId: string, couponId: string, data: Pick<CampaignBean, 'name' | 'budget' | 'externalId'>) : Promise<CampaignBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.createCampaign.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, coupon_id: couponId, data });
@@ -27,13 +28,13 @@ export class Campaign extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.createCampaign.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to create campaign', error);
     }
   }
 
-  async getCampaign(organizationId: string, couponId: string, campaignId: string) {
+  async getCampaign(organizationId: string, couponId: string, campaignId: string) : Promise<CampaignBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.getCampaign.name}`);
       this.logger.debug(`Request`, {
@@ -50,7 +51,7 @@ export class Campaign extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.getCampaign.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to get campaign', error);
     }
@@ -63,7 +64,7 @@ export class Campaign extends RestClient {
     budgeted?: boolean,
     skip: number = 0,
     take: number = 10
-  ) {
+  ) : Promise<PaginatedList<CampaignBean>> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.getAllCampaigns.name}`);
       this.logger.debug(`Request`, {
@@ -91,7 +92,7 @@ export class Campaign extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.getAllCampaigns.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to get campaigns', error);
     }
@@ -102,7 +103,7 @@ export class Campaign extends RestClient {
     couponId: string,
     campaignId: string,
     data: Pick<CampaignBean, 'name' | 'budget' | 'externalId'>
-  ) {
+  ) : Promise<CampaignBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateCampaign.name}`);
       this.logger.debug(`Request`, {
@@ -119,13 +120,13 @@ export class Campaign extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.updateCampaign.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to update campaign', error);
     }
   }
 
-  async deleteCampaign(organizationId: string, couponId: string, campaignId: string) {
+  async deleteCampaign(organizationId: string, couponId: string, campaignId: string) : Promise<CampaignBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.deleteCampaign.name}`);
       this.logger.debug(`Request`, {
@@ -141,7 +142,7 @@ export class Campaign extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.deleteCampaign.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to delete campaign', error);
     }
@@ -195,7 +196,7 @@ export class Campaign extends RestClient {
     }
   }
 
-  async getCampaignSummary(organizationId: string, couponId: string, campaignId: string) {
+  async getCampaignSummary(organizationId: string, couponId: string, campaignId: string) : Promise<CampaignSummaryWorkbook> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.getCampaignSummary.name}`);
       this.logger.debug(`Request`, {
@@ -207,12 +208,13 @@ export class Campaign extends RestClient {
       const response = await super.get({
         url: APIURL.FETCH_CAMPAIGN_SUMMARY,
         params: [organizationId, couponId, campaignId],
+        headers: { 'x-accept-type': 'application/json;format=sheet-json' },
       });
 
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.getCampaignSummary.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to get campaign summary', error);
     }
@@ -223,7 +225,7 @@ export class Campaign extends RestClient {
     couponId: string,
     skip: number = 0,
     take: number = 10
-  ) {
+  ) : Promise<CampaignSummaryWorkbook> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.getCampaignSummaries.name}`);
       this.logger.debug(`Request`, {
@@ -239,6 +241,7 @@ export class Campaign extends RestClient {
         url: APIURL.FETCH_CAMPAIGN_SUMMARIES,
         params: [organizationId, couponId],
         queryParams,
+        headers: { 'x-accept-type': 'application/json;format=sheet-json' },
       });
 
       this.logger.debug(`Response`, response);

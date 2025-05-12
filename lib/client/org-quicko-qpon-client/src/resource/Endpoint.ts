@@ -270,10 +270,10 @@ export enum APIURL {
    */
 
   // Fetch Offer
-  FETCH_OFFER = '/organizations/{organization_id}/offers',
+  FETCH_OFFER = '/organizations/{organization_id}/offer',
 
   // Fetch Offers
-  FETCH_OFFERS = FETCH_OFFER,
+  FETCH_OFFERS = '/organizations/{organization_id}/offers',
 
   /**
    * Redemption Endpoints

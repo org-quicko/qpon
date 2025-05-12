@@ -1,6 +1,6 @@
 import { ClientException, LoggerFactory } from '@org.quicko/core';
 import winston from 'winston';
-import { CouponCode as CouponCodeBean } from '@org.quicko.qpon/core';
+import { CouponCode as CouponCodeBean, PaginatedList } from '@org.quicko.qpon/core';
 import { instanceToPlain } from 'class-transformer';
 import { APIURL } from '../../resource';
 import { QponCredentials } from '../../beans';
@@ -30,7 +30,7 @@ export class CouponCode extends RestClient {
       | 'durationType'
       | 'expiresAt'
     >
-  ) {
+  ) : Promise<CouponCodeBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.createCouponCode.name}`);
       this.logger.debug(`Request`, {
@@ -47,7 +47,7 @@ export class CouponCode extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.createCouponCode.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to create coupon code', error);
     }
@@ -58,7 +58,7 @@ export class CouponCode extends RestClient {
     couponId: string,
     campaignId: string,
     couponCodeId: string
-  ) {
+  ) : Promise<CouponCodeBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.getCouponCode.name}`);
       this.logger.debug(`Request`, {
@@ -76,7 +76,7 @@ export class CouponCode extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.getCouponCode.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to get coupon code', error);
     }
@@ -92,7 +92,7 @@ export class CouponCode extends RestClient {
     durationType?: string,
     skip: number = 0,
     take: number = 10
-  ) {
+  ) : Promise<PaginatedList<CouponCodeBean>> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.getAllCouponCodes.name}`);
       this.logger.debug(`Request`, {
@@ -129,7 +129,7 @@ export class CouponCode extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.getAllCouponCodes.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to get coupon codes', error);
     }
@@ -151,7 +151,7 @@ export class CouponCode extends RestClient {
       | 'maxRedemptions'
       | 'minimumAmount'
     >
-  ) {
+  ) : Promise<CouponCodeBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateCouponCode.name}`);
       this.logger.debug(`Request`, {
@@ -169,7 +169,7 @@ export class CouponCode extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.updateCouponCode.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to update coupon code', error);
     }
@@ -217,7 +217,7 @@ export class CouponCode extends RestClient {
     couponId: string,
     campaignId: string,
     couponCodeId: string
-  ) {
+  ) : Promise<CouponCodeBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.deleteCouponCode.name}`);
       this.logger.debug(`Request`, {
@@ -234,7 +234,7 @@ export class CouponCode extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.deleteCouponCode.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to delete coupon code', error);
     }

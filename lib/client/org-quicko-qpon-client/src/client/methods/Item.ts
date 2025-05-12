@@ -1,6 +1,6 @@
 import { ClientException, LoggerFactory } from '@org.quicko/core';
 import winston from 'winston';
-import { Item as ItemBean } from '@org.quicko.qpon/core';
+import { Item as ItemBean, PaginatedList } from '@org.quicko.qpon/core';
 import { instanceToPlain } from 'class-transformer';
 import { APIURL } from '../../resource';
 import { QponCredentials } from '../../beans';
@@ -14,7 +14,7 @@ export class Item extends RestClient {
     this.logger = this.getLogger()!;
   }
 
-  async createItem(organizationId: string, data: Pick<ItemBean, 'name' | 'description' | 'externalId' | 'customFields'>) {
+  async createItem(organizationId: string, data: Pick<ItemBean, 'name' | 'description' | 'externalId' | 'customFields'>) : Promise<ItemBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.createItem.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, data });
@@ -24,13 +24,13 @@ export class Item extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.createItem.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to create item', error);
     }
   }
 
-  async getItem(organizationId: string, itemId: string) {
+  async getItem(organizationId: string, itemId: string) : Promise<ItemBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.getItem.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, item_id: itemId });
@@ -40,7 +40,7 @@ export class Item extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.getItem.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to get item', error);
     }
@@ -52,7 +52,7 @@ export class Item extends RestClient {
     externalId?: string,
     skip: number = 0,
     take: number = 10,
-  ) {
+  ) : Promise<PaginatedList<ItemBean>> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.getAllItems.name}`);
       this.logger.debug(`Request`, {
@@ -79,7 +79,7 @@ export class Item extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.getAllItems.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to get items', error);
     }
@@ -89,7 +89,7 @@ export class Item extends RestClient {
     organizationId: string,
     itemId: string,
     data: Pick<ItemBean, 'name' | 'description' | 'externalId' | 'customFields'>,
-  ) {
+  ) : Promise<ItemBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateItem.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, item_id: itemId, data });
@@ -101,13 +101,13 @@ export class Item extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.updateItem.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to update item', error);
     }
   }
 
-  async deleteItem(organizationId: string, itemId: string) {
+  async deleteItem(organizationId: string, itemId: string) : Promise<ItemBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.deleteItem.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, item_id: itemId });
@@ -117,7 +117,7 @@ export class Item extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.deleteItem.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to delete item', error);
     }

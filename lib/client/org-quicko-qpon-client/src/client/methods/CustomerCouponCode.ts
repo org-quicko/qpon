@@ -1,6 +1,6 @@
 import { ClientException, LoggerFactory } from '@org.quicko/core';
 import winston from 'winston';
-import { CustomerCouponCode as CustomerCouponCodeBean } from '@org.quicko.qpon/core';
+import { Customer, CustomerCouponCode as CustomerCouponCodeBean, PaginatedList } from '@org.quicko.qpon/core';
 import { instanceToPlain } from 'class-transformer';
 import { APIURL } from '../../resource';
 import { QponCredentials } from '../../beans';
@@ -19,7 +19,7 @@ export class CustomerCouponCode extends RestClient {
     campaignId: string,
     couponCodeId: string,
     data: Pick<CustomerCouponCodeBean, 'customers'>
-  ) {
+  ) : Promise<PaginatedList<Customer>> {
     try {
       this.logger.info(
         `Start Client : ${this.constructor.name},${this.addCustomersToCouponCode.name}`
@@ -40,7 +40,7 @@ export class CustomerCouponCode extends RestClient {
         `End Client : ${this.constructor.name},${this.addCustomersToCouponCode.name}`
       );
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to add customers to coupon code', error);
     }
@@ -52,7 +52,7 @@ export class CustomerCouponCode extends RestClient {
     couponCodeId: string,
     skip: number = 0,
     take: number = 10
-  ) {
+  ) : Promise<PaginatedList<Customer>> {
     try {
       this.logger.info(
         `Start Client : ${this.constructor.name},${this.getCustomersForCouponCode.name}`
@@ -78,7 +78,7 @@ export class CustomerCouponCode extends RestClient {
         `End Client : ${this.constructor.name},${this.getCustomersForCouponCode.name}`
       );
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to get customers for coupon code', error);
     }
@@ -89,7 +89,7 @@ export class CustomerCouponCode extends RestClient {
     campaignId: string,
     couponCodeId: string,
     data: Pick<CustomerCouponCodeBean, 'customers'>
-  ) {
+  ) : Promise<PaginatedList<Customer>> {
     try {
       this.logger.info(
         `Start Client : ${this.constructor.name},${this.updateCustomerCouponCode.name}`
@@ -110,7 +110,7 @@ export class CustomerCouponCode extends RestClient {
         `End Client : ${this.constructor.name},${this.updateCustomerCouponCode.name}`
       );
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to update customers associated with coupon code', error);
     }
@@ -121,7 +121,7 @@ export class CustomerCouponCode extends RestClient {
     campaignId: string,
     couponCodeId: string,
     customerId: string
-  ) {
+  ) : Promise<PaginatedList<Customer>> {
     try {
       this.logger.info(
         `Start Client : ${this.constructor.name},${this.deleteCustomerCouponCode.name}`
@@ -142,7 +142,7 @@ export class CustomerCouponCode extends RestClient {
         `End Client : ${this.constructor.name},${this.deleteCustomerCouponCode.name}`
       );
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to delete customer from coupon code', error);
     }

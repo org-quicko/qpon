@@ -1,6 +1,7 @@
 import { ClientException, LoggerFactory } from '@org.quicko/core';
 import winston from 'winston';
 import { CreateRedemption, SortOrder, TimePeriod } from '@org.quicko.qpon/core';
+import { RedemptionWorkbook } from '@org.quicko.qpon/sheet-core/redemption_workbook/beans';
 import { instanceToPlain } from 'class-transformer';
 import { APIURL } from '../../resource';
 import { QponCredentials } from '../../beans';
@@ -40,7 +41,7 @@ export class Redemption extends RestClient {
     to?: string,
     skip: number = 0,
     take: number = 10
-  ) {
+  ) : Promise<RedemptionWorkbook> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.getAllRedemptions.name}`);
       this.logger.debug(`Request`, {
@@ -98,7 +99,7 @@ export class Redemption extends RestClient {
     sortOrder?: SortOrder,
     skip: number = 0,
     take: number = 10,
-  ) {
+  ) : Promise<RedemptionWorkbook> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.getRedemptionsForCouponCode.name}`);
       this.logger.debug(`Request`, {
@@ -136,7 +137,7 @@ export class Redemption extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.getRedemptionsForCouponCode.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to get redemptions for coupon code', error);
     }

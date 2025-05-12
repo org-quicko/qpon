@@ -15,7 +15,7 @@ export class CouponItem extends RestClient {
     this.logger = this.getLogger()!;
   }
 
-  async addCouponItems(organizationId: string, couponId: string, data: Pick<CouponItemBean, 'item'>) {
+  async addCouponItems(organizationId: string, couponId: string, data: Pick<CouponItemBean, 'item'>) : Promise<CouponItemBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.addCouponItems.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, coupon_id: couponId, data });
@@ -27,7 +27,7 @@ export class CouponItem extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.addCouponItems.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
       throw new ClientException('Failed to add items to coupon', error);
     }

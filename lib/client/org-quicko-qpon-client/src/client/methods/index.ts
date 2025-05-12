@@ -4,7 +4,6 @@ export * from './Redemption';
 export * from './Offers';
 export * from './Customer';
 export * from './User';
-export * from './ApiKey';
 export * from './CouponItem';
 export * from './Campaign';
 export * from './CouponCode';
