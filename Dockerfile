@@ -31,7 +31,6 @@ COPY --from=backend-builder /app/backend ./
 # Copy Angular static files into public folder
 COPY --from=frontend-builder /app/frontend/dist/frontend/browser ./public
 
-ENV NODE_ENV=production
 EXPOSE 3000
 
 CMD ["node", "dist/src/main.js"]

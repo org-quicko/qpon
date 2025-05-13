@@ -25,21 +25,14 @@ export class RedemptionsController {
    * Redeem coupon code
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
-  @Post('coupons/:coupon_id/campaigns/:campaign_id/coupon-codes/redeem')
+  @Post('coupon-codes/redeem')
   async redeemCouponCode(
     @Param('organization_id') organizationId: string,
-    @Param('coupon_id') couponId: string,
-    @Param('campaign_id') campaignId: string,
     @Body() body: CreateRedemptionDto,
   ) {
     this.logger.info('START: redeemCouponCode controller');
 
-    await this.redemptionsService.redeemCouponCode(
-      organizationId,
-      couponId,
-      campaignId,
-      body,
-    );
+    await this.redemptionsService.redeemCouponCode(organizationId, body);
 
     this.logger.info('END: redeemCouponCode controller');
     return { message: 'Successfully redemmed coupon code' };
@@ -53,7 +46,7 @@ export class RedemptionsController {
   @Permissions('read', Redemption)
   @Get('redemptions/reports')
   async generateRedemptionReport(
-    @Res() res: Response,
+    @Res({ passthrough: true }) res: Response,
     @Param('organization_id') organizationId: string,
     @Query('coupon_id') couponId?: string,
     @Query('campaign_id') campaignId?: string,

@@ -33,6 +33,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   imports: [
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', '..', 'public'),
+      exclude: ['/api'],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],

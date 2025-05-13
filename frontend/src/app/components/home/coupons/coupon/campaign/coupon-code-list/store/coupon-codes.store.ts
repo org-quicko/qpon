@@ -11,6 +11,7 @@ import { PaginatedList } from "../../../../../../../../dtos/paginated-list.dto";
 import { HttpErrorResponse } from "@angular/common/http";
 import { CouponCodeFilter } from "../../../../../../../types/coupon-code-filter.interface";
 import { sortOrderEnum, statusEnum } from "../../../../../../../../enums";
+import { SnackbarService } from "../../../../../../../services/snackbar.service";
 
 type CouponCodesState = {
     couponCodes: CouponCodeDto[] | null;
@@ -36,7 +37,7 @@ export const onChangeStatusSuccess = new EventEmitter<boolean>();
 export const CouponCodesStore = signalStore(
     withState(initialState),
     withDevtools('coupon_codes'),
-    withMethods((store, couponCodeService = inject(CouponCodeService)) => ({
+    withMethods((store, couponCodeService = inject(CouponCodeService), snackbarService = inject(SnackbarService)) => ({
         fetchCouponCodes: rxMethod<{organizationId: string, couponId: string, campaignId: string, skip?: number, take?: number, filter?: CouponCodeFilter, sortOptions?: {  sortBy: string
           sortOrder: sortOrderEnum}, isSortOperation?: boolean, isFilterOperation?: boolean}>(
             pipe(
@@ -108,7 +109,14 @@ export const CouponCodesStore = signalStore(
                                     onChangeStatusSuccess.emit(true);
                                 }
                             },
-                            error: (error:any) => {
+                            error: (error:HttpErrorResponse) => {
+
+                                if(error.status === 409) {
+                                    snackbarService.openSnackBar('Same coupon code is active elsewhere', undefined);
+                                }
+
+                                onChangeStatusSuccess.emit(false);
+
                                 patchState(store, {error: error.message})
                             }
                         })
@@ -138,6 +146,7 @@ export const CouponCodesStore = signalStore(
                             },
                             error: (error:any) => {
                                 patchState(store, {couponCodes: store.couponCodes(), isLoading: false, count: store.count(), error: error.message})
+                                onChangeStatusSuccess.emit(false);
                             }
                         })
                     )

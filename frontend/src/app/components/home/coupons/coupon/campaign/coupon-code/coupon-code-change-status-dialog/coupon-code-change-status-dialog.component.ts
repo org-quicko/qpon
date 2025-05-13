@@ -44,9 +44,7 @@ export class CouponCodeChangeStatusDialogComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading = false;
     onChangeStatusSuccess.subscribe((success) => {
-      if (success) {
         this.dialogRef.close();
-      }
     });
   }
 }

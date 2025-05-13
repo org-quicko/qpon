@@ -502,46 +502,56 @@ export class CouponCodeService {
     couponCodeId: string,
   ) {
     this.logger.info('START: deactivateCouponCode service');
-
-    const couponCode = await this.couponCodeRepository.findOne({
-      where: {
-        couponCodeId,
-        campaign: {
-          campaignId,
+    try {
+      const couponCode = await this.couponCodeRepository.findOne({
+        where: {
+          couponCodeId,
+          campaign: {
+            campaignId,
+          },
+          coupon: {
+            couponId,
+          },
+          organization: {
+            organizationId,
+          },
+          status: Not(couponCodeStatusEnum.ARCHIVE),
         },
-        coupon: {
-          couponId,
-        },
-        organization: {
-          organizationId,
-        },
-        status: Not(couponCodeStatusEnum.ARCHIVE),
-      },
-    });
+      });
 
-    if (!couponCode) {
-      this.logger.warn('Coupon code not found', { couponCodeId });
-      throw new NotFoundException('Coupon code not found');
-    }
+      if (!couponCode) {
+        this.logger.warn('Coupon code not found', { couponCodeId });
+        throw new NotFoundException('Coupon code not found');
+      }
 
-    if (
-      couponCode.status == couponCodeStatusEnum.EXPIRED ||
-      couponCode.status == couponCodeStatusEnum.REDEEMED
-    ) {
-      this.logger.warn(
-        `Cannot deactivate a coupon code of status ${couponCode.status}`,
-        { couponCodeId },
+      if (
+        couponCode.status == couponCodeStatusEnum.EXPIRED ||
+        couponCode.status == couponCodeStatusEnum.REDEEMED
+      ) {
+        this.logger.warn(
+          `Cannot deactivate a coupon code of status ${couponCode.status}`,
+          { couponCodeId },
+        );
+        throw new BadRequestException(
+          `Cannot deactivate a coupon code of status ${couponCode.status}`,
+        );
+      }
+
+      await this.couponCodeRepository.update(couponCodeId, {
+        status: couponCodeStatusEnum.INACTIVE,
+      });
+
+      this.logger.info('END: deactivateCouponCode service');
+    } catch (error) {
+      this.logger.error(
+        `Error in deactivateCouponCode: ${error.message}`,
+        error,
       );
-      throw new BadRequestException(
-        `Cannot deactivate a coupon code of status ${couponCode.status}`,
+      throw new HttpException(
+        'Failed to deactivate coupon code',
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
-
-    await this.couponCodeRepository.update(couponCodeId, {
-      status: couponCodeStatusEnum.INACTIVE,
-    });
-
-    this.logger.info('END: deactivateCouponCode service');
   }
 
   /**
@@ -554,43 +564,77 @@ export class CouponCodeService {
     couponCodeId: string,
   ) {
     this.logger.info('START: reactivateCouponCode service');
-
-    const couponCode = await this.couponCodeRepository.findOne({
-      where: {
-        couponCodeId,
-        campaign: {
-          campaignId,
+    try {
+      const couponCode = await this.couponCodeRepository.findOne({
+        where: {
+          couponCodeId,
+          campaign: {
+            campaignId,
+          },
+          coupon: {
+            couponId,
+          },
+          organization: {
+            organizationId,
+          },
+          status: Not(couponCodeStatusEnum.ARCHIVE),
         },
-        coupon: {
-          couponId,
-        },
-        organization: {
-          organizationId,
-        },
-        status: Not(couponCodeStatusEnum.ARCHIVE),
-      },
-    });
+      });
 
-    if (!couponCode) {
-      this.logger.warn('Coupon code not found', { couponCodeId });
-      throw new NotFoundException('Coupon code not found');
-    }
+      if (!couponCode) {
+        this.logger.warn('Coupon code not found', { couponCodeId });
+        throw new NotFoundException('Coupon code not found');
+      }
 
-    if (couponCode.status == couponCodeStatusEnum.REDEEMED) {
-      this.logger.warn(
-        `Cannot reactivate a coupon code of status ${couponCode.status}`,
-        { couponCodeId },
+      const existingCouponCode = await this.couponCodeRepository.findOne({
+        where: {
+          code: couponCode.code,
+          organization: {
+            organizationId,
+          },
+          status: couponCodeStatusEnum.ACTIVE,
+        },
+      });
+
+      if (existingCouponCode) {
+        this.logger.warn('Coupon code already exists', { couponCodeId });
+        throw new ConflictException('Coupon code already exists');
+      }
+
+      if (couponCode.status == couponCodeStatusEnum.REDEEMED) {
+        this.logger.warn(
+          `Cannot reactivate a coupon code of status ${couponCode.status}`,
+          { couponCodeId },
+        );
+        throw new BadRequestException(
+          `Cannot reactivate a coupon code of status ${couponCode.status}`,
+        );
+      }
+
+      await this.couponCodeRepository.update(couponCodeId, {
+        status: couponCodeStatusEnum.ACTIVE,
+      });
+
+      this.logger.info('END: reactivateCouponCode service');
+    } catch (error) {
+      this.logger.error(
+        `Error in reactivateCouponCode: ${error.message}`,
+        error,
       );
-      throw new BadRequestException(
-        `Cannot reactivate a coupon code of status ${couponCode.status}`,
+
+      if (
+        error instanceof NotFoundException ||
+        error instanceof ConflictException ||
+        error instanceof BadRequestException
+      ) {
+        throw error;
+      }
+
+      throw new HttpException(
+        'Failed to reactivate coupon code',
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
-
-    await this.couponCodeRepository.update(couponCodeId, {
-      status: couponCodeStatusEnum.ACTIVE,
-    });
-
-    this.logger.info('END: reactivateCouponCode service');
   }
 
   /**

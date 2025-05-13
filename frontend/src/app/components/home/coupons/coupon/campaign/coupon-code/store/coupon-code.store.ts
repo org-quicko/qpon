@@ -100,6 +100,11 @@ export const CouponCodeStore = signalStore(
                                         }
                                     },
                                     error: (error:HttpErrorResponse) => {
+
+                                        if(error.status === 409) {
+                                            snackbarService.openSnackBar('Same coupon code is active elsewhere', undefined);
+                                        }
+                                        
                                         patchState(store, {isLoading: false, error: error.message})
 
                                         onChangeStatusSuccess.emit(false);
@@ -130,6 +135,7 @@ export const CouponCodeStore = signalStore(
                                         }
                                     },
                                     error: (error:HttpErrorResponse) => {
+
                                         patchState(store, {isLoading: false, error: error.message})
 
                                         onChangeStatusSuccess.emit(false);
