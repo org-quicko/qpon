@@ -15,12 +15,12 @@ export class Redemption extends RestClient {
     this.logger = this.getLogger()!;
   }
 
-  async redeemCouponCode(organizationId: string, couponId: string, campaignId: string, data: CreateRedemption) {
+  async redeemCouponCode(organizationId: string, data: CreateRedemption) {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.redeemCouponCode.name}`);
-      this.logger.debug(`Request`, { organization_id: organizationId, coupon_id: couponId, campaign_id: campaignId, data });
+      this.logger.debug(`Request`, { organization_id: organizationId, data });
 
-      const response = await super.post(APIURL.REDEEM_COUPON_CODE, instanceToPlain(data), { params: [organizationId, couponId, campaignId] });
+      const response = await super.post(APIURL.REDEEM_COUPON_CODE, instanceToPlain(data), { params: [organizationId] });
 
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.redeemCouponCode.name}`);

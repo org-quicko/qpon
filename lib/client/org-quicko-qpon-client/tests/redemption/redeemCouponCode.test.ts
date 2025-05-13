@@ -22,7 +22,7 @@ async function test() {
   data.externalCustomerId = "1234567890";
 
 
-  const result = await qpon.REDEMPTIONS.redeemCouponCode("677908f1-691d-42b7-a473-678114dcd6f9", "b967f764-f8b9-48d4-8f8c-1afa7235911f", "d3123fd0-8be0-4a89-b94b-24b295a67866", data);
+  const result = await qpon.REDEMPTIONS.redeemCouponCode("677908f1-691d-42b7-a473-678114dcd6f9", data);
 
   console.log(result);
 }

@@ -280,7 +280,7 @@ export enum APIURL {
    */
 
   // Redeem Coupon Code
-  REDEEM_COUPON_CODE = '/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/redeem',
+  REDEEM_COUPON_CODE = '/organizations/{organization_id}/coupon-codes/redeem',
 
   // Fetch Redemptions
   FETCH_REDEMPTIONS = '/organizations/{organization_id}/redemptions',
