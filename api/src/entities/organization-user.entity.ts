@@ -45,6 +45,10 @@ export class OrganizationUser {
   @ManyToOne(
     () => Organization,
     (organization) => organization.organizationUser,
+    {
+      cascade: ['remove'],
+      onDelete: 'CASCADE',
+    },
   )
   @JoinColumn({
     name: 'organization_id',
