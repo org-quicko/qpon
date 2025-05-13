@@ -14,6 +14,7 @@ services:
       - DB_HOST=qpon-db
       - JWT_SECRET=secret
       - SALT_ROUNDS=10
+      - NODE_ENV=production
     depends_on:
       - qpon-db
     networks:
