@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "a36e4c68-610b-4a2f-8430-43c51d4b94a5",
 		"name": "org.quicko.qpon",
-		"description": "Qpon is a coupon framework built by Quicko. Built in a scalable, multi-tenant thought process, the Qpon framework enables businesses to do campaigns and run offers using the Qpon API.",
+		"description": "Qpon is a coupon framework built by Quicko. Built in a scalable, multi-tenant thought process, the Qpon framework enables businesses to do campaigns and run offers using the Qpon API and dashboard.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "27391447",
 		"_collection_link": "https://org-quicko.postman.co/workspace/org-quicko-qpon~6db4ed74-4bdb-4241-8569-5c0254e2c30c/collection/27391447-a36e4c68-610b-4a2f-8430-43c51d4b94a5?action=share&source=collection_link&creator=27391447"

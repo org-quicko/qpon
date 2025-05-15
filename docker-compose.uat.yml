@@ -5,6 +5,8 @@ services:
     image: "891612547769.dkr.ecr.ap-south-1.amazonaws.com/org.quicko.qpon-uat:latest"
     ports:
       - "3000:3000"
+    env_file:
+      - .env
     environment:
       - PORT=3000
       - DB_PORT=5432
@@ -12,8 +14,8 @@ services:
       - DB_PASSWORD=password
       - DB_NAME=qpon
       - DB_HOST=qpon-db
-      - JWT_SECRET=secret
-      - SALT_ROUNDS=10
+      - JWT_SECRET
+      - SALT_ROUNDS
       - NODE_ENV=production
     depends_on:
       - qpon-db

@@ -7,6 +7,8 @@ services:
       - "3000:3000"
     restart:
       - always
+    env_file:
+      - .env
     environment:
       - PORT=3000
       - DB_PORT=5432
@@ -14,8 +16,8 @@ services:
       - DB_PASSWORD=password
       - DB_NAME=qpon
       - DB_HOST=qpon-db
-      - JWT_SECRET=secret
-      - SALT_ROUNDS=10
+      - JWT_SECRET
+      - SALT_ROUNDS
       - NODE_ENV=production
     depends_on:
       - qpon-db
