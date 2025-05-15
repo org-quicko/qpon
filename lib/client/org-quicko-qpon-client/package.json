@@ -7,12 +7,6 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "clean": "npm cache clean -force",
-    "install-local": "npm --userconfig ~/npmrc/local.npmrc install",
-    "install-snapshot": "npm --userconfig ~/npmrc/snapshot.npmrc install",
-    "install-release": "npm --userconfig ~/npmrc/release.npmrc install",
-    "publish-local": "npm --userconfig ~/npmrc/local.npmrc publish --registry=http://127.0.0.1:8081/",
-    "publish-snapshot": "npm --userconfig ~/npmrc/snapshot.npmrc publish --registry=https://artifacts.quicko.org.in/repository/npm-snapshots/",
-    "publish-release": "npm --userconfig ~/npmrc/release.npmrc publish --registry=https://artifacts.quicko.org.in/repository/npm-releases/",
     "lint": "eslint --fix .",
     "prebuild": "eslint . --ext .js,.jsx,.ts,.tsx",
     "build-release": "rm -rf ./dist && npm run prebuild && tsc --build && copyfiles -u 1 ./environment/* dist/environment && npm ci --omit=dev",

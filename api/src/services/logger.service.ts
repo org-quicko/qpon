@@ -1,5 +1,5 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { ConsoleLoggerProvider, LoggerFactory } from '@org.quicko/core';
+import { ConsoleLoggerProvider, LoggerFactory } from '@org-quicko/core';
 import * as winston from 'winston';
 
 @Injectable()

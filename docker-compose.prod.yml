@@ -5,6 +5,8 @@ services:
     image: "891612547769.dkr.ecr.ap-south-1.amazonaws.com/org.quicko.qpon-prod:latest"
     ports:
       - "3000:3000"
+    restart:
+      - always
     environment:
       - PORT=3000
       - DB_PORT=5432

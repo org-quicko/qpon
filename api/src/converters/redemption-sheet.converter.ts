@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { JSONObject } from '@org.quicko/core';
+import { JSONObject } from '@org-quicko/core';
 import { Redemption } from '../entities/redemption.entity';
 import {
   RedemptionRow,

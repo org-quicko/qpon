@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "Node16",
+    "module": "NodeNext",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
@@ -17,6 +17,6 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
-    "moduleResolution": "node16"
+    "moduleResolution": "nodenext"
   }
 }

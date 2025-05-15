@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { JSONArray, JSONObject } from '@org.quicko/core';
+import { JSONArray, JSONObject } from '@org-quicko/core';
 import {
   OfferRow,
   OfferSheet,

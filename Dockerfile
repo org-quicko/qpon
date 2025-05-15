@@ -31,6 +31,10 @@ COPY --from=backend-builder /app/backend ./
 # Copy Angular static files into public folder
 COPY --from=frontend-builder /app/frontend/dist/frontend/browser ./public
 
+# Make the script executable
+RUN chmod +x /app/scripts/db-migrate.sh
+
 EXPOSE 3000
 
+ENTRYPOINT [ "/app/scripts/db-migrate.sh" ]
 CMD ["node", "dist/src/main.js"]

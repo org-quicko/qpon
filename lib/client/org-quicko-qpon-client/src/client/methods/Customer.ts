@@ -1,7 +1,6 @@
 import {
   ClientException,
   LoggerFactory,
-  UUIDGenerator,
 } from '@org.quicko/core';
 import winston from 'winston';
 import { Customer as CustomerBean, PaginatedList } from '@org.quicko.qpon/core';
@@ -104,7 +103,7 @@ export class Customer extends RestClient {
 
   public getLogger() {
     if (!this.logger) {
-      this.logger = LoggerFactory.getLogger(UUIDGenerator.generateUUID())!;
+      this.logger = LoggerFactory.getLogger("logger")!;
     }
 
     return this.logger;

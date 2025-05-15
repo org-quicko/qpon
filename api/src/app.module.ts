@@ -31,10 +31,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', '..', 'public'),
-      exclude: ['/api'],
-    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -63,6 +59,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     UserModule,
     CouponItemModule,
     CustomerCouponCodeModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '..', 'public'),
+      exclude: ['/api'],
+    }),
   ],
   controllers: [AppController],
   providers: [
