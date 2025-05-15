@@ -1,59 +1,31 @@
-# Frontend
+# Qpon Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.3.
+This is the **frontend dashboard** for the [Qpon](https://github.com/org-quicko/qpon) platform — a self-hosted coupon framework.  
+It is built using [Angular 19](https://angular.io/) and styled with [Tailwind CSS](https://tailwindcss.com/).  
+The frontend provides an intuitive web UI for managing organizations, coupons, users, items, and more.
 
-## Development server
+---
 
-To start a local development server, run:
+## 🌐 Features
 
-```bash
-ng serve
-```
+- Modern, responsive admin dashboard
+- Organization-based access control
+- Create, edit, and track coupons
+- User and item management
+- Fully integrated with the Qpon backend API
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## 🚀 Development Server
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Install the dependencies
 
 ```bash
-ng generate --help
+npm install
 ```
 
-## Building
-
-To build the project run:
+To start the frontend in development mode:
 
 ```bash
-ng build
+npm run start
 ```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
