@@ -61,6 +61,7 @@ export class CustomersService {
         name: body.name,
         email: body.email,
         phone: body.phone,
+        isdCode: body.isdCode,
         externalId: body.externalId,
         organization: {
           organizationId,
@@ -151,6 +152,7 @@ export class CustomersService {
             organizationId,
           },
           customerId,
+          status: statusEnum.ACTIVE,
         },
       });
 
@@ -359,6 +361,68 @@ export class CustomersService {
 
       throw new HttpException(
         'Failed to fetch customer',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async upsertCustomer(organizationId: string, body: CreateCustomerDto) {
+    this.logger.info('START: upsertCustomer service');
+    try {
+      const existingCustomer = await this.customersRepository.findOne({
+        where: {
+          externalId: body.externalId,
+          status: statusEnum.ACTIVE,
+          organization: {
+            organizationId,
+          },
+        },
+      });
+
+      if (existingCustomer) {
+        await this.customersRepository.update(existingCustomer.customerId, {
+          name: body.name,
+          email: body.email,
+          phone: body.phone,
+          isdCode: body.isdCode
+        });
+
+        const customer = await this.customersRepository.findOne({
+          where: {
+            customerId: existingCustomer.customerId,
+            organization: {
+              organizationId,
+            },
+          },
+        });
+
+        this.logger.info('END: upsertCustomer service');
+        return this.customerConverter.convert(customer!);
+      }
+
+      const customerEntity = this.customersRepository.create({
+        name: body.name,
+        email: body.email,
+        phone: body.phone,
+        externalId: body.externalId,
+        organization: {
+          organizationId,
+        },
+      });
+
+      const savedCustomer = await this.customersRepository.save(customerEntity);
+
+      this.logger.info('END: upsertCustomer service');
+      return this.customerConverter.convert(savedCustomer);
+    } catch (error) {
+      this.logger.error(`Error in upsertCustomer`, error);
+
+      if (error instanceof ConflictException) {
+        throw error;
+      }
+
+      throw new HttpException(
+        'Failed to upsert customer',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

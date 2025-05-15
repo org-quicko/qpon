@@ -359,4 +359,62 @@ export class ItemsService {
       throw error;
     }
   }
+
+  async upsertItem(
+    organizationId: string,
+    body: CreateItemDto,
+  ) {
+    this.logger.info('START: upsertItem service');
+    try {
+      const existingItem = await this.itemsRepository.findOne({
+        where: {
+          organization: {
+            organizationId,
+          },
+          status: statusEnum.ACTIVE,
+          externalId: body.externalId,
+        },
+      });
+
+      if (existingItem) {
+        await this.itemsRepository.update(existingItem.itemId, {
+          name: body.name,
+          description: body.description,
+          customFields: body.customFields,
+        });
+      } else {
+        const newItem = this.itemsRepository.create({
+          name: body.name,
+          description: body.description,
+          customFields: body.customFields,
+          externalId: body.externalId,
+          organization: {
+            organizationId,
+          },
+          status: statusEnum.ACTIVE,
+        });
+        await this.itemsRepository.save(newItem);
+      }
+
+      const savedItem = await this.itemsRepository.findOne({
+        where: {
+          organization: {
+            organizationId,
+          },
+          status: statusEnum.ACTIVE,
+          externalId: body.externalId,
+        },
+      });
+
+      this.logger.info('END: upsertItem service');
+      return this.itemConverter.convert(savedItem!);
+    } catch (error) {
+      this.logger.error(`Error in upsertItem: ${error.message}`, error);
+
+      throw new HttpException(
+        'Failed to upsert item',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }

@@ -7,6 +7,7 @@ import {
   Body,
   Param,
   Query,
+  Put,
 } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { ItemsService } from '../services/item.service';
@@ -39,6 +40,24 @@ export class ItemsController {
 
     this.logger.info('END: createItem controller');
     return { message: 'Successfully created item', result };
+  }
+
+  /**
+   * Upsert item
+   */
+  @ApiResponse({ status: 200, description: 'Successful response' })
+  @Permissions('create', Item)
+  @Put('/upsert')
+  async upsertItem(
+    @Param('organization_id') organizationId: string,
+    @Body() body: CreateItemDto,
+  ) {
+    this.logger.info('START: upsertItem controller');
+
+    const result = await this.itemsService.upsertItem(organizationId, body);
+
+    this.logger.info('END: upsertItem controller');
+    return { message: 'Successfully upserted item', result };
   }
 
   /**
