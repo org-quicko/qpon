@@ -246,6 +246,9 @@ export enum APIURL {
   // Delete Customer
   DELETE_CUSTOMER = UPDATE_CUSTOMER,
 
+  // Upsert Customer
+  UPSERT_CUSTOMER = '/organizations/{organization_id}/customers/upsert',
+
   /**
    * Item Endpoints
    */
@@ -264,6 +267,9 @@ export enum APIURL {
 
   // Delete Item
   DELETE_ITEM = UPDATE_ITEM,
+
+  // Upsert Item
+  UPSERT_ITEM = '/organizations/{organization_id}/items/upsert',
 
   /**
    * Offer Endpoints

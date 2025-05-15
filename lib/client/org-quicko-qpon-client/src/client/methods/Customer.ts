@@ -101,6 +101,22 @@ export class Customer extends RestClient {
     }
   }
 
+  async upsertCustomer(organizationId: string, data: CustomerBean) : Promise<CustomerBean> {
+    try {
+      this.logger.info(`Start Client : ${this.constructor.name},${this.upsertCustomer.name}`);
+      this.logger.debug(`Request`, { organization_id: organizationId, data });
+
+      const response = await super.put(APIURL.UPSERT_CUSTOMER, instanceToPlain(data), { params: [organizationId] });
+
+      this.logger.debug(`Response`, response);
+      this.logger.info(`End Client : ${this.constructor.name},${this.upsertCustomer.name}`);
+
+      return response.data;
+    } catch (error) {
+      throw new ClientException('Failed to upsert customer', error);
+    }
+  }
+
   public getLogger() {
     if (!this.logger) {
       this.logger = LoggerFactory.getLogger("logger")!;

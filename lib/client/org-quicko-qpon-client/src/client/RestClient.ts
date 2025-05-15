@@ -97,4 +97,18 @@ export class RestClient {
         throw new ClientException(error.response.data.message, error.response.status);
       });
   }
+
+  async put(url: string, data: unknown, options: Options) {
+    const headers = {
+      'x-api-key': this.config.getApiKey(),
+      'x-api-secret': this.config.getApiSecret(),
+      ...(options.headers ? options.headers : {}),
+    };
+    return this.client
+      .put(Endpoint.build(this.baseUrl, url, options.params), data, { headers })
+      .then((response) => response.data)
+      .catch((error) => {
+        throw new ClientException(error.response.data.message, error.response.status);
+      });
+  }
 }

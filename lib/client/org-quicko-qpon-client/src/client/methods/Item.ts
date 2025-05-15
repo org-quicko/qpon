@@ -14,12 +14,17 @@ export class Item extends RestClient {
     this.logger = this.getLogger()!;
   }
 
-  async createItem(organizationId: string, data: Pick<ItemBean, 'name' | 'description' | 'externalId' | 'customFields'>) : Promise<ItemBean> {
+  async createItem(
+    organizationId: string,
+    data: Pick<ItemBean, 'name' | 'description' | 'externalId' | 'customFields'>
+  ): Promise<ItemBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.createItem.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, data });
 
-      const response = await super.post(APIURL.CREATE_ITEM, instanceToPlain(data), { params: [organizationId] });
+      const response = await super.post(APIURL.CREATE_ITEM, instanceToPlain(data), {
+        params: [organizationId],
+      });
 
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.createItem.name}`);
@@ -30,12 +35,15 @@ export class Item extends RestClient {
     }
   }
 
-  async getItem(organizationId: string, itemId: string) : Promise<ItemBean> {
+  async getItem(organizationId: string, itemId: string): Promise<ItemBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.getItem.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, item_id: itemId });
 
-      const response = await super.get({ url: APIURL.FETCH_ITEM, params: [organizationId, itemId] });
+      const response = await super.get({
+        url: APIURL.FETCH_ITEM,
+        params: [organizationId, itemId],
+      });
 
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.getItem.name}`);
@@ -51,8 +59,8 @@ export class Item extends RestClient {
     name?: string,
     externalId?: string,
     skip: number = 0,
-    take: number = 10,
-  ) : Promise<PaginatedList<ItemBean>> {
+    take: number = 10
+  ): Promise<PaginatedList<ItemBean>> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.getAllItems.name}`);
       this.logger.debug(`Request`, {
@@ -88,8 +96,8 @@ export class Item extends RestClient {
   async updateItem(
     organizationId: string,
     itemId: string,
-    data: Pick<ItemBean, 'name' | 'description' | 'externalId' | 'customFields'>,
-  ) : Promise<ItemBean> {
+    data: Pick<ItemBean, 'name' | 'description' | 'externalId' | 'customFields'>
+  ): Promise<ItemBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateItem.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, item_id: itemId, data });
@@ -107,7 +115,7 @@ export class Item extends RestClient {
     }
   }
 
-  async deleteItem(organizationId: string, itemId: string) : Promise<ItemBean> {
+  async deleteItem(organizationId: string, itemId: string): Promise<ItemBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.deleteItem.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, item_id: itemId });
@@ -120,6 +128,24 @@ export class Item extends RestClient {
       return response.data;
     } catch (error) {
       throw new ClientException('Failed to delete item', error);
+    }
+  }
+
+  async upsertItem(organizationId: string, data: ItemBean): Promise<ItemBean> {
+    try {
+      this.logger.info(`Start Client : ${this.constructor.name},${this.upsertItem.name}`);
+      this.logger.debug(`Request`, { organization_id: organizationId, data });
+
+      const response = await super.put(APIURL.UPSERT_ITEM, instanceToPlain(data), {
+        params: [organizationId],
+      });
+
+      this.logger.debug(`Response`, response);
+      this.logger.info(`End Client : ${this.constructor.name},${this.upsertItem.name}`);
+
+      return response.data;
+    } catch (error) {
+      throw new ClientException('Failed to upsert item', error);
     }
   }
 
