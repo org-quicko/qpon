@@ -18,7 +18,6 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "install-snapshot": "npm --userconfig ~/npmrc/snapshot.npmrc install",
     "generate": "npm run generateSchema && npm run generateObjects",
     "generateSchema": "excel-to-schema --input ./resources/excel/ --output ./generated/schemas/",
     "generateObjects": "schema-to-objects --input ./generated/schemas/ --output ./generated/sources",
