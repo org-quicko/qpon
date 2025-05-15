@@ -34,7 +34,7 @@
   "dependencies": {
     "@org.quicko.qpon/core": "^1.0.0-beta.0",
     "@org.quicko.qpon/sheet-core": "^1.0.0-beta.0",
-    "@org-quicko/core": "8.1.0-beta.0",
+    "@org.quicko/core": "^8.1.0-beta.0",
     "axios": "^1.7.7",
     "class-transformer": "^0.5.1",
     "dotenv": "^16.4.5",
