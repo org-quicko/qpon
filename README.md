@@ -2,9 +2,6 @@
 
 **Qpon** is an open-source, self-hosted coupon framework designed to help businesses create, manage, and validate coupons at scale. Built with **NestJS**, **PostgreSQL**, **TypeORM** and **Angular**, Qpon is ideal for e-commerce platforms, SaaS products, and marketing teams that need full control over their promotional workflows.
 
-
----
-
 ## Features
 
 - 🧾 Create and manage coupons with custom rules and constraints
@@ -14,15 +11,11 @@
 - 🔐 Secure API endpoints for managing and redeeming coupons
 - 🚀 Ready for production and easy to deploy with Docker
 
----
-
 ## Tech Stack
 
 - **Backend:** [NestJS](https://nestjs.com/)
 - **Database:** [PostgreSQL](https://www.postgresql.org/)
 - **ORM:** [TypeORM](https://typeorm.io/)
-
----
 
 ## Architecture
 
@@ -43,11 +36,7 @@ qpon/
 - npm (>= 9.x)
 - Docker (optional, for containerized deployment)
 
----
-
 ### Backend (API)
-
-The backend is built with [NestJS](https://nestjs.com/).
 
 **Setup:**
 
@@ -73,16 +62,12 @@ npm run start:prod
 npm run db:migrate
 ```
 
-**API Documentation:**
+**Postman Collection:**
 
 - Use the provided Postman collection for testing:  
   `resources/json/org.quicko.qpon.postman_collection.json`
 
----
-
 ### Frontend (Web App)
-
-The frontend is built with [Angular](https://angular.dev/).
 
 **Setup:**
 
@@ -104,24 +89,17 @@ ng serve
 ng build
 ```
 
----
-
 ### Libraries
 
-- `lib/core/org-quicko-qpon-core`: Common entities for Qpon (TypeScript)
-- `lib/core/org-quicko-qpon-sheet-core`: Sheet processing and schema generation
+- `lib/core/org-quicko-qpon-core`: Common entities for Qpon
+- `lib/core/org-quicko-qpon-sheet-core`: Sheet entities for Qpon
 - `lib/client/org-quicko-qpon-client`: Client library to access Qpon APIs
-
-Each library can be built and tested independently using their respective `package.json` scripts.
-
----
 
 ## Development
 
 - **Backend:**  
   - Located in `api/`
   - Uses NestJS, TypeORM, and PostgreSQL
-  - Scripts for code generation, migrations, and testing are in `api/package.json`
 
 - **Frontend:**  
   - Located in `frontend/`
@@ -130,28 +108,22 @@ Each library can be built and tested independently using their respective `packa
 
 - **Libraries:**  
   - Located in `lib/`
-  - TypeScript-based, reusable across backend and frontend
-
----
+  - TypeScript-based entities and client for Qpon APIs
 
 ## Resources
 
 - **API Postman Collection:**  
   `resources/json/org.quicko.qpon.postman_collection.json`
 
-- **Excel Templates:**  
+- **Excel Templates for Sheet:**  
   Found in `api/resources/excel/` and `frontend/resources/excel/`
 
-- **DB Diagram:**  
+- **ER Diagram:**  
   `common/org-quicko-qpon.pgerd`
-
----
 
 ## Contributing
 
 Pull requests and issues are welcome! Please open an issue to discuss your ideas or report bugs.
-
----
 
 ## Authors
 
