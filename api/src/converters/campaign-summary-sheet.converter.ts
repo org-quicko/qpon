@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { JSONObject } from '@org-quicko/core';
+import { JSONObject } from '@org.quicko/core';
 import {
   CampaignSummaryRow,
   CampaignSummarySheet,
@@ -46,13 +46,13 @@ export class CampaignSummarySheetConverter {
     campaignSummaryWorkbook.addCampaignSummarySheet(campaignSummarySheet);
 
     if (campaignSummaryMv.length > 0) {
-      campaignSummaryTable.metadata = new JSONObject({
+      campaignSummaryTable.setMetadata(new JSONObject({
         organization_id: campaignSummaryMv[0]?.organizationId,
         coupon_id: campaignSummaryMv[0].couponId,
         count: count,
         skip: skip,
         take: take,
-      });
+      }));
     }
 
     return campaignSummaryWorkbook;

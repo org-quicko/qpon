@@ -38,7 +38,7 @@ import { ViewColumn, ViewEntity } from 'typeorm';
       LEFT JOIN item t ON ct.item_id = t.item_id
       LEFT JOIN customer_coupon_code ccc ON ccc.coupon_code_id = cc.coupon_code_id
       LEFT JOIN customer cust ON cust.customer_id = ccc.customer_id
-      WHERE cc.status = 'active';
+      WHERE cc.status = 'active' AND  (cc.expires_at > now() OR cc.expires_at IS NULL);
     `,
 })
 export class Offer {

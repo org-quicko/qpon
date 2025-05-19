@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -19,6 +20,8 @@ import { CustomerCouponCode } from 'src/entities/customer-coupon-code.entity';
 import { CouponItem } from 'src/entities/coupon-item.entity';
 import { Customer } from 'src/entities/customer.entity';
 import { Item } from 'src/entities/item.entity';
+import { Redemption } from 'src/entities/redemption.entity';
+import { CouponCode } from 'src/entities/coupon-code.entity';
 
 @Injectable()
 export class OffersService {
@@ -33,6 +36,10 @@ export class OffersService {
     private readonly customerRepository: Repository<Customer>,
     @InjectRepository(Item)
     private readonly itemRepository: Repository<Item>,
+    @InjectRepository(CouponCode)
+    private readonly couponCodeRepository: Repository<CouponCode>,
+    @InjectRepository(Redemption)
+    private readonly redemptionRepository: Repository<Redemption>,
     private offerSheetConverter: OfferSheetConverter,
     private logger: LoggerService,
   ) {}
@@ -119,9 +126,9 @@ export class OffersService {
    */
   async fetchOffer(
     organizationId: string,
-    code?: string,
-    externalCustomerId?: string,
-    externalItemId?: string,
+    code: string,
+    externalCustomerId: string,
+    externalItemId: string,
   ) {
     this.logger.info('START: fetchOffer service');
     try {
@@ -136,6 +143,55 @@ export class OffersService {
         this.logger.warn('Offer not found');
         throw new NotFoundException('Offer not found');
       }
+
+      const customer = await this.customerRepository.findOne({
+          where: {
+            externalId: externalCustomerId,
+            organization: {
+              organizationId,
+            },
+          },
+        });
+
+        if (!customer) {
+          this.logger.warn('Customer not found');
+          throw new NotFoundException('Customer not found');
+        }
+
+      const couponCode = await this.couponCodeRepository.findOne({
+        where: {
+          code: offer.code,
+          organization: {
+            organizationId,
+          },
+        },
+      });
+
+      if (!couponCode) {
+        this.logger.warn('Coupon code not found');
+        throw new NotFoundException('Coupon code not found');
+      }
+
+     if(couponCode.maxRedemptionPerCustomer > 0) {
+       const redemptionsCount = await this.redemptionRepository.count({
+        where: {
+          couponCode: {
+            couponCodeId: couponCode.couponCodeId,
+          },
+          customer: {
+            customerId: customer.customerId,
+          },
+          organization: {
+            organizationId,
+          },
+        },
+      });
+
+      if(redemptionsCount >= couponCode.maxRedemptionPerCustomer) {
+        this.logger.warn('Coupon code is already redeemed maximum number of time');
+        throw new ConflictException('Coupon code is already redeemed maximum number of time');
+      }
+     }
 
       if (offer.itemConstraint === itemConstraintEnum.SPECIFIC) {
         const item = await this.itemRepository.findOne({
@@ -165,26 +221,12 @@ export class OffersService {
         });
 
         if (!couponItem) {
-          this.logger.warn('Offer not found');
-          throw new NotFoundException('Offer not found');
+          this.logger.warn('Item is ineligible for the offer');
+          throw new NotFoundException('Item is ineligible for the offer');
         }
       }
 
       if (offer.customerConstraint === customerConstraintEnum.SPECIFIC) {
-        const customer = await this.customerRepository.findOne({
-          where: {
-            externalId: externalCustomerId,
-            organization: {
-              organizationId,
-            },
-          },
-        });
-
-        if (!customer) {
-          this.logger.warn('Customer not found');
-          throw new NotFoundException('Customer not found');
-        }
-
         const customerCouponCode =
           await this.customerCouponCodeRepository.findOne({
             where: {
@@ -199,8 +241,8 @@ export class OffersService {
           });
 
         if (!customerCouponCode) {
-          this.logger.warn('Offer not found');
-          throw new NotFoundException('Offer not found');
+          this.logger.warn('Customer is ineligible for the offer');
+          throw new ConflictException('Customer is ineligible for the offer');
         }
       }
 
@@ -209,7 +251,7 @@ export class OffersService {
     } catch (error) {
       this.logger.error(`Error in fetchOffer: ${error.message}`, error);
 
-      if (error instanceof NotFoundException) {
+      if (error instanceof NotFoundException || error instanceof ConflictException) {
         throw error;
       }
 

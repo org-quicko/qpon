@@ -8,6 +8,8 @@ import { Customer } from '../entities/customer.entity';
 import { Item } from '../entities/item.entity';
 import { CouponItem } from '../entities/coupon-item.entity';
 import { CustomerCouponCode } from '../entities/customer-coupon-code.entity';
+import { CouponCode } from '../entities/coupon-code.entity';
+import { Redemption } from '../entities/redemption.entity';
 
 @Module({
   imports: [
@@ -17,6 +19,8 @@ import { CustomerCouponCode } from '../entities/customer-coupon-code.entity';
       Item,
       CouponItem,
       CustomerCouponCode,
+      CouponCode,
+      Redemption
     ]),
   ],
   controllers: [OffersController],

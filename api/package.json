@@ -26,7 +26,8 @@
     "db:generate": "npm run build && node ./node_modules/typeorm/cli.js migration:generate --dataSource ./dist/db/data-source.js",
     "db:migration-run": "npm run typeorm -- migration:run",
     "db:fake-migration-run": "npm run typeorm -- migration:run --fake",
-    "typeorm": "npm run build && node ./node_modules/typeorm/cli.js --dataSource ./dist/db/data-source.js"
+    "typeorm": "npm run build && node ./node_modules/typeorm/cli.js --dataSource ./dist/db/data-source.js",
+    "install-snapshot": "npm --userconfig ~/npmrc/snapshot.npmrc install"
   },
   "dependencies": {
     "@casl/ability": "^6.7.3",

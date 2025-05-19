@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { JSONObject } from '@org-quicko/core';
+import { JSONObject } from '@org.quicko/core';
 import {
   CouponSummaryRow,
   CouponSummarySheet,
@@ -46,9 +46,9 @@ export class CouponSummarySheetConverter {
     const couponSummaryWorkbook = new CouponSummaryWorkbook();
     couponSummaryWorkbook.addCouponSummarySheet(couponSummarySheet);
 
-    couponSummaryWorkbook.metadata = new JSONObject({
+    couponSummaryWorkbook.setMetadata(new JSONObject({
       organization_id: organizationId,
-    });
+    }));
 
     return couponSummaryWorkbook;
   }

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { JSONObject } from '@org-quicko/core';
+import { JSONObject } from '@org.quicko/core';
 import { Redemption } from '../entities/redemption.entity';
 import {
   RedemptionRow,
@@ -39,15 +39,15 @@ export class RedemptionSheetConverter {
     const redemptionWorkbook = new RedemptionWorkbook();
     redemptionWorkbook.addRedemptionSheet(redemptionSheet);
 
-    redemptionWorkbook.metadata = new JSONObject({
+    redemptionWorkbook.setMetadata(new JSONObject({
       organization_id: organizationId,
-    });
+    }));
 
-    redemptionTable.metadata = new JSONObject({
+    redemptionTable.setMetadata(new JSONObject({
       count: count,
       skip: skip,
       take: take,
-    });
+    }));
 
     return redemptionWorkbook;
   }

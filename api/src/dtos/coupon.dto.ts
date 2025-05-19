@@ -10,7 +10,7 @@ import {
   IsDate,
   IsUUID,
   IsOptional,
-  IsArray,
+  IsNotEmpty,
 } from 'class-validator';
 
 export class CouponDto {
@@ -19,17 +19,20 @@ export class CouponDto {
   @IsUUID()
   couponId: string;
 
+  @IsNotEmpty({ message: 'Name should not be empty' })
   @IsString()
   name: string;
 
+  @IsNotEmpty({ message: 'Discount type should not be empty' })
   @Expose({ name: 'discount_type' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsEnum(discountTypeEnum)
   discountType: discountTypeEnum;
 
+  @IsNotEmpty({ message: 'Discount value should not be empty' })
   @Expose({ name: 'discount_value' })
   @Transform(({ value }) => value, { toClassOnly: true })
-  @IsNumber()
+  @IsNumber({allowNaN: false, allowInfinity: false}, { message: 'Discount value should be a number' })
   discountValue: number;
 
   @Expose({ name: 'discount_upto' })
@@ -37,6 +40,7 @@ export class CouponDto {
   @IsNumber()
   discountUpto: number;
 
+  @IsNotEmpty({ message: 'Item constraint should not be empty' })
   @Expose({ name: 'item_constraint' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsEnum(itemConstraintEnum)

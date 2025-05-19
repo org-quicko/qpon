@@ -61,9 +61,9 @@ export class OffersController {
 
     const result = await this.offersService.fetchOffer(
       organizationId,
-      code,
-      externalCustomerId,
-      externalItemId,
+      code!,
+      externalCustomerId!,
+      externalItemId!,
     );
 
     this.logger.info('END: fetchOffer controller');

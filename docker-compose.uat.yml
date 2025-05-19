@@ -2,11 +2,10 @@ version: "3"
 
 services:
   qpon-app:
-    image: "891612547769.dkr.ecr.ap-south-1.amazonaws.com/org.quicko.qpon-uat:latest"
+    image: "891612547769.dkr.ecr.ap-south-1.amazonaws.com/org.quicko.qpon-prod:latest"
     ports:
       - "3000:3000"
-    env_file:
-      - .env
+    restart: always
     environment:
       - PORT=3000
       - DB_PORT=5432
@@ -14,8 +13,8 @@ services:
       - DB_PASSWORD=password
       - DB_NAME=qpon
       - DB_HOST=qpon-db
-      - JWT_SECRET
-      - SALT_ROUNDS
+      - JWT_SECRET=secret
+      - SALT_ROUNDS=10
       - NODE_ENV=production
     depends_on:
       - qpon-db

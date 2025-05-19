@@ -49,7 +49,7 @@ export class CouponService {
     return this.datasource.transaction(async (manager) => {
       try {
         if (body.discountType && body.discountValue <= 0) {
-          throw new BadRequestException('Invalid body');
+          throw new BadRequestException('Discount value must be greater than 0');
         }
 
         const couponRepository = manager.getRepository(Coupon);

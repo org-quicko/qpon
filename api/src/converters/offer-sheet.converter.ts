@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { JSONArray, JSONObject } from '@org-quicko/core';
+import { JSONArray, JSONObject } from '@org.quicko/core';
 import {
   OfferRow,
   OfferSheet,
@@ -21,7 +21,7 @@ export class OfferSheetConverter {
     const offerTable = new OfferTable();
 
     if (offers.length === 0) {
-      offerTable.rows = new JSONArray();
+      offerTable.addRow(new OfferRow([]));
     } else {
       offers.map((offer) => {
         const offerRow = new OfferRow([]);
@@ -55,15 +55,15 @@ export class OfferSheetConverter {
     offerWorkbook.addOfferSheet(offerSheet);
 
     if (skip! >= 0 && take! > 0) {
-      offerWorkbook.metadata = new JSONObject({
+      offerWorkbook.setMetadata(new JSONObject({
         organization_id: organizationId,
         skip,
         take,
-      });
+      }));
     } else {
-      offerWorkbook.metadata = new JSONObject({
+      offerWorkbook.setMetadata(new JSONObject({
         organization_id: organizationId,
-      });
+      }));
     }
 
     return offerWorkbook;

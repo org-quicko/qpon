@@ -440,7 +440,7 @@ export class RedemptionsService {
         .getRedemptionReportSheet()
         .getRedemptionReportTable();
 
-      const workbook = RedemptionReportWorkbook.toXlsx();
+      const workbook = RedemptionReportWorkbook.toXlsx(redemptionReportWorkbook);
 
       const redemptionReportSheet: any[] = [redemptionReportTable.getHeader()];
 

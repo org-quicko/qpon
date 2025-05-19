@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { JSONObject } from '@org-quicko/core';
+import { JSONObject } from '@org.quicko/core';
 import {
   CouponCodeRow,
   CouponCodeSheet,
@@ -49,7 +49,9 @@ export class CouponCodeSheetConverter {
       organization_id: organizationId,
     });
 
-    couponCodeWorkbook.metadata = couponCodeWorkbookMetadata;
+    couponCodeWorkbook.setMetadata(
+      couponCodeWorkbookMetadata
+    );
 
     return couponCodeWorkbook;
   }
