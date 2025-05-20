@@ -39,12 +39,12 @@ export class RestClient {
       .get(Endpoint.build(this.baseUrl, options.url!, options.params, options.queryParams), config)
       .then((response) => {
         if (response.status !== 200) {
-          throw new ClientException(response.data.message, response.status);
+          throw new ClientException(response.data.message, undefined, response.status);
         }
         return response.data;
       })
       .catch((error) => {
-        throw new ClientException(error.response.data.message, error.status);
+        throw new ClientException(error.response.data.message, undefined, error.status);
       });
   }
 
@@ -59,7 +59,7 @@ export class RestClient {
       .post(Endpoint.build(this.baseUrl, url, options.params), data, { headers })
       .then((response) => response.data)
       .catch((error) => {
-        throw new ClientException(error.response.data.message, error.response.status);
+        throw new ClientException(error.response.data.message, undefined, error.status);
       });
   }
 
@@ -74,7 +74,7 @@ export class RestClient {
       .patch(Endpoint.build(this.baseUrl, url, options.params), data, { headers })
       .then((response) => response.data)
       .catch((error) => {
-        throw new ClientException(error.response.data.message, error.response.status);
+        throw new ClientException(error.response.data.message, undefined, error.status);
       });
   }
 
@@ -94,7 +94,7 @@ export class RestClient {
         return response.data;
       })
       .catch((error) => {
-        throw new ClientException(error.response.data.message, error.response.status);
+        throw new ClientException(error.response.data.message, undefined, error.status);
       });
   }
 
@@ -108,7 +108,7 @@ export class RestClient {
       .put(Endpoint.build(this.baseUrl, url, options.params), data, { headers })
       .then((response) => response.data)
       .catch((error) => {
-        throw new ClientException(error.response.data.message, error.response.status);
+        throw new ClientException(error.response.data.message, undefined, error.status);
       });
   }
 }

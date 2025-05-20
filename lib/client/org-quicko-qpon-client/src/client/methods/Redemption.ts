@@ -26,8 +26,9 @@ export class Redemption extends RestClient {
       this.logger.info(`End Client : ${this.constructor.name},${this.redeemCouponCode.name}`);
 
       return response;
-    } catch (error) {
-      throw new ClientException('Failed to redeem coupon code', error);
+    } catch (error: any) {
+      this.logger.error(`Error`, error);
+      throw new ClientException(error.message, error.cause, error.code);
     }
   }
 

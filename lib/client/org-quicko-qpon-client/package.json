@@ -14,6 +14,7 @@
     "test-createCoupon": "set NODE_ENV=local && ts-node ./tests/coupon/createCoupon.test.ts",
     "test-getAllCoupons": "set NODE_ENV=local && ts-node ./tests/coupon/getAllCoupons.test.ts",
     "test-fetchOffers": "set NODE_ENV=local && ts-node ./tests/offer/fetchOffers.test.ts",
+    "test-fetchOffer": "set NODE_ENV=local && ts-node ./tests/offer/fetchOffer.test.ts",
     "test-redeemCouponCode": "set NODE_ENV=local && ts-node ./tests/redemption/redeemCouponCode.test.ts",
     "test-upsertItem": "set NODE_ENV=local && ts-node ./tests/item/upsertItem.test.ts",
     "test-upsertCustomer": "set NODE_ENV=local && ts-node ./tests/customer/upsertCustomer.test.ts"

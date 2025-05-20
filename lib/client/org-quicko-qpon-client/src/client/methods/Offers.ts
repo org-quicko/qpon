@@ -49,8 +49,9 @@ export class Offer extends RestClient {
       this.logger.info(`End Client : ${this.constructor.name},${this.getOffer.name}`);
 
       return response.data;
-    } catch (error) {
-      throw new ClientException('Failed to get offer', error);
+    } catch (error: any) {
+      this.logger.error(`Error`, error);
+      throw new ClientException(error.message, error.cause, error.code);
     }
   }
 
@@ -100,8 +101,9 @@ export class Offer extends RestClient {
       this.logger.info(`End Client : ${this.constructor.name},${this.getAllOffers.name}`);
 
       return response.data;
-    } catch (error) {
-      throw new ClientException('Failed to get offers', error);
+    } catch (error: any) {
+      this.logger.error(`Error`, error);
+      throw new ClientException(error.message, error.cause, error.code);
     }
   }
 
