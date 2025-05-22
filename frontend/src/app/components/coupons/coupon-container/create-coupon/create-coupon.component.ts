@@ -57,6 +57,12 @@ export class CreateCouponComponent implements OnInit {
     effect(() => {
       if (this.isNextClicked()) {
         this.couponCodeStore.setOnNext();
+
+        if(this.couponFormGroup.invalid) {
+          this.snackbarService.openSnackBar('Please fill all the required fields', undefined);
+          return;
+        }
+
         this.createCoupon();
       }
     });

@@ -2,7 +2,7 @@ import { Component, effect, EventEmitter, inject, Input, NgModule, OnInit, Outpu
 import { CouponCodeStore } from '../../../store/coupon-code.store';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { FormControl, FormGroup, FormsModule, NgModel, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, NgModel, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
@@ -12,6 +12,7 @@ import { provideMomentDateAdapter } from "@angular/material-moment-adapter";
 import { CommonModule } from '@angular/common';
 import { CreateCouponCodeDto } from '../../../../../../dtos/coupon-code.dto';
 import { durationTypeEnum, visibilityEnum } from '../../../../../../enums';
+import { SnackbarService } from '../../../../../services/snackbar.service';
 
 export const MY_FORMATS = {
   parse: {
@@ -46,7 +47,7 @@ export const MY_FORMATS = {
   templateUrl: './create-code.component.html',
   styleUrls: ['./create-code.component.css'],
 })
-export class CreateCodeComponent {
+export class CreateCodeComponent implements OnInit {
   @Input() createCouponCodeForm!: FormGroup;
   @Output() currentScreenEvent = new EventEmitter<string>();
 
@@ -63,7 +64,7 @@ export class CreateCodeComponent {
   isNextClicked = this.couponCodeStore.onNext;
   isBackClicked = this.couponCodeStore.onBack;
 
-  constructor() {
+  constructor(private snackBarService: SnackbarService) {
     this.minDate = new Date();
     this.visibility = this.couponCodeStore.couponCode.data()?.visibility ? this.couponCodeStore.couponCode.data()?.visibility! : "";
     this.validity = this.couponCodeStore.couponCode.data()?.durationType ? this.couponCodeStore.couponCode.data()?.durationType! : "";
@@ -73,6 +74,11 @@ export class CreateCodeComponent {
       if(this.isNextClicked()) {
         this.couponCodeStore.setOnNext();
         this.createCouponCodeForm.markAllAsTouched();
+
+        if(!this.validity || !this.visibility) {
+          this.snackBarService.openSnackBar('Visibility or Validity not selected', undefined);
+          this.showValidationError.set(true);
+        }
 
         if (this.createCouponCodeForm.invalid) {
           this.errorMessage.set('Please fill out all required fields');
@@ -110,5 +116,10 @@ export class CreateCodeComponent {
         this.currentScreenEvent.emit('code')
       }
     })
+  }
+
+  ngOnInit(): void {
+    this.createCouponCodeForm.controls['code'].setValidators(Validators.required)
+    this.createCouponCodeForm.controls['visibility'].setValidators(Validators.required)
   }
 }

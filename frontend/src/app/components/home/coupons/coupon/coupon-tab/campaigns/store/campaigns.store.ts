@@ -11,7 +11,6 @@ import {
   CampaignSummaryWorkbook,
 } from '../../../../../../../../generated/sources/campaign_summary_workbook';
 import { sortOrderEnum, statusEnum } from '../../../../../../../../enums';
-import { JSONObject } from '@org.quicko/ngx-core';
 import { HttpErrorResponse } from '@angular/common/http';
 
 type CampaignsState = {
@@ -73,12 +72,7 @@ export const CampaignsStore = signalStore(
               tapResponse({
                 next: (response) => {
                   if (response.code == 200) {
-                    const campaignSummaryTable = plainToInstance(
-                      CampaignSummaryWorkbook,
-                      response.data
-                    )
-                      .getCampaignSummarySheet()
-                      .getCampaignSummaryTable();
+                    const campaignSummaryTable = plainToInstance(CampaignSummaryWorkbook, response.data)?.getCampaignSummarySheet()?.getCampaignSummaryTable()!;
 
                     const rows = campaignSummaryTable
                       .getRows()

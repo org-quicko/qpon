@@ -30,6 +30,7 @@ import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { CreateCouponCodeDto } from '../../../../../../dtos/coupon-code.dto';
 import { customerConstraintEnum, durationTypeEnum, visibilityEnum } from '../../../../../../enums';
 import { MatChipsModule } from '@angular/material/chips';
+import { SnackbarService } from '../../../../../services/snackbar.service';
 
 @Component({
   selector: 'app-customer-constraint',
@@ -72,7 +73,7 @@ export class CustomerConstraintComponent implements OnInit {
   customers = this.customersStore.customers;
   organization = this.organizationStore.organizaiton;
 
-  constructor(private formBuilder: RxFormBuilder) {
+  constructor(private formBuilder: RxFormBuilder, private snackBarService: SnackbarService) {
     
     this.customerConstraint = '';
 
@@ -90,6 +91,12 @@ export class CustomerConstraintComponent implements OnInit {
     effect(() => {
       if (this.isNextClicked()) {
         this.couponCodeStore.setOnNext();
+
+        if(!this.customerConstraint) {
+          this.snackBarService.openSnackBar('Please select customer constraint', undefined);
+          return;
+        }
+
         this.setCouponCode();
         const nextIndex = this.couponCodeStore.couponCodeScreenIndex() + 1;
         this.couponCodeStore.setCouponCodeScreenIndex(nextIndex);
