@@ -46,9 +46,9 @@ export class CouponSummarySheetConverter {
     const couponSummaryWorkbook = new CouponSummaryWorkbook();
     couponSummaryWorkbook.addCouponSummarySheet(couponSummarySheet);
 
-    couponSummaryWorkbook.setMetadata(new JSONObject({
+    couponSummaryWorkbook.metadata = new JSONObject({
       organization_id: organizationId,
-    }));
+    });
 
     return couponSummaryWorkbook;
   }

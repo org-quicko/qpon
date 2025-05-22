@@ -121,7 +121,7 @@ export class OffersService {
     }
   }
 
-  /**
+    /**
    * Fetch offer
    */
   async fetchOffer(
@@ -144,55 +144,6 @@ export class OffersService {
         throw new NotFoundException('Offer not found');
       }
 
-      const customer = await this.customerRepository.findOne({
-          where: {
-            externalId: externalCustomerId,
-            organization: {
-              organizationId,
-            },
-          },
-        });
-
-        if (!customer) {
-          this.logger.warn('Customer not found');
-          throw new NotFoundException('Customer not found');
-        }
-
-      const couponCode = await this.couponCodeRepository.findOne({
-        where: {
-          code: offer.code,
-          organization: {
-            organizationId,
-          },
-        },
-      });
-
-      if (!couponCode) {
-        this.logger.warn('Coupon code not found');
-        throw new NotFoundException('Coupon code not found');
-      }
-
-     if(couponCode.maxRedemptionPerCustomer > 0) {
-       const redemptionsCount = await this.redemptionRepository.count({
-        where: {
-          couponCode: {
-            couponCodeId: couponCode.couponCodeId,
-          },
-          customer: {
-            customerId: customer.customerId,
-          },
-          organization: {
-            organizationId,
-          },
-        },
-      });
-
-      if(redemptionsCount >= couponCode.maxRedemptionPerCustomer) {
-        this.logger.warn('Coupon code is already redeemed maximum number of time');
-        throw new ConflictException('Coupon code is already redeemed maximum number of time');
-      }
-     }
-
       if (offer.itemConstraint === itemConstraintEnum.SPECIFIC) {
         const item = await this.itemRepository.findOne({
           where: {
@@ -203,46 +154,93 @@ export class OffersService {
           },
         });
 
-        if (!item) {
-          this.logger.warn('Item not found');
-          throw new NotFoundException('Item not found');
-        }
-
-        const couponItem = await this.couponItemRepository.findOne({
-          where: {
-            itemId: item.itemId,
-            coupon: {
-              couponId: offer.couponId,
-              organization: {
-                organizationId,
-              },
-            },
-          },
-        });
-
-        if (!couponItem) {
-          this.logger.warn('Item is ineligible for the offer');
-          throw new NotFoundException('Item is ineligible for the offer');
-        }
-      }
-
-      if (offer.customerConstraint === customerConstraintEnum.SPECIFIC) {
-        const customerCouponCode =
-          await this.customerCouponCodeRepository.findOne({
+        if (item) {
+          const couponItem = await this.couponItemRepository.findOne({
             where: {
-              couponCode: {
-                code: offer.code,
+              itemId: item.itemId,
+              coupon: {
+                couponId: offer.couponId,
                 organization: {
                   organizationId,
                 },
               },
-              customerId: customer.customerId,
             },
           });
+  
+          if (!couponItem) {
+            this.logger.warn('Item is ineligible for the offer');
+            throw new ConflictException('Item is ineligible for the offer');
+          }
+        }
+      }
 
-        if (!customerCouponCode) {
-          this.logger.warn('Customer is ineligible for the offer');
-          throw new ConflictException('Customer is ineligible for the offer');
+      const customer = await this.customerRepository.findOne({
+        where: {
+          externalId: externalCustomerId,
+          organization: {
+            organizationId,
+          },
+        },
+      });
+
+      if (customer && offer.customerConstraint === customerConstraintEnum.SPECIFIC) {
+          const customerCouponCode =
+            await this.customerCouponCodeRepository.findOne({
+              where: {
+                couponCode: {
+                  code: offer.code,
+                  organization: {
+                    organizationId,
+                  },
+                },
+                customerId: customer.customerId,
+              },
+            });
+  
+          if (!customerCouponCode) {
+            this.logger.warn('Customer is ineligible for the offer');
+            throw new ConflictException('Customer is ineligible for the offer');
+          }
+        }
+
+      if (customer) {
+        const couponCode = await this.couponCodeRepository.findOne({
+          where: {
+            code: offer.code,
+            organization: {
+              organizationId,
+            },
+          },
+        });
+  
+        if (!couponCode) {
+          this.logger.warn('Coupon code not found');
+          throw new NotFoundException('Coupon code not found');
+        }
+  
+        if (couponCode.maxRedemptionPerCustomer > 0) {
+          const redemptionsCount = await this.redemptionRepository.count({
+            where: {
+              couponCode: {
+                couponCodeId: couponCode.couponCodeId,
+              },
+              customer: {
+                customerId: customer.customerId,
+              },
+              organization: {
+                organizationId,
+              },
+            },
+          });
+  
+          if (redemptionsCount >= couponCode.maxRedemptionPerCustomer) {
+            this.logger.warn(
+              'Coupon code is already redeemed maximum number of time',
+            );
+            throw new ConflictException(
+              'Coupon code is already redeemed maximum number of time',
+            );
+          }
         }
       }
 
@@ -251,7 +249,10 @@ export class OffersService {
     } catch (error) {
       this.logger.error(`Error in fetchOffer: ${error.message}`, error);
 
-      if (error instanceof NotFoundException || error instanceof ConflictException) {
+      if (
+        error instanceof NotFoundException ||
+        error instanceof ConflictException
+      ) {
         throw error;
       }
 

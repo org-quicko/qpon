@@ -238,7 +238,7 @@ export class RedemptionsService {
 
       if (!customerCouponCode) {
         this.logger.warn('Customer is not eligible for this coupon');
-        throw new BadRequestException('Customer is not eligible');
+        throw new ConflictException('Customer is ineligible');
       }
     }
 
@@ -275,7 +275,7 @@ export class RedemptionsService {
 
       if (!couponItem) {
         this.logger.warn('Item not eligible');
-        throw new BadRequestException('Item not eligible');
+        throw new ConflictException('Item is ineligible');
       }
     }
 
@@ -358,7 +358,7 @@ export class RedemptionsService {
       this.logger.warn('Campaign budget excedded', {
         campaignId: campaign.campaignId,
       });
-      throw new ConflictException('Campaign budget excedded');
+      throw new ConflictException('Campaign budget exceeded');
     }
   }
 
@@ -440,7 +440,7 @@ export class RedemptionsService {
         .getRedemptionReportSheet()
         .getRedemptionReportTable();
 
-      const workbook = RedemptionReportWorkbook.toXlsx(redemptionReportWorkbook);
+      const workbook = RedemptionReportWorkbook.toXlsx();
 
       const redemptionReportSheet: any[] = [redemptionReportTable.getHeader()];
 

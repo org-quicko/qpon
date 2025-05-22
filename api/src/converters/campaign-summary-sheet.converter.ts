@@ -46,13 +46,13 @@ export class CampaignSummarySheetConverter {
     campaignSummaryWorkbook.addCampaignSummarySheet(campaignSummarySheet);
 
     if (campaignSummaryMv.length > 0) {
-      campaignSummaryTable.setMetadata(new JSONObject({
+      campaignSummaryTable.metadata = new JSONObject({
         organization_id: campaignSummaryMv[0]?.organizationId,
         coupon_id: campaignSummaryMv[0].couponId,
         count: count,
         skip: skip,
         take: take,
-      }));
+      });
     }
 
     return campaignSummaryWorkbook;

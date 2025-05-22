@@ -39,15 +39,15 @@ export class RedemptionSheetConverter {
     const redemptionWorkbook = new RedemptionWorkbook();
     redemptionWorkbook.addRedemptionSheet(redemptionSheet);
 
-    redemptionWorkbook.setMetadata(new JSONObject({
+    redemptionWorkbook.metadata = new JSONObject({
       organization_id: organizationId,
-    }));
+    });
 
-    redemptionTable.setMetadata(new JSONObject({
+    redemptionTable.metadata = new JSONObject({
       count: count,
       skip: skip,
       take: take,
-    }));
+    });
 
     return redemptionWorkbook;
   }

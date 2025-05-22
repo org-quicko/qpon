@@ -21,7 +21,8 @@ export class OfferSheetConverter {
     const offerTable = new OfferTable();
 
     if (offers.length === 0) {
-      offerTable.addRow(new OfferRow([]));
+      // offerTable.addRow(new OfferRow([]));
+      offerTable.rows = new JSONArray([]);
     } else {
       offers.map((offer) => {
         const offerRow = new OfferRow([]);
@@ -55,15 +56,15 @@ export class OfferSheetConverter {
     offerWorkbook.addOfferSheet(offerSheet);
 
     if (skip! >= 0 && take! > 0) {
-      offerWorkbook.setMetadata(new JSONObject({
+      offerWorkbook.metadata = new JSONObject({
         organization_id: organizationId,
         skip,
         take,
-      }));
+      });
     } else {
-      offerWorkbook.setMetadata(new JSONObject({
+      offerWorkbook.metadata = new JSONObject({
         organization_id: organizationId,
-      }));
+      });
     }
 
     return offerWorkbook;

@@ -49,9 +49,8 @@ export class CouponCodeSheetConverter {
       organization_id: organizationId,
     });
 
-    couponCodeWorkbook.setMetadata(
-      couponCodeWorkbookMetadata
-    );
+    couponCodeWorkbook.metadata = 
+      couponCodeWorkbookMetadata;
 
     return couponCodeWorkbook;
   }
