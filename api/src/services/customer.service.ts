@@ -110,7 +110,7 @@ export class CustomersService {
             organizationId,
           },
           status: statusEnum.ACTIVE,
-          ...(emailFilter && { name: ILike(`%${emailFilter}%`) }),
+          ...(emailFilter && { email: ILike(`%${emailFilter}%`) }),
           ...whereOptions,
         },
         skip,
