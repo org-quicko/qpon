@@ -10,7 +10,7 @@
           navigate_next
         </div>
       </mat-icon>
-      <div class="cursor-pointer" (click)="onNavigateChild()">
+      <div class="cursor-pointer" (click)="onNavigateToCouponView()">
         @if(!isLoading()) {
         {{ coupon()?.name }}
         } @else {
@@ -32,7 +32,7 @@
           navigate_next
         </div>
       </mat-icon>
-      <div class="cursor-pointer" (click)="onNavigateChild()">
+      <div class="cursor-pointer" (click)="onNavigateToCampaignView()">
         @if(!isLoading()) {
         {{ campaign()?.getName() }}
         } @else {

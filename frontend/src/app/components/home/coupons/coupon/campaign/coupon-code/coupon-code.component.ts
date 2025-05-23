@@ -115,7 +115,13 @@ export class CouponCodeComponent implements OnInit {
     })
   }
 
-  onNavigateChild() {
+  onNavigateToCouponView() {
+    this.router.navigate(['../../../../'], {
+      relativeTo: this.route,
+    });
+  }
+
+  onNavigateToCampaignView() {
     this.router.navigate(['../../'], {
       relativeTo: this.route,
     });
