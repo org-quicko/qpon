@@ -203,25 +203,36 @@ export class CouponCodeListComponent implements OnInit {
   openChangeStatusDialog(couponCode: CouponCodeDto) {
     if(this.can('update', UpdateCouponCodeDto)) {
       if(this.campaign()?.getStatus() === campaignStatusEnum.EXHAUSTED) {
-        this.snackbarService.openSnackBar('Campaign is exhausted. You can not change the status of this coupon code.', undefined);
-        return;
+        this.dialog.open(InactiveMessageDialogComponent, {
+          autoFocus: false,
+          data: {
+            title: 'Campaign exhausted!',
+            description:
+              'You can’t change status of this coupon code because the campaign is marked exhausted.',
+          },
+        });
+      } else if(couponCode.status === couponCodeStatusEnum.REDEEMED) {
+        this.dialog.open(InactiveMessageDialogComponent, {
+          autoFocus: false,
+          data: {
+            title: 'Coupon code redeemed!',
+            description:
+              'You can’t change the status of this coupon code because it has already been redeemed.',
+          },
+        });
+      } else {
+        this.dialog.open(CouponCodeChangeStatusDialogComponent, {
+          data: {
+            couponCode,
+            campaignId: this.campaignId,
+            couponId: this.couponId,
+            organizationId: this.organization()?.organizationId,
+            activateCouponCode: this.couponCodesStore.activateCouponCode,
+            deactivateCouponCode: this.couponCodesStore.deactivateCouponCode,
+          },
+          autoFocus: false,
+        });
       }
-
-      if(couponCode.status === couponCodeStatusEnum.REDEEMED) {
-        this.snackbarService.openSnackBar('Coupon code is redeemed. You can not change the status of this coupon code.', undefined);
-        return;
-      }
-      this.dialog.open(CouponCodeChangeStatusDialogComponent, {
-        data: {
-          couponCode,
-          campaignId: this.campaignId,
-          couponId: this.couponId,
-          organizationId: this.organization()?.organizationId,
-          activateCouponCode: this.couponCodesStore.activateCouponCode,
-          deactivateCouponCode: this.couponCodesStore.deactivateCouponCode,
-        },
-        autoFocus: false,
-      });
     } else {
       const rule = this.ability.relevantRuleFor('update', UpdateCouponCodeDto);
       this.openNotAllowedDialogBox(rule?.reason!);
@@ -304,15 +315,26 @@ export class CouponCodeListComponent implements OnInit {
 
   onCreateCouponCode() {
     if(this.can('create', CreateCouponCodeDto)) {
-      this.router.navigate([
-        `/${this.organization()?.organizationId}/coupons/${
-          this.couponId
-        }/campaigns/${this.campaignId}/coupon-codes/create`,
-      ], {
-        queryParams: {
-          'redirect': btoa(this.router.url)
-        }
-      });
+      if(this.campaign()?.getStatus() === campaignStatusEnum.EXHAUSTED) {
+        this.dialog.open(InactiveMessageDialogComponent, {
+          autoFocus: false,
+          data: {
+            title: 'Campaign exhausted!',
+            description:
+              'You can’t create coupon code for an exhausted campaign.',
+          },
+        });
+      } else {
+        this.router.navigate([
+          `/${this.organization()?.organizationId}/coupons/${
+            this.couponId
+          }/campaigns/${this.campaignId}/coupon-codes/create`,
+        ], {
+          queryParams: {
+            'redirect': btoa(this.router.url)
+          }
+        });
+      }
     } else {
       const rule = this.ability.relevantRuleFor('create', CreateCouponCodeDto);
       this.openNotAllowedDialogBox(rule?.reason!);

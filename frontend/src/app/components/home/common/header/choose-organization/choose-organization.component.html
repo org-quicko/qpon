@@ -81,13 +81,13 @@
               </div>
             </button>
           </div>
-          @if(currentOrganization()?.role == 'super_admin') {
-            <button mat-menu-item (click)="onViewAllOrganization()">
-            <div class="mat-body-medium text-primary">
-              View all organisations
-            </div>
-          </button>
-          }
+        }
+        @if(currentOrganization()?.role == 'super_admin') {
+          <button mat-menu-item (click)="onViewAllOrganization()">
+          <div class="mat-body-medium text-primary">
+            View all organisations
+          </div>
+        </button>
         }
       } @else {
         @for(option of organizations().slice(0,5); let i = $index; track option.organizationId) {

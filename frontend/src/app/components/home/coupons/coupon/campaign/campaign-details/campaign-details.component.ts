@@ -126,18 +126,25 @@ export class CampaignDetailsComponent implements OnInit {
   openChangeStatusDialog(campaign: CampaignSummaryRow) {
     if (this.can('update', UpdateCampaignDto)) {
       if(this.campaign()?.getStatus() === campaignStatusEnum.EXHAUSTED) {
-        this.snackbarService.openSnackBar('Campaign is exhausted. You can not change the status of this campaign.', undefined);
-        return;
+        this.dialog.open(InactiveMessageDialogComponent, {
+          autoFocus: false,
+          data: {
+            title: 'Campaign exhausted!',
+            description:
+              'You can’t mark this campaign as active because the campaign is marked exhausted.',
+          },
+        });
+      } else {
+        this.dialog.open(ChangeStatusComponent, {
+          data: {
+            couponId: this.couponStore.coupon.data()?.couponId,
+            campaign,
+            deactivateCampaign: this.campaignStore.deactivateCampaign,
+            activateCampaign: this.campaignStore.activateCampaign,
+          },
+          autoFocus: false,
+        });
       }
-      this.dialog.open(ChangeStatusComponent, {
-        data: {
-          couponId: this.couponStore.coupon.data()?.couponId,
-          campaign,
-          deactivateCampaign: this.campaignStore.deactivateCampaign,
-          activateCampaign: this.campaignStore.activateCampaign,
-        },
-        autoFocus: false,
-      });
     } else {
       const rule = this.ability.relevantRuleFor('update', UpdateCampaignDto);
       this.openNotAllowedDialogBox(rule?.reason!);
