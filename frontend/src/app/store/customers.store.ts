@@ -44,9 +44,14 @@ export const CustomersStore = signalStore(
       skip?: number;
       take?: number;
       filter?: { email: string };
+      isFilterApplied?: boolean;
     }>(
       pipe(
-        tap(() => patchState(store, { isLoading: true })),
+        tap(({ isFilterApplied }) => {
+          if (!isFilterApplied) {
+            patchState(store, { isLoading: true });
+          }
+        }),
         concatMap(({ organizationId, skip, take, filter }) => {
           const page = Math.floor((skip ?? 0) / (take ?? 10));
 

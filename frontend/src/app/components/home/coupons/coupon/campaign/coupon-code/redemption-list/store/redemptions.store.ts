@@ -43,9 +43,16 @@ export const RedemptionsStore = signalStore(
       take?: number;
       sortOptions?: {sortBy: string, sortOrder: sortOrderEnum};
       isSortOperation?: boolean;
+      isFilterApplied?: boolean;
     }>(
       pipe(
-        tap(() => patchState(store, { isLoading: true })),
+        tap(({isFilterApplied}) => {
+          if (!isFilterApplied) {
+            patchState(store, { isLoading: false });
+          } else {
+            patchState(store, { isLoading: true });
+          }
+        }),
         concatMap(
           ({
             organizationId,

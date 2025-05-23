@@ -54,7 +54,7 @@ export const CouponsStore = signalStore(
       isFilterOperation?: boolean;
     }>(
       pipe(
-        tap(({ isSortOperation }) => {
+        tap(({ isSortOperation, isFilterOperation }) => {
           if (isSortOperation) {
             // Clear everything when sorting
             patchState(store, {
@@ -63,6 +63,8 @@ export const CouponsStore = signalStore(
               coupons: [],
               loadedPages: new Set<number>(),
             });
+          } else if (isFilterOperation) {
+            patchState(store, { isLoading: false });
           } else {
             patchState(store, { isLoading: true });
           }

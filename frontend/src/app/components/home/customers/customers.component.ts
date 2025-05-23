@@ -118,6 +118,7 @@ export class CustomersComponent implements OnInit {
           filter: {
             email: value?.trim()!,
           },
+          isFilterApplied: true
         });
       });
 

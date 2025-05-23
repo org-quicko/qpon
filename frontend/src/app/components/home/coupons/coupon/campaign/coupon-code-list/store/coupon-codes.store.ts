@@ -41,9 +41,11 @@ export const CouponCodesStore = signalStore(
         fetchCouponCodes: rxMethod<{organizationId: string, couponId: string, campaignId: string, skip?: number, take?: number, filter?: CouponCodeFilter, sortOptions?: {  sortBy: string
           sortOrder: sortOrderEnum}, isSortOperation?: boolean, isFilterOperation?: boolean}>(
             pipe(
-                tap(({isSortOperation}) => {
+                tap(({isSortOperation, isFilterOperation}) => {
                     if (isSortOperation) {
                       patchState(store, {isSorting: true});
+                    } else if (isFilterOperation) {
+                      patchState(store, {isLoading: false});
                     } else {
                       patchState(store, {isLoading: true});
                     }

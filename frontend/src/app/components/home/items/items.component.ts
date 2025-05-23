@@ -126,6 +126,7 @@ export class ItemsComponent implements OnInit {
           filter: {
             query: name
           },
+          isFilterApplied: true
         });
       });
 

@@ -48,13 +48,20 @@ export const CampaignsStore = signalStore(
       query?: { name: string };
       sortOptions?: { sortBy: string; sortOrder: sortOrderEnum };
       isSortOperation?: boolean;
+      isFilterApplied?: boolean;
     }>(
       pipe(
-        tap(() => patchState(store, { isLoading: true })),
-        concatMap(({ organizationId, couponId, skip, take, query, sortOptions, isSortOperation }) => {
+        tap(({ isFilterApplied }) => {
+          if(isFilterApplied) {
+            patchState(store, { isLoading: false })
+          } else {
+            patchState(store, { isLoading: true })
+          }
+        }),
+        concatMap(({ organizationId, couponId, skip, take, query, sortOptions, isSortOperation, isFilterApplied }) => {
           const page = Math.floor((skip ?? 0) / (take ?? 10));
 
-          if (store.loadedPages().has(page) && !query && !isSortOperation) {
+          if (store.loadedPages().has(page) && !query && !isSortOperation && !isFilterApplied) {
             patchState(store, { isLoading: false });
             return of(store.campaignSummaries());
           }
@@ -76,7 +83,7 @@ export const CampaignsStore = signalStore(
 
                     const rows = campaignSummaryTable
                       .getRows()
-                      ?.map((_, index) => campaignSummaryTable.getRow(index));
+                      ?.map((_, index) => campaignSummaryTable.getRow(index)) || [];
 
                     const metadata = campaignSummaryTable.getMetadata();
 
@@ -87,15 +94,20 @@ export const CampaignsStore = signalStore(
 
                     let updatedCampaignSummaries: CampaignSummaryRow[] = [];
 
-                    if (query || isSortOperation) {
-                      updatedCampaignSummaries = rows!;
+                    if ((query || isSortOperation)) {
+                      updatedCampaignSummaries = [...rows];
                     } else {
                       updatedCampaignSummaries = [
                         ...currentCampaignSummaries,
-                        ...rows!,
+                        ...rows,
                       ];
                     }
 
+                    // Ensure empty array is set if no results
+                    if ((query || isSortOperation) && rows.length === 0) {
+                      updatedCampaignSummaries = [];
+                    }
+                    
                     patchState(store, {
                       campaignSummaries: updatedCampaignSummaries,
                       count: metadata.getNumber('count'),

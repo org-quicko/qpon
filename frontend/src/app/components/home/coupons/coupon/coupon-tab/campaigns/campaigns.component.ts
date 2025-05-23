@@ -92,6 +92,7 @@ export class CampaignsComponent implements OnInit {
     active: 'createdAt',
     direction: 'desc',
   });
+  isFilterApplied: boolean = false;
 
   couponStore = inject(CouponStore);
   campaignsStore = inject(CampaignsStore);
@@ -165,12 +166,15 @@ export class CampaignsComponent implements OnInit {
     this.searchControl.valueChanges
       .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe((value: string) => {
+        this.isFilterApplied = true;
+
         this.campaignsStore.fetchCampaingSummaries({
           organizationId: this.organization()?.organizationId!,
           couponId: this.couponId,
           query: {
             name: value,
           },
+          isFilterApplied: this.isFilterApplied,
         });
       });
 

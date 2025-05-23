@@ -23,7 +23,7 @@
     <input
       matInput
       [formControl]="searchControl"
-      class="focus:outline-none align-middle py-[4px] w-full mat-body-large text-outline"
+      class="focus:outline-none align-middle py-[4px] w-full mat-body-large placeholder:text-outline text-on-surface"
       placeholder="Search campaigns"
     />
   </div>
@@ -40,6 +40,7 @@
       matSortDisableClear="true"
       (matSortChange)="onSortChange($event)"
       class="text-on-surface w-full"
+      [ngClass]="{ 'h-[500px]': count()! == 0 && isFilterApplied }"
     >
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef class="px-6 py-4 w-[25%]">Name</th>
