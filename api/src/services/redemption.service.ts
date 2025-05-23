@@ -13,6 +13,7 @@ import {
   DataSource,
   EntityManager,
   FindOptionsWhere,
+  Not,
   Repository,
 } from 'typeorm';
 import * as XLSX from 'xlsx';
@@ -21,6 +22,7 @@ import { LoggerService } from './logger.service';
 import { CreateRedemptionDto } from '../dtos/redemption.dto';
 import { CouponCode } from '../entities/coupon-code.entity';
 import {
+  campaignStatusEnum,
   couponCodeStatusEnum,
   customerConstraintEnum,
   durationTypeEnum,
@@ -45,6 +47,12 @@ export class RedemptionsService {
   constructor(
     @InjectRepository(Redemption)
     private readonly redemptionsRepository: Repository<Redemption>,
+    @InjectRepository(CouponCode)
+    private readonly couponCodeRepository: Repository<CouponCode>,
+    @InjectRepository(CampaignSummaryMv)
+    private readonly campaignSummaryRepository: Repository<CampaignSummaryMv>,
+    @InjectRepository(Campaign)
+    private readonly campaignRepository: Repository<Campaign>,
     private redemptionSheetConverter: RedemptionSheetConverter,
     private redemptionReportSheetConverter: RedemptionReportSheetConverter,
     private logger: LoggerService,
@@ -56,8 +64,10 @@ export class RedemptionsService {
    */
   async redeemCouponCode(organizationId: string, body: CreateRedemptionDto) {
     this.logger.info('START: redeemCouponCode service');
-    return this.datasource.transaction(async (manager) => {
-      try {
+    let couponCodeId: string | undefined;
+    let campaignId: string | undefined;
+    try {
+      const result = await this.datasource.transaction(async (manager) => {
         const couponCode = await manager.findOne(CouponCode, {
           relations: {
             coupon: true,
@@ -65,12 +75,14 @@ export class RedemptionsService {
           },
           where: {
             code: body.code,
-            status: couponCodeStatusEnum.ACTIVE,
+            status: Not(couponCodeStatusEnum.ARCHIVE),
             organization: {
               organizationId,
             },
           },
         });
+
+        campaignId = couponCode?.campaign.campaignId;
 
         if (!couponCode) {
           this.logger.warn('Coupon code not found', { code: body.code });
@@ -107,6 +119,8 @@ export class RedemptionsService {
           body.baseOrderValue,
         );
 
+        couponCodeId = couponCode.couponCodeId;
+
         const savedRedemption = await this.saveRedemption(
           manager,
           couponCode,
@@ -118,26 +132,63 @@ export class RedemptionsService {
           body.externalId,
         );
 
-        this.logger.info('END: redeemCouponCode service');
         return savedRedemption;
-      } catch (error) {
-        this.logger.error(`Error in redeemCouponCode: ${error.message}`, error);
+      });
+
+      if (couponCodeId) {
+        const updatedCouponCode = await this.couponCodeRepository.findOne({
+          where: { couponCodeId },
+        });
+        if (
+          updatedCouponCode &&
+          updatedCouponCode.maxRedemptions &&
+          updatedCouponCode.redemptionCount >=
+            updatedCouponCode.maxRedemptions &&
+          updatedCouponCode.status !== couponCodeStatusEnum.REDEEMED
+        ) {
+          await this.couponCodeRepository.update(couponCodeId, {
+            status: couponCodeStatusEnum.REDEEMED,
+          });
+        }
+      }
+
+      if (campaignId) {
+        const campaign_summary = await this.campaignSummaryRepository.findOne({
+          where: {
+            campaignId
+          },
+        });
 
         if (
-          error instanceof NotFoundException ||
-          error instanceof BadRequestException ||
-          error instanceof GoneException ||
-          error instanceof ConflictException
+          campaign_summary?.budget &&
+          campaign_summary?.totalRedemptionAmount >= campaign_summary?.budget
         ) {
-          throw error;
-        }
+          await this.campaignRepository.update(campaignId, {
+            status: campaignStatusEnum.EXHAUSTED,
+          });
 
-        throw new HttpException(
-          'Failed to redeem coupon code',
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
+          await this.couponCodeRepository.update({ campaign: { campaignId } }, { status: couponCodeStatusEnum.INACTIVE });
+        }
       }
-    });
+      this.logger.info('END: redeemCouponCode service');
+      return result;
+    } catch (error) {
+      this.logger.error(`Error in redeemCouponCode: ${error.message}`, error);
+
+      if (
+        error instanceof NotFoundException ||
+        error instanceof BadRequestException ||
+        error instanceof GoneException ||
+        error instanceof ConflictException
+      ) {
+        throw error;
+      }
+
+      throw new HttpException(
+        'Failed to redeem coupon code',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   /**
@@ -312,10 +363,10 @@ export class RedemptionsService {
       this.logger.warn('Coupon code is fully redeemed', {
         code: updatedCouponCode.code,
       });
-      await manager.update(CouponCode, updatedCouponCode.couponCodeId, {
-        status: couponCodeStatusEnum.REDEEMED,
-      });
-      throw new ConflictException('Coupon code is fully redemmed');
+      throw new ConflictException(
+        'Coupon code is fully redeemed',
+        updatedCouponCode.couponCodeId,
+      );
     }
 
     if (updatedCouponCode?.maxRedemptionPerCustomer) {
@@ -355,7 +406,7 @@ export class RedemptionsService {
       campaign.budget &&
       campaign_summary!.totalRedemptionAmount > campaign.budget
     ) {
-      this.logger.warn('Campaign budget excedded', {
+      this.logger.warn('Campaign budget exceeded', {
         campaignId: campaign.campaignId,
       });
       throw new ConflictException('Campaign budget exceeded');

@@ -34,6 +34,7 @@ export class OfferSheetConverter {
         offerRow.setCouponCode(offer.code);
         offerRow.setDiscountType(offer.discountType);
         offerRow.setDiscountValue(offer.discountValue);
+        offerRow.setDiscountUpto(offer.discountUpto);
         offerRow.setItemConstraint(offer.itemConstraint);
         offerRow.setMinimumAmount(offer.minimumAmount);
         offerRow.setCustomerId(offer.customerId);

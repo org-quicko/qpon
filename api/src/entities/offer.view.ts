@@ -14,6 +14,7 @@ import { ViewColumn, ViewEntity } from 'typeorm';
           c.organization_id,
           c.coupon_id,
           camp.campaign_id,
+          ccc.coupon_code_id,
           cc.code,
           c.discount_type,
           c.discount_value,
@@ -21,6 +22,7 @@ import { ViewColumn, ViewEntity } from 'typeorm';
           c.item_constraint,
           cc.customer_constraint,
           cc.minimum_amount,
+          cc.max_redemption_per_customer,
           cc.visibility,
           cc.expires_at,
           ct.item_id,
@@ -50,6 +52,9 @@ export class Offer {
 
   @ViewColumn({ name: 'campaign_id' })
   campaignId: string;
+
+  @ViewColumn({ name: 'coupon_code_id' })
+  couponCodeId: string;
 
   @ViewColumn()
   code: string;
@@ -89,6 +94,15 @@ export class Offer {
     },
   })
   minimumAmount: number;
+  
+  @ViewColumn({
+    name: 'max_redemption_per_customer',
+    transformer: {
+      from: (value) => Number(value),
+      to: (value) => value,
+    },
+  })
+  maxRedemptionPerCustomer: number;
 
   @ViewColumn()
   visibility: visibilityEnum;

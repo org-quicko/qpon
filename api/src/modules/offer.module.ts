@@ -10,6 +10,7 @@ import { CouponItem } from '../entities/coupon-item.entity';
 import { CustomerCouponCode } from '../entities/customer-coupon-code.entity';
 import { CouponCode } from '../entities/coupon-code.entity';
 import { Redemption } from '../entities/redemption.entity';
+import { CampaignSummaryMv } from 'src/entities/campaign-summary.view';
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { Redemption } from '../entities/redemption.entity';
       CouponItem,
       CustomerCouponCode,
       CouponCode,
-      Redemption
+      Redemption,
+      CampaignSummaryMv
     ]),
   ],
   controllers: [OffersController],
