@@ -78,6 +78,7 @@ export class CreateCodeComponent implements OnInit {
         if(!this.validity || !this.visibility) {
           this.snackBarService.openSnackBar('Visibility or Validity not selected', undefined);
           this.showValidationError.set(true);
+          return;
         }
 
         if (this.createCouponCodeForm.invalid) {

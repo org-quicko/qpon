@@ -10,7 +10,7 @@ import { plainToInstance } from "class-transformer";
 import { PaginatedList } from "../../../../../../../../dtos/paginated-list.dto";
 import { HttpErrorResponse } from "@angular/common/http";
 import { CouponCodeFilter } from "../../../../../../../types/coupon-code-filter.interface";
-import { sortOrderEnum, statusEnum } from "../../../../../../../../enums";
+import { couponCodeStatusEnum, sortOrderEnum, statusEnum } from "../../../../../../../../enums";
 import { SnackbarService } from "../../../../../../../services/snackbar.service";
 
 type CouponCodesState = {
@@ -99,7 +99,7 @@ export const CouponCodesStore = signalStore(
                                 if(response.code == 200) {
                                     const updatedCouponCodes = store.couponCodes()?.map((couponCode) => {
                                         if(couponCode.couponCodeId == couponCodeId) {
-                                            couponCode.status = statusEnum.ACTIVE;
+                                            couponCode.status = couponCodeStatusEnum.ACTIVE;
                                         }
                                         return couponCode;
                                     })
@@ -134,7 +134,7 @@ export const CouponCodesStore = signalStore(
                                 if(response.code == 200) {
                                     const updatedCouponCodes = store.couponCodes()?.map((couponCode) => {
                                         if(couponCode.couponCodeId == couponCodeId) {
-                                            couponCode.status = statusEnum.INACTIVE;
+                                            couponCode.status = couponCodeStatusEnum.INACTIVE;
                                         }
                                         return couponCode;
                                     })

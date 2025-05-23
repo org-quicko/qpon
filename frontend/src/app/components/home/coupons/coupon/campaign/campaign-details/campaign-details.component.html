@@ -38,14 +38,14 @@
           class="w-6 h-6 rounded-[12px] flex items-center justify-center"
           [ngClass]="{
             'bg-success-container': campaign()?.getStatus() == 'active',
-            'bg-surface-container-highest': campaign()?.getStatus() == 'inactive'
+            'bg-surface-container-highest': campaign()?.getStatus() == 'inactive' || campaign()?.getStatus() == 'exhausted' 
           }"
         >
           <div
             class="w-3 h-3 rounded-[6px]"
             [ngClass]="{
               'bg-success': campaign()?.getStatus() == 'active',
-              'bg-outline': campaign()?.getStatus() == 'inactive'
+              'bg-outline': campaign()?.getStatus() == 'inactive' || campaign()?.getStatus() == 'exhausted'
             }"
           ></div>
         </div>

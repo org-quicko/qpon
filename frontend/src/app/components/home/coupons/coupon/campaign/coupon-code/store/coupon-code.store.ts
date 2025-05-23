@@ -9,7 +9,7 @@ import { tapResponse } from "@ngrx/operators";
 import { plainToInstance } from "class-transformer";
 import { HttpErrorResponse } from "@angular/common/http";
 import { SnackbarService } from "../../../../../../../services/snackbar.service";
-import { statusEnum } from "../../../../../../../../enums";
+import { couponCodeStatusEnum, statusEnum } from "../../../../../../../../enums";
 
 export const OnCouponCodeSuccess = new EventEmitter<boolean>();
 export const OnCouponCodeError = new EventEmitter<string>();
@@ -91,7 +91,7 @@ export const CouponCodeStore = signalStore(
 
                                             const updatedCouponCode = {
                                                 ...currentCouponCode,
-                                                status: statusEnum.ACTIVE 
+                                                status: couponCodeStatusEnum.ACTIVE 
                                             }
         
                                             patchState(store, {couponCode: updatedCouponCode, isLoading: false})
@@ -126,7 +126,7 @@ export const CouponCodeStore = signalStore(
 
                                             const updatedCouponCode = {
                                                 ...currentCouponCode,
-                                                status: statusEnum.INACTIVE 
+                                                status: couponCodeStatusEnum.INACTIVE 
                                             }
         
                                             patchState(store, {couponCode: updatedCouponCode, isLoading: false})

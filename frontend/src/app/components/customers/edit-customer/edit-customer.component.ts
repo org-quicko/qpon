@@ -9,6 +9,7 @@ import { OrganizationStore } from '../../../store/organization.store';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { CustomerStore, OnCustomerSuccess } from './store/customer.store';
+import { instanceToPlain } from 'class-transformer';
 
 @Component({
   selector: 'app-edit-customer',
@@ -86,7 +87,7 @@ export class EditCustomerComponent implements OnInit {
     this.customerStore.updateCustomer({
       organizationId: this.organization()?.organizationId!,
       customerId: this.customerId,
-      body: updatedCustomer
+      body: instanceToPlain(updatedCustomer)
     })
   }
 }

@@ -67,8 +67,8 @@ export class CouponCodeDto {
   @IsNumber()
   redemptionCount?: number;
 
-  @IsEnum(statusEnum)
-  status?: statusEnum;
+  @IsEnum(couponCodeStatusEnum)
+  status?: couponCodeStatusEnum;
 
   @Expose({ name: 'created_at' })
   @Transform(({ value }) => value, { toClassOnly: true })

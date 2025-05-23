@@ -10,12 +10,12 @@ import {
   CampaignSummaryRow,
   CampaignSummaryWorkbook,
 } from '../../../../../../../../generated/sources/campaign_summary_workbook';
-import { sortOrderEnum, statusEnum } from '../../../../../../../../enums';
+import { campaignStatusEnum, sortOrderEnum, statusEnum } from '../../../../../../../../enums';
 import { HttpErrorResponse } from '@angular/common/http';
 
 type CampaignsState = {
   campaignSummaries: CampaignSummaryRow[] | null;
-  filter?: { status: statusEnum };
+  filter?: { status: campaignStatusEnum };
   isLoading: boolean | null;
   skip?: number | null;
   take?: number | null;

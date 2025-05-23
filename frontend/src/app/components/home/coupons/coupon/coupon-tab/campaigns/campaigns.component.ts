@@ -40,7 +40,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { PaginationOptions } from '../../../../../../types/PaginatedOptions';
 import { MatSortModule, Sort } from '@angular/material/sort';
-import { sortOrderEnum } from '../../../../../../../enums';
+import { campaignStatusEnum, sortOrderEnum } from '../../../../../../../enums';
 import { InactiveMessageDialogComponent } from '../../../../common/inactive-message-dialog/inactive-message-dialog.component';
 import {
   UserAbility,
@@ -54,6 +54,7 @@ import {
 } from '../../../../../../../dtos/campaign.dto';
 import { NotAllowedDialogBoxComponent } from '../../../../../common/not-allowed-dialog-box/not-allowed-dialog-box.component';
 import { OnCouponsSuccess } from '../../../../../../store/coupons.store';
+import { SnackbarService } from '../../../../../../services/snackbar.service';
 
 @Component({
   selector: 'app-campaigns',
@@ -121,7 +122,8 @@ export class CampaignsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private snackbarService: SnackbarService,
   ) {
     this.couponId = '';
     this.searchControl = new FormControl('');
@@ -173,7 +175,6 @@ export class CampaignsComponent implements OnInit {
       });
 
     OnCouponsSuccess.subscribe((res) => {
-      console.log(res);
       this.campaignsStore.resetStore();
       this.campaignsStore.fetchCampaingSummaries({
         organizationId: this.organization()?.organizationId!,
@@ -195,6 +196,10 @@ export class CampaignsComponent implements OnInit {
 
   openDialog(campaign: CampaignSummaryRow) {
     if (this.can('update', UpdateCampaignDto)) {
+      if(campaign.getStatus() === campaignStatusEnum.EXHAUSTED) {
+        this.snackbarService.openSnackBar('Campaign is exhausted. You can not change the status of this campaign.', undefined);
+        return;
+      }
       this.dialog.open(ChangeStatusComponent, {
         data: {
           couponId: this.couponId,

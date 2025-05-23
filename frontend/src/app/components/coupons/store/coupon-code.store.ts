@@ -674,7 +674,7 @@ export const CouponCodeStore = signalStore(
                       coupon: {
                         isLoading: false,
                         error: null,
-                        data: plainToInstance(CouponCodeDto, response.data)
+                        data: plainToInstance(CouponDto, response.data)
                       }
                     })
 

@@ -23,6 +23,7 @@ import { CouponCodeDto, UpdateCouponCodeDto } from '../../../../../../../dtos/co
 import { NotAllowedDialogBoxComponent } from '../../../../../common/not-allowed-dialog-box/not-allowed-dialog-box.component';
 import { InactiveMessageDialogComponent } from '../../../../common/inactive-message-dialog/inactive-message-dialog.component';
 import { CouponCodeChangeStatusDialogComponent } from './coupon-code-change-status-dialog/coupon-code-change-status-dialog.component';
+import { campaignStatusEnum, couponCodeStatusEnum } from '../../../../../../../enums';
 
 @Component({
   selector: 'app-coupon-code',
@@ -189,6 +190,16 @@ export class CouponCodeComponent implements OnInit {
 
   openChangeStatusDialog(couponCode: CouponCodeDto) {
       if(this.can('update', UpdateCouponCodeDto)) {
+        if(this.campaign()?.getStatus() == campaignStatusEnum.EXHAUSTED) {
+          this.snackbarService.openSnackBar('Campaign is exhausted. You can not change the status of this coupon code.', undefined);
+          return;
+        }
+
+        if(this.couponCode()?.status === couponCodeStatusEnum.REDEEMED) {
+          this.snackbarService.openSnackBar('Coupon code is redeemed. You can not change the status of this coupon code.', undefined);
+          return;
+        }
+
         this.dialog.open(CouponCodeChangeStatusDialogComponent, {
           data: {
             couponCode,

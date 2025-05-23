@@ -36,7 +36,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { CouponCodeChangeStatusDialogComponent } from './coupon-code-change-status-dialog/coupon-code-change-status.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
-import { sortOrderEnum } from '../../../../../../../enums';
+import { campaignStatusEnum, couponCodeStatusEnum, sortOrderEnum } from '../../../../../../../enums';
 import { FilterDialogComponent } from './filter-dialog/filter-dialog.component';
 import { FiltersStore } from '../../../../../../store/filters.store';
 import { CouponCodeFilter } from '../../../../../../types/coupon-code-filter.interface';
@@ -116,7 +116,7 @@ export class CouponCodeListComponent implements OnInit {
 	protected readonly can = this.abilityService.can;
 	private readonly ability = inject<PureAbility<UserAbilityTuple>>(PureAbility);
 
-  constructor(private route: ActivatedRoute, private router: Router) {
+  constructor(private route: ActivatedRoute, private router: Router, private snackbar: SnackbarService) {
     this.couponId = '';
     this.campaignId = '';
 
@@ -202,6 +202,15 @@ export class CouponCodeListComponent implements OnInit {
 
   openChangeStatusDialog(couponCode: CouponCodeDto) {
     if(this.can('update', UpdateCouponCodeDto)) {
+      if(this.campaign()?.getStatus() === campaignStatusEnum.EXHAUSTED) {
+        this.snackbarService.openSnackBar('Campaign is exhausted. You can not change the status of this coupon code.', undefined);
+        return;
+      }
+
+      if(couponCode.status === couponCodeStatusEnum.REDEEMED) {
+        this.snackbarService.openSnackBar('Coupon code is redeemed. You can not change the status of this coupon code.', undefined);
+        return;
+      }
       this.dialog.open(CouponCodeChangeStatusDialogComponent, {
         data: {
           couponCode,

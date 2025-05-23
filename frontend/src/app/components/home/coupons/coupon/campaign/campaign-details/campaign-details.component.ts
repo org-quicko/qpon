@@ -25,6 +25,8 @@ import {
 } from '../../../../../../../dtos/campaign.dto';
 import { ChangeStatusComponent } from '../campaign-change-status-dialog/campaign-change-status-dialog';
 import { InactiveMessageDialogComponent } from '../../../../common/inactive-message-dialog/inactive-message-dialog.component';
+import { campaignStatusEnum } from '../../../../../../../enums';
+import { SnackbarService } from '../../../../../../services/snackbar.service';
 
 @Component({
   selector: 'app-campaign-details',
@@ -57,7 +59,7 @@ export class CampaignDetailsComponent implements OnInit {
   protected readonly can = this.abilityService.can;
   private readonly ability = inject<PureAbility<UserAbilityTuple>>(PureAbility);
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(private router: Router, private route: ActivatedRoute, private snackbarService: SnackbarService) {}
 
   ngOnInit(): void {
     OnCampaignSuccess.subscribe((res) => {
@@ -123,6 +125,10 @@ export class CampaignDetailsComponent implements OnInit {
 
   openChangeStatusDialog(campaign: CampaignSummaryRow) {
     if (this.can('update', UpdateCampaignDto)) {
+      if(this.campaign()?.getStatus() === campaignStatusEnum.EXHAUSTED) {
+        this.snackbarService.openSnackBar('Campaign is exhausted. You can not change the status of this campaign.', undefined);
+        return;
+      }
       this.dialog.open(ChangeStatusComponent, {
         data: {
           couponId: this.couponStore.coupon.data()?.couponId,
