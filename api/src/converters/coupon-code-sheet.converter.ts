@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { JSONObject } from '@org.quicko/core';
+import { JSONArray, JSONObject } from '@org-quicko/core';
 import {
   CouponCodeRow,
-  CouponCodeSheet,
-  CouponCodeTable,
   CouponCodeWorkbook,
 } from 'generated/sources/coupon_code_workbook';
 import { CouponCode } from '../entities/coupon-code.entity';
@@ -14,9 +12,14 @@ export class CouponCodeSheetConverter {
     couponCodes: CouponCode[],
     organizationId: string,
   ): CouponCodeWorkbook {
-    const couponCodeTable = new CouponCodeTable();
-    couponCodes.map((couponCode) => {
-      const couponCodeRow = new CouponCodeRow([]);
+    
+    const couponCodeWorkbook = new CouponCodeWorkbook();
+    const couponCodeSheet = couponCodeWorkbook.getCouponCodeSheet();
+    const couponCodeTable = couponCodeSheet.getCouponCodeTable();
+
+    for(let index = 0; index < couponCodes.length; index++) {
+      const couponCode = couponCodes[index];
+      const couponCodeRow = new CouponCodeRow(new JSONArray());
       couponCodeRow.setCouponId(couponCode.coupon.couponId);
       couponCodeRow.setCampaignId(couponCode.campaign.campaignId);
       couponCodeRow.setCouponCodeId(couponCode.couponCodeId);
@@ -38,19 +41,13 @@ export class CouponCodeSheetConverter {
       couponCodeRow.setCreatedAt(couponCode.createdAt.toString());
       couponCodeRow.setUpdatedAt(couponCode.updatedAt.toString());
       couponCodeTable.addRow(couponCodeRow);
-    });
+    };
 
-    const couponCodeSheet = new CouponCodeSheet();
-    couponCodeSheet.addCouponCodeTable(couponCodeTable);
-
-    const couponCodeWorkbook = new CouponCodeWorkbook();
-    couponCodeWorkbook.addCouponCodeSheet(couponCodeSheet);
     const couponCodeWorkbookMetadata = new JSONObject({
       organization_id: organizationId,
     });
 
-    couponCodeWorkbook.metadata = 
-      couponCodeWorkbookMetadata;
+    couponCodeWorkbook.setMetadata(couponCodeWorkbookMetadata);
 
     return couponCodeWorkbook;
   }

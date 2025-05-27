@@ -13,6 +13,7 @@ import {
   DataSource,
   EntityManager,
   FindOptionsWhere,
+  ILike,
   Not,
   Repository,
 } from 'typeorm';
@@ -204,6 +205,12 @@ export class RedemptionsService {
   ) {
     this.logger.info('START: fetchRedemptions service');
     try {
+      let emailFilter: string = '';
+      if (whereOptions.customer) {
+        emailFilter = whereOptions.customer?.valueOf()['email'] as string;
+        delete whereOptions.customer;
+      }
+
       const [redemptions, count] =
         await this.redemptionsRepository.findAndCount({
           relations: {
@@ -213,6 +220,9 @@ export class RedemptionsService {
           where: {
             organization: {
               organizationId,
+            },
+            customer: {
+              ...(emailFilter && { email: ILike(`%${emailFilter}%`) }),
             },
             ...whereOptions,
           },
@@ -491,7 +501,7 @@ export class RedemptionsService {
         .getRedemptionReportSheet()
         .getRedemptionReportTable();
 
-      const workbook = RedemptionReportWorkbook.toXlsx();
+      const workbook = RedemptionReportWorkbook.toXlsx(redemptionReportWorkbook);
 
       const redemptionReportSheet: any[] = [redemptionReportTable.getHeader()];
 

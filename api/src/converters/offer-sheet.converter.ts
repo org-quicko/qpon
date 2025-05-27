@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { JSONArray, JSONObject } from '@org.quicko/core';
+import { JSONArray, JSONObject } from '@org-quicko/core';
 import {
   OfferRow,
-  OfferSheet,
-  OfferTable,
   OfferWorkbook,
 } from 'generated/sources/offer_workbook';
 import { Offer } from '../entities/offer.view';
@@ -18,14 +16,14 @@ export class OfferSheetConverter {
     skip?: number,
     take?: number,
   ): OfferWorkbook {
-    const offerTable = new OfferTable();
+    const offerWorkbook = new OfferWorkbook();
 
-    if (offers.length === 0) {
-      // offerTable.addRow(new OfferRow([]));
-      offerTable.rows = new JSONArray([]);
-    } else {
-      offers.map((offer) => {
-        const offerRow = new OfferRow([]);
+    const offerSheet = offerWorkbook.getOfferSheet();
+    const offerTable = offerSheet.getOfferTable();
+
+      for (let index = 0; index < offers.length; index++) {
+        const offer = offers[index];
+        const offerRow = new OfferRow(new JSONArray());
         const title = offerTitleBuilder(offer);
         const description = offerDescriptionBuilder(offer);
 
@@ -47,25 +45,18 @@ export class OfferSheetConverter {
           offerRow.setExpiresAt(offer.expiresAt.toISOString());
         }
         offerTable.addRow(offerRow);
-      });
-    }
-
-    const offerSheet = new OfferSheet();
-    offerSheet.addOfferTable(offerTable);
-
-    const offerWorkbook = new OfferWorkbook();
-    offerWorkbook.addOfferSheet(offerSheet);
+      }
 
     if (skip! >= 0 && take! > 0) {
-      offerWorkbook.metadata = new JSONObject({
+      offerWorkbook.setMetadata(new JSONObject({
         organization_id: organizationId,
         skip,
         take,
-      });
+      }));
     } else {
-      offerWorkbook.metadata = new JSONObject({
+      offerWorkbook.setMetadata(new JSONObject({
         organization_id: organizationId,
-      });
+      }));
     }
 
     return offerWorkbook;

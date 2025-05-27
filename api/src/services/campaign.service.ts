@@ -413,6 +413,7 @@ export class CampaignService {
       this.logger.info('END: fetchCampaignsSummary service');
       return this.campaignSummarySheetConverter.convert(
         campaignSummaryMv,
+        couponId,
         count,
         skip,
         take,
@@ -454,7 +455,7 @@ export class CampaignService {
       }
 
       this.logger.info('END: fetchCampaignSummary service');
-      return this.campaignSummarySheetConverter.convert(campaignSummaryMv);
+      return this.campaignSummarySheetConverter.convert(campaignSummaryMv, couponId);
     } catch (error) {
       this.logger.error(
         `Error in fetchCampaignSummary: ${error.message}`,

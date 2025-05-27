@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { JSONObject } from '@org.quicko/core';
+import { JSONArray, JSONObject } from '@org-quicko/core';
 import {
   CouponSummaryRow,
-  CouponSummarySheet,
-  CouponSummaryTable,
   CouponSummaryWorkbook,
 } from 'generated/sources/coupon_summary_workbook';
 import { CouponSummaryMv } from '../entities/coupon-summary.view';
@@ -14,10 +12,16 @@ export class CouponSummarySheetConverter {
     couponSummaryMv: CouponSummaryMv[],
     organizationId: string,
   ): CouponSummaryWorkbook {
-    const couponSummaryTable = new CouponSummaryTable();
 
-    couponSummaryMv.map((couponSummary) => {
-      const couponSummaryRow = new CouponSummaryRow([]);
+    const couponSummaryWorkbook = new CouponSummaryWorkbook();
+
+    const couponSummarySheet = couponSummaryWorkbook.getCouponSummarySheet();
+
+    const couponSummaryTable = couponSummarySheet.getCouponSummaryTable();
+
+    for (let index = 0; index < couponSummaryMv.length; index++) {
+      const couponSummary = couponSummaryMv[index];
+      const couponSummaryRow = new CouponSummaryRow(new JSONArray());
       couponSummaryRow.setCouponId(couponSummary.couponId);
       couponSummaryRow.setTotalRedemptionCount(
         couponSummary.totalRedemptionCount,
@@ -38,17 +42,11 @@ export class CouponSummarySheetConverter {
       couponSummaryRow.setUpdatedAt(couponSummary.updatedAt.toISOString());
 
       couponSummaryTable.addRow(couponSummaryRow);
-    });
+    };
 
-    const couponSummarySheet = new CouponSummarySheet();
-    couponSummarySheet.addCouponSummaryTable(couponSummaryTable);
-
-    const couponSummaryWorkbook = new CouponSummaryWorkbook();
-    couponSummaryWorkbook.addCouponSummarySheet(couponSummarySheet);
-
-    couponSummaryWorkbook.metadata = new JSONObject({
+    couponSummaryWorkbook.setMetadata(new JSONObject({
       organization_id: organizationId,
-    });
+    }));
 
     return couponSummaryWorkbook;
   }

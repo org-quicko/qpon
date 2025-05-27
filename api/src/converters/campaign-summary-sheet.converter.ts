@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { JSONObject } from '@org.quicko/core';
+import { JSONArray, JSONObject } from '@org-quicko/core';
 import {
   CampaignSummaryRow,
-  CampaignSummarySheet,
-  CampaignSummaryTable,
   CampaignSummaryWorkbook,
 } from 'generated/sources/campaign_summary_workbook';
 import { CampaignSummaryMv } from '../entities/campaign-summary.view';
@@ -12,48 +10,51 @@ import { CampaignSummaryMv } from '../entities/campaign-summary.view';
 export class CampaignSummarySheetConverter {
   convert(
     campaignSummaryMv: CampaignSummaryMv[],
+    couponId: string,
     count?: number,
     skip?: number,
     take?: number,
   ): CampaignSummaryWorkbook {
-    const campaignSummaryTable = new CampaignSummaryTable();
+    const campaignSummaryWorkbook = new CampaignSummaryWorkbook();
 
-    campaignSummaryMv.map((campaignSummary) => {
-      const campaignSummaryRow = new CampaignSummaryRow([]);
-      campaignSummaryRow.setCampaignId(campaignSummary.campaignId);
-      campaignSummaryRow.setName(campaignSummary.name);
-      campaignSummaryRow.setBudget(campaignSummary.budget);
+    const campaignSummarySheet =
+      campaignSummaryWorkbook.getCampaignSummarySheet();
+
+    const campaignSummaryTable = campaignSummarySheet.getCampaignSummaryTable();
+
+    for (let index = 0; index < campaignSummaryMv.length; index++) {
+      const campaignSummaryRow = new CampaignSummaryRow(new JSONArray());
+      campaignSummaryRow.setCampaignId(campaignSummaryMv[index].campaignId);
+      campaignSummaryRow.setName(campaignSummaryMv[index].name);
+      campaignSummaryRow.setBudget(campaignSummaryMv[index].budget);
       campaignSummaryRow.setTotalRedemptionCount(
-        campaignSummary.totalRedemptionCount,
+        campaignSummaryMv[index].totalRedemptionCount,
       );
       campaignSummaryRow.setTotalRedemptionAmount(
-        campaignSummary.totalRedemptionAmount,
+        campaignSummaryMv[index].totalRedemptionAmount,
       );
       campaignSummaryRow.setActiveCouponCodeCount(
-        campaignSummary.activeCouponCodeCount,
+        campaignSummaryMv[index].activeCouponCodeCount,
       );
-      campaignSummaryRow.setStatus(campaignSummary.status);
-      campaignSummaryRow.setCreatedAt(campaignSummary.createdAt.toISOString());
-      campaignSummaryRow.setUpdatedAt(campaignSummary.updatedAt.toISOString());
+      campaignSummaryRow.setStatus(campaignSummaryMv[index].status);
+      campaignSummaryRow.setCreatedAt(
+        campaignSummaryMv[index].createdAt.toISOString(),
+      );
+      campaignSummaryRow.setUpdatedAt(
+        campaignSummaryMv[index].updatedAt.toISOString(),
+      );
 
       campaignSummaryTable.addRow(campaignSummaryRow);
-    });
+    }
 
-    const campaignSummarySheet = new CampaignSummarySheet();
-    campaignSummarySheet.addCampaignSummaryTable(campaignSummaryTable);
-
-    const campaignSummaryWorkbook = new CampaignSummaryWorkbook();
-    campaignSummaryWorkbook.addCampaignSummarySheet(campaignSummarySheet);
-
-    if (campaignSummaryMv.length > 0) {
-      campaignSummaryTable.metadata = new JSONObject({
-        organization_id: campaignSummaryMv[0]?.organizationId,
-        coupon_id: campaignSummaryMv[0].couponId,
+    campaignSummaryTable.setMetadata(
+      new JSONObject({
+        coupon_id: couponId,
         count: count,
         skip: skip,
         take: take,
-      });
-    }
+      }),
+    );
 
     return campaignSummaryWorkbook;
   }

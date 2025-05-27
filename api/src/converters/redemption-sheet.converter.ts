@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { JSONObject } from '@org.quicko/core';
+import { JSONArray, JSONObject } from '@org-quicko/core';
 import { Redemption } from '../entities/redemption.entity';
 import {
   RedemptionRow,
-  RedemptionSheet,
-  RedemptionTable,
   RedemptionWorkbook,
 } from 'generated/sources/redemption_workbook';
 
@@ -17,10 +15,13 @@ export class RedemptionSheetConverter {
     skip?: number,
     take?: number,
   ): RedemptionWorkbook {
-    const redemptionTable = new RedemptionTable();
+    const redemptionWorkbook = new RedemptionWorkbook();
+    const redemptionSheet = redemptionWorkbook.getRedemptionSheet();
+    const redemptionTable = redemptionSheet.getRedemptionTable();
 
-    redemptions.map((redemption) => {
-      const redemptionRow = new RedemptionRow([]);
+    for (let index = 0; index < redemptions.length; index++) {
+      const redemption = redemptions[index];
+      const redemptionRow = new RedemptionRow(new JSONArray());
       redemptionRow.setRedemptionId(redemption.redemptionId);
       redemptionRow.setCouponCodeId(redemption.couponCode.couponCodeId);
       redemptionRow.setCouponCode(redemption.couponCode.code);
@@ -31,23 +32,17 @@ export class RedemptionSheetConverter {
       redemptionRow.setRedeemedAt(redemption.createdAt.toISOString());
       redemptionRow.setExternalId(redemption.externalId);
       redemptionTable.addRow(redemptionRow);
-    });
+    };
 
-    const redemptionSheet = new RedemptionSheet();
-    redemptionSheet.addRedemptionTable(redemptionTable);
-
-    const redemptionWorkbook = new RedemptionWorkbook();
-    redemptionWorkbook.addRedemptionSheet(redemptionSheet);
-
-    redemptionWorkbook.metadata = new JSONObject({
+    redemptionWorkbook.setMetadata(new JSONObject({
       organization_id: organizationId,
-    });
+    }));
 
-    redemptionTable.metadata = new JSONObject({
+    redemptionTable.setMetadata(new JSONObject({
       count: count,
       skip: skip,
       take: take,
-    });
+    }));
 
     return redemptionWorkbook;
   }
