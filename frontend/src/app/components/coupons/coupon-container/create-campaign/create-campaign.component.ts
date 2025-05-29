@@ -56,12 +56,14 @@ export class CreateCampaignComponent implements OnInit {
     effect(() => {
       if (this.isNextClicked()) {
         this.couponCodeStore.setOnNext();
+        
+        if(this.budgetConstraintFormControl.getRawValue() == 'limited' && !this.createCampaignForm.get('budget')?.value) {
+          this.createCampaignForm.controls['budget'].setErrors({ required: true });
+        }
+        
+        this.createCampaignForm.markAllAsTouched();
 
         if (this.createCampaignForm.invalid) {
-          this.createCampaignForm.markAllAsTouched();
-          if(this.createCampaignForm.controls['budget'].hasError('min')) {
-            this.snackbarService.openSnackBar('Budget amount should be greater than 0', undefined);
-          }
           return;
         }
 
@@ -105,6 +107,11 @@ export class CreateCampaignComponent implements OnInit {
         this.createCampaignForm.controls['budget'].setValidators([
           Validators.min(0),
         ]);
+        this.createCampaignForm.controls['budget'].updateValueAndValidity();
+      } else {
+        this.createCampaignForm.controls['budget'].clearValidators();
+        this.createCampaignForm.controls['budget'].setErrors(null);
+        this.createCampaignForm.controls['budget'].updateValueAndValidity();
       }
     });
   }

@@ -142,25 +142,7 @@ export class OffersService {
 
       const eligibleOffers: Offer[] = [];
 
-      for (const offer of allOffers) {
-        let redemptionCount: number | null = null;
-
-        if(relevantCustomer && offer.maxRedemptionPerCustomer > 0) {
-          redemptionCount = await this.redemptionRepository.count({
-            where: {
-              couponCode: {
-                couponCodeId: offer.couponCodeId,
-              },
-              customer: {
-                customerId: relevantCustomer.customerId,
-              },
-              organization: {
-                organizationId,
-              },
-            },
-          });
-        }
-        
+      for (const offer of allOffers) {        
         let isOfferEligible = false;
         let finalItemId: string | undefined;
         let finalExternalItemId: string | undefined;
@@ -173,11 +155,6 @@ export class OffersService {
           offer.itemConstraint === itemConstraintEnum.ALL &&
           offer.customerConstraint === customerConstraintEnum.ALL
         ) {
-          if (externalCustomerId && redemptionCount && redemptionCount >= offer.maxRedemptionPerCustomer) {
-            isOfferEligible = false;
-            continue;
-          }
-
           isOfferEligible = true;
         }
         // Condition 2: ALL item, SPECIFIC customer
@@ -188,10 +165,6 @@ export class OffersService {
         ) {
   
           if (customerCouponCodeSet.has(`${offer.couponCodeId}-${relevantCustomer.customerId}`)) {
-            if(redemptionCount && redemptionCount >= offer.maxRedemptionPerCustomer) {
-              isOfferEligible = false;
-              continue;
-            }
             isOfferEligible = true;
             finalCustomerId = relevantCustomer.customerId;
             finalExternalCustomerId = relevantCustomer.externalId;

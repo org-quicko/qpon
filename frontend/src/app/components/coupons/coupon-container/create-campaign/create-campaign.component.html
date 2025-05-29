@@ -75,23 +75,30 @@
       </mat-radio-button>
     </mat-radio-group>
     @if(budgetConstraintFormControl.value == 'limited') {
-      <div
-            class="flex items-center gap-[10px] w-full border rounded-[4px] h-[56px] border-outline-variant"
-          >
-            <div class="h-[48px] w-[48px] flex justify-center items-center">
-              <span class="text-on-surface-variant mat-body-large"
-                >{{ getCurrencySymbolOnly(organization()?.currency!) }}</span
-              >
+      <div class="flex flex-col gap-1">
+        <div
+              class="flex items-center gap-[10px] w-full border rounded-[4px] h-[56px] border-outline-variant"
+            >
+              <div class="h-[48px] w-[48px] flex justify-center items-center">
+                <span class="text-on-surface-variant mat-body-large"
+                  >{{ getCurrencySymbolOnly(organization()?.currency!) }}</span
+                >
+              </div>
+              <input
+                matInput
+                type="number"
+                min="0"
+                formControlName="budget"
+                class="focus:outline-none align-middle py-[4px] w-full mat-body-large placeholder:text-on-surface-variant text-on-surface"
+                placeholder="Budget amount"
+              />
             </div>
-            <input
-              matInput
-              type="number"
-              min="0"
-              formControlName="budget"
-              class="focus:outline-none align-middle py-[4px] w-full mat-body-large placeholder:text-on-surface-variant text-on-surface"
-              placeholder="Budget amount"
-            />
-          </div>
+            @if(createCampaignForm.controls['budget'].hasError('min')) {
+              <mat-error>Budget amount should be greater than 0</mat-error>
+            } @else if (budgetConstraintFormControl.getRawValue() === 'limited' &&  createCampaignForm.controls['budget'].hasError('required')) {
+              <mat-error>Budget amount is required for limited budget</mat-error>
+            }
+      </div>
     }
   </form>
 </div>

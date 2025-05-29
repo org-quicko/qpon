@@ -56,10 +56,10 @@ export class CreateCouponComponent implements OnInit {
 
     effect(() => {
       if (this.isNextClicked()) {
+        this.couponFormGroup.markAllAsTouched();
         this.couponCodeStore.setOnNext();
 
         if(this.couponFormGroup.invalid) {
-          this.snackbarService.openSnackBar('Please fill all the required fields', undefined);
           return;
         }
 
@@ -89,18 +89,6 @@ export class CreateCouponComponent implements OnInit {
   }
 
   createCoupon() {
-
-    if(this.couponFormGroup.invalid) {
-      if(this.couponFormGroup.controls['discountValue'].hasError('max')) {
-        this.snackbarService.openSnackBar('Value should be between 0 to 100', undefined);
-      }
-
-      if(this.couponFormGroup.controls['discountValue'].hasError('min')) {
-        this.snackbarService.openSnackBar('Value should be greater than 0', undefined);
-      }
-      return;
-    }
-
     const coupon = new CreateCouponDto();
     coupon.name = this.couponFormGroup.value['name'];
     coupon.discountType =
