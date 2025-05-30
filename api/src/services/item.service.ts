@@ -226,6 +226,21 @@ export class ItemsService {
         throw new NotFoundException('Item not found');
       }
 
+        if (body.name) {
+        const existingItem = await this.itemsRepository
+          .createQueryBuilder('item')
+          .where(`LOWER(item.name) = LOWER(:name) AND status = 'active' AND item_id != :itemId`, {
+            name: body.name,
+            itemId,
+          })
+          .getOne();
+
+        if (existingItem) {
+          this.logger.warn('Item with same name exists');
+          throw new ConflictException('Item with same name exists');
+        }
+      }
+
       await this.itemsRepository.update({ itemId }, body);
 
       const savedItem = await this.itemsRepository.findOne({
