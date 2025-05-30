@@ -1,6 +1,8 @@
 {
   "name": "frontend",
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Web app for Qpon",
+  "author": "Quicko <developer@quicko.org.in>",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,8 +11,7 @@
     "test": "ng test",
     "generate": "npm run generateSchema && npm run generateObjects",
     "generateSchema": "excel-to-schema --input ./resources/excel/ --output ./src/generated/schemas/",
-    "generateObjects": "schema-to-objects --input ./src/generated/schemas/ --output ./src/generated/sources",
-    "install-snapshot": "npm --userconfig ~/npmrc/snapshot.npmrc install"
+    "generateObjects": "schema-to-objects --input ./src/generated/schemas/ --output ./src/generated/sources"
   },
   "private": true,
   "dependencies": {
@@ -32,8 +33,7 @@
     "@material/material-color-utilities": "^0.3.0",
     "@ngrx/operators": "^19.0.1",
     "@ngrx/signals": "^19.0.1",
-    "@org.quicko/ngx-core": "^8.0.0-beta.0",
-    "@org.quicko/ngx-sheet-core": "^6.0.4",
+    "@org-quicko/sheet": "^1.0.0",
     "@rxweb/reactive-form-validators": "^13.0.1",
     "@tailwindcss/postcss": "^4.0.14",
     "class-transformer": "^0.5.1",
@@ -53,7 +53,7 @@
     "@angular-devkit/build-angular": "^19.2.3",
     "@angular/cli": "^19.2.3",
     "@angular/compiler-cli": "^19.2.0",
-    "@org.quicko/ngx-sheet-generator": "^6.0.2",
+    "@org-quicko/sheet-generator": "^1.0.0",
     "@types/jasmine": "~5.1.0",
     "jasmine-core": "~5.6.0",
     "karma": "~6.4.0",
@@ -62,11 +62,5 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.7.2"
-  },
-  "overrides": {
-    "@org.quicko/ngx-sheet-core": {
-      "@angular/common": "^19.2.2",
-      "@angular/core": "^19.2.0"
-    }
   }
 }

@@ -4,7 +4,6 @@ FROM node:22-alpine as frontend-builder
 WORKDIR /app/frontend
 
 COPY frontend/package*.json ./
-COPY frontend/.npmrc ./
 RUN npm install --legacy-peer-deps
 
 COPY frontend .
@@ -15,7 +14,6 @@ RUN npm run build
 FROM node:22-alpine as backend-builder
 WORKDIR /app/backend
 COPY api/package*.json ./
-COPY api/.npmrc ./
 RUN npm install
 COPY api .
 RUN npm run generate

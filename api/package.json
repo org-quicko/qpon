@@ -1,8 +1,8 @@
 {
   "name": "api",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "version": "1.0.0",
+  "description": "Backend API for Qpon",
+  "author": "Quicko <developer@quicko.org.in>",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -26,8 +26,7 @@
     "db:generate": "npm run build && node ./node_modules/typeorm/cli.js migration:generate --dataSource ./dist/db/data-source.js",
     "db:migration-run": "npm run typeorm -- migration:run",
     "db:fake-migration-run": "npm run typeorm -- migration:run --fake",
-    "typeorm": "npm run build && node ./node_modules/typeorm/cli.js --dataSource ./dist/db/data-source.js",
-    "install-snapshot": "npm --userconfig ~/npmrc/snapshot.npmrc install"
+    "typeorm": "npm run build && node ./node_modules/typeorm/cli.js --dataSource ./dist/db/data-source.js"
   },
   "dependencies": {
     "@casl/ability": "^6.7.3",
@@ -40,7 +39,7 @@
     "@nestjs/serve-static": "^5.0.3",
     "@nestjs/swagger": "^11.0.6",
     "@nestjs/typeorm": "^11.0.0",
-    "@org.quicko/core": "^8.1.0-alpha.1",
+    "@org-quicko/core": "^1.0.3",
     "bcryptjs": "^3.0.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
@@ -61,7 +60,7 @@
     "@nestjs/cli": "^11.0.0",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.1",
-    "@org.quicko/sheet-generator": "^6.0.2",
+    "@org-quicko/sheet-generator": "^1.0.0",
     "@swc/cli": "^0.6.0",
     "@swc/core": "^1.10.7",
     "@types/bcryptjs": "^2.4.6",
