@@ -22,6 +22,7 @@
     "generateSchema": "excel-to-schema --input ./resources/excel/ --output ./generated/schemas/",
     "generateObjects": "schema-to-objects --input ./generated/schemas/ --output ./generated/sources",
     "db:fake-migrate": "npm run db:generate && npm run db:fake-migration-run",
+    "db:migration-create": "npm run build && node ./node_modules/typeorm/cli.js migration:create",
     "db:migrate": "npm run db:generate && npm run db:migration-run",
     "db:generate": "npm run build && node ./node_modules/typeorm/cli.js migration:generate --dataSource ./dist/db/data-source.js",
     "db:migration-run": "npm run typeorm -- migration:run",
