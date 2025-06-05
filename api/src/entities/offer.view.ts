@@ -14,7 +14,7 @@ import { ViewColumn, ViewEntity } from 'typeorm';
           c.organization_id,
           c.coupon_id,
           camp.campaign_id,
-          ccc.coupon_code_id,
+          cc.coupon_code_id,
           cc.code,
           c.discount_type,
           c.discount_value,
