@@ -1,0 +1,58 @@
+{
+  "name": "@org-quicko/qpon-client",
+  "version": "1.0.0-alpha.0",
+  "description": "Library to access Qpon APIs",
+  "author": "Quicko <developer@quicko.org.in>",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "clean": "npm cache clean -force",
+    "lint": "eslint --fix .",
+    "prebuild": "rm -rf dist && eslint .",
+    "build": "tsc --build",
+    "test-createCoupon": "set NODE_ENV=local && ts-node ./tests/coupon/createCoupon.test.ts",
+    "test-getAllCoupons": "set NODE_ENV=local && ts-node ./tests/coupon/getAllCoupons.test.ts",
+    "test-fetchOffers": "set NODE_ENV=local && ts-node ./tests/offer/fetchOffers.test.ts",
+    "test-fetchOffer": "set NODE_ENV=local && ts-node ./tests/offer/fetchOffer.test.ts",
+    "test-redeemCouponCode": "set NODE_ENV=local && ts-node ./tests/redemption/redeemCouponCode.test.ts",
+    "test-upsertItem": "set NODE_ENV=local && ts-node ./tests/item/upsertItem.test.ts",
+    "test-upsertCustomer": "set NODE_ENV=local && ts-node ./tests/customer/upsertCustomer.test.ts"
+  },
+  "license": "ISC",
+  "files": [
+    "dist/*"
+  ],
+  "directories": {
+    "lib": "./dist"
+  },
+  "engines": {
+    "node": ">=12"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@org-quicko/qpon-core": "^1.0.0",
+    "@org-quicko/qpon-sheet-core": "^1.0.0",
+    "@org-quicko/core": "^1.1.0",
+    "@org-quicko/sheet": "^1.0.1",
+    "axios": "^1.7.7",
+    "class-transformer": "^0.5.1",
+    "dotenv": "^16.4.5",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.5",
+    "@types/jsdom": "^16.2.7",
+    "@types/node": "^22.7.0",
+    "@typescript-eslint/eslint-plugin": "^8.33.1",
+    "@typescript-eslint/parser": "^8.33.1",
+    "esbuild-plugin-eslint": "^0.3.7",
+    "eslint": "^9.28.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-import-resolver-typescript": "^3.7.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.6.2"
+  }
+}
