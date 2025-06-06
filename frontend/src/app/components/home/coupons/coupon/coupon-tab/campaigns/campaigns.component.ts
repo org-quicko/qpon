@@ -16,7 +16,7 @@ import { CouponStore } from '../../store/coupon.store';
 import { CouponDto } from '../../../../../../../dtos/coupon.dto';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { CampaignSummaryRow } from '../../../../../../../generated/sources/campaign_summary_workbook';
+import { CampaignSummaryRow } from '@org-quicko/qpon-sheet-core/campaign_summary_workbook/beans';
 import { MatInputModule } from '@angular/material/input';
 import { CustomDatePipe } from '../../../../../../pipe/date.pipe';
 import {

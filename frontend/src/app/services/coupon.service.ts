@@ -5,7 +5,7 @@ import { ApiResponse } from '../../dtos/api-response.dto';
 import { PaginatedList } from '../../dtos/paginated-list.dto';
 import { CouponDto, CreateCouponDto, UpdateCouponDto } from '../../dtos/coupon.dto';
 import { CouponFilter } from '../types/coupon-filter.interface';
-import { CouponSummaryWorkbook } from '../../generated/sources/coupon_summary_workbook';
+import { CouponSummaryWorkbook } from '@org-quicko/qpon-sheet-core/coupon_summary_workbook/beans';;
 import { sortOrderEnum } from '../../enums';
 
 @Injectable({

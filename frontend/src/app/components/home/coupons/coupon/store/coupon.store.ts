@@ -4,7 +4,7 @@ import {
   CouponSummarySheet,
   CouponSummaryTable,
   CouponSummaryWorkbook,
-} from '../../../../../../generated/sources/coupon_summary_workbook';
+} from '@org-quicko/qpon-sheet-core/coupon_summary_workbook/beans';
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { EventEmitter, inject } from '@angular/core';
 import { CouponService } from '../../../../../services/coupon.service';
@@ -39,7 +39,7 @@ const initialState: CouponState = {
     isLoading: false,
   },
   couponStatistics: {
-    data: null,
+    data: new CouponSummaryWorkbook().getCouponSummarySheet().getCouponSummaryTable(),
     isLoading: false,
   },
 };

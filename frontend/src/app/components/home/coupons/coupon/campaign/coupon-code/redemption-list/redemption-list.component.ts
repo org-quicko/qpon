@@ -9,7 +9,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { RedemptionRow } from '../../../../../../../../generated/sources/redemption_workbook';
+import { RedemptionRow } from '@org-quicko/qpon-sheet-core/redemption_workbook/beans';
 import { RedemptionsStore } from './store/redemptions.store';
 import { ActivatedRoute, Params } from '@angular/router';
 import { OrganizationStore } from '../../../../../../../store/organization.store';

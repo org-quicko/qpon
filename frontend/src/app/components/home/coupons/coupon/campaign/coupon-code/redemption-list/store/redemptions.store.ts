@@ -2,7 +2,7 @@ import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import {
   RedemptionRow,
   RedemptionWorkbook,
-} from '../../../../../../../../../generated/sources/redemption_workbook';
+} from '@org-quicko/qpon-sheet-core/redemption_workbook/beans';
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { inject } from '@angular/core';
 import { RedemptionsService } from '../../../../../../../../services/redemptions.service';

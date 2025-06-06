@@ -1,5 +1,5 @@
 import { Component, inject, Input, OnInit, Signal } from '@angular/core';
-import { CampaignSummaryRow } from '../../../../../../../generated/sources/campaign_summary_workbook';
+import { CampaignSummaryRow } from '@org-quicko/qpon-sheet-core/campaign_summary_workbook/beans';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';

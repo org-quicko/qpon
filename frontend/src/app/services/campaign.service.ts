@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { ApiResponse } from '../../dtos/api-response.dto';
-import { CampaignSummaryWorkbook } from '../../generated/sources/campaign_summary_workbook';
+import { CampaignSummaryWorkbook } from '@org-quicko/qpon-sheet-core/campaign_summary_workbook/beans';;
 import {
   CampaignDto,
   CreateCampaignDto,

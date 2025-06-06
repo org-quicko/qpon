@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import {
   AbilityBuilder,
   createMongoAbility,
@@ -26,13 +27,13 @@ import {
   CreateCouponItemDto,
   UpdateCouponItemDto,
 } from '../../dtos/coupon-item.dto';
-import { CampaignSummaryRow } from '../../generated/sources/campaign_summary_workbook';
+import { CampaignSummaryRow } from '@org-quicko/qpon-sheet-core/campaign_summary_workbook/beans';
 import {
   CampaignDto,
   CreateCampaignDto,
   UpdateCampaignDto,
 } from '../../dtos/campaign.dto';
-import { CouponSummaryRow } from '../../generated/sources/coupon_summary_workbook';
+import { CouponSummaryRow } from '@org-quicko/qpon-sheet-core/coupon_summary_workbook/beans';
 import {
   CouponCodeDto,
   CreateCouponCodeDto,
@@ -43,7 +44,7 @@ import {
   CustomerCouponCodeDto,
   UpdateCustomerCouponCodeDto,
 } from '../../dtos/customer-coupon-code.dto';
-import { RedemptionRow } from '../../generated/sources/redemption_workbook';
+import { RedemptionRow } from '@org-quicko/qpon-sheet-core/redemption_workbook/beans';
 import { actionsType } from '../types/actions';
 import { roleEnum } from '../../enums';
 import { CreateUserDto, UserDto } from '../../dtos/user.dto';

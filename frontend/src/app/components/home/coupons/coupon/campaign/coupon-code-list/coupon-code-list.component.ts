@@ -41,7 +41,7 @@ import { FilterDialogComponent } from './filter-dialog/filter-dialog.component';
 import { FiltersStore } from '../../../../../../store/filters.store';
 import { CouponCodeFilter } from '../../../../../../types/coupon-code-filter.interface';
 import { PaginationOptions } from '../../../../../../types/PaginatedOptions';
-import { CampaignSummaryRow } from '../../../../../../../generated/sources/campaign_summary_workbook';
+import { CampaignSummaryRow } from '@org-quicko/qpon-sheet-core/campaign_summary_workbook/beans';
 import { InactiveMessageDialogComponent } from '../../../../common/inactive-message-dialog/inactive-message-dialog.component';
 import { NotAllowedDialogBoxComponent } from '../../../../../common/not-allowed-dialog-box/not-allowed-dialog-box.component';
 import { UserAbility, UserAbilityTuple } from '../../../../../../permissions/ability';

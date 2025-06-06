@@ -16,7 +16,8 @@
     "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
-    "module": "ES2022"
+    "module": "ES2022",
+    "types": ["reflect-metadata"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

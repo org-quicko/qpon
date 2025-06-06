@@ -1,6 +1,6 @@
 import { Component, inject, Input, OnInit, Signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { CampaignSummaryRow } from '../../../../../../../generated/sources/campaign_summary_workbook';
+import { CampaignSummaryRow } from '@org-quicko/qpon-sheet-core/campaign_summary_workbook/beans';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { CurrencyPipe } from '@angular/common';
 import { OrganizationStore } from '../../../../../../store/organization.store';

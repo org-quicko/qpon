@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ApiResponse } from '../../dtos/api-response.dto';
-import { RedemptionWorkbook } from '../../generated/sources/redemption_workbook';
+import { RedemptionWorkbook } from '@org-quicko/qpon-sheet-core/redemption_workbook/beans';;
 import { sortOrderEnum } from '../../enums';
 
 @Injectable({

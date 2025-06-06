@@ -9,7 +9,7 @@ import { CampaignService } from '../../../../../../../services/campaign.service'
 import {
   CampaignSummaryRow,
   CampaignSummaryWorkbook,
-} from '../../../../../../../../generated/sources/campaign_summary_workbook';
+} from "@org-quicko/qpon-sheet-core/campaign_summary_workbook/beans";
 import { campaignStatusEnum, sortOrderEnum, statusEnum } from '../../../../../../../../enums';
 import { HttpErrorResponse } from '@angular/common/http';
 

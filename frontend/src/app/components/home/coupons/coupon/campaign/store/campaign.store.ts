@@ -1,5 +1,5 @@
 import { patchState, signalStore, withMethods, withState } from "@ngrx/signals";
-import { CampaignSummaryRow, CampaignSummaryWorkbook } from "../../../../../../../generated/sources/campaign_summary_workbook";
+import { CampaignSummaryRow, CampaignSummaryWorkbook } from "@org-quicko/qpon-sheet-core/campaign_summary_workbook/beans";
 import { withDevtools } from "@angular-architects/ngrx-toolkit";
 import { EventEmitter, inject } from "@angular/core";
 import { CampaignService } from "../../../../../../services/campaign.service";
