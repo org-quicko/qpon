@@ -4,7 +4,7 @@ import {
   RedemptionReportSheet,
   RedemptionReportTable,
   RedemptionReportWorkbook,
-} from 'generated/sources/redemption_report_workbook';
+} from '@org-quicko/qpon-sheet-core/redemption_report_workbook/beans';
 import { Redemption } from '../entities/redemption.entity';
 import { formatDate } from '../utils/date.utils';
 

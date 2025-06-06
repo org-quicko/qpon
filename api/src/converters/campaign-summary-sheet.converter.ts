@@ -3,7 +3,7 @@ import { JSONArray, JSONObject } from '@org-quicko/core';
 import {
   CampaignSummaryRow,
   CampaignSummaryWorkbook,
-} from 'generated/sources/campaign_summary_workbook';
+} from '@org-quicko/qpon-sheet-core/campaign_summary_workbook/beans';
 import { CampaignSummaryMv } from '../entities/campaign-summary.view';
 
 @Injectable()

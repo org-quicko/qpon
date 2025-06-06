@@ -3,7 +3,7 @@ import { JSONArray, JSONObject } from '@org-quicko/core';
 import {
   CouponSummaryRow,
   CouponSummaryWorkbook,
-} from 'generated/sources/coupon_summary_workbook';
+} from '@org-quicko/qpon-sheet-core/coupon_summary_workbook/beans';
 import { CouponSummaryMv } from '../entities/coupon-summary.view';
 
 @Injectable()

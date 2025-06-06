@@ -41,7 +41,7 @@ import { CampaignSummaryMv } from '../entities/campaign-summary.view';
 import { RedemptionSheetConverter } from '../converters/redemption-sheet.converter';
 import { getStartEndDate } from '../utils/date.utils';
 import { RedemptionReportSheetConverter } from '../converters/redemption-report-sheet.converter';
-import { RedemptionReportWorkbook } from 'generated/sources/redemption_report_workbook';
+import { RedemptionReportWorkbook } from '@org-quicko/qpon-sheet-core/redemption_report_workbook/beans';
 
 @Injectable()
 export class RedemptionsService {

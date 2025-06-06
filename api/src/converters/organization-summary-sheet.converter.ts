@@ -4,7 +4,7 @@ import {
   OrganizationSummarySheet,
   OrganizationSummaryTable,
   OrganizationSummaryWorkbook,
-} from 'generated/sources/organization_summary_workbook';
+} from '@org-quicko/qpon-sheet-core/organization_summary_workbook/beans';
 import { OrganizationSummaryMv } from '../entities/organization-summary.view';
 
 @Injectable()

@@ -4,7 +4,7 @@ import { Redemption } from '../entities/redemption.entity';
 import {
   RedemptionRow,
   RedemptionWorkbook,
-} from 'generated/sources/redemption_workbook';
+} from '@org-quicko/qpon-sheet-core/redemption_workbook/beans';
 
 @Injectable()
 export class RedemptionSheetConverter {

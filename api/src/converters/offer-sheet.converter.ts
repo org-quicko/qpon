@@ -3,7 +3,7 @@ import { JSONArray, JSONObject } from '@org-quicko/core';
 import {
   OfferRow,
   OfferWorkbook,
-} from 'generated/sources/offer_workbook';
+} from '@org-quicko/qpon-sheet-core/offer_workbook/beans';
 import { Offer } from '../entities/offer.view';
 import { offerDescriptionBuilder } from '../utils/offer-description.builder';
 import { offerTitleBuilder } from '../utils/offer-title.builder';
@@ -20,7 +20,7 @@ export class OfferSheetConverter {
 
     const offerSheet = offerWorkbook.getOfferSheet();
     const offerTable = offerSheet.getOfferTable();
-
+    
       for (let index = 0; index < offers.length; index++) {
         const offer = offers[index];
         const offerRow = new OfferRow(new JSONArray());

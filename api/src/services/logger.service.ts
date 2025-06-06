@@ -1,5 +1,5 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { ConsoleLoggerProvider, LoggerFactory } from '@org-quicko/core';
+import { LoggerFactory, LoggingLevel } from '@org-quicko/core';
 import * as winston from 'winston';
 
 @Injectable()
@@ -8,22 +8,12 @@ export class LoggerService implements OnModuleInit {
 
   private loggerName = 'logger';
 
-  async onModuleInit() {
-    this.logger = await this.getLogger();
+  onModuleInit() {
+    this.logger = this.getLogger();
   }
 
-  private async getLogger() {
-    const existingLogger = LoggerFactory.getLogger(this.loggerName);
-    if (existingLogger) {
-      return existingLogger;
-    }
-
-    const loggerProvider = new ConsoleLoggerProvider();
-
-    const newLogger = await loggerProvider.createLogger();
-    LoggerFactory.setLogger(this.loggerName, newLogger);
-
-    return newLogger;
+  private getLogger() {
+    return LoggerFactory.createLogger(this.loggerName, LoggingLevel.info)
   }
 
   public info(message: string, meta?: any) {

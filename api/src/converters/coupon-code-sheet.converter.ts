@@ -3,7 +3,7 @@ import { JSONArray, JSONObject } from '@org-quicko/core';
 import {
   CouponCodeRow,
   CouponCodeWorkbook,
-} from 'generated/sources/coupon_code_workbook';
+} from '@org-quicko/qpon-sheet-core/coupon_code_workbook/beans';
 import { CouponCode } from '../entities/coupon-code.entity';
 
 @Injectable()
