@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 import { Expose } from "class-transformer";
 import { IsArray, IsNumber, IsOptional, ValidateNested } from "class-validator";
 
