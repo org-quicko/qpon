@@ -25,15 +25,15 @@ export class AuthService {
       const entity = await this.validateEntity(body);
 
       if (!entity) {
-        this.logger.warn('User not found');
-        throw new UnauthorizedException('User not found');
+        this.logger.warn('Invalid credentials');
+        throw new UnauthorizedException('Invalid credentials');
       }
 
       this.logger.info('END: authenticate service');
       return await this.login(entity);
     } catch (error) {
       this.logger.error(
-        `Error in authenticate service: ${error.message}`,
+        `Error in authenticate service:`,
         error,
       );
 

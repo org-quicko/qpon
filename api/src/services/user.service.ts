@@ -97,7 +97,7 @@ export class UserService {
         this.logger.info('END: createUser service');
         return this.userConverter.convert(savedUser, saveOrgUser);
       } catch (error) {
-        this.logger.error(`Error in createUser: ${error.message}`, error);
+        this.logger.error(`Error in createUser:`, error);
 
         if (error instanceof ConflictException) {
           throw error;
@@ -160,7 +160,7 @@ export class UserService {
       );
     } catch (error) {
       this.logger.error(
-        `Error in fetchUsersOfAnOrganization: ${error.message}`,
+        `Error in fetchUsersOfAnOrganization:`,
         error,
       );
 
@@ -212,7 +212,7 @@ export class UserService {
       this.logger.info('END: fetchUsers service');
       return this.userListConverter.convert(users, count, skip, take);
     } catch (error) {
-      this.logger.error(`Error in fetchUsers: ${error.message}`, error);
+      this.logger.error(`Error in fetchUsers:`, error);
 
       throw new HttpException(
         'Failed to fetch users',
@@ -263,7 +263,7 @@ export class UserService {
       this.logger.info('END: updateUser service');
       return this.userConverter.convert(savedUser!);
     } catch (error) {
-      this.logger.error(`Error in updateUser: ${error.message}`, error);
+      this.logger.error(`Error in updateUser:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -331,7 +331,7 @@ export class UserService {
       this.logger.info('END: updateUserRole service');
       return this.userConverter.convert(updatedOrgUser!.user, updatedOrgUser!);
     } catch (error) {
-      this.logger.error(`Error in updateUserRole: ${error.message}`, error);
+      this.logger.error(`Error in updateUserRole: `, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -371,7 +371,7 @@ export class UserService {
       this.logger.info('END: deleteUser service');
       return this.userConverter.convert(user);
     } catch (error) {
-      this.logger.error(`Error in deleteUser: ${error.message}`, error);
+      this.logger.error(`Error in deleteUser:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -403,7 +403,7 @@ export class UserService {
       this.logger.info('END: fetchUserByEmail service');
       return user;
     } catch (error) {
-      this.logger.error(`Error in fetchUsersbyEmail: ${error.message}`, error);
+      this.logger.error(`Error in fetchUsersbyEmail:`, error);
     }
   }
 
@@ -430,7 +430,7 @@ export class UserService {
       return user;
     } catch (error) {
       this.logger.error(
-        `Error in fetchUserValidation: ${error.message}`,
+        `Error in fetchUserValidation:`,
         error,
       );
     }
@@ -461,7 +461,7 @@ export class UserService {
       this.logger.info('END: createSuperAdmin service');
       return this.userConverter.convert(savedUser);
     } catch (error) {
-      this.logger.error(`Error in createSuperAdmin: ${error.message}`, error);
+      this.logger.error(`Error in createSuperAdmin:`, error);
 
       if (error instanceof ConflictException) {
         throw error;
@@ -501,7 +501,7 @@ export class UserService {
       );
     } catch (error) {
       this.logger.error(
-        `Error in fetchOrganizationsForUser: ${error.message}`,
+        `Error in fetchOrganizationsForUser:`,
         error,
       );
 
@@ -533,7 +533,7 @@ export class UserService {
       this.logger.info('END: fetchUser service');
       return this.userConverter.convert(user);
     } catch (error) {
-      this.logger.error(`Error in fetchUser: ${error.message}`, error);
+      this.logger.error(`Error in fetchUser:`, error);
     }
   }
 }

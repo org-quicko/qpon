@@ -59,7 +59,7 @@ export class CouponItemService {
         return this.couponItemConverter.convert(savedCouponItems);
       });
     } catch (error) {
-      this.logger.error(`Error in addItems: ${error.message}`, error);
+      this.logger.error(`Error in addItems:`, error);
 
       if (error.name == 'BadRequestException') {
         throw error;
@@ -133,7 +133,7 @@ export class CouponItemService {
       this.logger.info('END: fetchItems service');
       return this.couponItemConverter.convert(couponItems, skip, take, count);
     } catch (error) {
-      this.logger.error(`Error in fetchItems: ${error.message}`, error);
+      this.logger.error(`Error in fetchItems:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -170,7 +170,7 @@ export class CouponItemService {
       return couponItems;
     } catch (error) {
       this.logger.error(
-        `Error in fetchItemForValidation: ${error.message}`,
+        `Error in fetchItemForValidation:`,
         error,
       );
 
@@ -212,7 +212,7 @@ export class CouponItemService {
         this.logger.info('END: updateItems service');
         return this.couponItemConverter.convert(couponItems);
       } catch (error) {
-        this.logger.error(`Error in updateItems: ${error.message}`, error);
+        this.logger.error(`Error in updateItems:`, error);
 
         if (
           error instanceof NotFoundException ||
@@ -262,7 +262,7 @@ export class CouponItemService {
       this.logger.info('END: removeItem service');
       return this.couponItemConverter.convert(couponItem);
     } catch (error) {
-      this.logger.error(`Error in removeItem: ${error.message}`, error);
+      this.logger.error(`Error in removeItem:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;

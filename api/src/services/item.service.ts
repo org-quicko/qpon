@@ -67,7 +67,7 @@ export class ItemsService {
       this.logger.info('END: createItem service');
       return this.itemConverter.convert(savedItem);
     } catch (error) {
-      this.logger.error(`Error in createItem: ${error.message}`, error);
+      this.logger.error(`Error in createItem:`, error);
 
       if (error instanceof ConflictException) {
         throw error;
@@ -121,7 +121,7 @@ export class ItemsService {
       this.logger.info('END: fetchItems service');
       return this.itemListConverter.convert(items, skip, take, count);
     } catch (error) {
-      this.logger.error(`Error in fetchItems: ${error.message}`, error);
+      this.logger.error(`Error in fetchItems:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -155,7 +155,7 @@ export class ItemsService {
       this.logger.info('END: fetchItem service');
       return this.itemConverter.convert(item);
     } catch (error) {
-      this.logger.error(`Error in fetchItem: ${error.message}`, error);
+      this.logger.error(`Error in fetchItem:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -193,7 +193,7 @@ export class ItemsService {
       return item;
     } catch (error) {
       this.logger.error(
-        `Error in fetchItemForValidation: ${error.message}`,
+        `Error in fetchItemForValidation:`,
         error,
       );
 
@@ -252,7 +252,7 @@ export class ItemsService {
       this.logger.info('END: updateItem service');
       return this.itemConverter.convert(savedItem!);
     } catch (error) {
-      this.logger.error(`Error in updateItem: ${error.message}`, error);
+      this.logger.error(`Error in updateItem:`, error);
 
       if (
         error instanceof NotFoundException ||
@@ -317,7 +317,7 @@ export class ItemsService {
         this.logger.info('END: deleteItem service');
         return this.itemConverter.convert(item);
       } catch (error) {
-        this.logger.error(`Error in deleteItem: ${error.message}`, error);
+        this.logger.error(`Error in deleteItem:`, error);
 
         if (error instanceof NotFoundException) {
           throw error;
@@ -355,7 +355,7 @@ export class ItemsService {
       this.logger.info('END: validateItemsExist service');
       return existingItems;
     } catch (error) {
-      this.logger.error(`Error in validateItemsExist: ${error.message}`, error);
+      this.logger.error(`Error in validateItemsExist:`, error);
 
       throw error;
     }
@@ -410,7 +410,7 @@ export class ItemsService {
       this.logger.info('END: upsertItem service');
       return this.itemConverter.convert(savedItem!);
     } catch (error) {
-      this.logger.error(`Error in upsertItem: ${error.message}`, error);
+      this.logger.error(`Error in upsertItem:`, error);
 
       throw new HttpException(
         'Failed to upsert item',

@@ -50,7 +50,7 @@ export class OrganizationService {
       this.logger.info('END: createOrganization service');
       return this.organizationConverter.convert(savedOrganization);
     } catch (error) {
-      this.logger.error(`Error in createOrganization: ${error.message}`, error);
+      this.logger.error(`Error in createOrganization:`, error);
 
       if (error.name === 'QueryFailedError') {
         throw new HttpException(
@@ -119,7 +119,7 @@ export class OrganizationService {
         queryOptions.take,
       );
     } catch (error) {
-      this.logger.error(`Error in fetchOrganization: ${error.message}`, error);
+      this.logger.error(`Error in fetchOrganization:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -152,7 +152,7 @@ export class OrganizationService {
       this.logger.info('END: fetchOrganization service');
       return this.organizationConverter.convert(organization);
     } catch (error) {
-      this.logger.error(`Error in fetchOrganization: ${error.message}`, error);
+      this.logger.error(`Error in fetchOrganization:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -201,7 +201,7 @@ export class OrganizationService {
       this.logger.info('END: updateOrganization service');
       return this.organizationConverter.convert(updatedOrganization);
     } catch (error) {
-      this.logger.error(`Error in updateOrganization: ${error.message}`, error);
+      this.logger.error(`Error in updateOrganization:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -236,7 +236,7 @@ export class OrganizationService {
       this.logger.info('END: deleteOrganization service');
       return this.organizationConverter.convert(organiztion);
     } catch (error) {
-      this.logger.error(`Error in updateOrganization: ${error.message}`, error);
+      this.logger.error(`Error in updateOrganization:`, error);
 
       throw new HttpException(
         'Failed to delete organization',
@@ -271,9 +271,13 @@ export class OrganizationService {
       );
     } catch (error) {
       this.logger.error(
-        `Error in fetchOrganizationSummary: ${error.message}`,
+        `Error in fetchOrganizationSummary:`,
         error,
       );
+
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
 
       throw new HttpException(
         'Failed to fetch organization summary',

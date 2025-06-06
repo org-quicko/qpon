@@ -52,7 +52,7 @@ export class ApiKeyService {
       this.logger.info('END: createApiKey service');
       return this.apiKeyConverter.convert(savedApiKey, secret);
     } catch (error) {
-      this.logger.error(`Error in createApiKey: ${error.message}`, error);
+      this.logger.error(`Error in createApiKey:`, error);
 
       throw new HttpException(
         'Failed to create api key',
@@ -80,7 +80,7 @@ export class ApiKeyService {
       this.logger.info('END: fetchApiKey service');
       return this.apiKeyConverter.convert(apiKey);
     } catch (error) {
-      this.logger.error(`Error in fetchApiKey: ${error.message}`, error);
+      this.logger.error(`Error in fetchApiKey:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -115,7 +115,7 @@ export class ApiKeyService {
       return isValid ? apiKey : null;
     } catch (error) {
       this.logger.error(
-        `Error in validateKeyAndSecret: ${error.message}`,
+        `Error in validateKeyAndSecret:`,
         error,
       );
 

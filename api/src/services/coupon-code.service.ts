@@ -111,7 +111,7 @@ export class CouponCodeService {
         this.logger.info('END: createCouponCode service');
         return this.couponCodeConverter.convert(savedCouponCode);
       } catch (error) {
-        this.logger.error(`Error in createCouponCode: ${error.message}`, error);
+        this.logger.error(`Error in createCouponCode:`, error);
 
         if (error instanceof ConflictException) {
           throw error;
@@ -231,7 +231,7 @@ export class CouponCodeService {
       this.logger.info('END: fetchCouponCode service');
       return this.couponCodeConverter.convert(couponCode);
     } catch (error) {
-      this.logger.error(`Error in fetchCouponCode: ${error.message}`, error);
+      this.logger.error(`Error in fetchCouponCode:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -283,7 +283,7 @@ export class CouponCodeService {
       return couponCode;
     } catch (error) {
       this.logger.error(
-        `Error in fetchCouponCodeForValidation: ${error.message}`,
+        `Error in fetchCouponCodeForValidation:`,
         error,
       );
 
@@ -368,7 +368,7 @@ export class CouponCodeService {
         this.logger.info('END: updateCouponCode service');
         return this.couponCodeConverter.convert(updatedCouponCode!);
       } catch (error) {
-        this.logger.error(`Error in updateCouponCode: ${error.message}`, error);
+        this.logger.error(`Error in updateCouponCode:`, error);
 
         if (error instanceof NotFoundException) {
           throw error;
@@ -417,7 +417,7 @@ export class CouponCodeService {
       );
     } catch (error) {
       this.logger.error(
-        `Error in fetchCouponCodesByCode: ${error.message}`,
+        `Error in fetchCouponCodesByCode:`,
         error,
       );
 
@@ -477,7 +477,7 @@ export class CouponCodeService {
       return this.couponCodeSheetConverter.convert(couponCodes, organizationId);
     } catch (error) {
       this.logger.error(
-        `Error in fetchCouponCodesByCodeSheet: ${error.message}`,
+        `Error in fetchCouponCodesByCodeSheet:`,
         error,
       );
 
@@ -544,7 +544,7 @@ export class CouponCodeService {
       this.logger.info('END: deactivateCouponCode service');
     } catch (error) {
       this.logger.error(
-        `Error in deactivateCouponCode: ${error.message}`,
+        `Error in deactivateCouponCode:`,
         error,
       );
       throw new HttpException(
@@ -618,7 +618,7 @@ export class CouponCodeService {
       this.logger.info('END: reactivateCouponCode service');
     } catch (error) {
       this.logger.error(
-        `Error in reactivateCouponCode: ${error.message}`,
+        `Error in reactivateCouponCode:`,
         error,
       );
 

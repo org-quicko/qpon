@@ -73,7 +73,7 @@ export class CustomerCouponCodeService {
           savedCustomerCouponCode,
         );
       } catch (error) {
-        this.logger.error(`Error in addCustomers: ${error.message}`, error);
+        this.logger.error(`Error in addCustomers:`, error);
 
         if (
           error instanceof NotFoundException ||
@@ -136,7 +136,7 @@ export class CustomerCouponCodeService {
       this.logger.info('END: fetchCustomers service');
       return this.customerCouponCodeConverter.convert(customers, skip, take);
     } catch (error) {
-      this.logger.error(`Error in fetchCustomers: ${error.message}`, error);
+      this.logger.error(`Error in fetchCustomers:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -184,7 +184,7 @@ export class CustomerCouponCodeService {
       return customers;
     } catch (error) {
       this.logger.error(
-        `Error in fetchCustomerForValidation: ${error.message}`,
+        `Error in fetchCustomerForValidation: `,
         error,
       );
 
@@ -246,7 +246,7 @@ export class CustomerCouponCodeService {
         this.logger.info('END: updateCustomers service');
         return this.customerCouponCodeConverter.convert(updatedCustomers);
       } catch (error) {
-        this.logger.error(`Error in updateCustomers: ${error.message}`, error);
+        this.logger.error(`Error in updateCustomers:`, error);
 
         if (error instanceof NotFoundException) {
           throw error;
@@ -311,7 +311,7 @@ export class CustomerCouponCodeService {
       this.logger.info('END: removeCustomer service');
       return this.customerCouponCodeConverter.convert(customerCouponCode);
     } catch (error) {
-      this.logger.error(`Error in removeCustomer: ${error.message}`, error);
+      this.logger.error(`Error in removeCustomer:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;

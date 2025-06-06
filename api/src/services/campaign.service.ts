@@ -85,7 +85,7 @@ export class CampaignService {
       this.logger.info('END: createCampaign service');
       return this.campaignConverter.convert(savedCampaign);
     } catch (error) {
-      this.logger.error(`Error in createCampaign: ${error.message}`, error);
+      this.logger.error(`Error in createCampaign:`, error);
 
       if (error instanceof ConflictException) {
         throw error;
@@ -144,7 +144,7 @@ export class CampaignService {
         this.campaignConverter.convert(campaign),
       );
     } catch (error) {
-      this.logger.error(`Error in fetchCampaigns: ${error.message}`, error);
+      this.logger.error(`Error in fetchCampaigns:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -178,7 +178,7 @@ export class CampaignService {
       this.logger.info('END: fetchCampaign service');
       return this.campaignConverter.convert(campaign);
     } catch (error) {
-      this.logger.error(`Error in fetchCampaign: ${error.message}`, error);
+      this.logger.error(`Error in fetchCampaign:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -215,7 +215,7 @@ export class CampaignService {
       return campaign;
     } catch (error) {
       this.logger.error(
-        `Error in fetchCampaignForValidation: ${error.message}`,
+        `Error in fetchCampaignForValidation:`,
         error,
       );
 
@@ -276,7 +276,7 @@ export class CampaignService {
       this.logger.info('END: updateCampaign service');
       return this.campaignConverter.convert(updatedCampaign!);
     } catch (error) {
-      this.logger.error(`Error in updateCampaign: ${error.message}`, error);
+      this.logger.error(`Error in updateCampaign:`, error);
 
       if (
         error instanceof NotFoundException ||
@@ -321,7 +321,7 @@ export class CampaignService {
         this.logger.info('END: deactivateCampaign service');
       } catch (error) {
         this.logger.error(
-          `Error in deactivateCampaign: ${error.message}`,
+          `Error in deactivateCampaign:`,
           error,
         );
 
@@ -361,7 +361,7 @@ export class CampaignService {
 
       this.logger.info('END: reactivateCampaign service');
     } catch (error) {
-      this.logger.error(`Error in reactivateCampaign: ${error.message}`, error);
+      this.logger.error(`Error in reactivateCampaign:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -420,7 +420,7 @@ export class CampaignService {
       );
     } catch (error) {
       this.logger.error(
-        `Error in fetchCampaignSummary: ${error.message}`,
+        `Error in fetchCampaignSummary:`,
         error,
       );
 
@@ -458,7 +458,7 @@ export class CampaignService {
       return this.campaignSummarySheetConverter.convert(campaignSummaryMv, couponId);
     } catch (error) {
       this.logger.error(
-        `Error in fetchCampaignSummary: ${error.message}`,
+        `Error in fetchCampaignSummary:`,
         error,
       );
 
@@ -499,7 +499,7 @@ export class CampaignService {
           { status: campaignStatusEnum.ARCHIVE },
         );
       } catch (error) {
-        this.logger.error(`Error in deleteCampaign: ${error.message}`, error);
+        this.logger.error(`Error in deleteCampaign:`, error);
 
         if (error instanceof NotFoundException) {
           throw error;

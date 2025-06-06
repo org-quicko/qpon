@@ -221,7 +221,7 @@ export class OffersService {
         take,
       );
     } catch (error) {
-      this.logger.error(`Error in fetchOffers: ${error.message}`, error);
+      this.logger.error(`Error in fetchOffers:`, error);
       throw new HttpException(
         'Failed to fetch offers',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -364,7 +364,7 @@ export class OffersService {
       this.logger.info('END: fetchOffer service');
       return this.offerSheetConverter.convert([offer], organizationId);
     } catch (error) {
-      this.logger.error(`Error in fetchOffer: ${error.message}`, error);
+      this.logger.error(`Error in fetchOffer:`, error);
 
       if (
         error instanceof NotFoundException ||

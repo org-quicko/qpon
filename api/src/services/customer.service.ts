@@ -73,7 +73,7 @@ export class CustomersService {
       this.logger.info('END: createCustomer service');
       return this.customerConverter.convert(savedCustomer);
     } catch (error) {
-      this.logger.error(`Error in createCustomer: ${error.message}`, error);
+      this.logger.error(`Error in createCustomer:`, error);
 
       if (error instanceof ConflictException) {
         throw error;
@@ -127,7 +127,7 @@ export class CustomersService {
       this.logger.info('END: fetchCustomers service');
       return this.customerListConverter.convert(customers, skip, take, count);
     } catch (error) {
-      this.logger.error(`Error in fetchCustomers: ${error.message}`, error);
+      this.logger.error(`Error in fetchCustomers:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -164,7 +164,7 @@ export class CustomersService {
       this.logger.info('END: fetchCustomers service');
       return this.customerConverter.convert(customer);
     } catch (error) {
-      this.logger.error(`Error in fetchCustomer: ${error.message}`, error);
+      this.logger.error(`Error in fetchCustomer:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -321,7 +321,7 @@ export class CustomersService {
       return existingCustomers;
     } catch (error) {
       this.logger.error(
-        `Error in validateCustomersExist: ${error.message}`,
+        `Error in validateCustomersExist:`,
         error,
       );
 
@@ -351,7 +351,7 @@ export class CustomersService {
       return customer;
     } catch (error) {
       this.logger.error(
-        `Error in fetchCustomerForValidation: ${error.message}`,
+        `Error in fetchCustomerForValidation:`,
         error,
       );
 

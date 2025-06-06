@@ -174,7 +174,7 @@ export class RedemptionsService {
       this.logger.info('END: redeemCouponCode service');
       return result;
     } catch (error) {
-      this.logger.error(`Error in redeemCouponCode: ${error.message}`, error);
+      this.logger.error(`Error in redeemCouponCode:`, error);
 
       if (
         error instanceof NotFoundException ||
@@ -250,7 +250,7 @@ export class RedemptionsService {
         take,
       );
     } catch (error) {
-      this.logger.error(`Error in fetchRedemptions: ${error.message}`, error);
+      this.logger.error(`Error in fetchRedemptions:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -528,7 +528,7 @@ export class RedemptionsService {
       return fileBuffer;
     } catch (error) {
       this.logger.error(
-        `Error in fetchRedemptionsForReport: ${error.message}`,
+        `Error in fetchRedemptionsForReport:`,
         error,
       );
 

@@ -84,7 +84,7 @@ export class CouponService {
         this.logger.info('END: createCoupon service');
         return this.couponConverter.convert(savedCoupon);
       } catch (error) {
-        this.logger.error(`Error in createCoupon: ${error.message}`, error);
+        this.logger.error(`Error in createCoupon:`, error);
 
         if (
           error instanceof ConflictException ||
@@ -145,7 +145,7 @@ export class CouponService {
       this.logger.info('END: fetchCoupons service');
       return this.couponListConverter.convert(coupons, skip, take, count);
     } catch (error) {
-      this.logger.error(`Error in fetchCoupons: ${error.message}`, error);
+      this.logger.error(`Error in fetchCoupons:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -182,7 +182,7 @@ export class CouponService {
       this.logger.info('END: fetchCoupon service');
       return this.couponConverter.convert(coupon);
     } catch (error) {
-      this.logger.error(`Error in fetchCoupon: ${error.message}`, error);
+      this.logger.error(`Error in fetchCoupon:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -264,7 +264,7 @@ export class CouponService {
         this.logger.info('END: updateCoupon service');
         return this.couponConverter.convert(updatedCoupon);
       } catch (error) {
-        this.logger.error(`Error in updateCoupon: ${error.message}`, error);
+        this.logger.error(`Error in updateCoupon:`, error);
 
         if (
           error instanceof BadRequestException ||
@@ -332,7 +332,7 @@ export class CouponService {
 
         this.logger.info('END: deleteCoupon service');
       } catch (error) {
-        this.logger.error(`Error in deleteCoupon: ${error.message}`, error);
+        this.logger.error(`Error in deleteCoupon:`, error);
 
         if (error instanceof NotFoundException) {
           throw error;
@@ -385,7 +385,7 @@ export class CouponService {
 
         this.logger.info('END: deactivateCoupon service');
       } catch (error) {
-        this.logger.error(`Error in deactivateCoupon: ${error.message}`, error);
+        this.logger.error(`Error in deactivateCoupon:`, error);
 
         if (error instanceof NotFoundException) {
           throw error;
@@ -422,7 +422,7 @@ export class CouponService {
       });
       this.logger.info('END: reactivateCoupon service');
     } catch (error) {
-      this.logger.error(`Error in reactivateCoupon: ${error.message}`, error);
+      this.logger.error(`Error in reactivateCoupon:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -460,7 +460,7 @@ export class CouponService {
         organizationId,
       );
     } catch (error) {
-      this.logger.error(`Error in fetchCouponSummary: ${error.message}`, error);
+      this.logger.error(`Error in fetchCouponSummary:`, error);
 
       throw new HttpException(
         'Failed to fetch coupon summary',
@@ -501,7 +501,7 @@ export class CouponService {
       );
     } catch (error) {
       this.logger.error(
-        `Error in fetchCouponsSummary: ${error.message}`,
+        `Error in fetchCouponsSummary:`,
         error,
       );
 
@@ -536,7 +536,7 @@ export class CouponService {
       this.logger.info('END: fetchCoupon service');
       return coupon;
     } catch (error) {
-      this.logger.error(`Error in fetchCoupon: ${error.message}`, error);
+      this.logger.error(`Error in fetchCoupon:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
