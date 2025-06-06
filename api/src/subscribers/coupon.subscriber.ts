@@ -17,7 +17,8 @@ export class CouponSubscriber implements EntitySubscriberInterface<Coupon> {
 
     await event.queryRunner.query(`    
             REFRESH MATERIALIZED VIEW coupon_summary_mv WITH DATA;
-            REFRESH MATERIALIZED VIEW organization_summary_mv WITH DATA;    
+            REFRESH MATERIALIZED VIEW organization_summary_mv WITH DATA;  
+            REFRESH MATERIALIZED VIEW organizations_mv WITH DATA;  
     `);
   }
 
@@ -26,7 +27,8 @@ export class CouponSubscriber implements EntitySubscriberInterface<Coupon> {
 
     await event.queryRunner.query(`    
             REFRESH MATERIALIZED VIEW coupon_summary_mv WITH DATA;
-            REFRESH MATERIALIZED VIEW organization_summary_mv WITH DATA;    
+            REFRESH MATERIALIZED VIEW organization_summary_mv WITH DATA;  
+            REFRESH MATERIALIZED VIEW organizations_mv WITH DATA;
     `);
   }
 }
