@@ -2,18 +2,20 @@ services:
   app:
     build:
       context: .
-      target: runner
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    env_file:
+      - .env
     environment:
       - PORT=3000
       - DB_PORT=5432
-      - DB_USERNAME=root
-      - DB_PASSWORD=password
-      - DB_NAME=qpon
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
       - DB_HOST=db
-      - JWT_SECRET=secret
-      - SALT_ROUNDS=10
+      - JWT_SECRET=${JWT_SECRET}
+      - SALT_ROUNDS=${SALT_ROUNDS}
       - NODE_ENV=production
     depends_on:
       - db
@@ -23,9 +25,9 @@ services:
   db:
     image: postgres:latest
     environment:
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=qpon
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
