@@ -1,5 +1,5 @@
 # Build angular app
-FROM node:22-alpine as frontend-builder
+FROM node:22-alpine AS frontend-builder
 
 WORKDIR /app/frontend
 
@@ -7,16 +7,14 @@ COPY frontend/package*.json ./
 RUN npm install --legacy-peer-deps
 
 COPY frontend .
-RUN npm run generate
 RUN npm run build
 
 # Build nestjs app
-FROM node:22-alpine as backend-builder
+FROM node:22-alpine AS backend-builder
 WORKDIR /app/backend
 COPY api/package*.json ./
 RUN npm install
 COPY api .
-RUN npm run generate
 RUN npm run build
 
 # combined app
