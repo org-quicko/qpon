@@ -91,9 +91,9 @@ ng build
 
 ### Libraries
 
-- `lib/core/org-quicko-qpon-core`: Common entities for Qpon
-- `lib/core/org-quicko-qpon-sheet-core`: Sheet entities for Qpon
-- `lib/client/org-quicko-qpon-client`: Client library to access Qpon APIs
+- `lib/core`: Common entities for Qpon
+- `lib/sheet-core`: Sheet entities for Qpon
+- `lib/client`: Client library to access Qpon APIs
 
 ## Development
 
@@ -115,9 +115,6 @@ ng build
 - **API Postman Collection:**  
   `resources/json/org.quicko.qpon.postman_collection.json`
 
-- **Excel Templates for Sheet:**  
-  Found in `api/resources/excel/` and `frontend/resources/excel/`
-
 - **ER Diagram:**  
   `common/org-quicko-qpon.pgerd`
 
@@ -128,4 +125,3 @@ Pull requests and issues are welcome! Please open an issue to discuss your ideas
 ## Authors
 
 - [Quicko Engineering](mailto:developer@quicko.org.in)
-- See individual `package.json` files for contributors.

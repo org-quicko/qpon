@@ -33,7 +33,7 @@
     "@material/material-color-utilities": "^0.3.0",
     "@ngrx/operators": "^19.0.1",
     "@ngrx/signals": "^19.0.1",
-    "@org-quicko/qpon-sheet-core": "1.0.0",
+    "@org-quicko/qpon-sheet-core": "^1.0.0",
     "@org-quicko/sheet": "^1.0.1",
     "@rxweb/reactive-form-validators": "^13.0.1",
     "@tailwindcss/postcss": "^4.0.14",
