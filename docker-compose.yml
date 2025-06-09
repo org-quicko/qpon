@@ -1,8 +1,7 @@
 services:
   app:
     build:
-      context: .
-      dockerfile: Dockerfile
+    image: labsatquicko/qpon:latest
     container_name: qpon_app
     ports:
       - "3000:3000"
