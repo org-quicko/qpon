@@ -2,10 +2,9 @@
 	"info": {
 		"_postman_id": "a36e4c68-610b-4a2f-8430-43c51d4b94a5",
 		"name": "org.quicko.qpon",
-		"description": "Qpon is a coupon framework built by Quicko. Built in a scalable, multi-tenant thought process, the Qpon framework enables businesses to do campaigns and run offers using the Qpon API and dashboard.",
+		"description": "Qpon is a coupon framework built by Quicko. Built in a scalable, multi-tenant thought process, the Qpon framework enables businesses to do campaigns and run offers using the Qpon API.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "27391447",
-		"_collection_link": "https://org-quicko.postman.co/workspace/org-quicko-qpon~6db4ed74-4bdb-4241-8569-5c0254e2c30c/collection/27391447-a36e4c68-610b-4a2f-8430-43c51d4b94a5?action=share&source=collection_link&creator=27391447"
 	},
 	"item": [
 		{
@@ -59,21 +58,10 @@
 							]
 						},
 						"method": "POST",
-						"header": [
-							{
-								"key": "x-auth-username",
-								"value": "{{x-auth-username}}",
-								"description": "Username for identification"
-							},
-							{
-								"key": "x-auth-password",
-								"value": "{{x-auth-password}}",
-								"description": "Password for authentication"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Quicko1\",\r\n    \"external_id\": \"org-quicko-qpon-api@quicko.pro\",\r\n    \"currency\": \"INR\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Test organization\",\r\n    \"external_id\": \"F4G3S43GS31G3\",\r\n    \"currency\": \"INR\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -322,14 +310,16 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "x-auth-username",
-								"value": "{{x-auth-username}}",
-								"description": "Username for identification"
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API Key",
+								"disabled": true
 							},
 							{
-								"key": "x-auth-password",
-								"value": "{{x-auth-password}}",
-								"description": "Password for authentication"
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API Secret",
+								"disabled": true
 							}
 						],
 						"url": {
@@ -509,18 +499,20 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "x-auth-username",
-								"value": "{{x-auth-username}}",
-								"description": "Username for identification"
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API Key",
+								"disabled": true
 							},
 							{
-								"key": "x-auth-password",
-								"value": "{{x-auth-password}}",
-								"description": "Password for authentication"
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API Secret",
+								"disabled": true
 							}
 						],
 						"url": {
-							"raw": "{{quicko_host}}/organizations?take=10&skip=0",
+							"raw": "{{quicko_host}}/organizations",
 							"host": [
 								"{{quicko_host}}"
 							],
@@ -537,12 +529,20 @@
 								{
 									"key": "take",
 									"value": "10",
-									"description": "Optional page size. Default is 10"
+									"description": "Optional page size. Default is 10",
+									"disabled": true
 								},
 								{
 									"key": "skip",
 									"value": "0",
-									"description": "Describe the offset"
+									"description": "Describe the offset",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "",
+									"description": "filter to get organization by name",
+									"disabled": true
 								}
 							]
 						}
@@ -805,19 +805,21 @@
 						"method": "PATCH",
 						"header": [
 							{
-								"key": "x-auth-username",
-								"value": "{{x-auth-username}}",
-								"description": "Username for identification"
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"disabled": true
 							},
 							{
-								"key": "x-auth-password",
-								"value": "{{x-auth-password}}",
-								"description": "Password for authentication"
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"disabled": true
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"com-quicko\",\r\n    \"external_id\": \"org-quicko-qpon-api@quicko.com\"\r\n}",
+							"raw": "{\r\n    \"name\": \"test 1\",\r\n    \"external_id\": \"3DSG3FS536GS3D14GF3\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1019,14 +1021,16 @@
 						"method": "DELETE",
 						"header": [
 							{
-								"key": "x-auth-username",
-								"value": "{{x-auth-username}}",
-								"description": "Username for identification"
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"disabled": true
 							},
 							{
-								"key": "x-auth-password",
-								"value": "{{x-auth-password}}",
-								"description": "Password for authentication"
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"disabled": true
 							}
 						],
 						"url": {
@@ -1065,14 +1069,16 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "x-auth-username",
-								"value": "{{x-auth-username}}",
-								"description": "Username for identification"
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"disabled": true
 							},
 							{
-								"key": "x-auth-password",
-								"value": "{{x-auth-password}}",
-								"description": "Password for authentication"
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"disabled": true
 							},
 							{
 								"key": "x-accept-type",
@@ -1187,7 +1193,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"super admin\",\r\n    \"email\": \"super.admin@quicko.com\",\r\n    \"password\": \"1234\",\r\n    \"role\": \"super_admin\"\r\n}",
+							"raw": "{\r\n    \"name\": \"John Doe\",\r\n    \"email\": \"super.admin@test.com\",\r\n    \"password\": \"1234\",\r\n    \"role\": \"super_admin\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1303,10 +1309,25 @@
 							]
 						},
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Test User\",\r\n    \"email\": \"test.user@quicko.com\",\r\n    \"password\": \"1234\",\r\n    \"role\": \"admin\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Robert Langdon\",\r\n    \"email\": \"robert.langdon@test.com\",\r\n    \"password\": \"1234\",\r\n    \"role\": \"admin\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1410,17 +1431,23 @@
 					"name": "Fetch users of an organization",
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{access_token}}",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
 							"raw": "{{quicko_host}}/organizations/:organization_id/users",
 							"host": [
@@ -1515,7 +1542,22 @@
 							]
 						},
 						"method": "PATCH",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"name\": \"dan brown\",\r\n    \"email\": \"dan@test.com\"\r\n}",
@@ -1638,7 +1680,22 @@
 							]
 						},
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
 							"raw": "{{quicko_host}}/organizations/:organization_id/users/:user_id",
 							"host": [
@@ -1671,7 +1728,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"super.admin@quicko.com\",\r\n    \"password\": \"1234\"\r\n}\r\n",
+							"raw": "{\r\n    \"email\": \"super.admin@test.com\",\r\n    \"password\": \"1234\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1767,7 +1824,22 @@
 							]
 						},
 						"method": "PATCH",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"role\": \"editor\"\r\n}",
@@ -1852,7 +1924,20 @@
 							]
 						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text"
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{quicko_host}}/users/:user_id",
 							"host": [
@@ -2017,6 +2102,14 @@
 							"body": "{\n    \"code\": 200,\n    \"message\": \"Successfully fetched users\",\n    \"data\": {\n        \"items\": [\n            {\n                \"user_id\": \"e90ca62d-a707-4fab-9743-e552e9b8ff63\",\n                \"name\": \"Van Gogh\",\n                \"email\": \"van.gogh@quicko.com\",\n                \"created_at\": \"2025-04-25T09:56:57.297Z\",\n                \"updated_at\": \"2025-04-25T09:56:57.297Z\"\n            },\n            {\n                \"user_id\": \"65259fc1-7539-477f-bcd1-b67e914c30c1\",\n                \"name\": \"Viewer\",\n                \"email\": \"viewer@test.com\",\n                \"created_at\": \"2025-04-25T09:31:29.484Z\",\n                \"updated_at\": \"2025-04-25T09:31:29.484Z\"\n            },\n            {\n                \"user_id\": \"5f3cf697-6837-42e4-aa4f-349f9424eb57\",\n                \"name\": \"Editor\",\n                \"email\": \"editor@test.com\",\n                \"created_at\": \"2025-04-25T09:31:28.912Z\",\n                \"updated_at\": \"2025-04-25T09:31:28.912Z\"\n            },\n            {\n                \"user_id\": \"4ca6cbbd-cab2-4946-8b7f-0a74bb06a9e5\",\n                \"name\": \"Test User\",\n                \"email\": \"test.user@quicko.com\",\n                \"created_at\": \"2025-04-23T13:53:20.826Z\",\n                \"updated_at\": \"2025-04-23T13:53:20.826Z\"\n            }\n        ],\n        \"count\": 4,\n        \"skip\": 0,\n        \"take\": 10\n    }\n}"
 						}
 					]
+				},
+				{
+					"name": "Check for super admin",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			]
 		},
@@ -2079,24 +2172,21 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "x-auth-username",
-								"value": "{{x-auth-username}}",
-								"description": "Username for identification"
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"disabled": true
 							},
 							{
-								"key": "x-auth-password",
-								"value": "{{x-auth-password}}",
-								"description": "Password for authentication"
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"type": "text"
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"disabled": true
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"10% OFF for all IT users\",\r\n    \"discount_type\": \"fixed\",\r\n    \"discount_value\": 100,\r\n    \"item_constraint\": \"all\"\r\n}",
+							"raw": "{\r\n    \"name\": \"10% OFF\",\r\n    \"discount_type\": \"fixed\",\r\n    \"discount_value\": 100,\r\n    \"item_constraint\": \"all\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2139,20 +2229,16 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "x-auth-username",
-								"value": "{{x-auth-username}}",
-								"description": "Username for identification"
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"disabled": true
 							},
 							{
-								"key": "x-auth-password",
-								"value": "{{x-auth-password}}",
-								"description": "Password for authentication"
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"description": "Organization id",
-								"type": "text"
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"disabled": true
 							}
 						],
 						"url": {
@@ -2197,20 +2283,18 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "x-auth-username",
-								"value": "{{x-auth-username}}",
-								"description": "Username for identification"
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
 							},
 							{
-								"key": "x-auth-password",
-								"value": "{{x-auth-password}}",
-								"description": "Password for authentication"
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"description": "Organization id",
-								"type": "text"
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"url": {
@@ -2258,6 +2342,21 @@
 									"key": "skip",
 									"value": "2",
 									"description": "Optional page offset. Default is 0",
+									"disabled": true
+								},
+								{
+									"key": "sort_by",
+									"value": "createdAt",
+									"disabled": true
+								},
+								{
+									"key": "sort_order",
+									"value": "DESC",
+									"disabled": true
+								},
+								{
+									"key": "item_constraint",
+									"value": "all",
 									"disabled": true
 								}
 							],
@@ -2406,20 +2505,18 @@
 						"method": "PATCH",
 						"header": [
 							{
-								"key": "x-auth-username",
-								"value": "{{x-auth-username}}",
-								"description": "Username for identification"
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
 							},
 							{
-								"key": "x-auth-password",
-								"value": "{{x-auth-password}}",
-								"description": "Password for authentication"
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"description": "Organization id",
-								"type": "text"
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
@@ -2473,20 +2570,18 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "x-auth-username",
-								"value": "{{x-auth-username}}",
-								"description": "Username for identification"
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
 							},
 							{
-								"key": "x-auth-password",
-								"value": "{{x-auth-password}}",
-								"description": "Password for authentication"
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"description": "Organization id",
-								"type": "text"
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"url": {
@@ -2532,20 +2627,18 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "x-auth-username",
-								"value": "{{x-auth-username}}",
-								"description": "Username for identification"
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
 							},
 							{
-								"key": "x-auth-password",
-								"value": "{{x-auth-password}}",
-								"description": "Password for authentication"
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"description": "Organization id",
-								"type": "text"
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"url": {
@@ -2589,7 +2682,22 @@
 							]
 						},
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
 							"raw": "{{quicko_host}}/organizations/:organization_id/coupons/:coupon_id",
 							"host": [
@@ -2631,22 +2739,6 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "x-auth-username",
-								"value": "{{x-auth-username}}",
-								"description": "Username for identification"
-							},
-							{
-								"key": "x-auth-password",
-								"value": "{{x-auth-password}}",
-								"description": "Password for authentication"
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"description": "Organization id",
-								"type": "text"
-							},
-							{
 								"key": "x-accept-type",
 								"value": "application/json;format=sheet-json",
 								"type": "text"
@@ -2654,12 +2746,14 @@
 							{
 								"key": "x-api-key",
 								"value": "{{x-api-key}}",
+								"description": "API key",
 								"type": "text",
 								"disabled": true
 							},
 							{
 								"key": "x-api-secret",
 								"value": "{{x-api-secret}}",
+								"description": "API secret",
 								"type": "text",
 								"disabled": true
 							}
@@ -2840,22 +2934,6 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "x-auth-username",
-								"value": "{{x-auth-username}}",
-								"description": "Username for identification"
-							},
-							{
-								"key": "x-auth-password",
-								"value": "{{x-auth-password}}",
-								"description": "Password for authentication"
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"description": "Organization id",
-								"type": "text"
-							},
-							{
 								"key": "x-accept-type",
 								"value": "application/json;format=sheet-json",
 								"type": "text"
@@ -2863,12 +2941,14 @@
 							{
 								"key": "x-api-key",
 								"value": "{{x-api-key}}",
+								"description": "API key",
 								"type": "text",
 								"disabled": true
 							},
 							{
 								"key": "x-api-secret",
 								"value": "{{x-api-secret}}",
+								"description": "API secret",
 								"type": "text",
 								"disabled": true
 							}
@@ -3050,7 +3130,22 @@
 							]
 						},
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"items\":[\"d98c337f-845f-4a0b-9ee5-5b381f01f6d9\"]\r\n}",
@@ -3179,7 +3274,22 @@
 							]
 						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
 							"raw": "{{quicko_host}}/organizations/:organization_id/coupons/:coupon_id/items",
 							"host": [
@@ -3237,7 +3347,22 @@
 							]
 						},
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
 							"raw": "{{quicko_host}}/organizations/:organization_id/coupons/:coupon_id/items/:item_id",
 							"host": [
@@ -3283,7 +3408,22 @@
 							]
 						},
 						"method": "PATCH",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"items\": [\"6518fd27-b222-4f69-9737-5391797995b8\", \"d98c337f-845f-4a0b-9ee5-5b381f01f6d9\"]\r\n}",
@@ -3373,7 +3513,22 @@
 							]
 						},
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"name\": \"test item 1\",\r\n    \"description\": \"test description\",\r\n    \"custom_fields\": {\r\n        \"price\": 500\r\n    },\r\n    \"external_id\": \"test1\"\r\n}",
@@ -3417,7 +3572,22 @@
 							]
 						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
 							"raw": "{{quicko_host}}/organizations/:organization_id/items",
 							"host": [
@@ -3564,7 +3734,22 @@
 							]
 						},
 						"method": "PATCH",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"external_id\": \"test1\"\r\n}",
@@ -3613,7 +3798,22 @@
 							]
 						},
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
 							"raw": "{{quicko_host}}/organizations/:organization_id/items/:item_id",
 							"host": [
@@ -3653,7 +3853,22 @@
 							]
 						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
 							"raw": "{{quicko_host}}/organizations/:organization_id/items/:item_id",
 							"host": [
@@ -3673,6 +3888,57 @@
 								{
 									"key": "item_id",
 									"value": "{{item_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upsert item",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text"
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"test item 2\",\r\n    \"description\": \"test description\",\r\n    \"external_id\": \"148a4749-2bf9-405f-a561-6452d0afb390\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{quicko_host}}/organizations/:organization_id/items/upsert",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"organizations",
+								":organization_id",
+								"items",
+								"upsert"
+							],
+							"variable": [
+								{
+									"key": "organization_id",
+									"value": "{{organization_id}}"
 								}
 							]
 						}
@@ -3737,24 +4003,23 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "x-auth-username",
-								"value": "{{x-auth-username}}",
-								"description": "Username for identification"
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
 							},
 							{
-								"key": "x-auth-password",
-								"value": "{{x-auth-password}}",
-								"description": "Password for authentication"
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"type": "text"
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Test QPON SET\",\r\n    \"budget\": 50000,\r\n    \"external_id\": \"test\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Test QPON SET\",\r\n    \"external_id\": \"test\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3762,7 +4027,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{quicko_host}}/organizations/:organization_id/coupons/:coupon_id/campaigns",
+							"raw": "{{quicko_host}}/organizations/:organization_id/coupons/:coupon_id/campaign",
 							"host": [
 								"{{quicko_host}}"
 							],
@@ -3771,7 +4036,7 @@
 								":organization_id",
 								"coupons",
 								":coupon_id",
-								"campaigns"
+								"campaign"
 							],
 							"variable": [
 								{
@@ -3804,20 +4069,18 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "x-auth-username",
-								"value": "{{x-auth-username}}",
-								"description": "Username for identification"
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
 							},
 							{
-								"key": "x-auth-password",
-								"value": "{{x-auth-password}}",
-								"description": "Password for authentication"
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"description": "Organization id",
-								"type": "text"
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"url": {
@@ -3868,20 +4131,18 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "x-auth-username",
-								"value": "{{x-auth-username}}",
-								"description": "Username for identification"
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
 							},
 							{
-								"key": "x-auth-password",
-								"value": "{{x-auth-password}}",
-								"description": "Password for authentication"
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"description": "Organization id",
-								"type": "text"
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"url": {
@@ -3954,23 +4215,16 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "{{api_key}}",
-								"description": "API key for identification"
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"disabled": true
 							},
 							{
-								"key": "authorization",
-								"value": "{{access_token}}",
-								"description": "JWT access token"
-							},
-							{
-								"key": "x-api-version",
-								"value": "{{version}}",
-								"description": "API version"
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"description": "Organization id"
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
@@ -4030,24 +4284,18 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "authorization",
-								"value": "{{access_token}}",
-								"description": "JWT access token"
-							},
-							{
 								"key": "x-api-key",
-								"value": "{{api_key}}",
-								"description": "API key for identification"
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
 							},
 							{
-								"key": "x-api-version",
-								"value": "{{version}}",
-								"description": "API version"
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"description": "Organization id"
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"url": {
@@ -4099,24 +4347,18 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "authorization",
-								"value": "{{access_token}}",
-								"description": "JWT access token"
-							},
-							{
 								"key": "x-api-key",
-								"value": "{{api_key}}",
-								"description": "API key for identification"
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
 							},
 							{
-								"key": "x-api-version",
-								"value": "{{version}}",
-								"description": "API version"
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"description": "Organization id"
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"url": {
@@ -4168,29 +4410,23 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "authorization",
-								"value": "{{access_token}}",
-								"description": "JWT access token"
-							},
-							{
-								"key": "x-api-key",
-								"value": "{{api_key}}",
-								"description": "API key for identification"
-							},
-							{
-								"key": "x-api-version",
-								"value": "{{version}}",
-								"description": "API version"
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"description": "Organization id"
-							},
-							{
 								"key": "x-accept-type",
 								"value": "application/json;format=sheet-json",
 								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"url": {
@@ -4250,29 +4486,23 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "authorization",
-								"value": "{{access_token}}",
-								"description": "JWT access token"
-							},
-							{
-								"key": "x-api-key",
-								"value": "{{api_key}}",
-								"description": "API key for identification"
-							},
-							{
-								"key": "x-api-version",
-								"value": "{{version}}",
-								"description": "API version"
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"description": "Organization id"
-							},
-							{
 								"key": "x-accept-type",
 								"value": "application/json;format=sheet-json",
 								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"url": {
@@ -4321,7 +4551,22 @@
 							]
 						},
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
 							"raw": "{{quicko_host}}/organizations/:organization_id/coupons/:coupon_id/campaigns/:campaign_id",
 							"host": [
@@ -4395,7 +4640,20 @@
 							]
 						},
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"name\": \"Dan Brown\",\r\n    \"email\": \"dan@test.com\",\r\n    \"isd_code\": \"+91\",\r\n    \"phone\": \"6973094656\",\r\n    \"external_id\": \"148a4749-2bf9-405f-a561-6452d0afb359\"\r\n}",
@@ -4641,7 +4899,22 @@
 							]
 						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API Key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
 							"raw": "{{quicko_host}}/organizations/:organization_id/customers",
 							"host": [
@@ -4778,7 +5051,22 @@
 							]
 						},
 						"method": "PATCH",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API Key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"email\": \"tanuj.patel@quicko.com\",\r\n    \"name\": \"Tanuj Patel\",\r\n    \"phone\": \"8989898989\"\r\n}",
@@ -4972,7 +5260,22 @@
 							]
 						},
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
 							"raw": "{{quicko_host}}/organizations/:organization_id/customers/:customer_id",
 							"host": [
@@ -5076,7 +5379,22 @@
 							]
 						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
 							"raw": "{{quicko_host}}/organizations/:organization_id/customers/:customer_id",
 							"host": [
@@ -5203,6 +5521,155 @@
 							"body": "{\n    \"code\": 200,\n    \"message\": \"Successfully fetched customers\",\n    \"data\": {\n        \"items\": [\n            {\n                \"customer_id\": \"948a80c6-d8aa-4927-ace0-fec3f54a6821\",\n                \"name\": \"test\",\n                \"email\": \"test@test.com\",\n                \"isd_code\": null,\n                \"phone\": null,\n                \"external_id\": \"nihgydljad9wy327\",\n                \"created_at\": \"2025-03-18T06:13:20.230Z\",\n                \"updated_at\": \"2025-03-18T06:13:20.230Z\"\n            }\n        ],\n        \"count\": 1,\n        \"skip\": 0,\n        \"take\": 10\n    }\n}"
 						}
 					]
+				},
+				{
+					"name": "Upsert Customer",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API Key",
+								"type": "text"
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Dan Brown\",\r\n    \"email\": \"dan@test.com\",\r\n    \"isd_code\": \"+91\",\r\n    \"phone\": \"6973094656\",\r\n    \"external_id\": \"148a4749-2bf9-405f-a561-6452d0afb359\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{quicko_host}}/organizations/:organization_id/customers/upsert",
+							"host": [
+								"{{quicko_host}}"
+							],
+							"path": [
+								"organizations",
+								":organization_id",
+								"customers",
+								"upsert"
+							],
+							"variable": [
+								{
+									"key": "organization_id",
+									"value": "{{organization_id}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200 Successfully upserted customer",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Dan Brown\",\r\n    \"email\": \"dan@test.com\",\r\n    \"isd_code\": \"+91\",\r\n    \"phone\": \"6973094656\",\r\n    \"external_id\": \"148a4749-2bf9-405f-a561-6452d0afb359\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{quicko_host}}/organizations/:organization_id/customers/upsert",
+									"host": [
+										"{{quicko_host}}"
+									],
+									"path": [
+										"organizations",
+										":organization_id",
+										"customers",
+										"upsert"
+									],
+									"query": [
+										{
+											"key": "skip",
+											"value": "0",
+											"description": "Optional page offset. Default is 0",
+											"disabled": true
+										},
+										{
+											"key": "take",
+											"value": "10",
+											"description": "Optional page size. Default is 10",
+											"disabled": true
+										},
+										{
+											"key": "email",
+											"value": "guy@test.com",
+											"disabled": true
+										},
+										{
+											"key": "",
+											"value": null,
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "organization_id",
+											"value": "{{organization_id}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "329"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"149-E8NAJvdATg/wJlTtrwuUkMxNadU\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 15 May 2025 11:11:52 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 200,\n    \"message\": \"Successfully upserted customer\",\n    \"data\": {\n        \"customer_id\": \"3abbf9b4-8f93-4462-9d07-9d1f9771e10a\",\n        \"name\": \"Dan Brown\",\n        \"email\": \"dan@test.com\",\n        \"isd_code\": null,\n        \"phone\": \"6973094656\",\n        \"external_id\": \"148a4749-2bf9-405f-a561-6452d0afb359\",\n        \"created_at\": \"2025-05-15T11:08:55.848Z\",\n        \"updated_at\": \"2025-05-15T11:11:52.027Z\"\n    }\n}"
+						}
+					]
 				}
 			]
 		},
@@ -5265,20 +5732,18 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "x-auth-username",
-								"value": "{{x-auth-username}}",
-								"description": "Username for identification"
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API Key",
+								"type": "text",
+								"disabled": true
 							},
 							{
-								"key": "x-auth-password",
-								"value": "{{x-auth-password}}",
-								"description": "Password for authentication"
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"description": "Organization id",
-								"type": "text"
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
@@ -5432,20 +5897,18 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "x-auth-username",
-								"value": "{{x-auth-username}}",
-								"description": "Username for identification"
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API Key",
+								"type": "text",
+								"disabled": true
 							},
 							{
-								"key": "x-auth-password",
-								"value": "{{x-auth-password}}",
-								"description": "Password for authentication"
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"description": "Organization id",
-								"type": "text"
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"url": {
@@ -5772,23 +6235,16 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "{{api_key}}",
-								"description": "API key for identification"
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"disabled": true
 							},
 							{
-								"key": "authorization",
-								"value": "{{access_token}}",
-								"description": "JWT access token"
-							},
-							{
-								"key": "x-api-version",
-								"value": "{{version}}",
-								"description": "API version"
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"description": "Organization id"
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"url": {
@@ -5819,7 +6275,7 @@
 									"disabled": true
 								},
 								{
-									"key": "external_id",
+									"key": "external_customer_id",
 									"value": "customer@gmail.com",
 									"description": "Option filter to get customer specific coupon codes",
 									"disabled": true
@@ -5994,40 +6450,28 @@
 					"name": "Fetch coupon code by code",
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{access_token}}",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "GET",
 						"header": [
-							{
-								"key": "authorization",
-								"value": "{{access_token}}",
-								"description": "JWT access token",
-								"disabled": true
-							},
-							{
-								"key": "x-api-key",
-								"value": "{{api_key}}",
-								"description": "API key for identification",
-								"disabled": true
-							},
-							{
-								"key": "x-api-version",
-								"value": "{{version}}",
-								"description": "API version",
-								"disabled": true
-							},
 							{
 								"key": "x-accept-type",
 								"value": "application/json;format=sheet-json",
 								"description": "To get response in paginated list format",
 								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"url": {
@@ -6450,39 +6894,16 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "{{api_key}}",
-								"description": "API key for identification"
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"disabled": true
 							},
 							{
-								"key": "authorization",
-								"value": "{{access_token}}",
-								"description": "JWT access token"
-							},
-							{
-								"key": "x-api-version",
-								"value": "{{version}}",
-								"description": "API version"
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"description": "Organization id"
-							},
-							{
-								"key": "x-auth-username",
-								"value": "{{x-auth-username}}",
-								"description": "Username for identification"
-							},
-							{
-								"key": "x-auth-password",
-								"value": "{{x-auth-password}}",
-								"description": "Password for authentication"
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"description": "Organization id",
-								"type": "text"
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
@@ -6551,39 +6972,16 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "{{api_key}}",
-								"description": "API key for identification"
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"disabled": true
 							},
 							{
-								"key": "authorization",
-								"value": "{{access_token}}",
-								"description": "JWT access token"
-							},
-							{
-								"key": "x-api-version",
-								"value": "{{version}}",
-								"description": "API version"
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"description": "Organization id"
-							},
-							{
-								"key": "x-auth-username",
-								"value": "{{x-auth-username}}",
-								"description": "Username for identification"
-							},
-							{
-								"key": "x-auth-password",
-								"value": "{{x-auth-password}}",
-								"description": "Password for authentication"
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"description": "Organization id",
-								"type": "text"
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"url": {
@@ -6644,33 +7042,16 @@
 						"header": [
 							{
 								"key": "x-api-key",
-								"value": "{{api_key}}",
-								"description": "API key for identification"
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"disabled": true
 							},
 							{
-								"key": "authorization",
-								"value": "{{access_token}}",
-								"description": "JWT access token"
-							},
-							{
-								"key": "x-api-version",
-								"value": "{{version}}",
-								"description": "API version"
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"description": "Organization id"
-							},
-							{
-								"key": "x-auth-username",
-								"value": "{{x-auth-username}}",
-								"description": "Username for identification"
-							},
-							{
-								"key": "x-auth-password",
-								"value": "{{x-auth-password}}",
-								"description": "Password for authentication"
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"url": {
@@ -6728,7 +7109,22 @@
 							]
 						},
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
 							"raw": "{{quicko_host}}/organizations/:organization_id/coupons/:coupon_id/campaigns/:campaign_id/coupon-codes/:coupon_code_id",
 							"host": [
@@ -6785,7 +7181,22 @@
 							]
 						},
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"customers\": [\r\n        \"ec060b62-3293-47af-a78c-5f1108ed8fc0\"\r\n    ]\r\n}",
@@ -7002,7 +7413,22 @@
 							]
 						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
 							"raw": "{{quicko_host}}/coupons/:coupon_id/campaigns/:campaign_id/coupon-codes/:coupon_code_id/customers",
 							"host": [
@@ -7121,7 +7547,22 @@
 							]
 						},
 						"method": "PATCH",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"customers\": [\r\n        \"16a70b71-641e-4c6a-80b7-220217efbce3\",\r\n        \"a765dd9a-1a01-4f7d-9e1b-a1dbaf71b788\"\r\n    ]\r\n}",
@@ -7258,7 +7699,22 @@
 							]
 						},
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
 							"raw": "{{quicko_host}}/coupons/:coupon_id/campaigns/:campaign_id/coupon-codes/:coupon_code_id/customers/:customer_id",
 							"host": [
@@ -7404,41 +7860,30 @@
 					],
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{access_token}}",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "GET",
 						"header": [
 							{
-								"key": "x-auth-username",
-								"value": "{{x-auth-username}}",
-								"description": "Username for identification"
-							},
-							{
-								"key": "x-auth-password",
-								"value": "{{x-auth-password}}",
-								"description": "Password for authentication"
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"description": "Organization id",
-								"type": "text"
-							},
-							{
 								"key": "x-accept-type",
 								"value": "application/json;format=sheet-json",
 								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"url": {
-							"raw": "{{quicko_host}}/organizations/:organization_id/offer?external_customer_id=nihgydljad9wy327&code=CUSTOMEr5678",
+							"raw": "{{quicko_host}}/organizations/:organization_id/offer",
 							"host": [
 								"{{quicko_host}}"
 							],
@@ -7451,11 +7896,13 @@
 								{
 									"key": "external_customer_id",
 									"value": "nihgydljad9wy327",
-									"description": "Optional filter to get customer specific offer"
+									"description": "Optional filter to get customer specific offer",
+									"disabled": true
 								},
 								{
 									"key": "code",
-									"value": "CUSTOMEr5678"
+									"value": "CUSTOMEr5678",
+									"disabled": true
 								},
 								{
 									"key": "external_item_id",
@@ -7576,35 +8023,10 @@
 					"name": "Fetch offers",
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{access_token}}",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "GET",
 						"header": [
-							{
-								"key": "x-auth-username",
-								"value": "{{x-auth-username}}",
-								"description": "Username for identification",
-								"disabled": true
-							},
-							{
-								"key": "x-auth-password",
-								"value": "{{x-auth-password}}",
-								"description": "Password for authentication",
-								"disabled": true
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"description": "Organization id",
-								"type": "text"
-							},
 							{
 								"key": "x-accept-type",
 								"value": "application/json;format=sheet-json",
@@ -7828,37 +8250,28 @@
 					],
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{access_token}}",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "POST",
 						"header": [
 							{
-								"key": "x-auth-username",
-								"value": "{{x-auth-username}}",
-								"description": "Username for identification"
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
 							},
 							{
-								"key": "x-auth-password",
-								"value": "{{x-auth-password}}",
-								"description": "Password for authentication"
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"description": "Organization id",
-								"type": "text"
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"code\": \"CUSTOMEr5678\",\r\n    \"base_order_value\": 200,\r\n    \"discount\": 100,\r\n    \"external_item_id\": \"test1\",\r\n    \"external_customer_id\": \"nihgydljad9wy327\"\r\n}",
+							"raw": "{\r\n    \"code\": \"WELCOME10\",\r\n    \"base_order_value\": 200,\r\n    \"discount\": 100,\r\n    \"external_item_id\": \"elite-2025\",\r\n    \"external_customer_id\": \"148a4749-2bf9-405f-a561-6452d0afb359\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -8443,29 +8856,22 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "x-api-key",
-								"value": "{{api_key}}",
-								"description": "API key for identification"
-							},
-							{
-								"key": "authorization",
-								"value": "{{access_token}}",
-								"description": "JWT access token"
-							},
-							{
-								"key": "x-api-version",
-								"value": "{{version}}",
-								"description": "API version"
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"description": "Organization id"
-							},
-							{
 								"key": "x-accept-type",
 								"value": "application/json;format=sheet-json",
 								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"url": {
@@ -8500,18 +8906,6 @@
 								{
 									"key": "customer_email",
 									"value": "dan@test.com",
-									"disabled": true
-								},
-								{
-									"key": "from",
-									"value": "1716364274000",
-									"description": "Option filter to get redemptions redeemed from time in EPOCH",
-									"disabled": true
-								},
-								{
-									"key": "to",
-									"value": "1716531482000",
-									"description": "Option filter to get redemptions redeemed to time in EPOCH",
 									"disabled": true
 								},
 								{
@@ -8687,39 +9081,39 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "x-api-key",
-								"value": "{{api_key}}",
-								"description": "API key for identification"
-							},
-							{
-								"key": "authorization",
-								"value": "{{access_token}}",
-								"description": "JWT access token"
-							},
-							{
-								"key": "x-api-version",
-								"value": "{{version}}",
-								"description": "API version"
-							},
-							{
-								"key": "x-organization-id",
-								"value": "{{organization_id}}",
-								"description": "Organization id"
-							},
-							{
 								"key": "x-accept-type",
 								"value": "application/json;format=sheet-json",
 								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"url": {
-							"raw": "{{quicko_host}}/organizations/:organization_id/redemptions",
+							"raw": "{{quicko_host}}/organizations/:organization_id/coupons/:coupon_id/campaigns/:campaign_id/coupon-codes/:coupon_code_id/redemptions",
 							"host": [
 								"{{quicko_host}}"
 							],
 							"path": [
 								"organizations",
 								":organization_id",
+								"coupons",
+								":coupon_id",
+								"campaigns",
+								":campaign_id",
+								"coupon-codes",
+								":coupon_code_id",
 								"redemptions"
 							],
 							"query": [
@@ -8775,6 +9169,18 @@
 								{
 									"key": "organization_id",
 									"value": "{{organization_id}}"
+								},
+								{
+									"key": "coupon_id",
+									"value": "{{coupon_id}}"
+								},
+								{
+									"key": "campaign_id",
+									"value": "{{campaign_id}}"
+								},
+								{
+									"key": "coupon_code_id",
+									"value": "{{coupon_code_id}}"
 								}
 							]
 						}
@@ -9090,10 +9496,24 @@
 								"key": "x-accept-type",
 								"value": "application/json;format=sheet-json",
 								"type": "text"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{x-api-key}}",
+								"description": "API key",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-secret",
+								"value": "{{x-api-secret}}",
+								"description": "API secret",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"url": {
-							"raw": "{{quicko_host}}/organizations/:organization_id/redemptions/reports?time_period=this_week",
+							"raw": "{{quicko_host}}/organizations/:organization_id/redemptions/reports",
 							"host": [
 								"{{quicko_host}}"
 							],
@@ -9106,7 +9526,8 @@
 							"query": [
 								{
 									"key": "time_period",
-									"value": "this_week"
+									"value": "this_week",
+									"disabled": true
 								},
 								{
 									"key": "from",
