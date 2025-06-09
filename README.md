@@ -24,8 +24,7 @@
 
 ### 1. Prerequisites
 
-- Node.js (>= 18.x)
-- npm (>= 9.x)
+- Node.js (>= 20.x)
 - Docker (for containerized deployment)
 - PostgreSQL (if not using Docker)
 
@@ -86,7 +85,7 @@ curl -X POST http://localhost:3000/api/users/login \
     "password": "<password>"
   }'
 ```
-> The response will contain a JWT token. Use this token in the Authorization header for the next step.
+The response will contain a JWT token. Use this token in the Authorization header for the next step.
 
 **3. Create Organization**
 ```sh
@@ -100,7 +99,7 @@ curl -X POST http://localhost:3000/api/organizations \
   }'
 ```
 
-> Replace `localhost:3000` with your server's address if running in production or on a different host. The `external_id` field is optional.
+Replace `localhost:3000` with your server's address if running in production or on a different host.
 
 ## Project Structure
 
@@ -122,14 +121,14 @@ qpon/
 ## Resources
 
 - **API Postman Collection:**  
-  `resources/json/org.quicko.qpon.postman_collection.json`
+  [resources/json/org.quicko.qpon.postman_collection.json](https://github.com/org-quicko/qpon/blob/main/resources/json/org.quicko.qpon.postman_collection.json)
 - **ER Diagram:**  
-  `common/org-quicko-qpon.pgerd`
+  [common/org-quicko-qpon.pgerd](https://github.com/org-quicko/qpon/blob/main/common/org-quicko-qpon.pgerd)
 
 ## Contributing
 
 Pull requests and issues are welcome! Please open an issue to discuss your ideas or report bugs.
 
-## Authors
+## Maintainers
 
 - [Quicko Engineering](mailto:developer@quicko.org.in)
