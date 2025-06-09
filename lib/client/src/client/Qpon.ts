@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { QponCredentials } from '../beans';
 import { Campaign, Coupon, CouponCode, CouponItem, Customer, CustomerCouponCode, Item, Offer, Organization, Redemption, User } from './methods';
 

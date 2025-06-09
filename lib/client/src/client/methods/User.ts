@@ -1,4 +1,4 @@
-import { ClientException, LoggerFactory } from '@org-quicko/core';
+import { ClientException, LoggerFactory, LoggingLevel } from '@org-quicko/core';
 import winston from 'winston';
 import { OrganizationUser, PaginatedList, User as UserBean } from '@org-quicko/qpon-core';
 import { instanceToPlain } from 'class-transformer';
@@ -11,7 +11,7 @@ export class User extends RestClient {
 
   constructor(config: QponCredentials, baseUrl: string) {
     super(config, baseUrl);
-    this.logger = this.getLogger();
+    this.logger = LoggerFactory.createLogger('logger', LoggingLevel.info);
   }
 
   async getUser(userId: string) : Promise<UserBean> {
@@ -163,13 +163,5 @@ export class User extends RestClient {
     } catch (error) {
       throw new ClientException('Failed to fetch users for an organization', error);
     }
-  }
-
-  public getLogger() {
-    if (!this.logger) {
-      this.logger = LoggerFactory.getLogger('logger')!;
-    }
-
-    return this.logger;
   }
 }

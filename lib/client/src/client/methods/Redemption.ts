@@ -1,4 +1,4 @@
-import { ClientException, LoggerFactory } from '@org-quicko/core';
+import { ClientException, LoggerFactory, LoggingLevel } from '@org-quicko/core';
 import winston from 'winston';
 import { CreateRedemption, SortOrder, TimePeriod } from '@org-quicko/qpon-core';
 import { RedemptionWorkbook } from '@org-quicko/qpon-sheet-core/redemption_workbook/beans';
@@ -12,7 +12,7 @@ export class Redemption extends RestClient {
 
   constructor(config: QponCredentials, baseUrl: string) {
     super(config, baseUrl);
-    this.logger = this.getLogger()!;
+    this.logger = LoggerFactory.createLogger('logger', LoggingLevel.info);
   }
 
   async redeemCouponCode(organizationId: string, data: CreateRedemption) {
@@ -194,13 +194,5 @@ export class Redemption extends RestClient {
     } catch (error) {
       throw new ClientException('Failed to generate redemption report', error);
     }
-  }
-
-  public getLogger() {
-    if (!this.logger) {
-      this.logger = LoggerFactory.getLogger("logger")!;
-    }
-
-    return this.logger;
   }
 }

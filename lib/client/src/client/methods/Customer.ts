@@ -1,6 +1,7 @@
 import {
   ClientException,
   LoggerFactory,
+  LoggingLevel,
 } from '@org-quicko/core';
 import winston from 'winston';
 import { Customer as CustomerBean, PaginatedList } from '@org-quicko/qpon-core';
@@ -14,7 +15,7 @@ export class Customer extends RestClient {
 
   constructor(config: QponCredentials, baseUrl: string) {
     super(config, baseUrl);
-    this.logger = this.getLogger()!;
+    this.logger = LoggerFactory.createLogger('logger', LoggingLevel.info);
   }
 
   async getCustomer(organizationId: string, customerId: string) : Promise<CustomerBean> {
@@ -115,13 +116,5 @@ export class Customer extends RestClient {
     } catch (error) {
       throw new ClientException('Failed to upsert customer', error);
     }
-  }
-
-  public getLogger() {
-    if (!this.logger) {
-      this.logger = LoggerFactory.getLogger("logger")!;
-    }
-
-    return this.logger;
   }
 }

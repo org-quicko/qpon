@@ -1,4 +1,4 @@
-import { ClientException, LoggerFactory } from '@org-quicko/core';
+import { ClientException, LoggerFactory, LoggingLevel } from '@org-quicko/core';
 import winston from 'winston';
 import { Customer, CustomerCouponCode as CustomerCouponCodeBean, PaginatedList } from '@org-quicko/qpon-core';
 import { instanceToPlain } from 'class-transformer';
@@ -11,7 +11,7 @@ export class CustomerCouponCode extends RestClient {
 
   constructor(config: QponCredentials, baseUrl: string) {
     super(config, baseUrl);
-    this.logger = this.getLogger()!;
+    this.logger = LoggerFactory.createLogger('logger', LoggingLevel.info);
   }
 
   async addCustomersToCouponCode(
@@ -146,13 +146,5 @@ export class CustomerCouponCode extends RestClient {
     } catch (error) {
       throw new ClientException('Failed to delete customer from coupon code', error);
     }
-  }
-
-  public getLogger() {
-    if (!this.logger) {
-      this.logger = LoggerFactory.getLogger('logger')!;
-    }
-
-    return this.logger;
   }
 }

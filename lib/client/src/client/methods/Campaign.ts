@@ -1,6 +1,5 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import * as winston from 'winston';
-import { ClientException, LoggerFactory } from '@org-quicko/core';
+import { ClientException, LoggerFactory, LoggingLevel } from '@org-quicko/core';
 import { Campaign as CampaignBean, PaginatedList } from '@org-quicko/qpon-core';
 import { CampaignSummaryWorkbook } from '@org-quicko/qpon-sheet-core/campaign_summary_workbook/beans';
 import { instanceToPlain } from 'class-transformer';
@@ -13,7 +12,7 @@ export class Campaign extends RestClient {
 
   constructor(config: QponCredentials, baseUrl: string) {
     super(config, baseUrl);
-    this.logger = this.getLogger()!;
+    this.logger = LoggerFactory.createLogger('logger', LoggingLevel.info);
   }
 
   async createCampaign(organizationId: string, couponId: string, data: Pick<CampaignBean, 'name' | 'budget' | 'externalId'>) : Promise<CampaignBean> {
@@ -251,13 +250,5 @@ export class Campaign extends RestClient {
     } catch (error) {
       throw new ClientException('Failed to get campaign summaries', error);
     }
-  }
-
-  public getLogger() {
-    if (!this.logger) {
-      this.logger = LoggerFactory.getLogger("logger")!;
-    }
-
-    return this.logger;
   }
 }

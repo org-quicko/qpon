@@ -1,5 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import { ClientException, LoggerFactory } from '@org-quicko/core';
+import { ClientException, LoggerFactory, LoggingLevel } from '@org-quicko/core';
 import winston from 'winston';
 import { CouponItem as CouponItemBean } from '@org-quicko/qpon-core';
 import { instanceToPlain } from 'class-transformer';
@@ -12,7 +11,7 @@ export class CouponItem extends RestClient {
 
   constructor(config: QponCredentials, baseUrl: string) {
     super(config, baseUrl);
-    this.logger = this.getLogger()!;
+    this.logger = LoggerFactory.createLogger('logger', LoggingLevel.info);
   }
 
   async addCouponItems(organizationId: string, couponId: string, data: Pick<CouponItemBean, 'item'>) : Promise<CouponItemBean> {
@@ -100,13 +99,5 @@ export class CouponItem extends RestClient {
     } catch (error) {
       throw new ClientException('Failed to update items in coupon', error);
     }
-  }
-
-  public getLogger() {
-    if (!this.logger) {
-      this.logger = LoggerFactory.getLogger("logger")!;
-    }
-
-    return this.logger;
   }
 }

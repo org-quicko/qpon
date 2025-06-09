@@ -1,5 +1,4 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { ClientException, LoggerFactory } from '@org-quicko/core';
+import { ClientException, LoggerFactory, LoggingLevel } from '@org-quicko/core';
 import winston from 'winston';
 import { Organization as OrganizationBean, PaginatedList } from '@org-quicko/qpon-core';
 import { APIURL } from '../../resource';
@@ -11,7 +10,7 @@ export class Organization extends RestClient {
 
   constructor(config: QponCredentials, baseUrl: string) {
     super(config, baseUrl);
-    this.logger = this.getLogger();
+    this.logger = LoggerFactory.createLogger('logger', LoggingLevel.info);
   }
 
   async getOrganization(organizationId: string) : Promise<OrganizationBean> {
@@ -80,13 +79,5 @@ export class Organization extends RestClient {
     } catch (error) {
       throw new ClientException('Failed to update organization', error);
     }
-  }
-
-  public getLogger() {
-    if (!this.logger) {
-      this.logger = LoggerFactory.getLogger('logger')!;
-    }
-
-    return this.logger;
   }
 }

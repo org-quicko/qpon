@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 export class Endpoint {
   static build(
     baseUrl: string,

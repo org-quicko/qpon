@@ -1,4 +1,4 @@
-import { ClientException, LoggerFactory } from '@org-quicko/core';
+import { ClientException, LoggerFactory, LoggingLevel } from '@org-quicko/core';
 import winston from 'winston';
 import { Item as ItemBean, PaginatedList } from '@org-quicko/qpon-core';
 import { instanceToPlain } from 'class-transformer';
@@ -11,7 +11,7 @@ export class Item extends RestClient {
 
   constructor(config: QponCredentials, baseUrl: string) {
     super(config, baseUrl);
-    this.logger = this.getLogger()!;
+    this.logger = LoggerFactory.createLogger('logger', LoggingLevel.info);
   }
 
   async createItem(
@@ -147,13 +147,5 @@ export class Item extends RestClient {
     } catch (error) {
       throw new ClientException('Failed to upsert item', error);
     }
-  }
-
-  public getLogger() {
-    if (!this.logger) {
-      this.logger = LoggerFactory.getLogger('logger')!;
-    }
-
-    return this.logger;
   }
 }

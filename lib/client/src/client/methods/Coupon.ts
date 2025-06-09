@@ -1,5 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import { ClientException, LoggerFactory } from '@org-quicko/core';
+import { ClientException, LoggerFactory, LoggingLevel } from '@org-quicko/core';
 import winston from 'winston';
 import { Coupon as CouponBean, PaginatedList } from '@org-quicko/qpon-core';
 import { CouponSummaryWorkbook } from '@org-quicko/qpon-sheet-core/coupon_summary_workbook/beans';
@@ -13,7 +12,7 @@ export class Coupon extends RestClient {
 
   constructor(config: QponCredentials, baseUrl: string) {
     super(config, baseUrl);
-    this.logger = this.getLogger()!;
+    this.logger = LoggerFactory.createLogger('logger', LoggingLevel.info);
   }
 
   async getCoupon(organizationId: string, couponId: string) : Promise<CouponBean> {
@@ -202,13 +201,5 @@ export class Coupon extends RestClient {
     } catch (error) {
       throw new ClientException('Failed to get coupon summaries', error);
     }
-  }
-
-  public getLogger() {
-    if (!this.logger) {
-      this.logger = LoggerFactory.getLogger("logger")!;
-    }
-
-    return this.logger;
   }
 }

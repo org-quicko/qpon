@@ -1,4 +1,4 @@
-import { ClientException, LoggerFactory } from '@org-quicko/core';
+import { ClientException, LoggerFactory, LoggingLevel } from '@org-quicko/core';
 import { DiscountType, SortOrder } from '@org-quicko/qpon-core';
 import { OfferWorkbook } from '@org-quicko/qpon-sheet-core/offer_workbook/beans';
 import winston from 'winston';
@@ -11,7 +11,7 @@ export class Offer extends RestClient {
 
   constructor(config: QponCredentials, baseUrl: string) {
     super(config, baseUrl);
-    this.logger = this.getLogger()!;
+    this.logger = LoggerFactory.createLogger('logger', LoggingLevel.info);
   }
 
   async getOffer(
@@ -105,13 +105,5 @@ export class Offer extends RestClient {
       this.logger.error(`Error`, error);
       throw new ClientException(error.message, error.cause, error.code);
     }
-  }
-
-  public getLogger() {
-    if (!this.logger) {
-      this.logger = LoggerFactory.getLogger("logger")!;
-    }
-
-    return this.logger;
   }
 }
