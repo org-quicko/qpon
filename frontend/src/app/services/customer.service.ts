@@ -9,7 +9,7 @@ import { PaginatedList } from '../../dtos/paginated-list.dto';
   providedIn: 'root'
 })
 export class CustomerService {
-  private endpoint = environment.api_qpon_dev
+  private endpoint = environment.base_url
 
   constructor(private httpClient: HttpClient) { }
 

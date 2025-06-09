@@ -1,4 +1,4 @@
 export const environment = {
-    production: false,
-    api_qpon_dev: "/api",
+    production: true,
+    base_url: "/api",
 };

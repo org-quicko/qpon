@@ -12,7 +12,7 @@ import { sortOrderEnum } from '../../enums';
   providedIn: 'root'
 })
 export class CouponCodeService {
-  private endpoint = environment.api_qpon_dev;
+  private endpoint = environment.base_url;
 
   constructor(private httpClient: HttpClient) {}
 
