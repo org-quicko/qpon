@@ -1,11 +1,8 @@
-import { LoggerFactory } from "@org-quicko/core";
 import { CreateRedemption } from "@org-quicko/qpon-core";
-import * as winston from "winston";
 import { QponCredentials } from "../../src/beans";
 import { Qpon } from "../../src/client/Qpon";
 
 async function test() {
-  LoggerFactory.setLogger('logger', winston.createLogger());
   const config = new QponCredentials(
     '2fcf3f672391a4dd9e45ac7b6fca9d14',
     '160cb45d383040e16cbd287f6dd81e8f6336e36fc5dffa13c32d86aac74a860e'
@@ -18,7 +15,7 @@ async function test() {
   data.code = "TEST101";
   data.baseOrderValue = 200;
   data.discount = 100;
-  data.externalItemId = "ytfvbnjk"
+  data.externalItemId = "G4F3S6DVG6SDF6";
   data.externalCustomerId = "1234567890";
 
 

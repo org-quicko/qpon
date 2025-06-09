@@ -1,11 +1,8 @@
-import { LoggerFactory } from '@org.quicko/core';
-import * as winston from 'winston';
-import { Customer } from '@org.quicko.qpon/core';
+import { Customer } from '@org-quicko/qpon-core';
 import { Qpon } from '../../src/client/Qpon';
 import { QponCredentials } from '../../src/beans';
 
 async function test() {
-  LoggerFactory.setLogger("logger", winston.createLogger());
   const config = new QponCredentials("f5f0915ac72b98713051630ebe72a5ba", "761ac8f7856e251d86db8acc496a8d5aca300540033dfff9c47c04f6002d472c");
 
   const qpon: Qpon = new Qpon(config, 'http://localhost:3000/api');
