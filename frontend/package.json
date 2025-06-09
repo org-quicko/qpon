@@ -8,10 +8,7 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "generate": "npm run generateSchema && npm run generateObjects",
-    "generateSchema": "excel-to-schema --input ./resources/excel/ --output ./src/generated/schemas/",
-    "generateObjects": "schema-to-objects --input ./src/generated/schemas/ --output ./src/generated/sources"
+    "test": "ng test"
   },
   "private": true,
   "dependencies": {
