@@ -1,0 +1,69 @@
+<div class="grid grid-cols-4 gap-3">
+  <mat-card appearance="outlined" class="p-6 bg-surface-container-lowest">
+    <mat-card-content>
+      <p class="mat-body-medium text-on-surface-variant">Discount type</p>
+      @if(isLoading()) {
+        <ngx-skeleton-loader [theme]="{
+            height: '24px',
+            width: '200px',
+            margin: '0px',
+            padding: '0px'
+          }"></ngx-skeleton-loader>
+      } @else {
+        <p class="mat-title-large text-on-surface">{{ coupon()?.discountType == 'fixed' ?
+            coupon()?.discountUpto ? 
+              `${coupon()?.discountValue | currency: organization()?.currency : 'symbol'} upto ${coupon()?.discountUpto | currency: organization()?.currency : 'symbol'}` 
+              : `${coupon()?.discountValue | currency: organization()?.currency : 'symbol'}`
+            :
+            coupon()?.discountUpto ? 
+              `${coupon()?.discountValue}% upto ${coupon()?.discountUpto | currency: organization()?.currency : 'symbol'}` 
+              : `${coupon()?.discountValue}%` }}</p>
+      }
+    </mat-card-content>
+  </mat-card>
+  <mat-card appearance="outlined" class="p-6 bg-surface-container-lowest">
+    <mat-card-content>
+        <p class="mat-body-medium text-on-surface-variant">Active Campaigns</p>
+        @if(isLoading()) {
+            <ngx-skeleton-loader [theme]="{
+                height: '24px',
+                width: '200px',
+                margin: '0px',
+                padding: '0px'
+              }"></ngx-skeleton-loader>
+          } @else {
+            <p class="mat-title-large text-on-surface">{{ couponSummary()?.getRow(0)?.getActiveCampaignCount() }}</p>
+          }
+    </mat-card-content>
+  </mat-card>
+  <mat-card appearance="outlined" class="p-6 bg-surface-container-lowest">
+    <mat-card-content>
+        <p class="mat-body-medium text-on-surface-variant">Total redemptions</p>
+        @if(isLoading()) {
+            <ngx-skeleton-loader [theme]="{
+                height: '24px',
+                width: '200px',
+                margin: '0px',
+                padding: '0px'
+              }"></ngx-skeleton-loader>
+          } @else {
+            <p class="mat-title-large text-on-surface">{{ couponSummary()?.getRow(0)?.getTotalRedemptionCount()}}</p>
+          }
+    </mat-card-content>
+  </mat-card>
+  <mat-card appearance="outlined" class="p-6 bg-surface-container-lowest">
+    <mat-card-content>
+        <p class="mat-body-medium text-on-surface-variant">Total discount</p>
+        @if(isLoading()) {
+            <ngx-skeleton-loader [theme]="{
+                height: '24px',
+                width: '200px',
+                margin: '0px',
+                padding: '0px'
+              }"></ngx-skeleton-loader>
+          } @else {
+            <p class="mat-title-large text-on-surface">{{ couponSummary()?.getRow(0)?.getTotalRedemptionAmount()! > 0 ? (couponSummary()?.getRow(0)?.getTotalRedemptionAmount() | currency: organization()?.currency : 'symbol') : 0  }}</p>
+          }
+    </mat-card-content>
+  </mat-card>
+</div>

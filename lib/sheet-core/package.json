@@ -1,0 +1,105 @@
+{
+	"name": "@org-quicko/qpon-sheet-core",
+	"version": "1.0.0",
+	"description": "A library in typescript for common sheet entities of Qpon",
+	"author": "Quicko <developer@quicko.org.in>",
+	"main": "dist/cjs/index.cjs",
+	"module": "dist/esm/index.js",
+	"types": "dist/types/src/index.d.ts",
+	"type": "module",
+	"scripts": {
+		"clean": "npm cache clean --force",
+		"prebuild": "rm -rf dist && npm run clean && eslint . && npm run generate",
+		"lint": "eslint .",
+		"build": "rollup -c",
+		"generate": "npm run generateSchema && npm run generateObjects",
+		"generateSchema": "excel-to-schema --input ./resources/excel/ --output ./generated/schemas/",
+		"generateObjects": "schema-to-objects --input ./generated/schemas/ --output ./generated/sources"
+	},
+	"license": "UNLICENSED",
+	"files": [
+		"dist/*/**"
+	],
+	"exports": {
+		".": {
+			"import": "./dist/esm/index.js",
+			"require": "./dist/cjs/index.cjs",
+			"types": "./dist/types/src/index.d.ts"
+		},
+		"./campaign_summary_workbook/beans": {
+			"import": "./dist/esm/generated/sources/campaign_summary_workbook/index.js",
+			"require": "./dist/cjs/generated/sources/campaign_summary_workbook/index.cjs",
+			"types": "./dist/types/generated/sources/campaign_summary_workbook/index.d.ts"
+		},
+		"./coupon_code_workbook/beans": {
+			"import": "./dist/esm/generated/sources/coupon_code_workbook/index.js",
+			"require": "./dist/cjs/generated/sources/coupon_code_workbook/index.cjs",
+			"types": "./dist/types/generated/sources/coupon_code_workbook/index.d.ts"
+		},
+		"./coupon_summary_workbook/beans": {
+			"import": "./dist/esm/generated/sources/coupon_summary_workbook/index.js",
+			"require": "./dist/cjs/generated/sources/coupon_summary_workbook/index.cjs",
+			"types": "./dist/types/generated/sources/coupon_summary_workbook/index.d.ts"
+		},
+		"./offer_workbook/beans": {
+			"import": "./dist/esm/generated/sources/offer_workbook/index.js",
+			"require": "./dist/cjs/generated/sources/offer_workbook/index.cjs",
+			"types": "./dist/types/generated/sources/offer_workbook/index.d.ts"
+		},
+		"./organization_summary_workbook/beans": {
+			"import": "./dist/esm/generated/sources/organization_summary_workbook/index.js",
+			"require": "./dist/cjs/generated/sources/organization_summary_workbook/index.cjs",
+			"types": "./dist/types/generated/sources/organization_summary_workbook/index.d.ts"
+		},
+		"./redemption_report_workbook/beans": {
+			"import": "./dist/esm/generated/sources/redemption_report_workbook/index.js",
+			"require": "./dist/cjs/generated/sources/redemption_report_workbook/index.cjs",
+			"types": "./dist/types/generated/sources/redemption_report_workbook/index.d.ts"
+		},
+		"./redemption_workbook/beans": {
+			"import": "./dist/esm/generated/sources/redemption_workbook/index.js",
+			"require": "./dist/cjs/generated/sources/redemption_workbook/index.cjs",
+			"types": "./dist/types/generated/sources/redemption_workbook/index.d.ts"
+		}
+	},
+	"typesVersions": {
+		"*": {
+			"campaign_summary_workbook/beans": [
+				"dist/types/generated/sources/campaign_summary_workbook/index.d.ts"
+			],
+			"coupon_code_workbook/beans": [
+				"dist/types/generated/sources/coupon_code_workbook/index.d.ts"
+			],
+			"offer_workbook/beans": [
+				"dist/types/generated/sources/offer_workbook/index.d.ts"
+			],
+			"organization_summary_workbook/beans": [
+				"dist/types/generated/sources/organization_summary_workbook/index.d.ts"
+			],
+			"redemption_report_workbook/beans": [
+				"dist/types/generated/sources/redemption_report_workbook/index.d.ts"
+			],
+			"redemption_workbook/beans": [
+				"dist/types/generated/sources/redemption_workbook/index.d.ts"
+			]
+		}
+	},
+	"directories": {
+		"lib": "./dist"
+	},
+	"devDependencies": {
+		"@org-quicko/sheet-generator": "^1.0.1",
+		"@rollup/plugin-typescript": "^12.1.2",
+		"@types/node": "^22.7.0",
+		"@typescript-eslint/eslint-plugin": "^8.33.1",
+		"@typescript-eslint/parser": "^8.33.1",
+		"esbuild-plugin-eslint": "^0.3.7",
+		"eslint": "^9.28.0",
+		"eslint-config-prettier": "^10.1.5",
+		"eslint-import-resolver-typescript": "^3.7.0",
+		"glob": "^11.0.2",
+		"rollup": "^4.41.1",
+		"rollup-plugin-dts": "^6.2.1",
+		"typescript": "^5.6.2"
+	}
+}

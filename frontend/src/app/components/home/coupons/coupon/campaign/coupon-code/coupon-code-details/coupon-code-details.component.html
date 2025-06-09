@@ -1,0 +1,187 @@
+<div class="flex flex-col gap-5">
+  <div class="mat-title-medium text-on-surface font-semibold">
+    <p>Code Details</p>
+  </div>
+  <div>
+    <div class="flex gap-4">
+      <mat-card appearance="outlined"  class="flex-1 bg-surface-container-lowest">
+        <mat-card-content>
+          <div class="flex flex-col w-full">
+            <div class="pt-6 px-6">
+              <div class="mat-body-large text-on-surface">Details</div>
+            </div>
+            <div class="flex flex-col p-6 gap-6">
+              @if(!isLoading()) {
+                <div class="flex flex-col gap-1">
+                  <div class="mat-body-medium text-on-surface-variant">Code</div>
+                  <div class="mat-body-large text-on-surface w-[445px]">
+                    {{ couponCode()?.code }}
+                  </div>
+                </div>
+                <div class="flex flex-col gap-1">
+                  <div class="mat-body-medium text-on-surface-variant">Description</div>
+                  <div class="mat-body-large text-on-surface w-full truncate">{{ couponCode()?.description ?? "-" }}</div>
+                </div>
+                <div class="flex flex-col gap-1">
+                  <div class="mat-body-medium text-on-surface-variant">Visibility</div>
+                  <div class="mat-body-large text-on-surface w-[154px]">{{ couponCode()?.visibility | titlecase }}</div>
+                </div>
+                <div class="flex flex-col gap-1">
+                  <div class="mat-body-medium text-on-surface-variant">Validity</div>
+                  <div class="mat-body-large text-on-surface w-full">{{ couponCode()?.expiresAt ? `Expires on ${(couponCode()?.expiresAt! | custom_date)}` : "Never" }}</div>
+                </div>
+              } @else {
+                <div class="flex flex-col gap-1">
+                  <div class="mat-body-medium text-on-surface-variant">Code</div>
+                  <ngx-skeleton-loader
+                    [theme]="{
+                      height: '24px',
+                      width: '200px',
+                      margin: '0px',
+                      padding: '0px'
+                    }"></ngx-skeleton-loader>
+                </div>
+                <div class="flex flex-col gap-1">
+                  <div class="mat-body-medium text-on-surface-variant">Description</div>
+                  <ngx-skeleton-loader
+                    [theme]="{
+                      height: '24px',
+                      width: '200px',
+                      margin: '0px',
+                      padding: '0px'
+                    }"></ngx-skeleton-loader>
+                </div>
+                <div class="flex flex-col gap-1">
+                  <div class="mat-body-medium text-on-surface-variant">Visibility</div>
+                  <ngx-skeleton-loader
+                    [theme]="{
+                      height: '24px',
+                      width: '200px',
+                      margin: '0px',
+                      padding: '0px'
+                    }"></ngx-skeleton-loader>
+                </div>
+                <div class="flex flex-col gap-1">
+                  <div class="mat-body-medium text-on-surface-variant">Validity</div>
+                  <ngx-skeleton-loader
+                  [theme]="{
+                    height: '24px',
+                    width: '400px',
+                    margin: '0px',
+                    padding: '0px'
+                  }"></ngx-skeleton-loader>
+                </div>
+              }
+            </div>
+            
+            <div class="pt-[120px]">
+              <mat-divider class="border-outline-variant"></mat-divider>
+              <button mat-button class="flex h-[56px] w-full justify-start rounded-none" (click)="onEditCodeDetails()">Edit details</button>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <div class="flex flex-col gap-4">
+        <mat-card appearance="outlined" class="bg-surface-container-lowest">
+          <mat-card-content>
+            <div class="w-[530px] flex flex-col">
+              <div class="pt-6 px-6">
+                <div class="mat-body-large text-on-surface">Coupon code accessibility</div>
+              </div>
+              <div class="p-6 flex flex-col gap-6">
+                @if(!isLoading()) {
+                  <div class="flex flex-col gap-1">
+                    <div class="mat-body-medium text-on-surface-variant">Can be used by</div>
+                    @if(customerConstraint == 'all') {
+                      <div class="mat-body-large text-on-surface">{{ couponCode()?.customerConstraint | titlecase }}</div>
+                    } @else {
+                      <div class="flex gap-2">
+                        @if(customers()?.length! > 3) {
+                          <div class="bg-surface-container text-on-surface py-1 px-2 mat-label-small rounded-[4px]">{{ customers()?.at(0)?.name }}</div>
+                          <div class="bg-surface-container text-on-surface py-1 px-2 mat-label-small rounded-[4px]">{{ customers()?.at(1)?.name }}</div>
+                          <div class="bg-surface-container text-on-surface py-1 px-2 mat-label-small rounded-[4px]">{{ customers()?.at(2)?.name }}</div>
+                          <div class="text-on-surface-variant py-1 px-2 mat-label-small">+{{ customers()?.length! - 3 }} more</div>
+                        } @else {
+                          @for(customer of customers(); track customer.customerId) {
+                            <div class="bg-surface-container text-on-surface py-1 px-2 mat-label-small rounded-[4px]">{{ customer.name }}</div>
+                          }
+                        }
+                      </div>
+                    }
+                  </div>
+                } @else {
+                  <div class="mat-body-medium text-on-surface-variant">Can be used by</div>
+                  <ngx-skeleton-loader
+                    [theme]="{
+                      height: '24px',
+                      width: '100px',
+                      margin: '0px',
+                      padding: '0px'
+                    }"></ngx-skeleton-loader>
+                }
+              </div>
+              <mat-divider class="border-outline-variant"></mat-divider>
+              <button mat-button class="flex h-[56px] justify-start rounded-none" (click)="onEditCustomerConstraint()">Edit details</button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card appearance="outlined" class="flex-1 bg-surface-container-lowest">
+          <mat-card-content>
+            <div class="w-full flex flex-col">
+              <div class="pt-6 px-6">
+                <div class="mat-body-large text-on-surface">Redemption limits</div>
+              </div>
+              <div class="p-6 flex flex-col gap-6">
+                @if(!isLoading()) {
+                  <div class="flex flex-col gap-1">
+                    <div class="mat-body-medium text-on-surface-variant">Minimum purchase amount</div>
+                    <div class="mat-body-large text-on-surface">{{ couponCode()?.minimumAmount ?? "-" }}</div>
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <div class="mat-body-medium text-on-surface-variant">Maximum redemptions</div>
+                    <div class="mat-body-large text-on-surface">{{ couponCode()?.maxRedemptions ?? "Unlimited" }}</div>
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <div class="mat-body-medium text-on-surface-variant">Maximum redemptions per customer</div>
+                    <div class="mat-body-large text-on-surface">{{ couponCode()?.maxRedemptionPerCustomer ?? "-" }}</div>
+                  </div>
+                } @else {
+                  <div class="flex flex-col gap-1">
+                    <div class="mat-body-medium text-on-surface-variant">Minimum purchase amount</div>
+                    <ngx-skeleton-loader
+                    [theme]="{
+                      height: '24px',
+                      width: '100px',
+                      margin: '0px',
+                      padding: '0px'
+                    }"></ngx-skeleton-loader>
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <div class="mat-body-medium text-on-surface-variant">Maximum redemptions</div>
+                    <ngx-skeleton-loader
+                    [theme]="{
+                      height: '24px',
+                      width: '100px',
+                      margin: '0px',
+                      padding: '0px'
+                    }"></ngx-skeleton-loader>
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <div class="mat-body-medium text-on-surface-variant">Maximum redemptions per customer</div>
+                    <ngx-skeleton-loader
+                    [theme]="{
+                      height: '24px',
+                      width: '100px',
+                      margin: '0px',
+                      padding: '0px'
+                    }"></ngx-skeleton-loader>
+                  </div>
+                }
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

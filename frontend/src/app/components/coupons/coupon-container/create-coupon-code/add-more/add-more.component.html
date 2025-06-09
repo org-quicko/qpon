@@ -1,0 +1,78 @@
+<div class="flex flex-col gap-10 w-[560px]">
+  <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-2">
+      <div class="flex gap-1 items-center mat-label-large text-on-surface">
+        <div>
+          {{ coupon()?.name }}
+        </div>
+        <mat-icon class="h-5 w-5 text-[20px]">navigate_next</mat-icon>
+        <div>{{ campaign()?.name }}</div>
+      </div>
+    </div>
+    <div class="mat-headline-small text-on-surface">
+      Create more coupon codes
+    </div>
+    <div class="mat-body-large text-on-surface">
+      Easily create multiple coupon codes, each tailored to your needs
+    </div>
+  </div>
+  <div class="flex flex-col gap-4">
+    @for(couponCode of couponCodes(); track couponCode; let index = $index;) {
+    <mat-card appearance="outlined" matRipple class="w-full hover:bg-surface-dim hover:cursor-pointer bg-surface-container-lowest" (click)="onEdit(couponCode, index)">
+      <mat-card-content>
+        <div class="w-full p-6 text-left">
+          <div class="flex justify-between items-center w-full">
+            <div class="flex flex-col gap-1 items-start">
+              <div class="mat-body-large text-on-surface">{{ couponCode.code }}</div>
+              <div class="flex w-full gap-1 mat-body-medium text-on-surface-variant">
+                <div>
+                 @if(couponCode.customerConstraint == 'specific') {
+                  @if(couponCodeStore.codesWithSpecificCustomers()?.get(couponCode.code!)?.length! > 1) {
+                    Limited to {{couponCodeStore.codesWithSpecificCustomers()?.get(couponCode.code!)?.length!}} people
+                  } @else {
+                    Limited to {{couponCodeStore.codesWithSpecificCustomers()?.get(couponCode.code!)?.at(0)?.name}}
+                  }
+                } @else {
+                  Everyone
+                } 
+                </div>
+                <div>•</div>
+                <div>
+                  {{ couponCode.maxRedemptions && couponCode.maxRedemptions > 0 ? `Max ${couponCode.maxRedemptions} uses` : "No Limit" }}
+                </div>
+                <div>•</div>
+                <div>
+                  {{
+                    couponCode.expiresAt
+                      ? (couponCode.expiresAt | custom_date: "": false)
+                      : "Never Expires"
+                  }}
+                </div>
+              </div>
+            </div>
+            <button mat-icon-button (click)="$event.stopPropagation(); onRemoveCouponCode(index)">
+              <mat-icon>close</mat-icon>
+            </button> 
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    }
+    <mat-card class="border-dashed" appearance="outlined" class="bg-surface-container-lowest hover:bg-surface-dim hover:cursor-pointer">
+      <mat-card-content>
+        <div class="">
+          <button mat-button class="w-full flex justify-start h-[97px] p-6 hover:rounded-none" (click)="onAddMore()">
+            <div class="flex justify-start items-center gap-3">
+              <div class="h-12 w-12 flex justify-center items-center bg-secondary-container rounded-full">
+                <mat-icon class="material-symbols-outlined bg-primary-bright text-primary"
+                  >add</mat-icon
+                >
+              </div>
+              <div class="mat-body-large text-primary">Add another code</div>
+            </div>
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

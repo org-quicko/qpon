@@ -1,0 +1,9 @@
+@if(currentScreen == 'code') {
+  <app-create-code [createCouponCodeForm]="createCouponCodeForm" (currentScreenEvent)="changeScreen($event)"></app-create-code>
+} @else if(currentScreen == 'redemptions-limits') {
+  <app-redemption-limits [createCouponCodeForm]="createCouponCodeForm" (currentScreenEvent)="changeScreen($event)"></app-redemption-limits>
+} @else if(currentScreen == 'customer-constraint') {
+  <app-customer-constraint [createCouponCodeForm]="createCouponCodeForm" (currentScreenEvent)="changeScreen($event)"></app-customer-constraint>
+} @else {
+  <app-add-more [createCouponCodeForm]="createCouponCodeForm" (currentScreenEvent)="changeScreen($event)" (couponCodeToEdit)="editCouponCode($event)"></app-add-more>
+}

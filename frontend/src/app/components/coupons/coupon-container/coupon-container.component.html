@@ -1,0 +1,62 @@
+<div class="h-screen flex flex-col">
+  <div class="fixed top-0 w-full z-20 h-[72px]">
+    <app-coupon-code-creation-header></app-coupon-code-creation-header>
+  </div>
+
+  <div class="flex-1 pt-[72px] pb-[72px] overflow-y-auto">
+    <div class="flex flex-col items-center justify-center min-h-full py-8">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+
+  <div class="fixed bottom-0 left-0 right-0 w-full z-20 bg-surface-container-lowest h-[72px] flex flex-col justify-center">
+    @if(!this.redirectUri) {
+      <div class="w-full flex space-x-[8px] justify-between">
+        <div class="flex-1">
+          <app-progress-bar
+            [fillPercentage]="couponCodeStore.progress1()"
+            [animate]="couponCodeStore.animateBar1()"
+          />
+        </div>
+        <div class="flex-1">
+          <app-progress-bar
+            [fillPercentage]="couponCodeStore.progress2()"
+            [animate]="couponCodeStore.animateBar2()"
+          />
+        </div>
+        <div class="flex-1">
+          <app-progress-bar
+            [fillPercentage]="couponCodeStore.progress3()"
+            [animate]="couponCodeStore.animateBar3()"
+          />
+        </div>
+      </div>
+    } @else if(this.redirectUri.length > 0 && this.uri.includes('coupon-codes/create')) {
+      <div class="w-full flex space-x-[8px] justify-between">
+        <div class="flex-1">
+          <app-progress-bar
+            [fillPercentage]="couponCodeStore.progress3()"
+            [animate]="couponCodeStore.animateBar3()"
+          />
+        </div>
+      </div>
+    }
+
+    @if(hideBackButton()) {
+      <div class="flex justify-end items-center px-8 pt-2">
+        <button mat-flat-button (click)="onNext()" class="rounded-full">
+          {{ getButtonText() }}
+        </button>
+      </div>
+    } @else {
+      <div class="flex justify-between items-center px-8 pt-2">
+        <button mat-stroked-button class="rounded-full" (click)="onBack()">
+          Back
+        </button>
+        <button mat-flat-button (click)="onNext()" class="rounded-full">
+          {{ getButtonText() }}
+        </button>
+      </div>
+    }
+  </div>
+</div>

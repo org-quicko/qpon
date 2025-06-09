@@ -1,0 +1,104 @@
+<div class="flex flex-col gap-10 w-[560px]">
+  <div class="flex flex-col gap-2 text-on-surface">
+    <div class="mat-body-large">{{ coupon()?.name }}</div>
+    <div class="mat-headline-large">Let’s create a campaign</div>
+    <div class="mat-body-large">
+      Campaign helps organizing your coupon codes in systematic manner. You<br />
+      can also track budget with campaign.
+    </div>
+  </div>
+  <form [formGroup]="createCampaignForm" class="flex flex-col gap-8">
+    <mat-form-field appearance="outline" class="w-full" subscriptSizing="dynamic">
+      <mat-label>Campaign name</mat-label>
+      <input matInput type="text" formControlName="name">
+      <mat-error>Campaign name is required</mat-error>
+    </mat-form-field>
+    <mat-radio-group [formControl]="budgetConstraintFormControl" class="flex gap-[16px] w-full justify-between">
+      <mat-radio-button
+        matInput
+        value="limited"
+        class="w-[272px] cursor-pointer justify-between border rounded-[5px] border-outline-variant hide-radio-button"
+        [ngClass]="{
+          'text-primary bg-secondary-container border-primary border-[2px] ':
+            budgetConstraintFormControl.value == 'limited',
+          'hover:bg-surface-dim text-outline-variant':
+            budgetConstraintFormControl.value != 'limited'
+        }"
+      >
+        <div
+          class="flex cursor-pointer flex-col gap-[12px] text-on-surface mat-body-large p-[16px]"
+        >
+          <mat-icon
+            class="material-symbols-outlined h-[24px] w-[24px] text-[24px]"
+            [ngClass]="{
+              'text-primary':
+              budgetConstraintFormControl.value == 'limited'
+            }"
+            >track_changes</mat-icon
+          >
+         <div class="flex flex-col gap-1">
+            <div class="mat-body-large">Limited budget</div>
+            <div class="mat-body-medium text-on-surface-variant">
+              Codes will get deactivated once budget is exceeded.
+            </div>
+          </div>
+        </div>
+      </mat-radio-button>
+      <mat-radio-button
+        matInput
+        value="unlimited"
+        class="w-[272px] cursor-pointer border rounded-[5px] border-outline-variant hide-radio-button"
+        [ngClass]="{
+          'text-primary bg-secondary-container border-primary border-[2px] ':
+          budgetConstraintFormControl.value == 'unlimited',
+          'hover:bg-surface-dim':
+          budgetConstraintFormControl.value != 'unlimited'
+        }"
+      >
+        <div
+          class="flex cursor-pointer flex-col gap-[12px] text-on-surface mat-body-large p-[16px]">
+          <mat-icon
+            class="material-symbols-outlined h-[24px] w-[24px] text-[24px]"
+            [ngClass]="{
+              'text-primary':
+              budgetConstraintFormControl.value == 'unlimited'
+            }"
+            >all_inclusive</mat-icon
+          >
+          <div class="flex flex-col gap-1">
+            <div class="mat-body-large">Unlimited budget</div>
+            <div class="mat-body-medium text-on-surface-variant">
+              Codes will be active until you manually deactivate them.
+            </div>
+          </div>
+        </div>
+      </mat-radio-button>
+    </mat-radio-group>
+    @if(budgetConstraintFormControl.value == 'limited') {
+      <div class="flex flex-col gap-1">
+        <div
+              class="flex items-center gap-[10px] w-full border rounded-[4px] h-[56px] border-outline-variant"
+            >
+              <div class="h-[48px] w-[48px] flex justify-center items-center">
+                <span class="text-on-surface-variant mat-body-large"
+                  >{{ getCurrencySymbolOnly(organization()?.currency!) }}</span
+                >
+              </div>
+              <input
+                matInput
+                type="number"
+                min="0"
+                formControlName="budget"
+                class="focus:outline-none align-middle py-[4px] w-full mat-body-large placeholder:text-on-surface-variant text-on-surface"
+                placeholder="Budget amount"
+              />
+            </div>
+            @if(createCampaignForm.controls['budget'].hasError('min')) {
+              <mat-error>Budget amount should be greater than 0</mat-error>
+            } @else if (budgetConstraintFormControl.getRawValue() === 'limited' &&  createCampaignForm.controls['budget'].hasError('required')) {
+              <mat-error>Budget amount is required for limited budget</mat-error>
+            }
+      </div>
+    }
+  </form>
+</div>

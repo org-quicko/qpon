@@ -1,0 +1,123 @@
+<div class="flex flex-col gap-10 w-[560px]">
+  <div class="flex flex-col gap-2 text-on-surface">
+    <div class="mat-body-large">{{ coupon()?.name }}</div>
+    <div class="mat-headline-small">Choose applicable items</div>
+    <div class="mat-body-large">
+      Where to offer it: apply to all items or select specific ones
+    </div>
+  </div>
+  <form [formGroup]="couponUpdateForm" class="flex w-full">
+    <mat-radio-group
+      formControlName="itemConstraint"
+      class="flex gap-[16px] w-full"
+    >
+      <mat-radio-button
+        matInput
+        value="all"
+        class="flex-1 cursor-pointer justify-between border rounded-[5px] border-outline-variant hide-radio-button"
+        [ngClass]="{
+          'text-primary bg-secondary-container border-primary border-[2px] ':
+            couponUpdateForm.get('itemConstraint')?.value == 'all',
+          'hover:bg-surface-dim':
+            couponUpdateForm.get('itemConstraint')?.value != 'all'
+        }"
+      >
+        <div
+          class="flex cursor-pointer flex-col gap-[12px] text-on-surface mat-body-large p-4"
+        >
+          <mat-icon
+            class="material-symbols-outlined h-[24px] w-[24px] text-[24px]"
+            [ngClass]="{
+              'text-primary':
+                couponUpdateForm.get('itemConstraint')?.value == 'all'
+            }"
+            >library_add_check</mat-icon
+          >
+          <div class="flex flex-col gap-1">
+            <div class="mat-body-large">All items</div>
+            <div class="mat-body-medium text-on-surface-variant">
+              Coupon applies to all items
+            </div>
+          </div>
+        </div>
+      </mat-radio-button>
+      <mat-radio-button
+        matInput
+        value="specific"
+        class="flex-1 cursor-pointer border rounded-[5px] border-outline-variant hide-radio-button"
+        [ngClass]="{
+          'text-primary bg-secondary-container border-primary border-[2px] ':
+            couponUpdateForm.get('itemConstraint')?.value == 'specific',
+          'hover:bg-surface-dim':
+            couponUpdateForm.get('itemConstraint')?.value != 'specific'
+        }"
+      >
+        <div
+          class="flex cursor-pointer flex-col gap-[12px] text-on-surface mat-body-large p-[16px]"
+        >
+          <mat-icon
+            class="material-symbols-outlined h-[24px] w-[24px] text-[24px]"
+            [ngClass]="{
+              'text-primary':
+                couponUpdateForm.get('itemConstraint')?.value == 'specific'
+            }"
+            >center_focus_weak</mat-icon
+          >
+          <div class="flex flex-col gap-1">
+            <div class="mat-body-large">Specific items</div>
+            <div class="mat-body-medium text-on-surface-variant">
+              Coupon applies to items you select
+            </div>
+          </div>
+        </div>
+      </mat-radio-button>
+    </mat-radio-group>
+  </form>
+  @if(couponUpdateForm.get('itemConstraint')?.value == 'specific') {
+  <div class="flex flex-col gap-4">
+    <div>
+      <form class="w-full" [formGroup]="eligibleItemsForm">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label class="mat-body-large">Search items by name</mat-label>
+          <mat-chip-grid #chipGrid>
+            @for(item of selectedItems; let index = $index; track item.itemId!) {
+            <mat-chip-row (removed)="selectedItem(item)" class="bg-surface-container constraint-chip">
+              {{ item.name }}
+              <button matChipRemove>
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-chip-row>
+            }
+          </mat-chip-grid>
+          <input
+            matInput
+            #itemsInput
+            placeholder="Search items by name"
+            class="placeholder:text-outline-variant pl-4"
+            [matAutocomplete]="auto"
+            [matChipInputFor]="chipGrid"
+            [formControl]="searchControl"
+          />
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            [displayWith]="displayWithItems"
+          >
+            @for(item of items(); track item.itemId) {
+            <mat-option (click)="selectedItem(item)">
+              <mat-checkbox
+                [checked]="isItemSelected(item)"
+                [value]="item.itemId!"
+                (click)="$event.stopPropagation()"
+                (change)="selectedItem(item)"
+              >
+                {{ item.name }}
+              </mat-checkbox>
+            </mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+    </div>
+  </div>
+  }
+</div>

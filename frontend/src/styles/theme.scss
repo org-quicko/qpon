@@ -1,0 +1,39 @@
+@use "@angular/material" as mat;
+@use "./m3-theme.scss" as theme;
+@use "./_extended-palette.scss" as extendedPalette;
+@use "./_overrides.scss" as overrides;
+@use "./extended-material-styles";
+
+html,
+body {
+  @include mat.elevation-classes();
+  @include mat.app-background();
+
+  @include mat.all-component-themes(theme.$light-theme);
+  @include mat.system-level-colors(theme.$light-theme);
+
+  @include mat.typography-hierarchy(theme.$light-theme);
+  @include mat.system-level-typography(theme.$light-theme);
+  @include mat.all-component-typographies(theme.$light-theme);
+  @include extendedPalette.extended-light-theme();
+
+  @include overrides.mat-overrides();
+  @include overrides.typography-overrides();
+
+  .light-theme {
+   @include overrides.typography-overrides();
+  }
+
+  .dark-theme {
+    //sytem level colors
+    @include mat.system-level-colors(theme.$dark-theme);
+    //component theme
+    @include extendedPalette.extended-dark-theme();
+
+    @include overrides.dark-theme-palette-overrides();
+
+    @include overrides.typography-overrides();
+
+    @include overrides.mat-overrides();
+  }
+}

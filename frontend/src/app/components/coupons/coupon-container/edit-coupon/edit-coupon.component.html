@@ -1,0 +1,173 @@
+<div class="flex flex-col gap-10 w-[560px]">
+  <div class="w-[289px] mat-headline-small text-on-surface">Edit your coupon</div>
+  <div class="flex flex-col gap-8">
+    <form [formGroup]="updateCouponForm">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Coupon name</mat-label>
+        <input matInput formControlName="name">
+      </mat-form-field>
+    </form>
+    <app-alert-tile text="You can’t edit discount type once coupon is created."></app-alert-tile>
+    <div class="flex flex-col gap-4 opacity-[38%]">
+      <div class="flex flex-col gap-1">
+        <div class="mat-body-large text-on-surface">Discount type</div>
+        <div class="mat-body-medium text-on-surface-variant">
+          Choose whether you want to give percentage or fixed amount discount
+        </div>
+      </div>
+    <mat-radio-group class="flex gap-4 opacity-[38%]" [disabled]="true">
+      <mat-radio-button
+        matInput
+        value="percentage"
+        (click)="discountType = 'percentage'"
+        class="cursor-pointer justify-between border rounded-[5px] border-outline-variant hide-radio-button w-[272px]"
+        [ngClass]="{
+          'text-primary bg-secondary-container border-primary border-[2px] ':
+            discountType == 'percentage',
+          'hover:bg-surface-dim': discountType != 'percentage'
+        }"
+      >
+        <div
+          class="flex cursor-pointer flex-col gap-[12px] text-on-surface mat-body-large p-[16px]"
+          [ngClass]="{
+            'text-on-surface-variant': discountType != 'percentage'
+          }"
+        >
+          <div class="mat-body-large text-on-surface">Percentage</div>
+          <div class="percentage-input-container">
+            <input
+              #percentInput
+              matInput
+              type="number"
+              min="0"
+              max="100"
+              class="mat-display-medium text-on-surface focus:outline-none bg-transparent"
+              placeholder="0"
+              [style]="`width: ${updatePercentageWidth()}ch;`"
+              [value]="discountType == 'percentage' ? coupon()?.discountValue : 0"
+              [ngClass]="{
+                'placeholder:text-outline-variant': discountType != 'percentage',
+                'text-outline-variant': discountType != 'percentage'
+              }"
+            />
+            <span class="percentage-symbol mat-display-medium" [ngClass]="{
+              'text-outline-variant': discountType != 'percentage',
+              'text-on-surface': discountType == 'percentage'
+            }">%</span>
+          </div>
+        </div>
+      </mat-radio-button>
+      <mat-radio-button
+        matInput
+        value="fixed"
+        (click)="discountType = 'fixed'"
+        class="cursor-pointer justify-between border rounded-[5px] border-outline-variant hide-radio-button w-[272px]"
+        [ngClass]="{
+          'text-primary bg-secondary-container border-primary border-[2px] ':
+            discountType == 'fixed',
+          'hover:bg-surface-dim': discountType != 'fixed'
+        }"
+      >
+        <div
+          class="flex cursor-pointer flex-col gap-[12px] text-on-surface mat-body-large p-[16px]"
+          [ngClass]="{
+            'text-on-surface-variant': discountType != 'fixed'
+          }"
+        >
+          <div class="mat-body-large text-on-surface">Fixed amount</div>
+          <div class="relative w-full">
+            <span
+              class="absolute left-0 top-[35%] -translate-y-1/2 pl-0.5 mat-display-medium leading-none"
+              [ngClass]="{
+                'text-outline-variant': discountType != 'fixed',
+                'text-on-surface': discountType == 'fixed'
+              }"
+            >
+              {{ getCurrencySymbolOnly(organization()?.currency!) }}
+            </span>
+
+            <input
+              matInput
+              type="number"
+              class="mat-display-medium text-on-surface focus:outline-none pl-7 w-full leading-none"
+              min="0"
+              placeholder="0"
+              [value]="discountType == 'fixed' ? coupon()?.discountValue : 0"
+              [ngClass]="{
+                'placeholder:text-outline-variant': discountType != 'fixed',
+                'text-outline-variant': discountType != 'fixed'
+              }"
+            />
+          </div>
+        </div>
+      </mat-radio-button>
+    </mat-radio-group>
+    </div>
+    <div class="flex flex-col gap-4 opacity-[38%]">
+      <div class="mat-body-large text-on-surface">
+        Maximum amount that will be discounted*
+      </div>
+      <div class="flex flex-col gap-6">
+        <mat-radio-group class="flex gap-4" [disabled]="true">
+          <mat-radio-button
+            matInput
+            [value]="true"
+            (click)="maxAmount = true"
+            class="cursor-pointer justify-between border rounded-[5px] border-outline-variant hide-radio-button w-[272px]"
+            [ngClass]="{
+              'text-primary bg-secondary-container border-primary border-[2px] ':
+                maxAmount,
+              'hover:bg-surface-dim': !maxAmount
+            }"
+          >
+            <div
+              class="flex cursor-pointer flex-col gap-[12px] text-on-surface mat-body-large p-[16px]"
+              [ngClass]="{
+                'text-on-surface-variant': !maxAmount
+              }"
+            >
+              <div>Set max amount</div>
+            </div>
+          </mat-radio-button>
+          <mat-radio-button
+            matInput
+            [value]="false"
+            (click)="maxAmount = false"
+            class="cursor-pointer justify-between border rounded-[5px] border-outline-variant hide-radio-button w-[272px]"
+            [ngClass]="{
+              'text-primary bg-secondary-container border-primary border-[2px] ':
+                !maxAmount,
+              'hover:bg-surface-dim': maxAmount
+            }"
+          >
+            <div
+              class="flex cursor-pointer flex-col gap-[12px] text-on-surface mat-body-large p-[16px]"
+              [ngClass]="{
+                'text-on-surface-variant': maxAmount
+              }"
+            >
+              <div>No max amount</div>
+            </div>
+          </mat-radio-button>
+        </mat-radio-group>
+        @if(maxAmount) {
+          <div class="pb-8">
+            <div
+              class="flex items-center gap-[10px] w-full border rounded-[4px] h-[56px] border-outline-variant"
+            >
+              <div class="h-[48px] w-[48px] flex justify-center items-center">
+                <mat-icon class="text-on-surface-variant">currency_rupee</mat-icon>
+              </div>
+              <input
+                matInput
+                class="focus:outline-none align-middle py-[4px] w-full mat-body-large placeholder:text-on-surface-variant"
+                placeholder="Add amount"
+                [value]="coupon()?.discountUpto"
+              />
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

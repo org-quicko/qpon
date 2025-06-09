@@ -1,0 +1,130 @@
+<div class="flex flex-col gap-8">
+  <div class="flex flex-col gap-2">
+    <div class="flex gap-1 items-center mat-label-large text-on-surface">
+      <div>
+        {{ coupon()?.name }}
+      </div>
+      <mat-icon class="h-5 w-5 text-[20px]">navigate_next</mat-icon>
+      <div>{{ campaign()?.name }}</div>
+    </div>
+    <div class="mat-headline-small text-on-surface">Who can use this coupon code</div>
+  </div>
+  <form [formGroup]="updateCouponCodeForm">
+    <mat-radio-group class="flex gap-4" formControlName="customerConstraint">
+      <mat-radio-button
+        matInput
+        value="all"
+        class="cursor-pointer justify-between border rounded-[5px] border-outline-variant hide-radio-button w-[272px]"
+        (click)="customerConstraint = 'all'"
+        [ngClass]="{
+          'text-primary bg-secondary-container border-primary border-[2px] ':
+          customerConstraint == 'all',
+          'hover:bg-surface-dim': customerConstraint != 'all'
+        }"
+      >
+        <div
+          class="flex cursor-pointer flex-col gap-[12px] text-on-surface mat-body-large p-[16px]"
+          [ngClass]="{ 'text-on-surface-variant': customerConstraint != 'all' }"
+        >
+          <mat-icon
+            class="material-symbols-outlined h-[24px] w-[24px] text-[24px]"
+            [ngClass]="{
+              'text-primary': customerConstraint == 'all'
+            }"
+          >
+            groups
+          </mat-icon>
+
+          <div class="flex flex-col gap-1">
+            <div class="mat-body-large">Everyone</div>
+            <div class="mat-body-medium text-on-surface-variant">
+              All your customers will be able to use this code 
+            </div>
+          </div>
+        </div>
+      </mat-radio-button>
+      <mat-radio-button
+        matInput
+        value="limited"
+        class="cursor-pointer justify-between border rounded-[5px] border-outline-variant hide-radio-button w-[272px]"
+        (click)="customerConstraint = 'specific'"
+        [ngClass]="{
+          'text-primary bg-secondary-container border-primary border-[2px] ':
+          customerConstraint == 'specific',
+          'hover:bg-surface-dim': customerConstraint != 'specific'
+        }"
+      >
+        <div
+          class="flex cursor-pointer flex-col gap-[12px] text-on-surface mat-body-large p-[16px]"
+          [ngClass]="{ 'text-on-surface-variant': customerConstraint != 'specific' }"
+        >
+          <mat-icon
+            class="material-symbols-outlined h-[24px] w-[24px] text-[24px]"
+            [ngClass]="{
+              'text-primary': customerConstraint == 'specific'
+            }"
+          >
+            person
+          </mat-icon>
+
+          <div class="flex flex-col gap-1">
+            <div class="mat-body-large">Specific customers</div>
+            <div class="mat-body-medium text-on-surface-variant">
+              Only specific customers will be able to use this code
+            </div>
+          </div>
+        </div>
+      </mat-radio-button>
+    </mat-radio-group>
+  </form>
+  @if(customerConstraint == 'specific') {
+    <div class="flex flex-col gap-4">
+      <div>
+        <form class="w-full" [formGroup]="eligibleCustomersForm">
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label class="mat-body-large">Search customers by email</mat-label>
+            <mat-chip-grid #chipGrid>
+              @for(customer of selectedCustomers; let index = $index; track customer.customerId!) {
+                <mat-chip-row class="bg-surface-container constraint-chip" (removed)="selectedCustomer(customer)" [autofocus]="false">
+                  <button matChipRemove>
+                    <mat-icon class="material-symbols-outlined text-on-surface">close</mat-icon>
+                  </button>
+                  {{ customer.name }}
+                </mat-chip-row>
+              }
+            </mat-chip-grid>
+            <input
+              matInput
+              #customersInput
+              placeholder="Search customers by email"
+              class="placeholder:text-outline-variant pl-4"
+              [matAutocomplete]="auto"
+              [matChipInputFor]="chipGrid"
+              [formControl]="searchControl"
+            />
+            <mat-autocomplete
+              #auto="matAutocomplete"
+              [displayWith]="displayWithItems"
+            >
+              @for(customer of customers(); track customer.customerId) {
+              <mat-option (click)="$event.stopPropagation(); selectedCustomer(customer)">
+                <mat-checkbox
+                  (click)="$event.stopPropagation()"
+                  (change)="selectedCustomer(customer)"
+                  [checked]="isCustomerSelected(customer)"
+                  [value]="customer.customerId!"
+                >
+                <div class="flex flex-col">
+                  <div class="mat-body-large text-on-surface">{{ customer.name }}</div>
+                  <div class="mat-body-medium text-on-surface-variant">{{ customer.email }}</div>
+                </div>
+                </mat-checkbox>
+              </mat-option>
+              }
+            </mat-autocomplete>
+          </mat-form-field>
+        </form>
+      </div>
+    </div>
+    }
+</div>

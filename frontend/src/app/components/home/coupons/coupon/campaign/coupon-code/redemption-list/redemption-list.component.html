@@ -1,0 +1,143 @@
+<div class="flex flex-col gap-4">
+  <div class="mat-title-medium text-on-surface">
+    @if (redemptions() !== null && count() !== undefined) { @if (count()! > 0) { Redemptions
+    {{ `(${count()!})` }} } @else { Redemptions } } @else { Redemptions }
+  </div>
+  <div
+    class="flex items-center gap-[10px] w-full border rounded-[4px] h-[56px] border-outline-variant"
+  >
+    <div class="h-[48px] w-[48px] flex justify-center items-center">
+      <mat-icon class="text-on-surface-variant">search</mat-icon>
+    </div>
+    <input
+      matInput
+      [formControl]="searchControl"
+      class="focus:outline-none align-middle py-[4px] w-full mat-body-large text-outline"
+      placeholder="Search customer by email"
+    />
+  </div>
+  <div
+    class="border-[1px] rounded-[5px] border-outline-variant overflow-hidden"
+  >
+    <table
+      mat-table
+      [dataSource]="datasource"
+      matSort
+      [matSortActive]="sortOptions().active"
+      [matSortDirection]="sortOptions().direction"
+      matSortDisableClear="true"
+      (matSortChange)="onSortChange($event)"
+      class="table-fixed w-full"
+      [ngClass]="{ 'h-[500px]': count()! == 0 && isFilterApplied }"
+    >
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef class="px-6 py-4">Name</th>
+        <td mat-cell *matCellDef="let redemption" class="p-6">
+          @if(isLoading()) {
+          <ngx-skeleton-loader
+            [theme]="{
+              height: '24px',
+              width: '100px',
+              margin: '0px',
+              padding: '0px'
+            }"
+          ></ngx-skeleton-loader>
+          } @else {
+          {{ redemption.getCustomerName() }}
+          }
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef class="px-6 py-4">Email</th>
+        <td mat-cell *matCellDef="let redemption" class="p-6">
+          @if(isLoading()) {
+          <ngx-skeleton-loader
+            [theme]="{
+              height: '24px',
+              width: '100px',
+              margin: '0px',
+              padding: '0px'
+            }"
+          ></ngx-skeleton-loader>
+          } @else {
+          {{ redemption.getCustomerEmail() }}
+          }
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="discount">
+        <th mat-header-cell *matHeaderCellDef class="px-6 py-4">
+          Redemption amount
+        </th>
+        <td mat-cell *matCellDef="let redemption" class="p-6">
+          @if(isLoading()) {
+          <ngx-skeleton-loader
+            [theme]="{
+              height: '24px',
+              width: '100px',
+              margin: '0px',
+              padding: '0px'
+            }"
+          ></ngx-skeleton-loader>
+          } @else {
+          {{ redemption.getDiscount() }}
+          }
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="px-6 py-4">Applied at</th>
+        <td mat-cell *matCellDef="let redemption" class="p-6">
+          @if(isLoading()){
+          <ngx-skeleton-loader
+            [theme]="{
+              height: '24px',
+              width: '100px',
+              margin: '0px',
+              padding: '0px'
+            }"
+          ></ngx-skeleton-loader>
+          } @else {
+          {{ redemption.getRedeemedAt() | custom_date : "" : true }}
+          }
+        </td>
+      </ng-container>
+
+      <!-- Table Header -->
+      <tr mat-header-row *matHeaderRowDef="columns"></tr>
+
+      <!-- Data Rows -->
+      <tr
+        mat-row
+        *matRowDef="let row; columns: columns"
+      ></tr>
+
+      <!-- Empty State Row -->
+      <tr class="empty-row" *matNoDataRow>
+        <td [attr.colspan]="columns.length">
+          <div class="flex flex-col justify-center items-center h-[300px]">
+            <div class="p-6 text-center flex flex-col gap-4">
+              <div
+                class="text-on-surface-variant flex flex-col items-center gap-y-[16px]"
+              >
+                <div
+                  class="scale-150 rounded-full inline-flex justify-start items-center gap-2.5 overflow-hidden bg-surface-container p-3"
+                >
+                  <mat-icon class="material-symbols-outlined"
+                    >barcode_scanner</mat-icon
+                  >
+                </div>
+                <p class="text-on-surface mat-body-large">
+                  No redemptions to show
+                </p>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+  </div>
+  @if(count()) {
+    <mat-paginator [length]="count()" [pageIndex]="paginationOptions().pageIndex" [pageSize]="paginationOptions().pageSize" (page)="onPageChange($event)"></mat-paginator>
+  }
+</div>

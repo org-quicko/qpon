@@ -1,0 +1,155 @@
+@if(isLoading() || !currentOrganization()) {
+<ngx-skeleton-loader
+  [theme]="{
+    height: '48px',
+    width: '252px',
+    margin: '0px',
+    padding: '0px'
+  }"
+></ngx-skeleton-loader>
+}@else {
+<div class="w-[252px] rounded-[5px] bg-surface-container-low py-0.5 pl-4 flex justify-between items-center gap-2 cursor-pointer" [mat-menu-trigger-for]="options">
+  <div class="flex flex-col">
+    <div class="mat-body-medium text-on-surface">{{ currentOrganization()?.name }}</div>
+    <div class="mat-body-small text-on-surface-variant">You’re the {{ currentOrganization()?.role?.replace('_', ' ') }}</div>
+  </div>
+  <div class="py-2.5 px-2">
+    <mat-icon class="text-on-surface-variant">unfold_more</mat-icon>
+  </div>
+</div>
+}
+
+<mat-menu
+  class="w-[252px] mt-[12px] rounded-[5px]"
+  #options="matMenu"
+  yPosition="below"
+  xPosition="before"
+>
+    <div class="max-h-[480px] overflow-auto">
+      @if(organizations().length <= 5) {
+        @for(option of organizations(); let i = $index; track option.organizationId) {
+          <div>
+            <button
+              mat-menu-item
+              class="h-[55px] py-2 px-4"
+              (click)="changeOrganization(option)"
+            >
+              <div class="flex justify-between w-[220px]">
+                <div class="flex gap-[12px]">
+                  <div class="flex flex-col justify-center items-center font-sans">
+                    <ng-container>
+                      <ngx-avatars size="30" [round]="true" [name]="option?.name">
+                      </ngx-avatars>
+                    </ng-container>
+                    <ng-template #avatarProfile>
+                      <ngx-avatars
+                        size="30"
+                        [textSizeRatio]="2.5"
+                        [style]="{ fontWeight: '500' }"
+                        [round]="true"
+                        [name]="option?.name | titlecase"
+                        bgColor="var(--sys-primary-fixed)"
+                        fgColor="var(--sys-on-primary-fixed-variant)"
+                      >
+                      </ngx-avatars>
+                    </ng-template>
+                  </div>
+                  <div class="flex flex-col">
+                    <div
+                      class="text-on-surface mat-body-medium font-sans w-[142px] truncate"
+                    >
+                      {{ option?.name }}
+                    </div>
+                    <div class="flex gap-[4px] font-sans">
+                      <div class="mat-body-small text-on-surface-variant">
+                        {{ option?.role?.replace("_", " ") | titlecase }}
+                      </div>
+                      <div class="ml-4"></div>
+                    </div>
+                  </div>
+                </div>
+                @if(currentOrganization() == option?.organizationId) {
+                  <div
+                    class="flex items-center"
+                  >
+                    <mat-icon
+                      class="material-symbols-outlined w-[21px] h-[21px] text-[21px] flex items-center"
+                      >done</mat-icon
+                    >
+                  </div>
+                }
+              </div>
+            </button>
+          </div>
+        }
+        @if(currentOrganization()?.role == 'super_admin') {
+          <button mat-menu-item (click)="onViewAllOrganization()">
+          <div class="mat-body-medium text-primary">
+            View all organisations
+          </div>
+        </button>
+        }
+      } @else {
+        @for(option of organizations().slice(0,5); let i = $index; track option.organizationId) {
+          <div>
+            <button
+              mat-menu-item
+              class="h-[55px] py-2 px-4"
+              (click)="changeOrganization(option)"
+            >
+              <div class="flex justify-between w-[220px]">
+                <div class="flex gap-[12px]">
+                  <div class="flex flex-col justify-center items-center font-sans">
+                    <ng-container>
+                      <ngx-avatars size="30" [round]="true" [name]="option?.name">
+                      </ngx-avatars>
+                    </ng-container>
+                    <ng-template #avatarProfile>
+                      <ngx-avatars
+                        size="30"
+                        [textSizeRatio]="2.5"
+                        [style]="{ fontWeight: '500' }"
+                        [round]="true"
+                        [name]="option?.name | titlecase"
+                        bgColor="var(--sys-primary-fixed)"
+                        fgColor="var(--sys-on-primary-fixed-variant)"
+                      >
+                      </ngx-avatars>
+                    </ng-template>
+                  </div>
+                  <div class="flex flex-col">
+                    <div
+                      class="text-on-surface mat-body-medium font-sans w-[142px] truncate"
+                    >
+                      {{ option?.name }}
+                    </div>
+                    <div class="flex gap-[4px] font-sans">
+                      <div class="mat-body-small text-on-surface-variant">
+                        {{ option?.role?.replace("_", " ") | titlecase }}
+                      </div>
+                      <div class="ml-4"></div>
+                    </div>
+                  </div>
+                </div>
+                @if(currentOrganization() == option?.organizationId) {
+                  <div
+                    class="flex items-center"
+                  >
+                    <mat-icon
+                      class="material-symbols-outlined w-[21px] h-[21px] text-[21px] flex items-center"
+                      >done</mat-icon
+                    >
+                  </div>
+                }
+              </div>
+            </button>
+          </div>
+        }
+        <button mat-menu-item (click)="onViewAllOrganization()">
+          <div class="mat-body-medium text-primary">
+            View all organisations
+          </div>
+        </button>
+      }
+    </div>
+</mat-menu>

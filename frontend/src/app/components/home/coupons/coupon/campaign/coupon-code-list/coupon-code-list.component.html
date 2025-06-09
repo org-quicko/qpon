@@ -1,0 +1,369 @@
+<div class="flex flex-col gap-6">
+  <div class="flex justify-between items-center">
+    <p class="mat-body-large text-on-surface">Coupon Codes</p>
+    <button
+      mat-flat-button
+      class="rounded-[100px] text-on-primary mat-label-large"
+      (click)="campaign()?.getStatus() == 'inactive' ? openInactiveMessageDialogForCouponCode() : onCreateCouponCode()"
+    >
+      <mat-icon>add</mat-icon>
+      <span>Create coupon code</span>
+    </button>
+  </div>
+  <div
+    class="flex items-center gap-[10px] w-full border rounded-[4px] h-[56px] border-outline-variant"
+  >
+    <div class="h-[48px] w-[48px] flex justify-center items-center">
+      <mat-icon class="text-on-surface-variant">search</mat-icon>
+    </div>
+    <input
+      matInput
+      [formControl]="searchControl"
+      class="focus:outline-none align-middle py-[4px] w-full mat-body-large text-outline"
+      placeholder="Search coupon codes"
+    />
+    <div
+      class="h-[48px] w-[48px] flex justify-center items-center cursor-pointer"
+    >
+      <button mat-icon-button (click)="openFilterDialog()">
+        <mat-icon class="text-on-surface-variant">tune</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div
+    class="border-[1px] rounded-[5px] border-outline-variant overflow-hidden"
+  >
+    @if(!isLoading() || couponCodesStore.isSorting()) {
+    <table
+      mat-table
+      matSort
+      [matSortDisableClear]="true"
+      [matSortActive]="sortActive()"
+      [matSortDirection]="sortDirection()"
+      (matSortChange)="onSortChange($event)"
+      [dataSource]="datasource"
+      [ngClass]="{ 'h-[500px]': couponCodes()?.length === 0 && !isLoading() }"
+    >
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">Name</th>
+        <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
+          <div class="flex items-center group">
+            <div class="text-on-surface">{{ couponCode.code }}</div>
+            <button
+              class="text-on-surface-variant hover:text-primary group-hover:block transition-opacity h-[16px] cursor-pointer"
+              (click)="
+                $event.stopPropagation();
+                copyToClipboard(couponCode.code, 'coupon code')
+              "
+            >
+              <mat-icon
+                class="material-symbols-outlined text-[16px] h-[16px] w-[16px]"
+              >
+                content_copy
+              </mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="visibility">
+        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">
+          Visibility
+        </th>
+        <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
+          {{ couponCode.visibility | titlecase }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="expires_at">
+        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">
+          Expires on
+        </th>
+        <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
+          {{
+            couponCode.expiresAt
+              ? (couponCode.expiresAt | custom_date)
+              : "Never"
+          }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="redemption_count">
+        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">
+          Total redemptions
+        </th>
+        <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
+          {{ couponCode.redemptionCount }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="max_redemptions">
+        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">
+          Max redemptions
+        </th>
+        <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
+          {{ couponCode.maxRedemptions ?? "Unlimited" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">Status</th>
+        <td
+          mat-cell
+          *matCellDef="let couponCode"
+          class="text-on-surface py-6 pl-6 pr-4"
+          [ngClass]="{ 'text-outline': couponCode.status == 'inactive' }"
+        >
+          <span
+            class="bg-surface-container rounded-sm mat-label-small px-2 py-1"
+            >{{ couponCode.status | titlecase }}</span
+          >
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="createdAt">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="py-6 pl-6 pr-4"
+        >
+          Created at
+        </th>
+        <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
+          {{ couponCode.createdAt | custom_date : "" : true }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="menu">
+        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">&nbsp;</th>
+        <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
+          <button mat-icon-button (click)="$event.stopPropagation()" [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu
+            #menu="matMenu"
+            class="w-[200px] min-w-[112px] max-w-[280px] rounded-[4px] bg-surface-container-lowest top-[208px] left-[3155px]"
+          >
+            <button mat-menu-item class="h-[56px] py-8 flex gap-[12px]" (click)="onEdit(couponCode)">
+              <mat-icon class="material-symbols-outlined">edit</mat-icon>
+              <span class="mat-body-large text-on-surface">Edit</span>
+            </button>
+            <button
+              mat-menu-item
+              class="h-[56px] py-8 flex gap-[12px]"
+              (click)="campaign()?.getStatus() == 'inactive' ?  openInvactiveMessageDialogForChangeStatus() : openChangeStatusDialog(couponCode)"
+            >
+              <mat-icon
+                svgIcon="regime_preference"
+                class="w-6 h-6 text-on-surface"
+              ></mat-icon>
+              <span class="mat-body-large text-on-surface">Change status</span>
+            </button>
+          </mat-menu>
+        </td>
+      </ng-container>
+
+      <!-- Table Header -->
+      <tr mat-header-row *matHeaderRowDef="columns"></tr>
+
+      <!-- Data Rows -->
+      <tr
+        mat-row
+        *matRowDef="let row; columns: columns"
+        class="hover:bg-surface-bright cursor-pointer"
+        (click)="onRowClick(row)"
+      ></tr>
+
+      <!-- Empty State Row -->
+      <tr class="empty-row" *matNoDataRow>
+        <td [attr.colspan]="columns.length">
+          <div class="flex flex-col justify-center items-center h-[300px]">
+            <div class="p-6 text-center flex flex-col gap-4">
+              <div
+                class="text-on-surface-variant flex flex-col items-center gap-y-[16px]"
+              >
+                <div
+                  class="scale-150 rounded-full inline-flex justify-start items-center gap-2.5 overflow-hidden bg-surface-container p-3"
+                >
+                  <mat-icon class="material-symbols-outlined"
+                    >barcode_scanner</mat-icon
+                  >
+                </div>
+                <p class="text-on-surface mat-body-large">
+                  No coupon codes to show
+                </p>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </table>
+    } @else {
+    <table mat-table [dataSource]="tempDatasource">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">Name</th>
+        <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
+          <ngx-skeleton-loader
+            [theme]="{
+              height: '24px',
+              width: '100px',
+              margin: '0px',
+              padding: '0px'
+            }"
+          ></ngx-skeleton-loader>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="visibility">
+        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">
+          Visibility
+        </th>
+        <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
+          <ngx-skeleton-loader
+          [theme]="{
+            height: '24px',
+            width: '100px',
+            margin: '0px',
+            padding: '0px'
+          }"
+        ></ngx-skeleton-loader>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="expires_at">
+        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">
+          Expires on
+        </th>
+        <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
+          <ngx-skeleton-loader
+          [theme]="{
+            height: '24px',
+            width: '100px',
+            margin: '0px',
+            padding: '0px'
+          }"
+        ></ngx-skeleton-loader>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="redemption_count">
+        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">
+          Total redemptions
+        </th>
+        <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
+          <ngx-skeleton-loader
+            [theme]="{
+              height: '24px',
+              width: '100px',
+              margin: '0px',
+              padding: '0px'
+            }"
+          ></ngx-skeleton-loader>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="max_redemptions">
+        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">
+          Max redemptions
+        </th>
+        <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
+          <ngx-skeleton-loader
+            [theme]="{
+              height: '24px',
+              width: '100px',
+              margin: '0px',
+              padding: '0px'
+            }"
+          ></ngx-skeleton-loader>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">Status</th>
+        <td
+          mat-cell
+          *matCellDef="let couponCode"
+          class="text-on-surface py-6 pl-6 pr-4"
+        >
+        <ngx-skeleton-loader
+        [theme]="{
+          height: '24px',
+          width: '100px',
+          margin: '0px',
+          padding: '0px'
+        }"
+      ></ngx-skeleton-loader>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="createdAt">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          class="py-6 pl-6 pr-4"
+        >
+          Created at
+        </th>
+        <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
+          <ngx-skeleton-loader
+            [theme]="{
+              height: '24px',
+              width: '100px',
+              margin: '0px',
+              padding: '0px'
+            }"
+          ></ngx-skeleton-loader>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="menu">
+        <th mat-header-cell *matHeaderCellDef class="py-6 pl-6 pr-4">&nbsp;</th>
+        <td mat-cell *matCellDef="let couponCode" class="py-6 pl-6 pr-4">
+          <button mat-icon-button (click)="$event.stopPropagation()" [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu
+            #menu="matMenu"
+            class="w-[200px] min-w-[112px] max-w-[280px] rounded-[4px] bg-surface-container-lowest top-[208px] left-[3155px]"
+          >
+            <button mat-menu-item class="h-[56px] py-8 flex gap-[12px]">
+              <mat-icon class="material-symbols-outlined">edit</mat-icon>
+              <span class="mat-body-large text-on-surface">Edit</span>
+            </button>
+            <button
+              mat-menu-item
+              class="h-[56px] py-8 flex gap-[12px]"
+              (click)="openChangeStatusDialog(couponCode)"
+            >
+              <mat-icon
+                svgIcon="regime_preference"
+                class="w-6 h-6 text-on-surface"
+              ></mat-icon>
+              <span class="mat-body-large text-on-surface">Change status</span>
+            </button>
+          </mat-menu>
+        </td>
+      </ng-container>
+
+      <!-- Table Header -->
+      <tr mat-header-row *matHeaderRowDef="columns"></tr>
+
+      <!-- Data Rows -->
+      <tr
+        mat-row
+        *matRowDef="let row; columns: columns"
+        class="hover:bg-surface-bright cursor-pointer"
+      ></tr>
+    </table>
+    }
+  </div>
+  <div class="flex justify-end">
+    <mat-paginator
+      [length]="count()"
+      [pageSize]="paginationOptions().pageSize"
+      [pageIndex]="paginationOptions().pageIndex"
+      (page)="onPageChange($event)"
+    ></mat-paginator>
+  </div>
+</div>

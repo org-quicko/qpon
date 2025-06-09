@@ -1,0 +1,34 @@
+<div class="overflow-hidden">
+  <div class="flex">
+    <div class="flex mat-body-medium gap-[4px] text-on-surface">
+      <div class="cursor-pointer" (click)="onNavigateBreadcrumb()"> Coupons</div>
+      <mat-icon>
+        <div class="material-symbols-outlined" class="w-[21px] h-[21px] text-[21px]">navigate_next</div>
+      </mat-icon>
+      <div class="cursor-pointer">
+        <div class="cursor-pointer">
+          @if(!isLoading()) {
+            {{ coupon()?.name }}
+          } @else {
+            <ngx-skeleton-loader
+            [theme]="{
+              height: '18px',
+              width: '100px',
+              margin: '0px',
+              padding: '0px'
+            }"></ngx-skeleton-loader>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pt-[18px]">
+      <app-coupon-details [coupon]="coupon!" [isLoading]="couponStore.coupon.isLoading"></app-coupon-details>
+  </div>
+  <div class="pt-[26px]">
+      <app-coupon-summary [couponId]="couponId" [organizationId]="organizationId"></app-coupon-summary>
+  </div>
+  <div class="pt-[28px]">
+    <app-coupon-tab [coupon]="coupon"></app-coupon-tab>
+  </div>
+</div>

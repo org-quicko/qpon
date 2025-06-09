@@ -1,0 +1,7 @@
+<div class="">
+    @if(currentScreen == 'create-item') {
+    <app-create-item (currentScreenEvent)="changeScreen($event)" [item]="item" [index]="index"></app-create-item>
+    } @else {
+    <app-add-more (currentScreenEvent)="changeScreen($event)" (itemToEditEvent)="editItemforPrefilling($event)"></app-add-more>
+    }
+</div>

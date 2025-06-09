@@ -1,0 +1,44 @@
+<div class="flex flex-col gap-7">
+  <div class="flex flex-col gap-[26px]">
+    <div class="flex flex-col gap-4">
+      <div class="flex mat-body-medium gap-[4px] text-on-surface">
+        <div class="cursor-pointer" (click)="onNavigateParent()">Coupons</div>
+        <mat-icon>
+          <div class="material-symbols-outlined" class="w-[21px] h-[21px] text-[21px]">navigate_next</div>
+        </mat-icon>
+        <div class="cursor-pointer" (click)="onNavigateChild()">
+          @if(!isLoading()) {
+            {{ coupon()?.name }}
+          } @else {
+            <ngx-skeleton-loader
+            [theme]="{
+              height: '20px',
+              width: '100px',
+              margin: '0px',
+              padding: '0px'
+            }"></ngx-skeleton-loader>
+          }
+        </div>
+        <mat-icon>
+          <div class="material-symbols-outlined" class="w-[21px] h-[21px] text-[21px]">navigate_next</div>
+        </mat-icon>
+        <div class="cursor-pointer">
+          @if(!isLoading()) {
+            {{ campaign()?.getName() }}
+          } @else {
+            <ngx-skeleton-loader
+            [theme]="{
+              height: '20px',
+              width: '100px',
+              margin: '0px',
+              padding: '0px'
+            }"></ngx-skeleton-loader>
+          }
+        </div>
+      </div>
+      <app-campaign-details [campaign]="campaign" [isLoading]="isLoading"></app-campaign-details>
+    </div>
+    <app-campaign-summary [campaign]="campaign" [isLoading]="isLoading"></app-campaign-summary>
+  </div>
+  <app-coupon-code-list [campaign]="campaign"></app-coupon-code-list>
+</div>

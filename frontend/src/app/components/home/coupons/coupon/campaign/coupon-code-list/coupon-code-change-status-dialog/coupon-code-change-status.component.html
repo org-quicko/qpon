@@ -1,0 +1,24 @@
+<div class="w-112 p-6">
+  @if(data.couponCode.status == "active") {
+      <div class="flex flex-col gap-6">
+          <div class="flex flex-col gap-6">
+              <p class="mat-title-medium text-on-surface">Deactivate '{{ data.couponCode.code }}' coupon code?</p>
+              <p class="mat-body-medium text-on-surface-variant">Are you sure you want to deactivate this coupon code?</p>
+          </div>
+          <div class="flex justify-end gap-2 mat-label-large">
+              <button mat-button (click)="onClose()">Cancel</button>
+              <button [disabled]="isLoading" mat-flat-button class="rounded-[100px] text-on-error" (click)="onDeactivate()" >Deactivate</button>
+          </div>
+      </div>
+  } @else {
+      <div class="flex flex-col gap-6">
+          <div>
+              <p class="mat-title-medium text-on-surface">Activate '{{ data.couponCode.code }}' coupon code?</p>
+          </div>
+          <div class="flex justify-end gap-2 mat-label-large">
+              <button mat-button (click)="onClose()">Cancel</button>
+              <button [disabled]="isLoading" mat-flat-button class="rounded-[100px] text-on-error" (click)="onActivate()">Activate</button>
+          </div>
+      </div>
+  }
+</div>

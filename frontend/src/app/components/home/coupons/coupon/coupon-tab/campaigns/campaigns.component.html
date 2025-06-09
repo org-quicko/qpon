@@ -1,0 +1,354 @@
+<div class="flex flex-col gap-6 overflow-hidden">
+  <div class="flex justify-between items-center">
+    <div class="mat-body-large text-on-surface">
+      @if (campaignSummaries() !== null && count() !== undefined) { @if
+      (count()! > 0) { Campaigns {{ `(${count()!})` }}
+      } @else { Campaigns } } @else { Campaigns }
+    </div>
+    <button
+      mat-flat-button
+      class="rounded-[100px] text-on-primary"
+      (click)="coupon()?.status == 'inactive' ? openInvactiveMessageDialogForCampaign() : onCreateCampaign()"
+    >
+      <mat-icon>add</mat-icon>
+      <span>Create campaign</span>
+    </button>
+  </div>
+  <div
+    class="flex items-center gap-[10px] w-full border rounded-[4px] h-[56px] border-outline-variant"
+  >
+    <div class="h-[48px] w-[48px] flex justify-center items-center">
+      <mat-icon class="text-on-surface-variant">search</mat-icon>
+    </div>
+    <input
+      matInput
+      [formControl]="searchControl"
+      class="focus:outline-none align-middle py-[4px] w-full mat-body-large placeholder:text-outline text-on-surface"
+      placeholder="Search campaigns"
+    />
+  </div>
+  <div
+    class="border-[1px] rounded-[5px] border-outline-variant overflow-hidden"
+  >
+    @if(!isLoading()) {
+    <table
+      mat-table
+      [dataSource]="datasource"
+      matSort
+      [matSortActive]="sortOptions().active"
+      [matSortDirection]="sortOptions().direction"
+      matSortDisableClear="true"
+      (matSortChange)="onSortChange($event)"
+      class="text-on-surface w-full"
+      [ngClass]="{ 'h-[500px]': count()! == 0 && isFilterApplied }"
+    >
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef class="px-6 py-4 w-[25%]">Name</th>
+        <td mat-cell *matCellDef="let summary" class="px-6 py-4 mat-body-large w-[25%]">
+          {{ convertToCampaignSummaryRow(summary).getName() }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="totalBudget">
+        <th mat-header-cell *matHeaderCellDef class="px-6 py-4 w-auto">
+          Total Budget
+        </th>
+        <td mat-cell *matCellDef="let summary" class="px-6 py-4 mat-body-large w-auto">
+          {{
+            convertToCampaignSummaryRow(summary).getBudget()
+              ? (convertToCampaignSummaryRow(summary).getBudget()
+                | currency : organization()?.currency : "symbol")
+              : "Unlimited"
+          }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="totalDiscount">
+        <th mat-header-cell *matHeaderCellDef class="px-6 py-4 w-auto">
+          Total Discount
+        </th>
+        <td mat-cell *matCellDef="let summary" class="px-6 py-4 mat-body-large w-auto">
+          {{
+            convertToCampaignSummaryRow(summary).getTotalRedemptionAmount() > 0
+              ? (convertToCampaignSummaryRow(summary).getTotalRedemptionAmount()
+                | currency : organization()?.currency : "symbol")
+              : 0
+          }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="redemptions">
+        <th mat-header-cell *matHeaderCellDef class="px-6 py-4 w-auto">Redemptions</th>
+        <td mat-cell *matCellDef="let summary" class="px-6 py-4 mat-body-large w-auto">
+          <span class="px-[10.5px]">{{
+            convertToCampaignSummaryRow(summary).getTotalRedemptionCount()
+          }}</span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef class="w-auto">Status</th>
+        <td
+          mat-cell
+          *matCellDef="let summary"
+          class="text-on-surface mat-label-small w-auto"
+          [ngClass]="{
+            'text-outline':
+              convertToCampaignSummaryRow(summary).getStatus() == 'inactive'
+          }"
+        >
+          <span class="bg-surface-container rounded-sm px-2 py-1">{{
+            convertToCampaignSummaryRow(summary).getStatus() | titlecase
+          }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="px-6 py-4 w-[25%]">Created at</th>
+        <td mat-cell *matCellDef="let summary" class="px-6 py-4 mat-body-large w-[25%]">
+          {{
+            convertToCampaignSummaryRow(summary).getCreatedAt()
+              | custom_date : "" : true
+          }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="menu">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          aria-label="row actions"
+          class="py-6 pl-6 pr-4 w-auto"
+        >
+          &nbsp;
+        </th>
+        <td mat-cell *matCellDef="let summary" class="py-6 pl-6 pr-4 w-auto">
+          <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+            <mat-icon
+              class="hover:cursor-pointer"
+              >more_vert</mat-icon
+            >
+          </button>
+          <mat-menu
+            #menu="matMenu"
+            class="w-[200px] min-w-[112px] max-w-[280px] rounded-[4px] bg-surface-container-lowest"
+          >
+            <button
+              mat-menu-item
+              class="h-[56px] py-8 flex gap-[12px]"
+              (click)="
+                onEditCampaign(
+                  convertToCampaignSummaryRow(summary).getCampaignId()
+                )
+              "
+            >
+              <mat-icon class="material-symbols-outlined">edit</mat-icon>
+              <span class="mat-body-large text-on-surface">Edit</span>
+            </button>
+            <button
+              mat-menu-item
+              class="h-[56px] py-8 flex gap-[12px]"
+              (click)="coupon()?.status == 'inactive' ? openInvactiveMessageDialogForChangeStatus() : openDialog(convertToCampaignSummaryRow(summary))"
+            >
+              <mat-icon
+                svgIcon="regime_preference"
+                class="w-6 h-6 text-on-surface"
+              ></mat-icon>
+              <span class="mat-body-large text-on-surface">Change status</span>
+            </button>
+          </mat-menu>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: columns"
+        class="hover:bg-surface-bright cursor-pointer"
+        (click)="onRowClick(convertToCampaignSummaryRow(row).getCampaignId())"
+      ></tr>
+
+      <tr class="empty-row" *matNoDataRow>
+        <td [attr.colspan]="columns.length">
+          <div class="flex flex-col justify-center items-center h-[300px]">
+            <div class="p-6 text-center flex flex-col gap-4">
+              <div
+                class="text-on-surface-variant flex flex-col items-center gap-y-[16px]"
+              >
+                <div
+                  class="scale-150 rounded-full inline-flex justify-start items-center gap-2.5 overflow-hidden bg-surface-container p-3"
+                >
+                  <mat-icon class="material-symbols-outlined"
+                    >campaign</mat-icon
+                  >
+                </div>
+                <p class="text-on-surface mat-body-large">
+                  No campaigns to show
+                </p>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </table>
+    } @else {
+    <table
+      mat-table
+      [dataSource]="tempDatasource"
+      class="text-on-surface w-full"
+    >
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef class="px-6 py-4">Name</th>
+        <td mat-cell *matCellDef="let summary" class="px-6 py-4 mat-body-large">
+          <ngx-skeleton-loader
+            [theme]="{
+              height: '24px',
+              width: '100px',
+              margin: '0px',
+              padding: '0px'
+            }"
+          ></ngx-skeleton-loader>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="totalBudget">
+        <th mat-header-cell *matHeaderCellDef class="px-6 py-4">
+          Total Budget
+        </th>
+        <td mat-cell *matCellDef="let summary" class="px-6 py-4 mat-body-large">
+          <ngx-skeleton-loader
+            [theme]="{
+              height: '24px',
+              width: '100px',
+              margin: '0px',
+              padding: '0px'
+            }"
+          ></ngx-skeleton-loader>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="totalDiscount">
+        <th mat-header-cell *matHeaderCellDef class="px-6 py-4">
+          Total Discount
+        </th>
+        <td mat-cell *matCellDef="let summary" class="px-6 py-4 mat-body-large">
+          <ngx-skeleton-loader
+            [theme]="{
+              height: '24px',
+              width: '100px',
+              margin: '0px',
+              padding: '0px'
+            }"
+          ></ngx-skeleton-loader>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="redemptions">
+        <th mat-header-cell *matHeaderCellDef class="px-6 py-4">Redemptions</th>
+        <td mat-cell *matCellDef="let summary" class="px-6 py-4 mat-body-large">
+          <ngx-skeleton-loader
+            [theme]="{
+              height: '24px',
+              width: '100px',
+              margin: '0px',
+              padding: '0px'
+            }"
+          ></ngx-skeleton-loader>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td
+          mat-cell
+          *matCellDef="let summary"
+          class="text-on-surface mat-label-small"
+        >
+          <ngx-skeleton-loader
+            [theme]="{
+              height: '24px',
+              width: '100px',
+              margin: '0px',
+              padding: '0px'
+            }"
+          ></ngx-skeleton-loader>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef class="px-6 py-4">Created at</th>
+        <td mat-cell *matCellDef="let summary" class="px-6 py-4 mat-body-large">
+          <ngx-skeleton-loader
+            [theme]="{
+              height: '24px',
+              width: '100px',
+              margin: '0px',
+              padding: '0px'
+            }"
+          ></ngx-skeleton-loader>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="menu">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          aria-label="row actions"
+          class="py-6 pl-6 pr-4"
+        >
+          &nbsp;
+        </th>
+        <td mat-cell *matCellDef="let summary" class="py-6 pl-6 pr-4">
+          <button mat-icon-button>
+            <mat-icon
+              [matMenuTriggerFor]="menu"
+              (click)="$event.stopPropagation()"
+              class="hover:cursor-pointer"
+              >more_vert</mat-icon
+            >
+          </button>
+          <mat-menu
+            #menu="matMenu"
+            class="w-[200px] min-w-[112px] max-w-[280px] rounded-[4px] bg-surface-container-lowest"
+          >
+            <button mat-menu-item class="h-[56px] py-8 flex gap-[12px]">
+              <mat-icon class="material-symbols-outlined">edit</mat-icon>
+              <span class="mat-body-large text-on-surface">Edit</span>
+            </button>
+            <button
+              mat-menu-item
+              class="h-[56px] py-8 flex gap-[12px]"
+              (click)="openDialog(convertToCampaignSummaryRow(summary))"
+            >
+              <mat-icon
+                svgIcon="regime_preference"
+                class="w-6 h-6 text-on-surface"
+              ></mat-icon>
+              <span class="mat-body-large text-on-surface">Change status</span>
+            </button>
+          </mat-menu>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: columns"
+        class="hover:bg-surface-bright cursor-pointer"
+      ></tr>
+    </table>
+
+    }
+  </div>
+  @if(count()) {
+  <mat-paginator
+    [length]="count()"
+    [pageSize]="paginationOptions().pageSize"
+    [pageIndex]="paginationOptions().pageIndex"
+    (page)="onPageChange($event)"
+  ></mat-paginator>
+  }
+</div>
+<mat-menu #filterMenu="matMenu" class="top-[200px] left-[3155px]">
+  <button mat-menu-item class="h-[56px] py-8 flex gap-[12px]">
+    <mat-icon
+      svgIcon="regime_preference"
+      class="w-6 h-6 text-on-surface"
+    ></mat-icon>
+    <span class="mat-body-large text-on-surface">Change status</span>
+  </button>
+</mat-menu>
+
+<!-- <app-test-store></app-test-store> -->
