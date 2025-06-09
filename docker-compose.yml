@@ -3,8 +3,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: qpon_app
     ports:
       - "3000:3000"
+    restart: unless-stopped
     env_file:
       - .env
     environment:
@@ -20,10 +22,11 @@ services:
     depends_on:
       - db
     networks:
-      - app-network
+      - qpon
 
   db:
-    image: postgres:latest
+    image: postgres:17
+    container_name: qpon_db
     environment:
       - POSTGRES_USER=${DB_USERNAME}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
@@ -31,12 +34,18 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"  # To connect to Postgres externally, change this to 0.0.0.0
+    restart: unless-stopped
     networks:
-      - app-network
+      - qpon
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 networks:
-  app-network:
+  qpon:
     driver: bridge
 
 volumes:
