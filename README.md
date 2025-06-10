@@ -11,6 +11,7 @@
 - 🕒 Support start/end dates, usage limits, and redemption tracking
 - 🧑‍🤝‍🧑 Multi-organization support with role-based access control
 - 🔐 Secure API endpoints for managing and redeeming coupons
+- 🔗 Easily integrate Qpon into your systems using REST API endpoints
 - 🚀 Production-ready and easy to deploy with Docker
 
 ## Tech Stack
@@ -39,6 +40,8 @@ curl -LO https://github.com/org-quicko/qpon/raw/main/docker-compose.yml
 # Run the services in the background
 docker compose up -d
 ```
+
+**Note:** By default, Docker Compose expects a `.env` file for environment variables. You can also set these variables directly in your shell or hardcode them in `docker-compose.yml` if you prefer not to use a `.env` file.
 
 Visit [http://localhost:3000](http://localhost:3000) to use the app.
 
@@ -100,6 +103,19 @@ curl -X POST http://localhost:3000/api/organizations \
 ```
 
 Replace `localhost:3000` with your server's address if running in production or on a different host.
+
+## Environment Variables
+
+| Variable         | Description                        | Example                       |
+|------------------|------------------------------------|-------------------------------|
+| DB_USERNAME      | Database username                  | qpon_user                     |
+| DB_PASSWORD      | Database password                  | strongpassword                |
+| DB_NAME          | Database name                      | qpon_db                       |
+| DB_HOST          | Database host                      | db (use 'db' for Docker)      |
+| JWT_SECRET       | JWT signing secret                 | any-random-string             |
+| SALT_ROUNDS      | Bcrypt salt rounds for passwords   | 10                            |
+
+These variables can be set in a `.env` file, in your shell, or directly in `docker-compose.yml`.
 
 ## Project Structure
 
