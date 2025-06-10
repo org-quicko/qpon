@@ -1,6 +1,5 @@
 services:
   app:
-    build:
     image: labsatquicko/qpon:latest
     container_name: qpon_app
     ports:
@@ -14,7 +13,7 @@ services:
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
-      - DB_HOST=db
+      - DB_HOST=${DB_HOST}
       - JWT_SECRET=${JWT_SECRET}
       - SALT_ROUNDS=${SALT_ROUNDS}
       - NODE_ENV=production
