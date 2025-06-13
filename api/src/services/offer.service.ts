@@ -288,10 +288,7 @@ export class OffersService {
             this.logger.warn('Item is ineligible for the offer');
             throw new ConflictException('Item is ineligible for the offer');
           }
-        } 
-      } else {
-          this.logger.warn('Item is ineligible for the offer');
-          throw new ConflictException('Item is ineligible for the offer');
+        }
       }
 
       if (
@@ -315,9 +312,6 @@ export class OffersService {
           this.logger.warn('Customer is ineligible for the offer');
           throw new ConflictException('Customer is ineligible for the offer');
         }
-      } else {
-        this.logger.warn('Customer is ineligible for the offer');
-        throw new ConflictException('Customer is ineligible for the offer');
       }
 
       if (customer) {
