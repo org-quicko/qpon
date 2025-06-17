@@ -6,7 +6,7 @@ import { Organization } from '../entities/organization.entity';
 import { OrganizationUser } from '../entities/organization-user.entity';
 import { OrganizationSummaryMv } from '../entities/organization-summary.view';
 import { OrganizationConverter } from '../converters/organization.converter';
-import { OrganizationSummarySheetConverter } from '../converters/organization-summary-sheet.converter';
+import { OrganizationSummaryWorkbookConverter } from '../converters/organization-summary';
 import { OrganizationsMv } from 'src/entities/organizations_mv.entity';
 import { OrganizationsListConverter } from 'src/converters/organizations-list-converter';
 
@@ -23,7 +23,7 @@ import { OrganizationsListConverter } from 'src/converters/organizations-list-co
   providers: [
     OrganizationService,
     OrganizationConverter,
-    OrganizationSummarySheetConverter,
+    OrganizationSummaryWorkbookConverter,
     OrganizationsListConverter,
   ],
   exports: [OrganizationService],

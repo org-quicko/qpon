@@ -21,7 +21,7 @@ import {
 import { CouponConverter } from '../converters/coupon.converter';
 import { Campaign } from '../entities/campaign.entity';
 import { CouponCode } from '../entities/coupon-code.entity';
-import { CouponSummarySheetConverter } from '../converters/coupon-summary-sheet.converter';
+import { CouponSummaryWorkbookConverter } from '../converters/coupon-summary';
 import { CouponSummaryMv } from '../entities/coupon-summary.view';
 import { CouponListConverter } from 'src/converters/coupon-list.converter';
 import { CouponItem } from 'src/entities/coupon-item.entity';
@@ -34,7 +34,7 @@ export class CouponService {
     @InjectRepository(CouponSummaryMv)
     private readonly couponSummaryMvRepository: Repository<CouponSummaryMv>,
     private couponConverter: CouponConverter,
-    private couponSummarySheetConverter: CouponSummarySheetConverter,
+    private couponSummaryWorkbookConverter: CouponSummaryWorkbookConverter,
     private couponListConverter: CouponListConverter,
     private logger: LoggerService,
     private datasource: DataSource,
@@ -455,7 +455,7 @@ export class CouponService {
       }
 
       this.logger.info('END: fetchCouponSummary service');
-      return this.couponSummarySheetConverter.convert(
+      return this.couponSummaryWorkbookConverter.convert(
         couponSummaries,
         organizationId,
       );
@@ -495,7 +495,7 @@ export class CouponService {
       }
 
       this.logger.info('END: fetchCouponsSummary service');
-      return this.couponSummarySheetConverter.convert(
+      return this.couponSummaryWorkbookConverter.convert(
         couponSummaries,
         organizationId,
       );

@@ -38,9 +38,9 @@ import { Item } from '../entities/item.entity';
 import { CouponItem } from '../entities/coupon-item.entity';
 import { Campaign } from '../entities/campaign.entity';
 import { CampaignSummaryMv } from '../entities/campaign-summary.view';
-import { RedemptionSheetConverter } from '../converters/redemption-sheet.converter';
+import { RedemptionWorkbookConverter } from '../converters/redemption';
 import { getStartEndDate } from '../utils/date.utils';
-import { RedemptionReportSheetConverter } from '../converters/redemption-report-sheet.converter';
+import { RedemptionReportWorkbookConverter } from '../converters/redemption-report';
 import { RedemptionReportWorkbook } from '@org-quicko/qpon-sheet-core/redemption_report_workbook/beans';
 
 @Injectable()
@@ -54,8 +54,8 @@ export class RedemptionsService {
     private readonly campaignSummaryRepository: Repository<CampaignSummaryMv>,
     @InjectRepository(Campaign)
     private readonly campaignRepository: Repository<Campaign>,
-    private redemptionSheetConverter: RedemptionSheetConverter,
-    private redemptionReportSheetConverter: RedemptionReportSheetConverter,
+    private redemptionWorkbookConverter: RedemptionWorkbookConverter,
+    private redemptionReportWorkbookConverter: RedemptionReportWorkbookConverter,
     private logger: LoggerService,
     private datasource: DataSource,
   ) {}
@@ -242,7 +242,7 @@ export class RedemptionsService {
       }
 
       this.logger.info('END: fetchRedemptions service');
-      return this.redemptionSheetConverter.convert(
+      return this.redemptionWorkbookConverter.convert(
         redemptions,
         organizationId,
         count,
@@ -495,7 +495,7 @@ export class RedemptionsService {
       });
 
       const redemptionReportWorkbook =
-        this.redemptionReportSheetConverter.convert(redemptions);
+        this.redemptionReportWorkbookConverter.convert(redemptions);
 
       const redemptionReportTable = redemptionReportWorkbook
         .getRedemptionReportSheet()

@@ -1,20 +1,13 @@
-import { Injectable } from '@nestjs/common';
-import {
-  OrganizationSummaryRow,
-  OrganizationSummarySheet,
-  OrganizationSummaryTable,
-  OrganizationSummaryWorkbook,
-} from '@org-quicko/qpon-sheet-core/organization_summary_workbook/beans';
-import { OrganizationSummaryMv } from '../entities/organization-summary.view';
+import { JSONArray } from '@org-quicko/core';
+import { OrganizationSummaryRow, OrganizationSummaryTable } from '@org-quicko/qpon-sheet-core/organization_summary_workbook/beans';
+import { OrganizationSummaryMv } from '../../entities/organization-summary.view';
 
-@Injectable()
-export class OrganizationSummarySheetConverter {
+export class OrganizationSummaryTableConverter {
   convert(
+    organizationSummaryTable: OrganizationSummaryTable,
     organizationSummaryMv: OrganizationSummaryMv,
-  ): OrganizationSummaryWorkbook {
-    const organizationSummaryTable = new OrganizationSummaryTable();
-
-    const organizationSummaryRow = new OrganizationSummaryRow([]);
+  ) {
+    const organizationSummaryRow = new OrganizationSummaryRow(new JSONArray());
     organizationSummaryRow.setOrganizationId(
       organizationSummaryMv.organizationId,
     );
@@ -47,17 +40,5 @@ export class OrganizationSummarySheetConverter {
     );
 
     organizationSummaryTable.addRow(organizationSummaryRow);
-
-    const organizationSummarySheet = new OrganizationSummarySheet();
-    organizationSummarySheet.addOrganizationSummaryTable(
-      organizationSummaryTable,
-    );
-
-    const organizationSummaryWorkbook = new OrganizationSummaryWorkbook();
-    organizationSummaryWorkbook.addOrganizationSummarySheet(
-      organizationSummarySheet,
-    );
-
-    return organizationSummaryWorkbook;
   }
 }

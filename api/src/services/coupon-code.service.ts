@@ -18,7 +18,7 @@ import {
   sortOrderEnum,
 } from '../enums';
 import { CouponCodeConverter } from '../converters/coupon-code.converter';
-import { CouponCodeSheetConverter } from '../converters/coupon-code-sheet.converter';
+import { CouponCodeWorkbookConverter } from '../converters/coupon-code';
 import { Campaign } from 'src/entities/campaign.entity';
 import { CouponCodeListConverter } from 'src/converters/coupon-code-list.converter';
 import { CustomerCouponCode } from 'src/entities/customer-coupon-code.entity';
@@ -29,7 +29,7 @@ export class CouponCodeService {
     @InjectRepository(CouponCode)
     private readonly couponCodeRepository: Repository<CouponCode>,
     private couponCodeConverter: CouponCodeConverter,
-    private couponCodeSheetConverter: CouponCodeSheetConverter,
+    private couponCodeWorkbookConverter: CouponCodeWorkbookConverter,
     private couponCodeListConverter: CouponCodeListConverter,
     private logger: LoggerService,
     private datasource: DataSource,
@@ -474,7 +474,7 @@ export class CouponCodeService {
       }
 
       this.logger.info('END: fetchCouponCodesByCodeSheet service');
-      return this.couponCodeSheetConverter.convert(couponCodes, organizationId);
+      return this.couponCodeWorkbookConverter.convert(couponCodes, organizationId);
     } catch (error) {
       this.logger.error(
         `Error in fetchCouponCodesByCodeSheet:`,

@@ -12,7 +12,7 @@ import { LoggerService } from './logger.service';
 import { OrganizationConverter } from '../converters/organization.converter';
 import { QueryOptionsInterface } from '../interfaces/queryOptions.interface';
 import { OrganizationSummaryMv } from '../entities/organization-summary.view';
-import { OrganizationSummarySheetConverter } from '../converters/organization-summary-sheet.converter';
+import { OrganizationSummaryWorkbookConverter } from '../converters/organization-summary';
 import { OrganizationsMv } from 'src/entities/organizations_mv.entity';
 import { OrganizationsListConverter } from 'src/converters/organizations-list-converter';
 import { sortOrderEnum } from 'src/enums';
@@ -27,7 +27,7 @@ export class OrganizationService {
     @InjectRepository(OrganizationsMv)
     private readonly organizationsMvRepository: Repository<OrganizationsMv>,
     private organizationConverter: OrganizationConverter,
-    private organizationSummarySheetConverter: OrganizationSummarySheetConverter,
+    private organizationSummaryWorkbookConverter: OrganizationSummaryWorkbookConverter,
     private organizationsListConverter: OrganizationsListConverter,
     private logger: LoggerService,
   ) {}
@@ -266,7 +266,7 @@ export class OrganizationService {
       }
 
       this.logger.info('END: fetchOrganizationSummary service');
-      return this.organizationSummarySheetConverter.convert(
+      return this.organizationSummaryWorkbookConverter.convert(
         organizationSummary,
       );
     } catch (error) {

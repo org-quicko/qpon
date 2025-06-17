@@ -1,24 +1,15 @@
-import { Injectable } from '@nestjs/common';
-import { JSONArray, JSONObject } from '@org-quicko/core';
+import { JSONArray } from '@org-quicko/core';
 import {
   CouponSummaryRow,
-  CouponSummaryWorkbook,
+  CouponSummaryTable,
 } from '@org-quicko/qpon-sheet-core/coupon_summary_workbook/beans';
-import { CouponSummaryMv } from '../entities/coupon-summary.view';
+import { CouponSummaryMv } from 'src/entities/coupon-summary.view';
 
-@Injectable()
-export class CouponSummarySheetConverter {
+export class CouponSummaryTableConverter {
   convert(
+    couponSummaryTable: CouponSummaryTable,
     couponSummaryMv: CouponSummaryMv[],
-    organizationId: string,
-  ): CouponSummaryWorkbook {
-
-    const couponSummaryWorkbook = new CouponSummaryWorkbook();
-
-    const couponSummarySheet = couponSummaryWorkbook.getCouponSummarySheet();
-
-    const couponSummaryTable = couponSummarySheet.getCouponSummaryTable();
-
+  ) {
     for (let index = 0; index < couponSummaryMv.length; index++) {
       const couponSummary = couponSummaryMv[index];
       const couponSummaryRow = new CouponSummaryRow(new JSONArray());
@@ -42,12 +33,6 @@ export class CouponSummarySheetConverter {
       couponSummaryRow.setUpdatedAt(couponSummary.updatedAt.toISOString());
 
       couponSummaryTable.addRow(couponSummaryRow);
-    };
-
-    couponSummaryWorkbook.setMetadata(new JSONObject({
-      organization_id: organizationId,
-    }));
-
-    return couponSummaryWorkbook;
+    }
   }
 }

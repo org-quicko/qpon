@@ -1,24 +1,9 @@
-import { Injectable } from '@nestjs/common';
 import { JSONArray, JSONObject } from '@org-quicko/core';
-import { Redemption } from '../entities/redemption.entity';
-import {
-  RedemptionRow,
-  RedemptionWorkbook,
-} from '@org-quicko/qpon-sheet-core/redemption_workbook/beans';
+import { RedemptionRow, RedemptionTable } from '@org-quicko/qpon-sheet-core/redemption_workbook/beans';
+import { Redemption } from 'src/entities/redemption.entity';
 
-@Injectable()
-export class RedemptionSheetConverter {
-  convert(
-    redemptions: Redemption[],
-    organizationId: string,
-    count?: number,
-    skip?: number,
-    take?: number,
-  ): RedemptionWorkbook {
-    const redemptionWorkbook = new RedemptionWorkbook();
-    const redemptionSheet = redemptionWorkbook.getRedemptionSheet();
-    const redemptionTable = redemptionSheet.getRedemptionTable();
-
+export class RedemptionTableConverter {
+  convert(redemptionTable: RedemptionTable, redemptions: Redemption[], count?: number, skip?: number, take?: number) {
     for (let index = 0; index < redemptions.length; index++) {
       const redemption = redemptions[index];
       const redemptionRow = new RedemptionRow(new JSONArray());
@@ -32,18 +17,12 @@ export class RedemptionSheetConverter {
       redemptionRow.setRedeemedAt(redemption.createdAt.toISOString());
       redemptionRow.setExternalId(redemption.externalId);
       redemptionTable.addRow(redemptionRow);
-    };
-
-    redemptionWorkbook.setMetadata(new JSONObject({
-      organization_id: organizationId,
-    }));
+    }
 
     redemptionTable.setMetadata(new JSONObject({
       count: count,
       skip: skip,
       take: take,
     }));
-
-    return redemptionWorkbook;
   }
 }
