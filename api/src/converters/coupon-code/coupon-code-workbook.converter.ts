@@ -20,9 +20,10 @@ export class CouponCodeWorkbookConverter {
     
     const couponCodeWorkbook = new CouponCodeWorkbook();
     const couponCodeSheet = couponCodeWorkbook.getCouponCodeSheet();
-    const couponCodeTable = couponCodeSheet.getCouponCodeTable();
 
-    this.couponCodeTableConverter.convert(couponCodeTable, couponCodes); 
+    const couponCodeTable = this.couponCodeTableConverter.convert(couponCodes);
+
+    couponCodeSheet.replaceBlock(couponCodeTable);
 
     const couponCodeWorkbookMetadata = new JSONObject({
       organization_id: organizationId,

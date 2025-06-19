@@ -1,13 +1,16 @@
-import { RedemptionReportRow, RedemptionReportTable } from '@org-quicko/qpon-sheet-core/redemption_report_workbook/beans';
+import {
+  RedemptionReportRow,
+  RedemptionReportTable,
+} from '@org-quicko/qpon-sheet-core/redemption_report_workbook/beans';
 import { Redemption } from '../../entities/redemption.entity';
 import { JSONArray } from '@org-quicko/core';
 import { formatDate } from '../../utils/date.utils';
 
 export class RedemptionReportTableConverter {
-  convert(
-    redemptionReportTable: RedemptionReportTable,
-    redemptions: Redemption[],
-  ) {
+  convert(redemptions: Redemption[]) : RedemptionReportTable {
+
+    const redemptionReportTable = new RedemptionReportTable();
+
     for (let index = 0; index < redemptions.length; index++) {
       const redemption = redemptions[index];
       const redemptionReportRow = new RedemptionReportRow(new JSONArray());
@@ -30,5 +33,7 @@ export class RedemptionReportTableConverter {
       redemptionReportRow.setRedeemedAt(formatDate(redemption.createdAt));
       redemptionReportTable.addRow(redemptionReportRow);
     }
+
+    return redemptionReportTable;
   }
 }

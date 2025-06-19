@@ -1,13 +1,15 @@
-import { OfferRow, OfferTable, OfferWorkbook } from "@org-quicko/qpon-sheet-core/offer_workbook/beans";
+import { OfferRow, OfferTable } from "@org-quicko/qpon-sheet-core/offer_workbook/beans";
 import { JSONArray } from "@org-quicko/core";
 import { Offer } from "../../entities/offer.view";
 import { offerTitleBuilder } from "../../utils/offer-title.builder";
 import { offerDescriptionBuilder } from "../../utils/offer-description.builder";
 
 export class OfferTableConverter {
-  convert(offerTable: OfferTable, offers: Offer[]) {
+  convert(offers: Offer[]): OfferTable {
 
-    for (let index = 0; index < offers.length; index++) {
+    const offerTable = new OfferTable();
+
+    for (let index = 0; index < offers.length; index++) {      
         const offer = offers[index];
         const offerRow = new OfferRow(new JSONArray());
         const title = offerTitleBuilder(offer);
@@ -33,5 +35,6 @@ export class OfferTableConverter {
 
         offerTable.addRow(offerRow);
     }
+    return offerTable;
   }
 }

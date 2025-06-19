@@ -1,12 +1,15 @@
 import { JSONArray } from '@org-quicko/core';
-import { OrganizationSummaryRow, OrganizationSummaryTable } from '@org-quicko/qpon-sheet-core/organization_summary_workbook/beans';
+import {
+  OrganizationSummaryRow,
+  OrganizationSummaryTable,
+} from '@org-quicko/qpon-sheet-core/organization_summary_workbook/beans';
 import { OrganizationSummaryMv } from '../../entities/organization-summary.view';
 
 export class OrganizationSummaryTableConverter {
-  convert(
-    organizationSummaryTable: OrganizationSummaryTable,
-    organizationSummaryMv: OrganizationSummaryMv,
-  ) {
+  convert(organizationSummaryMv: OrganizationSummaryMv) : OrganizationSummaryTable {
+
+    const organizationSummaryTable = new OrganizationSummaryTable();
+
     const organizationSummaryRow = new OrganizationSummaryRow(new JSONArray());
     organizationSummaryRow.setOrganizationId(
       organizationSummaryMv.organizationId,
@@ -40,5 +43,7 @@ export class OrganizationSummaryTableConverter {
     );
 
     organizationSummaryTable.addRow(organizationSummaryRow);
+    
+    return organizationSummaryTable;
   }
 }

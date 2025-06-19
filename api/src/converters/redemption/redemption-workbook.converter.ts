@@ -22,9 +22,10 @@ export class RedemptionWorkbookConverter {
   ): RedemptionWorkbook {
     const redemptionWorkbook = new RedemptionWorkbook();
     const redemptionSheet = redemptionWorkbook.getRedemptionSheet();
-    const redemptionTable = redemptionSheet.getRedemptionTable();
 
-    this.redemptionTableConverter.convert(redemptionTable, redemptions, count, skip, take);
+    const redemptionTable = this.redemptionTableConverter.convert(redemptions, count, skip, take);
+
+    redemptionSheet.replaceBlock(redemptionTable);
 
     redemptionWorkbook.setMetadata(new JSONObject({
       organization_id: organizationId,

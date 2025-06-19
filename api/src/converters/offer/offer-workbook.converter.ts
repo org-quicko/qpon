@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { OfferRow, OfferSheet, OfferTable, OfferWorkbook } from "@org-quicko/qpon-sheet-core/offer_workbook/beans";
+import { OfferWorkbook } from "@org-quicko/qpon-sheet-core/offer_workbook/beans";
 import { Offer } from "../../entities/offer.view";
 import { OfferTableConverter } from "./offer-table.converter";
 import { JSONObject } from "@org-quicko/core";
@@ -18,9 +18,10 @@ export class OfferWorkbookConverter {
 
         const offerSheet = offerWorkbook.getOfferSheet();
 
-        const offerTable = offerSheet.getOfferTable();
 
-        this.offerTableConverter.convert(offerTable, offers);
+        const offerTable = this.offerTableConverter.convert(offers);
+
+        offerSheet.replaceBlock(offerTable);
 
         if (skip! >= 0 && take! > 0) {
             offerWorkbook.setMetadata(new JSONObject({

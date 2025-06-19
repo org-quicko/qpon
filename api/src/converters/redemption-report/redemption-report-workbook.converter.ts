@@ -17,9 +17,9 @@ export class RedemptionReportWorkbookConverter {
     
     const redemptionReportSheet = redemptionReportWorkbook.getRedemptionReportSheet();
 
-    const redemptionReportTable = redemptionReportSheet.getRedemptionReportTable();
+    const redemptionReportTable = this.redemptionReportTableConverter.convert(redemptions);
 
-    this.redemptionReportTableConverter.convert(redemptionReportTable, redemptions);
+    redemptionReportSheet.replaceBlock(redemptionReportTable);
 
     return redemptionReportWorkbook;
   }

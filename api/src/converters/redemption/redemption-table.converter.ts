@@ -1,9 +1,11 @@
 import { JSONArray, JSONObject } from '@org-quicko/core';
 import { RedemptionRow, RedemptionTable } from '@org-quicko/qpon-sheet-core/redemption_workbook/beans';
-import { Redemption } from 'src/entities/redemption.entity';
+import { Redemption } from '../../entities/redemption.entity';
 
 export class RedemptionTableConverter {
-  convert(redemptionTable: RedemptionTable, redemptions: Redemption[], count?: number, skip?: number, take?: number) {
+  convert(redemptions: Redemption[], count?: number, skip?: number, take?: number) : RedemptionTable {
+    const redemptionTable = new RedemptionTable();
+
     for (let index = 0; index < redemptions.length; index++) {
       const redemption = redemptions[index];
       const redemptionRow = new RedemptionRow(new JSONArray());
@@ -24,5 +26,7 @@ export class RedemptionTableConverter {
       skip: skip,
       take: take,
     }));
+
+    return redemptionTable;
   }
 }

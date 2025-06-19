@@ -19,9 +19,9 @@ export class OrganizationSummaryWorkbookConverter {
 
     const organizationSummarySheet = organizationSummaryWorkbook.getOrganizationSummarySheet();
 
-    const organizationSummaryTable = organizationSummarySheet.getOrganizationSummaryTable();
+    const organizationSummaryTable = this.organizationSummaryTableConverter.convert(organizationSummaryMv);
 
-    this.organizationSummaryTableConverter.convert(organizationSummaryTable, organizationSummaryMv);
+    organizationSummarySheet.replaceBlock(organizationSummaryTable);
 
     return organizationSummaryWorkbook;
   }

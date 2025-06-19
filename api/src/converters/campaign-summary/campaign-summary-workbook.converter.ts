@@ -25,9 +25,9 @@ export class CampaignSummaryWorkbookConverter {
     const campaignSummarySheet =
       campaignSummaryWorkbook.getCampaignSummarySheet();
 
-    const campaignSummaryTable = campaignSummarySheet.getCampaignSummaryTable();
+    const campaignSummaryTable = this.campaignSummaryTableConverter.convert(campaignSummaryMv);
 
-    this.campaignSummaryTableConverter.convert(campaignSummaryTable, campaignSummaryMv);
+    campaignSummarySheet.replaceBlock(campaignSummaryTable);
 
     campaignSummaryTable.setMetadata(
       new JSONObject({

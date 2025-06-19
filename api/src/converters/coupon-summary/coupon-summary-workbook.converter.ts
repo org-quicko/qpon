@@ -22,9 +22,9 @@ export class CouponSummaryWorkbookConverter {
 
     const couponSummarySheet = couponSummaryWorkbook.getCouponSummarySheet();
 
-    const couponSummaryTable = couponSummarySheet.getCouponSummaryTable();
+    const couponSummaryTable = this.couponSummaryTableConverter.convert(couponSummaryMv);
 
-    this.couponSummaryTableConverter.convert(couponSummaryTable, couponSummaryMv);
+    couponSummarySheet.replaceBlock(couponSummaryTable);
 
     couponSummaryWorkbook.setMetadata(new JSONObject({
       organization_id: organizationId,

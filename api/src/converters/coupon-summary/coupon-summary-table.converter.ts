@@ -6,10 +6,9 @@ import {
 import { CouponSummaryMv } from 'src/entities/coupon-summary.view';
 
 export class CouponSummaryTableConverter {
-  convert(
-    couponSummaryTable: CouponSummaryTable,
-    couponSummaryMv: CouponSummaryMv[],
-  ) {
+  convert(couponSummaryMv: CouponSummaryMv[]) : CouponSummaryTable {
+    const couponSummaryTable = new CouponSummaryTable();
+
     for (let index = 0; index < couponSummaryMv.length; index++) {
       const couponSummary = couponSummaryMv[index];
       const couponSummaryRow = new CouponSummaryRow(new JSONArray());
@@ -34,5 +33,7 @@ export class CouponSummaryTableConverter {
 
       couponSummaryTable.addRow(couponSummaryRow);
     }
+    
+    return couponSummaryTable;
   }
 }

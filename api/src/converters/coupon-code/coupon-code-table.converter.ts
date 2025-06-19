@@ -3,7 +3,10 @@ import { JSONArray } from '@org-quicko/core';
 import { CouponCode } from '../../entities/coupon-code.entity';
 
 export class CouponCodeTableConverter {
-  convert(couponCodeTable: CouponCodeTable, couponCodes: CouponCode[]) {
+  convert(couponCodes: CouponCode[]) : CouponCodeTable {
+
+    const couponCodeTable = new CouponCodeTable();
+
     for (let index = 0; index < couponCodes.length; index++) {
       const couponCode = couponCodes[index];
       const couponCodeRow = new CouponCodeRow(new JSONArray());
@@ -29,5 +32,7 @@ export class CouponCodeTableConverter {
       couponCodeRow.setUpdatedAt(couponCode.updatedAt.toString());
       couponCodeTable.addRow(couponCodeRow);
     }
+
+    return couponCodeTable;
   }
 }
