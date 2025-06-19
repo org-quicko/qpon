@@ -17,6 +17,8 @@ export class UserConverter {
     if (organizationUser) {
       userDto.role = organizationUser.role;
       userDto.lastAccessedAt = organizationUser.lastAccessedAt;
+    } else {
+      userDto.role = user.role;
     }
 
     return userDto;

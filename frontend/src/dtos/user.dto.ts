@@ -57,7 +57,6 @@ export class CreateUserDto {
   password?: string;
 
   @prop()
-  @required()
   @IsEnum(roleEnum)
   role?: roleEnum;
 }

@@ -536,4 +536,14 @@ export class UserService {
       this.logger.error(`Error in fetchUser:`, error);
     }
   }
+
+  /**
+   * Check if super admin exists
+   */
+  async superAdminExists() {
+    const count = await this.userRepository.count({
+      where: { role: roleEnum.SUPER_ADMIN },
+    });
+    return {exists: count > 0 ? true : false};
+  }
 }
