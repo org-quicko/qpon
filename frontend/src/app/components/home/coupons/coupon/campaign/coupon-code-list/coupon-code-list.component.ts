@@ -86,7 +86,7 @@ export class CouponCodeListComponent implements OnInit {
   sortDirection = signal<'asc' | 'desc'>('desc');
 
   columns = [
-    'name',
+    'code',
     'visibility',
     'expires_at',
     'redemption_count',

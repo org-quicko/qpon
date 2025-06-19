@@ -1,14 +1,14 @@
 <div class="flex flex-col gap-10 w-[560px]">
-  <div class="mat-headline-small text-on-surface">Add another customer</div>
+  <div class="mat-headline-small m-0 text-on-surface">Add another customer</div>
   <div class="grid grid-cols-2 gap-4">
     @for(customer of customers(); track customer; let index = $index) {
       <mat-card appearance="outlined" class="bg-surface-container-lowest overflow-hidden !w-[272px] h-[112px]">
        <button mat-button class="px-4 py-8 flex justify-start gap-1 h-full rounded-none" (click)="editUser(customer, index)">
         <div class="flex flex-col items-start gap-1">
-          <div class="mat-body-large text-on-surface">
+          <div class="mat-body-large text-on-surface max-w-[200px] truncate">
             {{ customer.name }}
           </div>
-          <div class="mat-body-medium text-on-surface-variant">
+          <div class="mat-body-medium text-on-surface-variant max-w-[200px] truncate">
             {{ customer.email }}
           </div>
         </div>

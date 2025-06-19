@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-8">
+<div class="flex flex-col gap-10">
   <div class="flex flex-col gap-4">
     <div class="flex mat-body-medium gap-[4px] text-on-surface">
       <div class="cursor-pointer" (click)="onNavigateParent()">Coupons</div>
@@ -10,7 +10,7 @@
           navigate_next
         </div>
       </mat-icon>
-      <div class="cursor-pointer" (click)="onNavigateToCouponView()">
+      <div class="cursor-pointer max-w-[100px] truncate" (click)="onNavigateToCouponView()">
         @if(!isLoading()) {
         {{ coupon()?.name }}
         } @else {
@@ -32,7 +32,7 @@
           navigate_next
         </div>
       </mat-icon>
-      <div class="cursor-pointer" (click)="onNavigateToCampaignView()">
+      <div class="cursor-pointer max-w-[100px] truncate" (click)="onNavigateToCampaignView()">
         @if(!isLoading()) {
         {{ campaign()?.getName() }}
         } @else {
@@ -54,7 +54,7 @@
           navigate_next
         </div>
       </mat-icon>
-      <div class="cursor-pointer">
+      <div class="cursor-pointer max-w-[100px] truncate">
         @if(!loading()) {
         {{ couponCode()?.code }}
         } @else {
@@ -73,9 +73,9 @@
       <div class="flex flex-col gap-2">
         <div class="flex gap-1">
           @if(!loading()) {
-          <p class="mat-headline-small text-on-surface">
+          <div class="mat-headline-small m-0 text-on-surface">
             {{ couponCode()?.code }}
-          </p>
+          </div>
           <button
             class="text-on-surface hover:text-primary group-hover:block transition-opacity cursor-pointer"
             (click)="
@@ -83,28 +83,10 @@
               copyToClipboard(couponCode()?.code!, 'coupon code')
             "
           >
-            <mat-icon class="material-symbols-outlined text-[16px] w-[16px]">
+            <mat-icon class="material-symbols-outlined text-[16px] w-[16px] flex flex-col justify-center">
               content_copy
             </mat-icon>
           </button>
-          } @else {
-          <ngx-skeleton-loader
-            [theme]="{
-              height: '24px',
-              width: '150px',
-              margin: '0px',
-              padding: '0px'
-            }"
-          ></ngx-skeleton-loader>
-          }
-        </div>
-        <div class="w-[728px]">
-          @if(!loading()) {
-            @if(couponCode()?.description?.length! > 0) {
-              <p class="mat-body-large text-on-surface truncate">
-                {{ couponCode()?.description ?? "-" }}
-              </p>
-            }
           } @else {
           <ngx-skeleton-loader
             [theme]="{
@@ -123,7 +105,7 @@
           class="rounded-full text-primary mat-label-large"
           (click)="onEdit()"
         >
-          <mat-icon class="material-symbols-outline">edit</mat-icon>
+          <mat-icon class="material-symbols-outlined">edit</mat-icon>
           <span>Edit</span>
         </button>
         <button mat-icon-button [mat-menu-trigger-for]="menu">

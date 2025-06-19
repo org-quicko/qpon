@@ -54,17 +54,21 @@ export const CouponsStore = signalStore(
       isFilterOperation?: boolean;
     }>(
       pipe(
-        tap(({ isSortOperation, isFilterOperation }) => {
+        tap(({ isSortOperation, isFilterOperation, filter }) => {
           if (isSortOperation) {
-            // Clear everything when sorting
             patchState(store, {
               isSorting: true,
-              isLoading: true,
+              isLoading: false, // changed from true to false
               coupons: [],
               loadedPages: new Set<number>(),
             });
           } else if (isFilterOperation) {
-            patchState(store, { isLoading: false });
+            // If searching (query present), do not show skeleton
+            if (filter && filter.query) {
+              patchState(store, { isLoading: false });
+            } else {
+              patchState(store, { isLoading: true });
+            }
           } else {
             patchState(store, { isLoading: true });
           }

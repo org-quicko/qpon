@@ -110,8 +110,6 @@ export class RedemptionLimitsComponent implements OnInit {
       this.createCouponCodeForm.get('maxRedemptionPerCustomer')?.disable();
     }
 
-    this.placeholder = `${this.getCurrencySymbolOnly(this.organization()?.currency!)}250`
-
     this.minimumAmountChecked.valueChanges.subscribe(checked => {
       const control = this.createCouponCodeForm.get('minimumAmount');
       if (checked) {

@@ -91,7 +91,7 @@ export class CouponsComponent implements OnInit {
     pageSize: 10,
   });
 
-  couponDatasource = new MatTableDataSource<CouponDto | number>();
+  couponDatasource = new MatTableDataSource<CouponDto>();
 
   couponsStore = inject(CouponsStore);
   organizationStore = inject(OrganizationStore);
@@ -105,6 +105,7 @@ export class CouponsComponent implements OnInit {
   take = this.couponsStore.take!;
   skip = this.couponsStore.skip!;
   couponFilter = this.filtersStore.couponFilter;
+  isSorting = this.couponsStore.isSorting;
 
   private readonly abilityService = inject<AbilityServiceSignal<UserAbility>>(AbilityServiceSignal);
 	protected readonly can = this.abilityService.can;
@@ -125,11 +126,6 @@ export class CouponsComponent implements OnInit {
 
     // Update datasource when coupons change
     effect(() => {
-      if (this.isLoading()) {
-        this.couponDatasource.data = this.tempDatasource;
-        return;
-      }
-
       const coupons = this.coupons();
 
       if (!coupons || coupons.length === 0) {
@@ -246,14 +242,6 @@ export class CouponsComponent implements OnInit {
       active: 'createdAt',
       direction: event.direction as 'asc' | 'desc'
     })
-
-    // this.router.navigate([], {
-    //   queryParams: {
-    //     'sort_by': this.sortOptions().active,
-    //     'sort_order': this.sortOptions().direction == 'asc' ? sortOrderEnum.ASC : sortOrderEnum.DESC,
-    //   },
-    //   queryParamsHandling: 'merge'
-    // })
 
     this.couponsStore.resetLoadedPages();
 

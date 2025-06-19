@@ -1,5 +1,5 @@
 <div class="min-h-screen flex flex-col overflow-hidden">
-  <div class="flex flex-col fixed top-0 w-full">
+  <div class="flex flex-col fixed top-0 w-full bg-surface-container-lowest z-40">
     <div class="flex justify-between items-center px-8 py-4">
       <div class="text-on-surface mat-title-large w-full">
         {{ organization()?.name }}
@@ -10,10 +10,10 @@
     </div>
     <mat-divider class="border-outline-variant"></mat-divider>
   </div>
-  <div class="flex-grow !py-8 flex flex-col items-center justify-center">
+  <div class="flex-grow pt-[80px] pb-[120px] overflow-y-auto flex flex-col items-center justify-center">
     <div class="flex flex-col gap-[48px] w-[560px]">
       <div class="flex flex-col gap-10">
-        <div class="mat-headline-small text-on-surface">Edit item</div>
+        <div class="mat-headline-small m-0 text-on-surface">Edit item</div>
         <form [formGroup]="updateItemForm" class="flex flex-col gap-[32px]">
           <mat-form-field appearance="outline" class="w-full">
             <mat-label>Item name</mat-label>

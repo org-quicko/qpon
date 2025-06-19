@@ -36,6 +36,7 @@ export class SuperAdminOrganizationsComponent implements OnInit {
   columns = ['name', 'totalCoupons', 'totalMembers', 'createdAt', 'navigate'];
   searchControl: FormControl;
   tempDatasource: number[] = Array.from({ length: 10 }, (_, i) => i + 1);
+  isFilterApplied = false;
   paginationOptions = signal<PaginationOptions>({
     pageIndex: 0,
     pageSize: 10,
@@ -84,6 +85,9 @@ export class SuperAdminOrganizationsComponent implements OnInit {
     this.searchControl.valueChanges
       .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe((value: string) => {
+
+        this.isFilterApplied = true;
+
         this.paginationOptions.set({
           pageIndex: 0,
           pageSize: 10,

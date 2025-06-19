@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-10 w-[560px]">
-  <div class="w-[289px] mat-headline-small text-on-surface">Edit your coupon</div>
+  <div class="w-[289px] mat-headline-small m-0 text-on-surface">Edit your coupon</div>
   <div class="flex flex-col gap-8">
     <form [formGroup]="updateCouponForm">
       <mat-form-field appearance="outline" class="w-full">
@@ -41,7 +41,7 @@
               type="number"
               min="0"
               max="100"
-              class="mat-display-medium text-on-surface focus:outline-none bg-transparent"
+              class="mat-display-medium text-on-surface focus:outline-none bg-transparent max-w-[180px] overflow-hidden"
               placeholder="0"
               [style]="`width: ${updatePercentageWidth()}ch;`"
               [value]="discountType == 'percentage' ? coupon()?.discountValue : 0"

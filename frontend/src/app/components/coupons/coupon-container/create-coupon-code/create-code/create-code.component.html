@@ -1,14 +1,14 @@
 <div class="flex flex-col gap-8">
   <div class="flex flex-col gap-2">
-    <div class="flex gap-1 items-center mat-label-large text-on-surface">
-      <div>
+    <div class="flex gap-1 items-center text-on-surface mat-label-large">
+      <div class="truncate max-w-[100px]">
         {{ coupon()?.name }}
       </div>
       <mat-icon class="h-5 w-5 text-[20px]">navigate_next</mat-icon>
-      <div>{{ campaign()?.name }}</div>
+      <div class="truncate max-w-[100px]">{{ campaign()?.name }}</div>
     </div>
     <div class="flex flex-col gap-1 text-on-surface">
-      <div class="mat-headline-small">Craft your coupon code</div>
+      <div class="mat-headline-small m-0">Craft your coupon code</div>
       <div class="mat-body-large">
         Enter code that your customers can easily remember
       </div>
@@ -20,21 +20,9 @@
         <mat-label>Code</mat-label>
         <div class="flex justify-between items-center">
           <input matInput type="text" formControlName="code" />
-          <!-- <button
-            class="hover:cursor-pointer"
-            (click)="$event.stopPropagation()"
-          >
-            <div class="flex items-center gap-1">
-              <mat-icon
-                svgIcon="autofill"
-                class="h-4 w-4 text-[16px]"
-              ></mat-icon>
-              <span class="mat-label-large text-primary">generate</span>
-            </div>
-          </button> -->
         </div>
         @if(createCouponCodeForm.get('code')?.hasError('required')) {
-          <mat-error>{{ errorMessage() }}</mat-error>
+          <mat-error>Coupon code is required</mat-error>
         }
       </mat-form-field>
       <mat-form-field appearance="outline" subscriptSizing="dynamic">
@@ -182,7 +170,7 @@
     </div>
 
     @if(validity == 'limited') {
-    <div class="flex flex-col gap-4 pb-14">
+    <div class="flex flex-col gap-4">
       <div class="mat-body-large text-on-surface">Add expiration date</div>
       <mat-form-field appearance="outline" subscriptSizing="dynamic">
         <mat-label>Choose a date</mat-label>
@@ -194,7 +182,7 @@
           formControlName="expiresAt"
           (click)="$event.stopPropagation(); picker.open()"
         />
-        <mat-datepicker-toggle matIconSuffix [for]="picker">
+        <mat-datepicker-toggle matIconSuffix [for]="picker" class="px-4">
           <mat-icon class="material-symbols-outlined" matDatepickerToggleIcon
           >calendar_month</mat-icon
           >

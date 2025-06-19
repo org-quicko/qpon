@@ -1,6 +1,6 @@
 <div class="flex flex-col gap-6 overflow-hidden">
   <div class="flex justify-between items-center">
-    <div class="mat-body-large text-on-surface">
+    <div class="mat-title-large m-0 text-on-surface">
       @if (campaignSummaries() !== null && count() !== undefined) { @if
       (count()! > 0) { Campaigns {{ `(${count()!})` }}
       } @else { Campaigns } } @else { Campaigns }
@@ -44,7 +44,7 @@
     >
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef class="px-6 py-4 w-[25%]">Name</th>
-        <td mat-cell *matCellDef="let summary" class="px-6 py-4 mat-body-large w-[25%]">
+        <td mat-cell *matCellDef="let summary" class="px-6 py-4 mat-body-large w-[25%] max-w-[200px] truncate">
           {{ convertToCampaignSummaryRow(summary).getName() }}
         </td>
       </ng-container>
