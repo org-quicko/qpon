@@ -49,10 +49,17 @@ export const OrganizationsStore = signalStore(
         isSortOperation?: boolean
       }>(
         pipe(
-          tap(() => {
-            patchState(store, {
-              isLoading: true,
-            });
+          tap(({filter}) => {
+
+            if(filter) {
+              patchState(store, {
+                isLoading: false,
+              });
+            } else {
+              patchState(store, {
+                isLoading: true,
+              });
+            }
           }),
           switchMap(({ filter, skip, take, sortOptions, isSortOperation }) => {
             const page = Math.floor((skip ?? 0) / (take ?? 10));
