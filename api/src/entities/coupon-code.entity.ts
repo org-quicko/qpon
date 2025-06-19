@@ -75,7 +75,7 @@ export class CouponCode {
   })
   updatedAt: Date;
 
-  @ManyToOne(() => Campaign, (campaign) => campaign.couponCodes)
+  @ManyToOne(() => Campaign, (campaign) => campaign.couponCodes, { cascade: ['remove'], onDelete: 'CASCADE' })
   @JoinColumn({
     name: 'campaign_id',
     referencedColumnName: 'campaignId',
@@ -92,7 +92,7 @@ export class CouponCode {
   })
   coupon: Coupon;
 
-  @ManyToOne(() => Organization, (organization) => organization.couponCodes)
+  @ManyToOne(() => Organization, (organization) => organization.couponCodes, { cascade: ['remove'], onDelete: 'CASCADE' })
   @JoinColumn({
     name: 'organization_id',
     referencedColumnName: 'organizationId',

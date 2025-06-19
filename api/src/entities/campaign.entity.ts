@@ -68,10 +68,7 @@ export class Campaign {
   })
   organization: Organization;
 
-  @OneToMany(() => CouponCode, (couponCode) => couponCode.campaign, {
-    onDelete: 'CASCADE',
-    cascade: ['remove'],
-  })
+  @OneToMany(() => CouponCode, (couponCode) => couponCode.campaign)
   couponCodes: CouponCode[];
 
   @OneToMany(() => Redemption, (redemption) => redemption.campaign)
