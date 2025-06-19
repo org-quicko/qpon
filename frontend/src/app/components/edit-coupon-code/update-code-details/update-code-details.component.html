@@ -1,14 +1,14 @@
 <div class="flex flex-col gap-8 w-[560px]">
   <div class="flex flex-col gap-2">
     <div class="flex gap-1 items-center mat-label-medium text-on-surface">
-      <div>
+      <div class="max-w-[100px] truncate">
         {{ coupon()?.name }}
       </div>
       <mat-icon class="h-5 w-5 text-[20px]">navigate_next</mat-icon>
-      <div>{{ campaign()?.name }}</div>
+      <div class="max-w-[100px] truncate">{{ campaign()?.name }}</div>
     </div>
     <div class="flex flex-col gap-1 text-on-surface">
-      <div class="mat-headline-small">Edit Coupon code details</div>
+      <div class="mat-headline-small m-0">Edit Coupon code details</div>
       <div class="mat-body-large">
         Enter code that your customers can easily remember
       </div>
@@ -29,11 +29,11 @@
     </div>
     <div class="flex flex-col gap-4">
       <div class="mat-body-large text-on-surface">Visibility</div>
-      <mat-radio-group class="flex gap-4" formControlName="visibility">
+      <mat-radio-group class="flex gap-4 justify-between" formControlName="visibility">
         <mat-radio-button
           matInput
           value="public"
-          class="cursor-pointer justify-between border rounded-[5px] border-outline-variant hide-radio-button"
+          class="w-[272px] cursor-pointer justify-between border rounded-[5px] border-outline-variant hide-radio-button"
           (click)="visibility = 'public'"
           [ngClass]="{
             'text-primary bg-secondary-container border-primary border-[2px] ':
@@ -42,7 +42,7 @@
           }"
         >
           <div
-            class="flex cursor-pointer flex-col w-[226px] gap-[12px] text-on-surface mat-body-large p-[16px]"
+            class="flex cursor-pointer flex-col gap-[12px] text-on-surface mat-body-large p-[16px]"
             [ngClass]="{ 'text-on-surface-variant': visibility != 'public' }"
           >
             <mat-icon
@@ -65,7 +65,7 @@
         <mat-radio-button
           matInput
           value="private"
-          class="cursor-pointer justify-between border rounded-[5px] border-outline-variant hide-radio-button"
+          class="w-[272px] cursor-pointer justify-between border rounded-[5px] border-outline-variant hide-radio-button"
           (click)="visibility = 'private'"
           [ngClass]="{
             'text-primary bg-secondary-container border-primary border-[2px] ':
@@ -74,7 +74,7 @@
           }"
         >
           <div
-            class="flex cursor-pointer flex-col w-[226px] gap-[12px] text-on-surface mat-body-large p-[16px]"
+            class="flex cursor-pointer flex-col gap-[12px] text-on-surface mat-body-large p-[16px]"
             [ngClass]="{ 'text-on-surface-variant': visibility != 'private' }"
           >
             <mat-icon
@@ -98,11 +98,11 @@
     </div>
     <div class="flex flex-col gap-4">
       <div class="mat-body-large text-on-surface">Validity</div>
-      <mat-radio-group class="flex gap-4" formControlName="durationType">
+      <mat-radio-group class="flex justify-between gap-4" formControlName="durationType">
         <mat-radio-button
           matInput
           value="forever"
-          class="cursor-pointer justify-between border rounded-[5px] border-outline-variant hide-radio-button"
+          class="w-[272px] cursor-pointer justify-between border rounded-[5px] border-outline-variant hide-radio-button"
           (click)="validity = 'forever'"
           [ngClass]="{
             'text-primary bg-secondary-container border-primary border-[2px] ':
@@ -134,7 +134,7 @@
         <mat-radio-button
           matInput
           value="limited"
-          class="cursor-pointer justify-between border rounded-[5px] border-outline-variant hide-radio-button"
+          class="w-[272px] cursor-pointer justify-between border rounded-[5px] border-outline-variant hide-radio-button"
           (click)="validity = 'limited'"
           [ngClass]="{
             'text-primary bg-secondary-container border-primary border-[2px] ':
@@ -177,7 +177,7 @@
           formControlName="expiresAt"
           (click)="$event.stopPropagation(); picker.open()"
         />
-        <mat-datepicker-toggle matIconSuffix [for]="picker">
+        <mat-datepicker-toggle matIconSuffix [for]="picker" class="px-4">
           <mat-icon class="material-symbols-outlined" matDatepickerToggleIcon
             >calendar_month</mat-icon
           >

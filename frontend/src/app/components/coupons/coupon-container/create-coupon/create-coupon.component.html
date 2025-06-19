@@ -1,5 +1,5 @@
 <div class="flex flex-col w-[560px] gap-8">
-  <div class="mat-headline-small text-on-surface">
+  <div class="mat-headline-small m-0 text-on-surface">
     Let’s create a new coupon
   </div>
   <form [formGroup]="couponFormGroup" class="flex flex-col gap-8">
@@ -50,7 +50,7 @@
                   min="0"
                   max="100"
                   formControlName="discountValue"
-                  class="mat-display-medium text-on-surface focus:outline-none bg-transparent"
+                  class="mat-display-medium text-on-surface focus:outline-none bg-transparent max-w-[180px] overflow-hidden"
                   placeholder="0"
                   (input)="updatePercentageWidth(percentInput)"
                   (focus)="updatePercentageWidth(percentInput)"
@@ -178,17 +178,19 @@
         </mat-radio-group>
         @if(maxAmount) {
         <div
-          class="flex items-center gap-[10px] w-full border rounded-[4px] h-[56px] border-outline-variant"
+          class="flex items-center gap-1 w-full border rounded-[4px] h-[56px] border-outline-variant"
         >
           <div class="h-[48px] w-[48px] flex justify-center items-center">
-            <mat-icon class="text-on-surface-variant">currency_rupee</mat-icon>
+            <div class="text-xl text-on-surface-variant">
+              {{ getCurrencySymbolOnly(organization()?.currency!) }}
+            </div>
           </div>
           <input
             matInput
             type="number"
             min="0"
             formControlName="discountUpto"
-            class="focus:outline-none align-middle py-[4px] w-full mat-body-large placeholder:text-on-surface-variant"
+            class="focus:outline-none align-middle py-[4px] w-full mat-body-large placeholder:text-on-surface-variant text-on-surface"
             placeholder="Add amount"
           />
         </div>

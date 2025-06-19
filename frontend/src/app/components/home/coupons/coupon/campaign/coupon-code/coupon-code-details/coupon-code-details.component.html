@@ -1,10 +1,10 @@
 <div class="flex flex-col gap-5">
-  <div class="mat-title-medium text-on-surface font-semibold">
-    <p>Code Details</p>
+  <div class="mat-title-large text-on-surface">
+    Code Details
   </div>
   <div>
     <div class="flex gap-4">
-      <mat-card appearance="outlined"  class="flex-1 bg-surface-container-lowest">
+      <mat-card appearance="outlined"  class="flex-3/5 bg-surface-container-lowest">
         <mat-card-content>
           <div class="flex flex-col w-full">
             <div class="pt-6 px-6">
@@ -20,7 +20,7 @@
                 </div>
                 <div class="flex flex-col gap-1">
                   <div class="mat-body-medium text-on-surface-variant">Description</div>
-                  <div class="mat-body-large text-on-surface w-full truncate">{{ couponCode()?.description ?? "-" }}</div>
+                  <div class="mat-body-large text-on-surface w-full max-w-[90%] break-all">{{ couponCode()?.description ?? "-" }}</div>
                 </div>
                 <div class="flex flex-col gap-1">
                   <div class="mat-body-medium text-on-surface-variant">Visibility</div>
@@ -100,7 +100,7 @@
                           <div class="bg-surface-container text-on-surface py-1 px-2 mat-label-small rounded-[4px]">{{ customers()?.at(0)?.name }}</div>
                           <div class="bg-surface-container text-on-surface py-1 px-2 mat-label-small rounded-[4px]">{{ customers()?.at(1)?.name }}</div>
                           <div class="bg-surface-container text-on-surface py-1 px-2 mat-label-small rounded-[4px]">{{ customers()?.at(2)?.name }}</div>
-                          <div class="text-on-surface-variant py-1 px-2 mat-label-small">+{{ customers()?.length! - 3 }} more</div>
+                          <div class="text-on-surface-variant py-1 mat-label-small">+{{ customers()?.length! - 3 }} more</div>
                         } @else {
                           @for(customer of customers(); track customer.customerId) {
                             <div class="bg-surface-container text-on-surface py-1 px-2 mat-label-small rounded-[4px]">{{ customer.name }}</div>

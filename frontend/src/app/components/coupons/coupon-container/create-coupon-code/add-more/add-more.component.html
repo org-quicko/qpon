@@ -2,14 +2,14 @@
   <div class="flex flex-col gap-2">
     <div class="flex flex-col gap-2">
       <div class="flex gap-1 items-center mat-label-large text-on-surface">
-        <div>
+        <div class="max-w-[100px] truncate">
           {{ coupon()?.name }}
         </div>
         <mat-icon class="h-5 w-5 text-[20px]">navigate_next</mat-icon>
-        <div>{{ campaign()?.name }}</div>
+        <div class="max-w-[100px] truncate">{{ campaign()?.name }}</div>
       </div>
     </div>
-    <div class="mat-headline-small text-on-surface">
+    <div class="mat-headline-small text-on-surface m-0">
       Create more coupon codes
     </div>
     <div class="mat-body-large text-on-surface">

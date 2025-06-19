@@ -18,20 +18,5 @@ export class OrganizationUserResolver implements Resolve<any> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const userId = this.authService.getUserId();
     this.organizationUserStore.fetchOrganizationsForUser({userId: userId!});
-
-      // // Watch for changes in the store
-      // effect(() => {
-      //   const organizations = this.organizationUserStore.organizations();
-        
-      //   if (!this.organizationUserStore.isLoading()) {
-  
-      //     if (organizations.length === 1) {
-      //       this.router.navigate([`/${organizations[0].organizationId}/home/dashboard`]);
-      //     }
-      //   }
-      // });
-  
-      // // Return organizations (if needed) or null if redirected
-      // return this.organizationUserStore.organizations();
   }
 }

@@ -15,6 +15,7 @@ import { roleEnum } from '../../../enums';
 import { SuperAdminOrganizationsComponent } from '../super-admin-organizations/super-admin-organizations.component';
 import { OrganizationsComponent } from '../organizations/organizations.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { UserStore } from '../../store/user.store';
 
 @Component({
   selector: 'app-dynamic-component-loader',
@@ -30,19 +31,16 @@ export class DynamicComponentLoaderComponent implements OnInit {
 
   dynamicComponent: any;
 
-  organizationUserStore = inject(OrganizationUserStore);
+  userStore = inject(UserStore);
 
-  organizations = this.organizationUserStore.organizations;
-  isLoading = this.organizationUserStore.isLoading;
+  user = this.userStore.user;
+  isLoading = this.userStore.isLoading;
 
   constructor(private route: ActivatedRoute, private cdr: ChangeDetectorRef) {
     effect(() => {
       if (this.isLoading()) return;
-
-      const organizations = this.organizations();
     
-      const organization = organizations?.[0];
-      const role = organization?.role;
+      const role = this.user()?.role;
     
       if (!role) return;
     

@@ -32,8 +32,12 @@ export class ChooseOrganizationComponent implements OnInit {
 
   organizationUserStore = inject(OrganizationUserStore);
 
+  organizationStore = inject(OrganizationStore);
+  
+
   isLoading = this.organizationUserStore.isLoading;
   organizations = this.organizationUserStore.organizations
+  organization = this.organizationStore.organizaiton;
 
   constructor(private route: ActivatedRoute, private permissionService: PermissionsService, private router: Router) {
     this.currentOrganizationId = "";

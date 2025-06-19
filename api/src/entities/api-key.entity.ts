@@ -32,7 +32,7 @@ export class ApiKey {
   })
   updatedAt: Date;
 
-  @OneToOne(() => Organization)
+  @OneToOne(() => Organization, { cascade: ['remove'], onDelete: 'CASCADE' })
   @JoinColumn({
     name: 'organization_id',
     referencedColumnName: 'organizationId',

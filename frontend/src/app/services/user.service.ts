@@ -48,4 +48,14 @@ export class UserService {
 
     return this.httpClient.get<ApiResponse<PaginatedList<UserDto>>>(url, { params });
   }
+
+  superAdminExists() {
+    const url = this.endpoint + '/super-admin/exists';
+    return this.httpClient.get<any>(url);
+  }
+
+  createSuperAdmin(body: CreateUserDto) {
+    const url = this.endpoint + '/users';
+    return this.httpClient.post<ApiResponse<UserDto>>(url, body);
+  }
 }

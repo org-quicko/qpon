@@ -1,7 +1,7 @@
 <div class="py-10 px-12">
   <div class="flex flex-col gap-6">
     <div class="flex justify-between">
-      <div class="mat-headline-medium text-on-surface">
+      <div class="mat-headline-medium m-0 text-on-surface">
         @if(count()! > 0) { Organisations ({{ count() }}) } @else {
         Organisations }
       </div>
@@ -18,287 +18,322 @@
         </div>
       </button>
     </div>
-    <div
-      class="flex flex-1 items-center gap-[10px] w-full border rounded-[4px] h-[56px] border-outline-variant"
-    >
-      <div class="h-[48px] w-[48px] flex justify-center items-center">
-        <mat-icon class="text-on-surface-variant">search</mat-icon>
+    @if(!isLoading() && (!count() || count() == 0) && !isFilterApplied) {
+      <div class="flex justify-center items-center py-[15%]">
+        <div class="flex flex-col items-center gap-4 w-full">
+          <div
+            class="bg-surface-container rounded-full flex justify-center items-center p-3"
+          >
+            <mat-icon
+              class="text-on-surface-variant material-symbols-outlined h-[48px] w-[48px] text-[48px]"
+              >apartment</mat-icon
+            >
+          </div>
+          <div class="flex flex-col justify-center items-center gap-1">
+            <div class="mat-title-large text-on-surface">
+              No oraganisations to show
+            </div>
+            <div
+              class="flex flex-col gap-1 justify-center items-center mat-body-medium text-on-surface-variant"
+            >
+              <div>You haven’t created any organisation.</div>
+            </div>
+          </div>
+          <button
+            mat-flat-button
+            class="rounded-full mt-1"
+            (click)="onCreateOrganization()"
+          >
+            <mat-icon class="material-symbols-outlined text-on-primary left-[3px]"
+              >add</mat-icon
+            >
+            <span class="mat-large-font text-on-primary">Create first organisation</span>
+          </button>
+        </div>
       </div>
-      <input
-        matInput
-        [formControl]="searchControl"
-        class="focus:outline-none align-middle py-[4px] w-full mat-body-large text-outline"
-        placeholder="Search organisations"
-      />
-    </div>
-    <div
-      class="border-[1px] rounded-[5px] border-outline-variant overflow-hidden w-full"
-    >
-      @if(!isLoading()) {
-      <mat-table
-        mat-table
-        matSort
-        [matSortActive]="sortOptions().active"
-        [matSortDirection]="sortOptions().direction"
-        matSortDisableClear="true"
-        (matSortChange)="onSortChange($event)"
-        [dataSource]="datasource"
-        class="table-fixed w-full"
+    } @else {
+      <div
+        class="flex flex-1 items-center gap-[10px] w-full border rounded-[4px] h-[56px] border-outline-variant"
       >
-        <ng-container matColumnDef="name">
-          <th
-            mat-header-cell
-            *matHeaderCellDef
-            class="mat-body-medium text-on-surface py-3 px-6 w-[900px]"
-          >
-            Name
-          </th>
-          <td
-            mat-cell
-            *matCellDef="let organization"
-            class="mat-body-medium text-on-surface truncate py-4 px-6 w-[900px]"
-          >
-            {{ organization.name }}
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="totalCoupons">
-          <th
-            mat-header-cell
-            *matHeaderCellDef
-            class="mat-body-medium text-on-surface py-3 px-6 w-[260px]"
-          >
-            Total Coupons
-          </th>
-          <td
-            mat-cell
-            *matCellDef="let organization"
-            class="mat-body-medium text-on-surface truncate py-4 px-6 w-[260px]"
-          >
-            {{ organization.totalCoupons }}
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="totalMembers">
-          <th
-            mat-header-cell
-            *matHeaderCellDef
-            class="mat-body-medium text-on-surface py-3 px-6 w-[260px]"
-          >
-            Members
-          </th>
-          <td
-            mat-cell
-            *matCellDef="let organization"
-            class="mat-body-medium text-on-surface truncate py-4 px-6 w-[260px]"
-          >
-            {{ organization.totalMembers }}
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="createdAt">
-          <th
-            mat-header-cell
-            *matHeaderCellDef
-            mat-sort-header
-            class="mat-body-medium text-on-surface py-3 px-6 w-[382px]"
-          >
-            Created At
-          </th>
-          <td
-            mat-cell
-            *matCellDef="let organization"
-            class="mat-body-medium text-on-surface truncate py-4 px-6 w-[382px]"
-          >
-            {{ organization.createdAt | custom_date : "" : true }}
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="navigate" stickyEnd>
-          <th
-            mat-header-cell
-            *matHeaderCellDef
-            class="mat-body-medium text-on-surface py-3 px-6"
-          >
-            &nbsp;
-          </th>
-          <td
-            mat-cell
-            *matCellDef="let organization"
-            class="mat-body-medium text-on-surface truncate py-4 px-6"
-          >
-            <mat-icon class="text-on-surface">chevron_right</mat-icon>
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="columns"></tr>
-        <tr
-          mat-row
-          *matRowDef="let row; columns: columns"
-          class="hover:bg-surface-bright cursor-pointer"
-          (click)="onRowClick(row)"
-        ></tr>
-
-        <tr class="empty-row" *matNoDataRow>
-          <td [attr.colspan]="columns.length">
-            <div class="flex flex-col justify-center items-center h-[300px]">
-              <div class="p-6 text-center flex flex-col gap-4">
-                <div
-                  class="text-on-surface-variant flex flex-col items-center gap-y-[16px]"
-                >
+        <div class="h-[48px] w-[48px] flex justify-center items-center">
+          <mat-icon class="text-on-surface-variant">search</mat-icon>
+        </div>
+        <input
+          matInput
+          [formControl]="searchControl"
+          class="focus:outline-none align-middle py-[4px] w-full mat-body-large placeholder:text-outline"
+          placeholder="Search organisations"
+        />
+      </div>
+      <div
+        class="border-[1px] rounded-[5px] border-outline-variant overflow-hidden w-full"
+      >
+        @if(!isLoading()) {
+        <mat-table
+          mat-table
+          matSort
+          [matSortActive]="sortOptions().active"
+          [matSortDirection]="sortOptions().direction"
+          matSortDisableClear="true"
+          (matSortChange)="onSortChange($event)"
+          [dataSource]="datasource"
+          class="table-fixed w-full"
+        >
+          <ng-container matColumnDef="name">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="mat-body-medium text-on-surface py-3 px-6 w-[900px]"
+            >
+              Name
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let organization"
+              class="mat-body-medium text-on-surface truncate py-4 px-6 w-[900px]"
+            >
+              {{ organization.name }}
+            </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="totalCoupons">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="mat-body-medium text-on-surface py-3 px-6 w-[260px]"
+            >
+              Total Coupons
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let organization"
+              class="mat-body-medium text-on-surface truncate py-4 px-6 w-[260px]"
+            >
+              {{ organization.totalCoupons }}
+            </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="totalMembers">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="mat-body-medium text-on-surface py-3 px-6 w-[260px]"
+            >
+              Members
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let organization"
+              class="mat-body-medium text-on-surface truncate py-4 px-6 w-[260px]"
+            >
+              {{ organization.totalMembers }}
+            </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="createdAt">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              class="mat-body-medium text-on-surface py-3 px-6 w-[382px]"
+            >
+              Created At
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let organization"
+              class="mat-body-medium text-on-surface truncate py-4 px-6 w-[382px]"
+            >
+              {{ organization.createdAt | custom_date : "" : true }}
+            </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="navigate" stickyEnd>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="mat-body-medium text-on-surface py-3 px-6"
+            >
+              &nbsp;
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let organization"
+              class="mat-body-medium text-on-surface truncate py-4 px-6"
+            >
+              <mat-icon class="text-on-surface">chevron_right</mat-icon>
+            </td>
+          </ng-container>
+  
+          <tr mat-header-row *matHeaderRowDef="columns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: columns"
+            class="hover:bg-surface-bright cursor-pointer"
+            (click)="onRowClick(row)"
+          ></tr>
+  
+          <tr class="empty-row" *matNoDataRow>
+            <td [attr.colspan]="columns.length">
+              <div class="flex flex-col justify-center items-center h-[300px]">
+                <div class="p-6 text-center flex flex-col gap-4">
                   <div
-                    class="scale-150 rounded-full inline-flex justify-start items-center gap-2.5 overflow-hidden bg-surface-container p-3"
+                    class="text-on-surface-variant flex flex-col items-center gap-y-[16px]"
                   >
-                    <mat-icon
-                      class="material-symbols-outlined text-on-surface-variant"
-                      >domain</mat-icon
+                    <div
+                      class="scale-150 rounded-full inline-flex justify-start items-center gap-2.5 overflow-hidden bg-surface-container p-3"
                     >
+                      <mat-icon
+                        class="material-symbols-outlined text-on-surface-variant"
+                        >apartment</mat-icon
+                      >
+                    </div>
+                    <p class="text-on-surface mat-body-large">
+                      No organizations to show
+                    </p>
                   </div>
-                  <p class="text-on-surface mat-body-large">
-                    No organizations to show
-                  </p>
                 </div>
               </div>
-            </div>
-          </td>
-        </tr>
-      </mat-table>
-      } @else {
-      <mat-table
-        mat-table
-        [dataSource]="tempDatasource"
-        class="table-fixed w-full"
-      >
-        <ng-container matColumnDef="name">
-          <th
-            mat-header-cell
-            *matHeaderCellDef
-            class="mat-body-medium text-on-surface py-3 px-6 w-[900px]"
-          >
-            Name
-          </th>
-          <td
-            mat-cell
-            *matCellDef="let organization"
-            class="mat-body-medium text-on-surface truncate py-4 px-6 w-[900px]"
-          >
-            <ngx-skeleton-loader
-              [theme]="{
-                height: '24px',
-                width: '100px',
-                margin: '0px',
-                padding: '0px'
-              }"
-            ></ngx-skeleton-loader>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="totalCoupons">
-          <th
-            mat-header-cell
-            *matHeaderCellDef
-            class="mat-body-medium text-on-surface py-3 px-6 w-[260px]"
-          >
-            Total Coupons
-          </th>
-          <td
-            mat-cell
-            *matCellDef="let organization"
-            class="mat-body-medium text-on-surface truncate py-4 px-6 w-[260px]"
-          >
-            <ngx-skeleton-loader
-              [theme]="{
-                height: '24px',
-                width: '100px',
-                margin: '0px',
-                padding: '0px'
-              }"
-            ></ngx-skeleton-loader>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="totalMembers">
-          <th
-            mat-header-cell
-            *matHeaderCellDef
-            class="mat-body-medium text-on-surface py-3 px-6 w-[260px]"
-          >
-            Members
-          </th>
-          <td
-            mat-cell
-            *matCellDef="let organization"
-            class="mat-body-medium text-on-surface truncate py-4 px-6 w-[260px]"
-          >
-            <ngx-skeleton-loader
-              [theme]="{
-                height: '24px',
-                width: '100px',
-                margin: '0px',
-                padding: '0px'
-              }"
-            ></ngx-skeleton-loader>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="createdAt">
-          <th
-            mat-header-cell
-            *matHeaderCellDef
-            class="mat-body-medium text-on-surface py-3 px-6 w-[382px]"
-          >
-            Created At
-          </th>
-          <td
-            mat-cell
-            *matCellDef="let organization"
-            class="mat-body-medium text-on-surface truncate py-4 px-6 w-[382px]"
-          >
-            <ngx-skeleton-loader
-              [theme]="{
-                height: '24px',
-                width: '100px',
-                margin: '0px',
-                padding: '0px'
-              }"
-            ></ngx-skeleton-loader>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="navigate" stickyEnd>
-          <th
-            mat-header-cell
-            *matHeaderCellDef
-            class="mat-body-medium text-on-surface py-3 px-6"
-          >
-            &nbsp;
-          </th>
-          <td
-            mat-cell
-            *matCellDef="let organization"
-            class="mat-body-medium text-on-surface truncate py-4 px-6"
-          >
-            <ngx-skeleton-loader
-              [theme]="{
-                height: '24px',
-                width: '100px',
-                margin: '0px',
-                padding: '0px'
-              }"
-            ></ngx-skeleton-loader>
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="columns"></tr>
-        <tr mat-row *matRowDef="let row; columns: columns"></tr>
-      </mat-table>
-      }
-    </div>
-    <mat-paginator
-      [length]="count()"
-      [pageIndex]="paginationOptions().pageIndex"
-      [pageSize]="paginationOptions().pageSize"
-      (page)="onPageChange($event)"
-    ></mat-paginator>
+            </td>
+          </tr>
+        </mat-table>
+        } @else {
+        <mat-table
+          mat-table
+          [dataSource]="tempDatasource"
+          class="table-fixed w-full"
+        >
+          <ng-container matColumnDef="name">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="mat-body-medium text-on-surface py-3 px-6 w-[900px]"
+            >
+              Name
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let organization"
+              class="mat-body-medium text-on-surface truncate py-4 px-6 w-[900px]"
+            >
+              <ngx-skeleton-loader
+                [theme]="{
+                  height: '24px',
+                  width: '100px',
+                  margin: '0px',
+                  padding: '0px'
+                }"
+              ></ngx-skeleton-loader>
+            </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="totalCoupons">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="mat-body-medium text-on-surface py-3 px-6 w-[260px]"
+            >
+              Total Coupons
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let organization"
+              class="mat-body-medium text-on-surface truncate py-4 px-6 w-[260px]"
+            >
+              <ngx-skeleton-loader
+                [theme]="{
+                  height: '24px',
+                  width: '100px',
+                  margin: '0px',
+                  padding: '0px'
+                }"
+              ></ngx-skeleton-loader>
+            </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="totalMembers">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="mat-body-medium text-on-surface py-3 px-6 w-[260px]"
+            >
+              Members
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let organization"
+              class="mat-body-medium text-on-surface truncate py-4 px-6 w-[260px]"
+            >
+              <ngx-skeleton-loader
+                [theme]="{
+                  height: '24px',
+                  width: '100px',
+                  margin: '0px',
+                  padding: '0px'
+                }"
+              ></ngx-skeleton-loader>
+            </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="createdAt">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="mat-body-medium text-on-surface py-3 px-6 w-[382px]"
+            >
+              Created At
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let organization"
+              class="mat-body-medium text-on-surface truncate py-4 px-6 w-[382px]"
+            >
+              <ngx-skeleton-loader
+                [theme]="{
+                  height: '24px',
+                  width: '100px',
+                  margin: '0px',
+                  padding: '0px'
+                }"
+              ></ngx-skeleton-loader>
+            </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="navigate" stickyEnd>
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              class="mat-body-medium text-on-surface py-3 px-6"
+            >
+              &nbsp;
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let organization"
+              class="mat-body-medium text-on-surface truncate py-4 px-6"
+            >
+              <ngx-skeleton-loader
+                [theme]="{
+                  height: '24px',
+                  width: '100px',
+                  margin: '0px',
+                  padding: '0px'
+                }"
+              ></ngx-skeleton-loader>
+            </td>
+          </ng-container>
+  
+          <tr mat-header-row *matHeaderRowDef="columns"></tr>
+          <tr mat-row *matRowDef="let row; columns: columns"></tr>
+        </mat-table>
+        }
+      </div>
+      <mat-paginator
+        [length]="count()"
+        [pageIndex]="paginationOptions().pageIndex"
+        [pageSize]="paginationOptions().pageSize"
+        (page)="onPageChange($event)"
+      ></mat-paginator>
+    }
   </div>
 </div>

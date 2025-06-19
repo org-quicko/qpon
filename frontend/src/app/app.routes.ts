@@ -36,8 +36,10 @@ import { CreateOrganizationContainerComponent } from './components/create-organi
 import { CreateOrganizationComponent } from './components/create-organization-container/create-organization/create-organization.component';
 import { InviteTeamComponent } from './components/create-organization-container/invite-team/invite-team.component';
 import { SuccessComponent } from './components/create-organization-container/success/success.component';
+import { SuperAdminSetupComponent } from './components/super-admin-setup/super-admin-setup.component';
 
 export const routes: Routes = [
+  { path: 'setup', component: SuperAdminSetupComponent },
   { path: 'login', component: LoginComponent },
   {
     path: '',

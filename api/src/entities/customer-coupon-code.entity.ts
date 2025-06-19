@@ -31,14 +31,14 @@ export class CustomerCouponCode {
   })
   updatedAt: Date;
 
-  @ManyToOne(() => Customer, (customer) => customer.customerCouponCodes)
+  @ManyToOne(() => Customer, (customer) => customer.customerCouponCodes, { cascade: ['remove'], onDelete: 'CASCADE' })
   @JoinColumn({
     name: 'customer_id',
     referencedColumnName: 'customerId',
   })
   customer: Customer;
 
-  @ManyToOne(() => CouponCode, (couponCode) => couponCode.customerCouponCodes)
+  @ManyToOne(() => CouponCode, (couponCode) => couponCode.customerCouponCodes, { cascade: ['remove'], onDelete: 'CASCADE' })
   @JoinColumn({
     name: 'coupon_code_id',
     referencedColumnName: 'couponCodeId',

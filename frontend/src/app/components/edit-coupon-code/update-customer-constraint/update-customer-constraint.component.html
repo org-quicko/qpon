@@ -1,13 +1,13 @@
 <div class="flex flex-col gap-8">
   <div class="flex flex-col gap-2">
     <div class="flex gap-1 items-center mat-label-large text-on-surface">
-      <div>
+      <div class="max-w-[100px] truncate">
         {{ coupon()?.name }}
       </div>
       <mat-icon class="h-5 w-5 text-[20px]">navigate_next</mat-icon>
-      <div>{{ campaign()?.name }}</div>
+      <div class="max-w-[100px] truncate">{{ campaign()?.name }}</div>
     </div>
-    <div class="mat-headline-small text-on-surface">Who can use this coupon code</div>
+    <div class="mat-headline-small m-0 text-on-surface">Who can use this coupon code</div>
   </div>
   <form [formGroup]="updateCouponCodeForm">
     <mat-radio-group class="flex gap-4" formControlName="customerConstraint">
@@ -96,18 +96,17 @@
             <input
               matInput
               #customersInput
-              placeholder="Search customers by email"
-              class="placeholder:text-outline-variant pl-4"
               [matAutocomplete]="auto"
               [matChipInputFor]="chipGrid"
               [formControl]="searchControl"
+              [matAutocompletePosition]="'below'"
             />
             <mat-autocomplete
               #auto="matAutocomplete"
               [displayWith]="displayWithItems"
             >
               @for(customer of customers(); track customer.customerId) {
-              <mat-option (click)="$event.stopPropagation(); selectedCustomer(customer)">
+              <mat-option (click)="$event.stopPropagation(); selectedCustomer(customer)" class="py-3 px-4">
                 <mat-checkbox
                   (click)="$event.stopPropagation()"
                   (change)="selectedCustomer(customer)"

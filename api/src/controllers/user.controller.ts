@@ -197,4 +197,16 @@ export class UserController {
     this.logger.info('END: deleteUser controller');
     return { message: 'Successfully deleted user', result };
   }
+
+  /**
+   * Check if super admin exists
+   */
+  @ApiResponse({ status: 200, description: 'Returns true if a super admin exists' })
+  @Public()
+  @Get('/super-admin/exists')
+  async superAdminExists() {
+    const result = await this.userService.superAdminExists();
+
+    return { message: 'Successfully fetched super admin existence', result };
+  }
 }

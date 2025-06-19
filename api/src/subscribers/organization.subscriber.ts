@@ -2,6 +2,7 @@ import {
   EntitySubscriberInterface,
   EventSubscriber,
   InsertEvent,
+  RemoveEvent,
 } from 'typeorm';
 import { Organization } from '../entities/organization.entity';
 import { User } from '../entities/user.entity';
@@ -40,6 +41,21 @@ export class OrganizationSubscriber
       });
 
       await manager.save(OrganizationUser, organizationUserEntity);
+    });
+  }
+
+  async afterRemove(event: RemoveEvent<Organization>) {
+    await event.queryRunner.connect();
+
+    await event.queryRunner.query(`
+            REFRESH MATERIALIZED VIEW organization_summary_mv WITH DATA;
+            REFRESH MATERIALIZED VIEW organizations_mv WITH DATA;
+    `);
+
+    await event.manager.transaction(async (manager) => {
+      await manager.delete(OrganizationUser, {
+        organizationId: event.entity?.organizationId,
+      });
     });
   }
 }

@@ -1,13 +1,13 @@
 <div class="flex flex-col gap-8">
   <div class="flex flex-col gap-2">
     <div class="flex gap-1 items-center mat-label-large text-on-surface">
-      <div>
+      <div class="max-w-[100px] truncate">
         {{ coupon()?.name }}
       </div>
       <mat-icon class="h-5 w-5 text-[20px]">navigate_next</mat-icon>
-      <div>{{ campaign()?.name }}</div>
+      <div class="max-w-[100px] truncate">{{ campaign()?.name }}</div>
     </div>
-    <div class="mat-headline-small text-on-surface">Who can use this coupon code</div>
+    <div class="mat-headline-small m-0 text-on-surface">Who can use this coupon code</div>
   </div>
   <form [formGroup]="createCouponCodeForm">
     <mat-radio-group class="flex gap-4" formControlName="customerConstraint">
@@ -36,7 +36,7 @@
           </mat-icon>
 
           <div class="flex flex-col gap-1">
-            <div class="mat-body-large">Everyone</div>
+            <div class="mat-body-large text-on-surface">Everyone</div>
             <div class="mat-body-medium text-on-surface-variant">
               All your customers will be able to use this code
             </div>
@@ -68,7 +68,7 @@
           </mat-icon>
 
           <div class="flex flex-col gap-1">
-            <div class="mat-body-large">Specific customers</div>
+            <div class="mat-body-large text-on-surface">Specific customers</div>
             <div class="mat-body-medium text-on-surface-variant">
               Only specific customers will be able to use this code
             </div>
@@ -86,7 +86,9 @@
             <mat-chip-grid #chipGrid>
               @for(customer of selectedCustomers; let index = $index; track customer.customerId!) {
                 <mat-chip-row (removed)="selectedCustomer(customer)" class="bg-surface-container constraint-chip">
-                  {{ customer.name }}
+                  <div class="max-w-[125px] truncate">
+                    {{ customer.name }}
+                  </div>
                   <button matChipRemove>
                     <mat-icon class="material-symbols-outlined">close</mat-icon>
                   </button>
@@ -96,18 +98,17 @@
             <input
               matInput
               #customersInput
-              placeholder="Search customers by email"
-              class="placeholder:text-outline-variant pl-4"
               [matAutocomplete]="auto"
               [matChipInputFor]="chipGrid"
               [formControl]="searchControl"
+              [matAutocompletePosition]="'below'"
             />
             <mat-autocomplete
               #auto="matAutocomplete"
               [displayWith]="displayWithItems"
             >
               @for(customer of customers(); track customer.customerId) {
-              <mat-option (click)="$event.stopPropagation(); selectedCustomer(customer)">
+              <mat-option (click)="$event.stopPropagation(); selectedCustomer(customer)" class="py-3 px-4">
                 <mat-checkbox
                   (click)="$event.stopPropagation()"
                   (change)="selectedCustomer(customer)"
@@ -115,8 +116,8 @@
                   [value]="customer.customerId!"
                 >
                 <div class="flex flex-col">
-                  <div class="mat-body-large text-on-surface">{{ customer.name }}</div>
-                  <div class="mat-body-medium text-on-surface-variant">{{ customer.email }}</div>
+                  <div class="mat-body-large text-on-surface max-w-[200px] truncate">{{ customer.name }}</div>
+                  <div class="mat-body-medium text-on-surface-variant max-w-[300px] truncate">{{ customer.email }}</div>
                 </div>
                 </mat-checkbox>
               </mat-option>

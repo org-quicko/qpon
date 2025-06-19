@@ -20,7 +20,7 @@
 }
 
 <mat-menu
-  class="w-[252px] mt-[12px] rounded-[5px]"
+  class="w-[252px] mt-[16px] rounded-[5px] header-mat-menu"
   #options="matMenu"
   yPosition="below"
   xPosition="before"
@@ -28,7 +28,7 @@
     <div class="max-h-[480px] overflow-auto">
       @if(organizations().length <= 5) {
         @for(option of organizations(); let i = $index; track option.organizationId) {
-          <div>
+          <div class="p-0">
             <button
               mat-menu-item
               class="h-[55px] py-2 px-4"
@@ -68,7 +68,7 @@
                     </div>
                   </div>
                 </div>
-                @if(currentOrganization() == option?.organizationId) {
+                @if(organization()?.organizationId == option?.organizationId) {
                   <div
                     class="flex items-center"
                   >

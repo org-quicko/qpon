@@ -1,13 +1,13 @@
 <div class="flex flex-col gap-8 w-[560px]">
   <div class="flex flex-col gap-2">
     <div class="flex gap-1 items-center mat-label-large text-on-surface">
-      <div>
+      <div class="max-w-[100px] truncate">
         {{ coupon()?.name }}
       </div>
       <mat-icon class="h-5 w-5 text-[20px]">navigate_next</mat-icon>
-      <div>{{ campaign()?.name }}</div>
+      <div class="max-w-[100px] truncate">{{ campaign()?.name }}</div>
     </div>
-    <div class="mat-headline-small text-on-surface">Set redemption limit</div>
+    <div class="mat-headline-small m-0 text-on-surface">Set redemption limit</div>
   </div>
   <form [formGroup]="createCouponCodeForm" class="flex flex-col gap-8">
     <div class="flex flex-col gap-4">
@@ -21,11 +21,16 @@
         class="w-full"
         subscriptSizing="dynamic"
       >
+        <div matPrefix class="h-[40px] w-[40px] flex justify-center items-center">
+                <span class="text-on-surface text-xl"
+                  >{{ getCurrencySymbolOnly(organization()?.currency!) }}</span
+                >
+              </div>
         <input
           type="number"
           matInput
-          [placeholder]="placeholder"
-          class="placeholder:text-outline-variant"
+          placeholder="Enter amount"
+          class="placeholder:text-outline-variant placeholder:mat-body-large"
           formControlName="minimumAmount"
         />
       </mat-form-field>

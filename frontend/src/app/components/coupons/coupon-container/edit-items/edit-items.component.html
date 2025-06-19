@@ -1,7 +1,7 @@
 <div class="flex flex-col gap-10 w-[560px]">
   <div class="flex flex-col gap-2 text-on-surface">
-    <div class="mat-body-large">{{ coupon()?.name }}</div>
-    <div class="mat-headline-small">Choose applicable items</div>
+    <div class="mat-body-large truncate">{{ coupon()?.name }}</div>
+    <div class="mat-headline-small m-0">Choose applicable items</div>
     <div class="mat-body-large">
       Where to offer it: apply to all items or select specific ones
     </div>
@@ -82,7 +82,9 @@
           <mat-chip-grid #chipGrid>
             @for(item of selectedItems; let index = $index; track item.itemId!) {
             <mat-chip-row (removed)="selectedItem(item)" class="bg-surface-container constraint-chip">
-              {{ item.name }}
+              <div class="max-w-[125px] truncate">
+                {{ item.name }}
+              </div>
               <button matChipRemove>
                 <mat-icon>close</mat-icon>
               </button>
@@ -92,25 +94,26 @@
           <input
             matInput
             #itemsInput
-            placeholder="Search items by name"
-            class="placeholder:text-outline-variant pl-4"
             [matAutocomplete]="auto"
             [matChipInputFor]="chipGrid"
             [formControl]="searchControl"
+            [matAutocompletePosition]="'below'"
           />
           <mat-autocomplete
             #auto="matAutocomplete"
             [displayWith]="displayWithItems"
           >
             @for(item of items(); track item.itemId) {
-            <mat-option (click)="selectedItem(item)">
+            <mat-option (click)="selectedItem(item)" class="py-3 px-4">
               <mat-checkbox
                 [checked]="isItemSelected(item)"
                 [value]="item.itemId!"
                 (click)="$event.stopPropagation()"
                 (change)="selectedItem(item)"
               >
-                {{ item.name }}
+                <div class="truncate max-w-[200px]"> 
+                  {{ item.name }}
+                </div>
               </mat-checkbox>
             </mat-option>
             }

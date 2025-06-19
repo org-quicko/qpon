@@ -9,11 +9,11 @@
           padding: '0px'
         }"></ngx-skeleton-loader>
     } @else {
-      <p class="mat-headline-small text-on-surface">{{ campaign()?.getName() }}</p>
+      <p class="mat-headline-small m-0 text-on-surface max-w-[500px] truncate">{{ campaign()?.getName() }}</p>
     }
     <div class="flex gap-0.5 items-center">
       <button mat-stroked-button class="border-outline-variant text-primary mat-label-large rounded-[100px]" (click)="onEdit()">
-        <mat-icon>edit</mat-icon>
+        <mat-icon class="material-symbols-outlined">edit</mat-icon>
         <span>Edit</span>
       </button>
       <button mat-icon-button [mat-menu-trigger-for]="menu">
