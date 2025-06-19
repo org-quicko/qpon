@@ -5,7 +5,7 @@ import { CampaignController } from '../controllers/campaign.controller';
 import { Campaign } from '../entities/campaign.entity';
 import { CampaignSummaryMv } from '../entities/campaign-summary.view';
 import { CampaignConverter } from '../converters/campaign.converter';
-import { CampaignSummarySheetConverter } from '../converters/campaign-summary-sheet.converter';
+import { CampaignSummaryWorkbookConverter } from '../converters/campaign-summary';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Campaign, CampaignSummaryMv])],
@@ -13,7 +13,7 @@ import { CampaignSummarySheetConverter } from '../converters/campaign-summary-sh
   providers: [
     CampaignService,
     CampaignConverter,
-    CampaignSummarySheetConverter,
+    CampaignSummaryWorkbookConverter,
   ],
   exports: [CampaignService],
 })

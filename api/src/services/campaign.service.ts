@@ -25,7 +25,7 @@ import {
 } from 'src/enums';
 import { CouponCode } from 'src/entities/coupon-code.entity';
 import { CampaignSummaryMv } from '../entities/campaign-summary.view';
-import { CampaignSummarySheetConverter } from '../converters/campaign-summary-sheet.converter';
+import { CampaignSummaryWorkbookConverter } from '../converters/campaign-summary';
 
 @Injectable()
 export class CampaignService {
@@ -35,7 +35,7 @@ export class CampaignService {
     @InjectRepository(CampaignSummaryMv)
     private readonly campaignSummaryMvRepository: Repository<CampaignSummaryMv>,
     private campaignConverter: CampaignConverter,
-    private campaignSummarySheetConverter: CampaignSummarySheetConverter,
+    private campaignSummaryWorkbookConverter: CampaignSummaryWorkbookConverter,
     private logger: LoggerService,
     private datasource: DataSource,
   ) {}
@@ -411,7 +411,7 @@ export class CampaignService {
       }
 
       this.logger.info('END: fetchCampaignsSummary service');
-      return this.campaignSummarySheetConverter.convert(
+      return this.campaignSummaryWorkbookConverter.convert(
         campaignSummaryMv,
         couponId,
         count,
@@ -455,7 +455,7 @@ export class CampaignService {
       }
 
       this.logger.info('END: fetchCampaignSummary service');
-      return this.campaignSummarySheetConverter.convert(campaignSummaryMv, couponId);
+      return this.campaignSummaryWorkbookConverter.convert(campaignSummaryMv, couponId);
     } catch (error) {
       this.logger.error(
         `Error in fetchCampaignSummary:`,

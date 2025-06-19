@@ -16,7 +16,7 @@ import {
   sortOrderEnum,
   visibilityEnum,
 } from '../enums';
-import { OfferSheetConverter } from '../converters/offer-sheet.converter';
+import { OfferWorkbookConverter } from '../converters/offer';
 import { CustomerCouponCode } from 'src/entities/customer-coupon-code.entity';
 import { CouponItem } from 'src/entities/coupon-item.entity';
 import { Customer } from 'src/entities/customer.entity';
@@ -44,7 +44,7 @@ export class OffersService {
     private readonly redemptionRepository: Repository<Redemption>,
     @InjectRepository(CampaignSummaryMv)
     private readonly campaignSummaryRepository: Repository<CampaignSummaryMv>,
-    private offerSheetConverter: OfferSheetConverter,
+    private offerWorkbookConverter: OfferWorkbookConverter,
     private logger: LoggerService,
   ) {}
 
@@ -77,7 +77,7 @@ export class OffersService {
 
       if (!allOffers || allOffers.length === 0) {
         this.logger.warn('No offers found');
-        return this.offerSheetConverter.convert([], organizationId, skip, take);
+        return this.offerWorkbookConverter.convert([], organizationId, skip, take);
       }
 
       const couponIdsForSpecificItems: string[] = [];
@@ -214,7 +214,7 @@ export class OffersService {
       }
 
       this.logger.info('END: fetchOffers service');
-      return this.offerSheetConverter.convert(
+      return this.offerWorkbookConverter.convert(
         eligibleOffers,
         organizationId,
         skip,
@@ -356,7 +356,7 @@ export class OffersService {
       }
 
       this.logger.info('END: fetchOffer service');
-      return this.offerSheetConverter.convert([offer], organizationId);
+      return this.offerWorkbookConverter.convert([offer], organizationId);
     } catch (error) {
       this.logger.error(`Error in fetchOffer:`, error);
 

@@ -7,7 +7,7 @@ import { CouponItem } from '../entities/coupon-item.entity';
 import { CouponSummaryMv } from '../entities/coupon-summary.view';
 import { CouponConverter } from '../converters/coupon.converter';
 import { ItemConverter } from '../converters/item.converter';
-import { CouponSummarySheetConverter } from '../converters/coupon-summary-sheet.converter';
+import { CouponSummaryWorkbookConverter } from '../converters/coupon-summary';
 import { CouponListConverter } from 'src/converters/coupon-list.converter';
 
 @Module({
@@ -17,7 +17,7 @@ import { CouponListConverter } from 'src/converters/coupon-list.converter';
     CouponService,
     CouponConverter,
     ItemConverter,
-    CouponSummarySheetConverter,
+    CouponSummaryWorkbookConverter,
     CouponListConverter,
   ],
   exports: [CouponService],

@@ -1,26 +1,13 @@
-import { Injectable } from '@nestjs/common';
-import { JSONArray, JSONObject } from '@org-quicko/core';
 import {
   CampaignSummaryRow,
-  CampaignSummaryWorkbook,
+  CampaignSummaryTable,
 } from '@org-quicko/qpon-sheet-core/campaign_summary_workbook/beans';
-import { CampaignSummaryMv } from '../entities/campaign-summary.view';
+import { CampaignSummaryMv } from '../../entities/campaign-summary.view';
+import { JSONArray } from '@org-quicko/core';
 
-@Injectable()
-export class CampaignSummarySheetConverter {
-  convert(
-    campaignSummaryMv: CampaignSummaryMv[],
-    couponId: string,
-    count?: number,
-    skip?: number,
-    take?: number,
-  ): CampaignSummaryWorkbook {
-    const campaignSummaryWorkbook = new CampaignSummaryWorkbook();
-
-    const campaignSummarySheet =
-      campaignSummaryWorkbook.getCampaignSummarySheet();
-
-    const campaignSummaryTable = campaignSummarySheet.getCampaignSummaryTable();
+export class CampaignSummaryTableConverter {
+    convert(campaignSummaryMv: CampaignSummaryMv[]) : CampaignSummaryTable {
+    const campaignSummaryTable = new CampaignSummaryTable();
 
     for (let index = 0; index < campaignSummaryMv.length; index++) {
       const campaignSummaryRow = new CampaignSummaryRow(new JSONArray());
@@ -46,16 +33,7 @@ export class CampaignSummarySheetConverter {
 
       campaignSummaryTable.addRow(campaignSummaryRow);
     }
-
-    campaignSummaryTable.setMetadata(
-      new JSONObject({
-        coupon_id: couponId,
-        count: count,
-        skip: skip,
-        take: take,
-      }),
-    );
-
-    return campaignSummaryWorkbook;
+    
+    return campaignSummaryTable;
   }
 }
