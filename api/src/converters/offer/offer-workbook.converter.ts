@@ -23,7 +23,7 @@ export class OfferWorkbookConverter {
 
         offerSheet.replaceBlock(offerTable);
 
-        if (skip! >= 0 && take! > 0) {
+        if (skip !== undefined && take !== undefined && skip >= 0 && take > 0) {
             offerWorkbook.setMetadata(new JSONObject({
                 organization_id: organizationId,
                 skip,

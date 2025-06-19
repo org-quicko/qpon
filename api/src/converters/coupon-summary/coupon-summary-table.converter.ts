@@ -3,7 +3,7 @@ import {
   CouponSummaryRow,
   CouponSummaryTable,
 } from '@org-quicko/qpon-sheet-core/coupon_summary_workbook/beans';
-import { CouponSummaryMv } from 'src/entities/coupon-summary.view';
+import { CouponSummaryMv } from '../../entities/coupon-summary.view';
 
 export class CouponSummaryTableConverter {
   convert(couponSummaryMv: CouponSummaryMv[]) : CouponSummaryTable {
