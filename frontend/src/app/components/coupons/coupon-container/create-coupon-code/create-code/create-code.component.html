@@ -19,7 +19,7 @@
       <mat-form-field appearance="outline" subscriptSizing="dynamic">
         <mat-label>Code</mat-label>
         <div class="flex justify-between items-center">
-          <input matInput type="text" formControlName="code" />
+          <input matInput type="text" formControlName="code" class="uppercase" />
         </div>
         @if(createCouponCodeForm.get('code')?.hasError('required')) {
           <mat-error>Coupon code is required</mat-error>
