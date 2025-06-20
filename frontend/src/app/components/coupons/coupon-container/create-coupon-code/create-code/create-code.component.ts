@@ -122,5 +122,11 @@ export class CreateCodeComponent implements OnInit {
   ngOnInit(): void {
     this.createCouponCodeForm.controls['code'].setValidators(Validators.required)
     this.createCouponCodeForm.controls['visibility'].setValidators(Validators.required)
+
+     this.createCouponCodeForm.get('code')?.valueChanges.subscribe(value => {
+    if (value && value !== value.toUpperCase()) {
+      this.createCouponCodeForm.get('code')?.setValue(value.toUpperCase(), { emitEvent: false });
+    }
+  });
   }
 }
