@@ -1,4 +1,4 @@
-import { Component, effect, EventEmitter, inject, Input, NgModule, OnInit, Output, signal } from '@angular/core';
+import { Component, effect, EventEmitter, inject, Input, NgModule, OnDestroy, OnInit, Output, signal } from '@angular/core';
 import { CouponCodeStore } from '../../../store/coupon-code.store';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { CreateCouponCodeDto } from '../../../../../../dtos/coupon-code.dto';
 import { durationTypeEnum, visibilityEnum } from '../../../../../../enums';
 import { SnackbarService } from '../../../../../services/snackbar.service';
+import { Subject, takeUntil } from 'rxjs';
 
 export const MY_FORMATS = {
   parse: {
@@ -50,6 +51,7 @@ export const MY_FORMATS = {
 export class CreateCodeComponent implements OnInit {
   @Input() createCouponCodeForm!: FormGroup;
   @Output() currentScreenEvent = new EventEmitter<string>();
+  destroy$ = new Subject<void>();
 
   minDate: Date;
   visibility: string;
@@ -122,5 +124,16 @@ export class CreateCodeComponent implements OnInit {
   ngOnInit(): void {
     this.createCouponCodeForm.controls['code'].setValidators(Validators.required)
     this.createCouponCodeForm.controls['visibility'].setValidators(Validators.required)
+
+     this.createCouponCodeForm.get('code')?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(value => {
+    if (value && value !== value.toUpperCase()) {
+      this.createCouponCodeForm.get('code')?.setValue(value.toUpperCase(), { emitEvent: false });
+    }
+  });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
