@@ -90,8 +90,7 @@ export class CreateCodeComponent implements OnInit {
         const couponCode = new CreateCouponCodeDto();
         couponCode.code = this.createCouponCodeForm.value['code'];
         couponCode.visibility = this.visibility == 'public' ? visibilityEnum.PUBLIC : visibilityEnum.PRIVATE;
-        couponCode.durationType = this.validity == 'forever' ? durationTypeEnum.FOREVER : durationTypeEnum.LIMITED;
-
+        couponCode.durationType = this.validity == 'forever' ? durationTypeEnum.FOREVER : durationTypeEnum.LIMITED;        
         if(this.validity == 'limited') {
           if(!this.createCouponCodeForm.value['expiresAt']){
             this.createCouponCodeForm.get('expiresAt')?.setErrors({'required': true})
@@ -99,7 +98,9 @@ export class CreateCodeComponent implements OnInit {
             this.showValidationError.set(true);
             return;
           }
-          couponCode.expiresAt = new Date(this.createCouponCodeForm.value['expiresAt']).toISOString();
+          const expiryDate = new Date(this.createCouponCodeForm.value['expiresAt']);
+          expiryDate.setHours(23, 59, 59, 999); // Set to end of day
+          couponCode.expiresAt = expiryDate.toISOString();
         }
         this.couponCodeStore.setCouponCode(couponCode);
         this.showValidationError.set(false);
