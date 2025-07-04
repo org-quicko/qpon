@@ -168,7 +168,7 @@ export class RedemptionsService {
             status: campaignStatusEnum.EXHAUSTED,
           });
 
-          await this.couponCodeRepository.update({ campaign: { campaignId } }, { status: couponCodeStatusEnum.INACTIVE });
+          await this.couponCodeRepository.update({ campaign: { campaignId }, status: couponCodeStatusEnum.ACTIVE }, { status: couponCodeStatusEnum.INACTIVE });
         }
       }
       this.logger.info('END: redeemCouponCode service');

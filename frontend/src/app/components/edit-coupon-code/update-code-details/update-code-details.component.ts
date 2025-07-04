@@ -108,13 +108,24 @@ export class UpdateCodeDetailsComponent implements OnInit {
       if (this.isNextClicked()) {
         this.couponCodeStore.setOnNext();
         let couponCode = new CouponCodeDto();
+        let expiryDate;
+
+        if (this.validity == 'limited' && this.updateCouponCodeForm.value['expiresAt']) {
+          expiryDate = new Date(this.updateCouponCodeForm.value['expiresAt']);
+          expiryDate.setHours(23, 59, 59, 999);
+        } else {
+          expiryDate = undefined;
+        }
+
         couponCode = {
           ...this.couponCode(),
           description: this.updateCouponCodeForm.value['description'],
           visibility: this.visibility == 'public' ? visibilityEnum.PUBLIC : visibilityEnum.PRIVATE,
           durationType: this.validity == 'forever' ? durationTypeEnum.FOREVER : durationTypeEnum.LIMITED,
-          expiresAt: this.validity == 'limited' ? this.updateCouponCodeForm.value['expiresAt'] : undefined
         }
+        
+        couponCode.expiresAt = expiryDate;
+        
         this.couponCodeStore.setCouponCode(couponCode);
 
         this.updateCouponCode(couponCode);
