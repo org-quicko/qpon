@@ -110,7 +110,7 @@ export class UpdateCodeDetailsComponent implements OnInit {
         let couponCode = new CouponCodeDto();
         let expiryDate;
 
-        if (this.validity == 'limited') {
+        if (this.validity == 'limited' && this.updateCouponCodeForm.value['expiresAt']) {
           expiryDate = new Date(this.updateCouponCodeForm.value['expiresAt']);
           expiryDate.setHours(23, 59, 59, 999);
         } else {
@@ -124,11 +124,8 @@ export class UpdateCodeDetailsComponent implements OnInit {
           durationType: this.validity == 'forever' ? durationTypeEnum.FOREVER : durationTypeEnum.LIMITED,
         }
         
-        if(this.validity == 'limited') {
-          couponCode.expiresAt = expiryDate;
-        } else {
-          couponCode.expiresAt = undefined;
-        }
+        couponCode.expiresAt = expiryDate;
+        
         this.couponCodeStore.setCouponCode(couponCode);
 
         this.updateCouponCode(couponCode);
