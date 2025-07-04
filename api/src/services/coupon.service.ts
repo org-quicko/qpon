@@ -58,6 +58,9 @@ export class CouponService {
           where: {
             name: ILike(body.name),
             status: Not(statusEnum.ARCHIVE),
+            organization: {
+              organizationId
+            }
           },
         });
 
@@ -374,13 +377,13 @@ export class CouponService {
 
         await manager.update(
           Campaign,
-          { coupon: { couponId } },
+          { coupon: { couponId }, status: campaignStatusEnum.ACTIVE },
           { status: campaignStatusEnum.INACTIVE },
         );
 
         await manager.update(
           CouponCode,
-          { coupon: { couponId } },
+          { coupon: { couponId }, status: couponCodeStatusEnum.ACTIVE },
           { status: couponCodeStatusEnum.INACTIVE },
         );
 

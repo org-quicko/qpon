@@ -310,7 +310,7 @@ export class CampaignService {
 
         await manager.update(
           CouponCode,
-          { campaign: { campaignId } },
+          { campaign: { campaignId }, status: Not(couponCodeStatusEnum.ARCHIVE) },
           { status: couponCodeStatusEnum.INACTIVE },
         );
 
