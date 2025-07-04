@@ -270,8 +270,8 @@ export class OffersService {
         },
       });
 
-      if (offer.itemConstraint === itemConstraintEnum.SPECIFIC && item) {
-        if (item) {
+      if (offer.itemConstraint === itemConstraintEnum.SPECIFIC) {
+        if (item !== null) {
           const couponItem = await this.couponItemRepository.findOne({
             where: {
               itemId: item.itemId,
@@ -288,27 +288,34 @@ export class OffersService {
             this.logger.warn('Item is ineligible for the offer');
             throw new ConflictException('Item is ineligible for the offer');
           }
+        } else {
+          this.logger.warn('Item is ineligible for the offer');
+          throw new ConflictException('Item is ineligible for the offer');
         }
       }
 
       if (
-        customer &&
         offer.customerConstraint === customerConstraintEnum.SPECIFIC
       ) {
-        const customerCouponCode =
-          await this.customerCouponCodeRepository.findOne({
-            where: {
-              couponCode: {
-                code: offer.code,
-                organization: {
-                  organizationId,
+        if (customer !== null) {
+          const customerCouponCode =
+            await this.customerCouponCodeRepository.findOne({
+              where: {
+                couponCode: {
+                  code: offer.code,
+                  organization: {
+                    organizationId,
+                  },
                 },
+                customerId: customer.customerId,
               },
-              customerId: customer.customerId,
-            },
-          });
-
-        if (!customerCouponCode) {
+            });
+  
+          if (!customerCouponCode) {
+            this.logger.warn('Customer is ineligible for the offer');
+            throw new ConflictException('Customer is ineligible for the offer');
+          }
+        } else {
           this.logger.warn('Customer is ineligible for the offer');
           throw new ConflictException('Customer is ineligible for the offer');
         }
