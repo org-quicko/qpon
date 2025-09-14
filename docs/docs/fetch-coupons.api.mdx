@@ -1,0 +1,71 @@
+---
+id: fetch-coupons
+title: "Fetch coupons"
+description: "Fetch coupons"
+sidebar_label: "Fetch coupons"
+hide_title: true
+hide_table_of_contents: true
+api: eJy9l8Fy2zYQhl8Fg1M7Q0tyj7ylTdvpqXHbnDIaDwQuSUQkgGAXjhUN372zEGmRVEyPHSe6SAKB/T8sdvVDR0mqQpl/kL+56J2V20x6FVQLBIHHj9KqFmQu769UpPoqIoQ0kkljZS5rUAUEmUnUNbRK5kdJB88LkIKxlewyWQDqYDwZxyve9xFE6YIwBVgypdEqPc0k3KvWN7z+eJxJdp3ssjmPV4ifXShezvOuj5B4OCYTLfEMknMeFyplzZe08sp8A9Hfo0AiBRpTjGVuzYwCSVHEQfpThHB4lnL6oBpRmoYgCHKiAhI61QaK3UGgB21KA4V4kDrDGas0mTsYExUGtYuWbpP0jwAbFEWveOZTLY+P6eCeuLiaW0PQ3p4P7bsCstY0bwTt9Rhr3GGvgVIaW/QsYqcQCuGsSCIjUVL7p0WNJaggLKh6VYFA8wVW4i2UKjYkDIrrzWTH15tJ1e6Nfy1lV5YINNGeSk+UZ800QHhF9XLKA3yKJkAhcwoRnuzQLa9ALgVAjvfLZsNv0438G7UGxDI2YpgsM6mdJbDE05X3Tf/TtP6IvOZ4yeh2H0GTzKQPzkMgkxS79Jqn7g8gXQ9FKjPZAtWukLmsIEXgNORyPd4Qri/2tz4HMLZ0icVQSsaNT7+iU1Ue5HNRQ0mWbDifXdiLXTQNcbfcRKP3biV+TQPGCiVQq0btGshEGxsyVwRWcZfXLlY1CR8cZy8TVIO4mYYFywtR7CIaC4iA3BWFE1q1XpnKolC2ECFarh8IKHhidQ715t1faUahsN45FYqVzOQdBDzt6Hq1WXFdSe+QWpUOpq+weYonqXg4NIJ7WvtGGctRYmj42Sn9HyZFyiHyy6od4m8zWTskXnU8cqe/D03X8fCpr9jQC4OcjULmpWoQLpAeCu5ldvDVHe3hMHanO9VEnpRa8fvwzF1gAWtuUT+ArreABaivONPrcT3uB4tM/Yxv5VhwiAXx3p5eRfwRk1gq3ZNFndW3/CUYln9mV/30T+8dP4vHNPtBZQ9jzYFl3v7dtsuGa+bzUJbv4gvpuPw38MJzWb59P00wuv+/tDIubtuLqpe3/InuadobrcHT6NmFc3P9PLjtn7//J7vuf35YtcQ=
+sidebar_class_name: "get api-method"
+info_path: docs/qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Fetch coupons"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/organizations/{organization_id}/coupons"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Fetch coupons
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"x-auth-username","in":"header","schema":{"type":"string"},"description":"Username for identification","example":"{{x-auth-username}}"},{"name":"x-auth-password","in":"header","schema":{"type":"string"},"description":"Password for authentication","example":"{{x-auth-password}}"},{"name":"x-organization-id","in":"header","schema":{"type":"string"},"description":"Organization id","example":"{{organization_id}}"},{"name":"status","in":"query","schema":{"type":"string"},"description":"Optional filter to get coupons by specified status","example":"inactive"},{"name":"discount_type","in":"query","schema":{"type":"string"},"description":"Optional filter to get coupons by specified discount type","example":"amount"},{"name":"external_item_id","in":"query","schema":{"type":"string"},"description":"Optional filter to get coupons by specified item","example":"item1"},{"name":"name","in":"query","schema":{"type":"string"},"description":"Optional filter to find coupon based on name"},{"name":"take","in":"query","schema":{"type":"integer"},"description":"Optional page size. Default is 10","example":"10"},{"name":"skip","in":"query","schema":{"type":"integer"},"description":"Optional page offset. Default is 0","example":"0"},{"name":"organization_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{organization_id}}"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

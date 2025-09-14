@@ -1,0 +1,71 @@
+---
+id: create-customer
+title: "Create customer"
+description: "Create customer"
+sidebar_label: "Create customer"
+hide_title: true
+hide_table_of_contents: true
+api: eJytVE1v2zAM/SsCTxugJtmOPvUDO+y0fu0UBAMt07ZaW1Ilqm1m+L8PklMnabqdlkMgU0+P1HukBmBsAhRruIqBbU8+wEaCp6dIgS9ttYViAGUNk+G0ROc6rZC1NcuHYE2KBdVSj2nFW0dQgC0fSDFIcN468qwppN1zMqw5M1ZUY+wYClC7vDBKMNjTAU1gr02TNqhH3Z3uSKit7zHRTIhRgmut+QvJK5M32P3S1Qf7Y0Zg77pc7JgDDj32xEmVYj3s6gPrGzT6dxYhkUnQBgpwyC3IUzX2FSRZtacKCvaR5nxQwDC8Ix1HGLMRwVkTJv2+rlaTdkF57RIQCriLSlEIdezEGxjkf3JsHCcZjjNeeUImMRsnoSdubZUksCGTJCUKWJ5caqnmLpOQirndN9q3NzFmnWeXd/ZDDOTPd6ItlO1htvsAe+jygfba1DZfWHNW/MZZA++vloJCB4FC2ZjWdfL/xfpHUUbdsSi34iZq9WgX4jIHtBEogsIOy46k6GPH+ozJoGHBrY1Ny8J5myySglsSN8e0ZNLBIMoYtKEQKAi2orJCYe9QNyYINJXw0Qhb1+SDSMBmT3Vx/T0jKgxtadFXC5DwTD5MN/qyWC1WeS5s4B7NgbynPh6JMfcG0ysvXYfaJJ7o8yBOFq+hOB0GdfiStKkjijUMQ4mBfvpuHFP4KZLfQrHeSHhGr5MGecIqHdK6gqLGLtBJSXNfw6fb3TB9FiA/LnUXRLNNkmAX0xdIeKTtB1M8bkYJLWFFPpcyoa6mhGf3iWvPcjJUo3w7caEUOf4ndnMwMtc/7u5BQrl7antbpTMeX0Dm/1yxzQLkRyDHBujQNBGbhJ040+8PiPYGRw==
+sidebar_class_name: "post api-method"
+info_path: docs/qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Create customer"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/{organization_id}/customers"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Create customer
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"organization_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{organization_id}}"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"@entity":{"default":"customer"},"name":{"type":"string"},"email":{"type":"string","format":"email"},"phone":{"type":"string"},"external_id":{"type":"string"}}},"examples":{}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

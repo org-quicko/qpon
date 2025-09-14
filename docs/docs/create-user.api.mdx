@@ -1,0 +1,71 @@
+---
+id: create-user
+title: "Create user"
+description: "Create user"
+sidebar_label: "Create user"
+hide_title: true
+hide_table_of_contents: true
+api: eJytVE1v2zAM/SsCTxugJtmOPvUDO+y0fp6CYKBtOlZrS6ootc0M//eBcpqPpthpPhgyRT3xvUd6gIhrhmIJD0wBVhoCPSfieOnqDRQDVM5GslGW6H1nKozG2fkjOysxrlrqUVZx4wkKcOUjVRE0+OA8hWiIZfecbDQxI9bUYOoiFJDkylGDxZ4OIDgGY9eyQT2a7nRHQ+NCjwIxZYwaPDK/ulB/gjMK0hv2vsu1jDngMWBPkYKQH7YlgAtrtOZP5vjb1KDBWCjAY2xBn5LdVyqqmUA1FDEk2t0HBQzDB9BxhDHrzN5ZnuT5vlhM0nAVjJdEKOAuVRUxN6lT78mg/5Mh4zjJcHzjVSCMpLIvGnqKrauFvuMMICoUMD/kw/MTenM5zqBBSrrdd9OPd0l2au/s3PqcG+J8K92scj0c+nqgtrGNyxRNzBrfeGfhIxkJKsMKVeWSrBtx/NWFJ1Um00VVbtRNMtWTm6nLHDBWoeIKOyw70qpPXTRnkSzaqGLr0rqNygcnpmgVW1I3x7Bk5SCrMrGxxEysolO1UxX2Hs3askJbq5Csck1DgZUkrvdQF9c/c0aN3JYOQz0DDS8UeGL0bbaYLXKzO4492gMpj507EmLXCZHe4tx3aKxgpJAnazJ1edT5Yl5xOgqTrysNrfRDsYRhKJHpIXTjKOHnRGEDxXKl4QWDES3ybNWGZV1D0WDHdFLerqPhy+12jL4q0J+XvQ2i3Yg02CX5Ag1PtPlkfsfVqKElrCnkUqasq+nCs3vB2qOcjNOo309cVBX5+M/c1cHAXP+6uwcN5fYf2rtazgR8BZ3fuWLnJ62LYYoN0KFdJ1xL7oQpz1+v1/aU
+sidebar_class_name: "post api-method"
+info_path: docs/qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Create user"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/organizations/{organization_id}/users"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Create user
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"organization_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{organization_id}}"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"@entity":{"default":"user"},"name":{"type":"string"},"email":{"type":"string","format":"email"},"password":{"type":"string"}}},"examples":{}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

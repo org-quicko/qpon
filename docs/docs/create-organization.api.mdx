@@ -1,0 +1,71 @@
+---
+id: create-organization
+title: "Create organization"
+description: "Create organization"
+sidebar_label: "Create organization"
+hide_title: true
+hide_table_of_contents: true
+api: eJydVU1znDAM/SsenWGT9MipH9NDT036ccpkOloQ4AZsx5aTbBn+e0eGDZDsJJ3uYQekZ/lJehIDMDYBimv46hs0+g+ytgZuMvB0FynwR1sdoBigtIbJsDyic50uE/Dsd7BGbKFsqUd54oMjKMDuf1PJkIHz1pFnTUG878mw5hSxohpjx4JdXz1mYLCnVajAXptGHGX0nkx5OOnklnr6VdrORn8SELrYnHTQI5M32P3S1Qn/mBDYuy6lMCaDQ489MXmp3TAzhsccI7d5DBKuJ8hAGyigJazIQ/aySguHikLptUslKODnHEHV1itdSdHqueTwxAYKGIZnV44jjNlzPg5DeLC++n8+l3OExEdiCqPX+ByvFD5JTMFZEyYNvDs/n/q/vuF7LEsKoY6dOoIhe0t1q7ZI1Pzz9J5fiOEeu0gbzYnQdndRl7d2d+es2W2Ed9SdKDafULmgcqbA8EwlEmoDQqffz6Gdt0luse/Ry7UzLXWRyhcYOQYlVRAl/ePkjOMkvG3VPnlCJvUsj564tULS2cTcIbdQwNkaFiADKeO3Zcw/H9v4pJ9ZDuvBW2zbeVvs05gt79u6LQrTprYpbc1JO1cukd8mKEalg0JV2ijPtczdg/W3ah91x2p/UFdT2dXHZNBGoQoldrjvKFN97FjnTAYNK25tbFpWzlsRW6a4JXW1DUtGDga1j0EbCoGCYqsqq0rsHerGBIWmUj4aZeuafFACbJZQHy6/JESFod1b9NUOMrgnH6aMLnbnu3PJX5rTo1mV+3Q3NwV5UgnTI5+5DnXamNF34psafQ3bRt9k0IoQimsYhj0G+um7cRTzXSQR6PVNBvfotSQub2N2XBGy2yodxFFBUWMX6AWhpxl9Y2udJH5Lh5N7cx5eSNvs3xm8vqfeZrDalBsGE+jTdE/+Q+IsiBebaTnxoSzJ8avYm9W8Xn79/gMy2M/f3N5WcsbjA2TpvwDIwLqprcUw2Qbo0DQRG8FOMeX3F+XHwDg=
+sidebar_class_name: "post api-method"
+info_path: docs/qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Create organization"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/organizations"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Create organization
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"x-auth-username","in":"header","schema":{"type":"string"},"description":"Username for identification","example":"{{x-auth-username}}"},{"name":"x-auth-password","in":"header","schema":{"type":"string"},"description":"Password for authentication","example":"{{x-auth-password}}"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"@entity":{"default":"organization"},"name":{"type":"string"},"currency":{"type":"string"},"theme_colour":{"type":"string"},"slug":{"type":"string"},"external_id":{"type":"string"}}},"examples":{}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successful response","content":{"application/json":{"examples":{"200-Example-1":{"value":{"@entity":"org.quicko.qpon.organization","name":"pro-quicko-qpon-test","external_id":"org-quicko-qpon-api@quicko.pro"},"summary":"Example 1 for status 200"}},"schema":{"type":"object","properties":{}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

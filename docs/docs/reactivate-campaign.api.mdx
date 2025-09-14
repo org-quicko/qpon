@@ -1,0 +1,71 @@
+---
+id: reactivate-campaign
+title: "Reactivate campaign"
+description: "Reactivate campaign"
+sidebar_label: "Reactivate campaign"
+hide_title: true
+hide_table_of_contents: true
+api: eJylVsFy2jAQ/RXNntoZEWiPvqU5tZeEJJ0eGCaz2AtWsCVFkkmox//eWWGMDUw6IVxCpN33np52V9QQcOUhmcENlhbVSsNcgqOXinz4YbItJDWkRgfSAZK6aSRYdFhSIMdpNWgsCRLAKuTGqb8YlNEgQWlIICfMyIEEn+ZUImOFreVwH5zSK2gkZORTp2xMS+DXn0eBaUrei2DWxEj0hqUtOKmud1tPcatpoJEd/9sIrRqtaXs59/XdT7GmrVgaJ1RGOqilSvfnGaiw6mlN23MCNuT8pwxgEQeQPmu7esxq3Ap16/tIZZcz3/aARATqs/dpnlQ2VJGaysblPbvFkL/PzSWmHGWQBFfRsZabCHiqoiM64m9r91MKBjwHQGaKLeGt0Z48Y32fTPjPUPNDFYtzWRViHwyy1zuA1hZtQY2fPefUp/rM4pnSABKsM5ZcUJGxiZ9jl+4J06A2GEjsBYOEkkJuMrbA+AjETiQw3nnnxz0Tx/s0Xu0deew65Ojn0kSFKkR7pjbW5lDLNN6XFyh28GLJU+LVuLVYVKoIYrEV00qla3MlfsQFpQUKn2KBi4KkKKsiqFEgjTqIkJtqlQdhnWFPpQg5iekQljQnerGovNLkPfHIEJnpvPACdSZcpYVZLsl5wYGrAxS3Gkdk6POFQZddgYR97yXw7WpyNeFCYR9LjNfV1tt54weGdBca6C2MbYFKM1blCt7b3cmsbRwPEpJ+D3UniBuD4u7dzFxCzleczKCuF+jptyuahpdfKnJbSGZzCRt0in2KszpTnr9nkCyx8Mdd1xv08OW+7Y6vot+LZ8/ULqLm2bvBouL/QAIP4/5s4Ia9SMGFxD3fmnkj9yPxY0a8+yicVbVj779HnbSPOTB8Cv7LdQi9kO/0AXiX8/ThGfDuwm526KNHRjobcZ2mZENv72RM8vjthtrd7cMjSFi0P01Kk3GOw1fuDXyN2E3zDyeuDO4=
+sidebar_class_name: "post api-method"
+info_path: docs/qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Reactivate campaign"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/coupons/{coupon_id}/campaigns/{campaign_id}/reactivate"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Reactivate campaign
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"authorization","in":"header","schema":{"type":"string"},"description":"JWT access token","example":"{{access_token}}"},{"name":"x-api-key","in":"header","schema":{"type":"string"},"description":"API key for identification","example":"{{api_key}}"},{"name":"x-api-version","in":"header","schema":{"type":"string"},"description":"API version","example":"{{version}}"},{"name":"x-organization-id","in":"header","schema":{"type":"string"},"description":"Organization id","example":"{{organization_id}}"},{"name":"coupon_id","in":"path","schema":{"type":"string"},"required":true,"description":"Coupon id","example":"{{coupon_id}}"},{"name":"campaign_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{campaign_id}}"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

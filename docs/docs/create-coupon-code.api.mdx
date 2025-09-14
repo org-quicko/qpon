@@ -1,0 +1,71 @@
+---
+id: create-coupon-code
+title: "Create coupon code"
+description: "Create coupon code"
+sidebar_label: "Create coupon code"
+hide_title: true
+hide_table_of_contents: true
+api: eJytVk1z2zgM/SscnHZn5Ni7R522zfSwpzb9OGU8HkiCLDYUyfLDidej/74DSrYk2/FO080lMggCD+DjAw8QcOshf4R7E63R4t5UBOsMHP2I5MN7U+0hP0BpdCAd+BOtVbLEII1efvdGs82XDbXIX2FvCXIwxXcqA2RgnbHkgiTPq3+RDjKkiBXVGFWAHMqUeVFy5i6D9H+M5IOTessLFfnSScuJr663+LJxVFGbXPzER8e2IJd8pJZtbDfYmtiXc+Gyk14WUg0w51kyIB1bbpeNhZJlKlDuMBCsGWF0qS+bftfru5VsZaAKuM9ldMNqbRztyKVQ9GKlI7/BcLXW03IdyG0KqZTU2025LxVdLWrsy6Z8tfLJQSx8wBD9rRqwDHJHkIHUp88eVl9XRdRSBeuuS3ixtSqRoEsGiw5bCuSYfAfQ2HKSlwXG0CyiJ5csHBxyaAgrcpBd8uwVdsC3IYKojROyYtrVA2nhhAZyOBzOUnYddNk5HovePxtXvR3PpyFCwsMxGdEtPMeU53iM26KW/6SdC/kLiD5OAokUaIpimmYjz1D0PNmM2S2G5nZulpPEjDy4SOdYBu25QHFKdJYfW4ty+2sIZnnGgJwpyZ+3Rvtetf5crXrFmmL+EsuSvK+jEkdnyP4nney6/pKcdckRBhJ9U0SSyQxaCo2puAPGpzjciByWvZdfTnq4PJbJ1knFy8m995ABg/08yv+HY6MOgzSPUjDHdzJfCPHqUnhXc6Ed9fRMQydSOZXEiRzdUsLVNeVbXVe6o6B1TKnapEOSITHkwaZrOi/3IVHWCzyeSM2K9mzckyiiVEEUe/EQZflk7sT7ZJBaoPAlKiwUZaKNKshFII06iNCYuG2CsM4wrTIRGhIP87CkeaMXRfRSk/fkRTCiMuJ0sAJ1JVzUwtQ1OS/YcTuGevfp7+RRoW8Kg666gwx25Hxf0R93q7sV189cajExdrhyV7l3fSAHeglLq1BqDhWd4rWelo9D45ll+VRFTgWkhdn1npFznUHDPM8f4XAo0NM3p7qOzT8iuT3kj+sMdugkNyoNlkp6/q4gr1H5c+WZPGzgt8+DQvwupnp0tarBiHrPDUQV+Rdk8ET7mT6yaL0JwRsTTzrX8StiGAs/14jbs/MqrD795fQ+Ify5Rtyelv+NYDKv34jgcjrezHo5lWd5e7f7PvriK0caPS7mxLjjXVmSDTd915MR8Onjl6+QQTG82dterR0+83sMn3ummPF1nGwHUKi3Ebfs28fkv38BRfk6pg==
+sidebar_class_name: "post api-method"
+info_path: docs/qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Create coupon code"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Create coupon code
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"x-auth-username","in":"header","schema":{"type":"string"},"description":"Username for identification","example":"{{x-auth-username}}"},{"name":"x-auth-password","in":"header","schema":{"type":"string"},"description":"Password for authentication","example":"{{x-auth-password}}"},{"name":"x-organization-id","in":"header","schema":{"type":"string"},"description":"Organization id","example":"{{organization_id}}"},{"name":"coupon_id","in":"path","schema":{"type":"string"},"required":true,"description":"Coupon id","example":"{{coupon_id}}"},{"name":"campaign_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{campaign_id}}"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"@entity":{"default":"coupon-code"},"code":{"type":"string"},"description":{"type":"string"},"max_redemptions":{"type":"number"},"minimum_amount":{"type":"number"},"visibility":{"type":"string","enum":["public","private"]},"duration_type":{"type":"string","enum":["limited","recurring","forever"]},"expires_at":{"type":"string"},"expires_after_billing_cycle":{"type":"number"},"redemption_count":{"type":"number"},"coupon-code-status":{"type":"string","enum":["active","inactive","expired","redeemed"]}}},"examples":{}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

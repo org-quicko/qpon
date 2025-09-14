@@ -1,0 +1,71 @@
+---
+id: update-coupon-code
+title: "Update coupon code"
+description: "Update coupon code"
+sidebar_label: "Update coupon code"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFV81u4zYQfhViTl2A/tn2plOzQYFtL022WfQQGMFYGltcSyTDnySuoUvfqq/TJ1kMJVvyTx2s06I+xAo5mu+bjzPD8QYCLj1k93BtojVaXJuCYCbB0WMkHz6YYg3ZBnKjA+nAj2htpXIMyujJF280r/m8pBr5KawtQQZm/oXyABLoBWtbEW/9SDqosOZdtxw/RpWvzPjRGj3OE/ZDztgSCvK5U5YBIIO///zrh+lUFMrnJuogxfvpdCry6IOpyXlhdLUGCU/Kq7mqWv/WqScMBE2zI+Ah2zQNL1h0WFMgx2FvQGPNhF9GaNVoRexLMW5JWJADeRybD07pJTSHTK9ufhYrWouFcUIVHOyi02moA2w2aNXDitZNA43cEcAYSuPUH9sXLiTxy+93AvOcvBfBrOgIOm09pK19/FaAJ3L+TfgsQu9kCN2tHqIat0TdhT1SxeXIvw4cieRoiD6EeVDFUewxlKPoyaWVizl87jy8ngMHkCf5WPT+2bg3aHLTeUh82CczOsdnC7nPp6vP/nQshvI8D+4fylEBWXCRDnl1zebolHZAB/hYW1TL/4CBp3CCRQ93UgfuU/8+Ffb6j4p0kEwnNWdvjfapqcH30yl/7fv8LaZCX8RKbI1BXt7FrTOWXFC7Ntocp74tMJDI+2BAQk2hNEWrUc4iJa0ymLRmfjI48clWdl4dnEBnO2KX/QtbQUAC0//UX1c//a83DufEwiQNVUhneGtTse1j3Kb09wK3gi34Uno2biXmUVVBzNfituUrPqQFpQUKn2OF84qkqGMV1CiQRh1EKE1clkFYZ/jUpQglidt9t6T5RS/m0StN3hNfEKIwYie7QF0IF7UwiwXHyYbL3hV3drYo0Jdzg64Yswhdq8/g/Xg6nnL81vhQY0qormxOpsaeHruMC/QSJrZCpdlVdBXvtUlz35WfBwnZsCPtAkgbe61imDqD17YFPJNQGh/Y92YzR0+fXdU0vPwYya0hu59JeEKnWLo0LRTK83MB2QIrf1jKgzkJvvvUFf07Mex2J+PsFlGnvMIq8n8ggceRYfflVvQWBrtudwmLgbBv5dG3usvl2J5hM2vk9mb8thM6O6+dJNYSGI6KO3bfJsn+lPQqVm96Id7xbHQW83gmuxD3/Dx0Pu6DiexCBucnoNcZDGawPQat0XWLM7pjP73F0eXav3GV52TDWdvZ4N68ubq7/ggS5t3vsJqbZwYOn0Gmv6kwTAo8TQNpbQMV6mXEJdu2TvnzFfEL17w=
+sidebar_class_name: "patch api-method"
+info_path: docs/qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Update coupon code"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"patch"}
+  path={"/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Update coupon code
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"x-api-key","in":"header","schema":{"type":"string"},"description":"API key for identification","example":"{{api_key}}"},{"name":"authorization","in":"header","schema":{"type":"string"},"description":"JWT access token","example":"{{access_token}}"},{"name":"x-api-version","in":"header","schema":{"type":"string"},"description":"API version","example":"{{version}}"},{"name":"x-organization-id","in":"header","schema":{"type":"string"},"description":"Organization id","example":"{{organization_id}}"},{"name":"x-auth-username","in":"header","schema":{"type":"string"},"description":"Username for identification","example":"{{x-auth-username}}"},{"name":"x-auth-password","in":"header","schema":{"type":"string"},"description":"Password for authentication","example":"{{x-auth-password}}"},{"name":"coupon_id","in":"path","schema":{"type":"string"},"required":true,"description":"Coupon id","example":"{{coupon_id}}"},{"name":"campaign_id","in":"path","schema":{"type":"string"},"required":true,"description":"Coupon set id","example":"{{campaign_id}}"},{"name":"coupon_code_id","in":"path","schema":{"type":"string"},"required":true,"description":"Coupon code id","example":"{{coupon_code_id}}"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","example":{"@entity":"org.quicko.qpon.coupon_code","description":"₹300 discount, 1000 customers only","visibility":"private"}},"examples":{}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      
