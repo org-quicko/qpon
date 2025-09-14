@@ -1,0 +1,71 @@
+---
+id: redeem-coupon-code
+title: "Redeem coupon code"
+description: "Redeem coupon code"
+sidebar_label: "Redeem coupon code"
+hide_title: true
+hide_table_of_contents: true
+api: eJy1Vk1v2zAM/SsCz0qaDtjFp31gA3pav3YqioGxGVurLami1DYz/N8Hyk6aNF02bFgusUnq8VF8ZNJDxJqhuIFLqqjz0TjLcKsh0H0ijh9ctYaih9LZSDbKI3rfmhIl8uQ7Oys2LhvqUJ7i2hMU4JbfqYyggZ6w8y2J6x3ZaOJavKGe3ydT3rn5vXd2Hra5QUPpKkH4fHZ5dX12fQnCZeP+hp1LQuPN28UwbNEZin4YxOAxYEeRgtTUg8VOsJ5mmGIzS0whWzQYCwU0hBUF0If0OQZjaxg0VMRlMCO3Ar5OCGrlgjKVFLSa7mK3Vuj7FymHAQb9ko9H5kcXqr/ncz4hZD6CKYyO8dmkfMnHhRqt+ZFPzsw/MPqyA6Qy0C6L3TTfTGaRtcbeWc5thDeLhXzto16lsiTmVWrVJjgr5agod8QhqLNP4/vsVAwP2Kb/okoNnLoOgyBOGdVp7g9HjImVFChS/fXM+OA8hWi2uh4OrlmmlTpVuuSdVZmcho5i4yoowDvOOBgbKOBkjJpJFJ+EfBI0yDVdPk/5p/83qCKmlcuVmpiVcOEzwn5NYlSGFW7KWsksP7pwp5bJtFEt1+piJKM+ZIOxChWX2OKyJa261EYzi2TRRhUbl+omKh+cSEer2JC62IclKwdZLRMbS8zEKjpVOVVi59HUlhXaSoVklVutKLCSwPoZ6v35WY6okJulw1DNQcMDBR4rOp0v5guZEWlIh1mV08i92sC9+9jqItJTPPEtGitQKbTiG3t7A7u9nTpAnSzwRjRQ3EDfL5Hpa2iHQcz3iUSaN7caHjAYqV/eBr2ZdVmblWFxVFCssGU6ILYdvN8sxFcLuKP1qyt5mkjIi+nPGRxfgb9nsLOE/5LB4co7mvVw1e7lHcM+juiza0F6jjhYc88n3pcl+Xg09nZnRZx/uboGDcvp970bZzngo4gIH4WNBjf9Hyj60dZDi7ZOWEvsiCmfn1tO4FE=
+sidebar_class_name: "post api-method"
+info_path: docs/qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Redeem coupon code"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/coupon-codes/redeem"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Redeem coupon code
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"x-auth-username","in":"header","schema":{"type":"string"},"description":"Username for identification","example":"{{x-auth-username}}"},{"name":"x-auth-password","in":"header","schema":{"type":"string"},"description":"Password for authentication","example":"{{x-auth-password}}"},{"name":"x-organization-id","in":"header","schema":{"type":"string"},"description":"Organization id","example":"{{organization_id}}"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","example":{"@entity":"org.quicko.qpon.redemption","code":"FIRSTITR","redemption_amount":250}},"examples":{}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successful response","content":{"application/json":{"examples":{"200-Example-1":{"value":{"@entity":"org.quicko.qpon.redemption","code":"FIRSTITR","redemption_amount":250},"summary":"Example 1 for status 200"}},"schema":{"type":"object","properties":{}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

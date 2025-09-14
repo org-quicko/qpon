@@ -1,0 +1,71 @@
+---
+id: create-item
+title: "Create item"
+description: "Create item"
+sidebar_label: "Create item"
+hide_title: true
+hide_table_of_contents: true
+api: eJytVE1v2zAM/SsCTxugJtmOPq0tduhp/dopCArapm21tuRK1NrM8H8fKDtN2gTbZT4YAkk9ku+RGoCxDpCt4YqpC7DR4Ok5UuALV24hG6BwlsmyHLHvW1MgG2eXj8FZsYWioQ7lxNueIAOXP1LBoKH3rifPhoJ4v5FlwwmxpApjy5CBYepg1GCxowOIwN7YWhwlhcKbXjKe9BcxsOseKkNtGf5dxBNtT8L8wjaeKkA+DfSKXd8mhMnQo8eOmLwQN8zVg/M1WvM70fNgStBgLGTQIzegj3naZxfCjacSMvaR3vJBBsPwAXQcYUwShd7ZMDX1dbWaWD2gCu5iUVAIVWzVLhj0f9JynHl5n/HSEzKpJKmGjrhxpbTvQgIQFjJYHjW0NGnuNEgRt/vR+74j4Y3fmbCPed/MR7OQ1N77Z5H34opAlUvtGk583/TOHiUQozJBoSpclHMl6r84/6TyaFpW+VbdRFM8uYW6SAZjFapQYIt5S1p1sWVzxmTRsuLGxbph1XsnAmnFDamb97Bk5WJQeQzGUggUFDtVOlVg16OpbVBoS+WjVa6qyAclgfUe6vz6KkWUGJrcoS8X0j/5MHX0ZbFarGTyRJwO7QHJ71U8vX5Mr7zsWzRWMKJvxTcJvIbsxBrsXpZGZiFbwzDkGOinb8dRzM+R/Bay9UY08kZ6T3tVmiDnErIK20BH5bxNM3y6nVfoswJ9uszZiHZ7MAqg5yH5WPS4GTU0hCX5VMoUdTklPLsXrD3K0SqNenfjvCio57/Gbg6W5frH3T1oyOent3Ol3PH4Ajr9U8UuEZAmPNkGaNHWEWuJnTDl+wN3WQnf
+sidebar_class_name: "post api-method"
+info_path: docs/qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Create item"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/{organization_id}/items"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Create item
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"organization_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{organization_id}}"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"@entity":{"default":"item"},"name":{"type":"string"},"description":{"type":"string"},"custom_fields":{"type":"object","properties":{"key":{"type":"string"},"value":{"type":"string"}}}}},"examples":{}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

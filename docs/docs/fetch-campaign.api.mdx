@@ -1,0 +1,71 @@
+---
+id: fetch-campaign
+title: "Fetch campaign"
+description: "Fetch campaign"
+sidebar_label: "Fetch campaign"
+hide_title: true
+hide_table_of_contents: true
+api: eJylVU1v2zAM/SsCTxugfGxH37qiG3Zas62nIhgYm47V2pIqSm0zw/99kOKkjlNkaJpLEkp87+mJpFrwuGbIbuESG4tqrWEpwaLDhjy5uNKCxoYgg+cJBl9NApNLEQlKQwYVYUEOJHBeUYOQteA3Niawd0qvoZNQEOdOWa9MzLjpEURpnFAFaa9KlWNalUDP2Ng65rftiLLroJNjPRaZn4wrztdz3SMkPREzKjqlZ0c51mPcGrX6mzIn6h2KfgyARAIaqhjS/FEjFbkJNoV37BZ9dZrb0UNQjgrIvAs01nKZAI9V7IlG/H0dvUvBAc8LYGRaxt1sjWbiiPV5Po9fh5p/hTwn5jLUYrcZJORGe9I+bkdr6/6KZ3ccc9pjfWZ1R7kHCdYZS86rxNilz9ilr+TzSuy0goSGfGUKyGBNCSJ6kMFs6xrPBvbNdlkxOjhssq80SZDyyY2FTSV5SL1I18MCxRZTlLF7n4y7F6ugai9WG7EIKr83U/ElBZQWKDjHGlc1SdGE2quJJ43aC1+ZsK68sM5EC6XwFYnFISzpmMhiFVhpYiYW3ojC7M/PAnUhXNDClCU5FnHj+gXq4vp72lEgVyuDrpiChEdyvD3Rp+l8Oo91YQ37BtPt9OV15POBF/ur8/TsZ7ZGpSNMcHVc297Bbd8iDBKyYbfsxaeFQRkvJVSGfUxt2xUy3bi662L4IZDbQHa7lPCITkVX0sQsFMffBWQl1jxuqfalEuHDz770P4pho716jD6IehPdwjrEfyDhnjYHjR+78SwFZxIPrOqWndzNu7cZcfpReFXWlv74WdorfJsRp5+B/ysYPERnKjge+ydZj5+bA97ttos8J+sHa0ejL47U/bT6dvUbuu4fF7rPwA==
+sidebar_class_name: "get api-method"
+info_path: docs/qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Fetch campaign"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/coupons/{coupon_id}/campaigns/{campaign_id}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Fetch campaign
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"x-auth-username","in":"header","schema":{"type":"string"},"description":"Username for identification","example":"{{x-auth-username}}"},{"name":"x-auth-password","in":"header","schema":{"type":"string"},"description":"Password for authentication","example":"{{x-auth-password}}"},{"name":"x-organization-id","in":"header","schema":{"type":"string"},"description":"Organization id","example":"{{organization_id}}"},{"name":"coupon_id","in":"path","schema":{"type":"string"},"required":true,"description":"Coupon id","example":"{{coupon_id}}"},{"name":"campaign_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{campaign_id}}"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

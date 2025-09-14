@@ -1,0 +1,71 @@
+---
+id: fetch-campaigns
+title: "Fetch campaigns"
+description: "Fetch campaigns"
+sidebar_label: "Fetch campaigns"
+hide_title: true
+hide_table_of_contents: true
+api: eJytVk2P2zYQ/SsETy0gf22cNKtbmrZBTsm2zSkwgpE0khjLJMMZ7q4j6L8XlOS1ZKdarLO+2CY58x4fH4dTS4aCZPxZvoWdBVVouYmkBQc7ZHRhppYadihjeT8Dz+XME7p2JJJKy1iWCBk6GUlKS9yBjGvJexsCiJ3ShWwimSGlTllWJkR86jOI3DihMtSscpVCOxtJvIedrUJ8XZ9ANo1solM+FojujMsu5/Oxz9DyCTkDoyk+B8hTPsYVoNX3NnKmfoLRh0Ei0SYashjCfFEnLIiBPR2gv3l0+ychtz+gErmqGJ1gIwpkkRpvjRaETCLZC7KYqlxhJh7gjgQhZXWLQ06JzwpkzB5llRhTIeiLaN0pLkWHNKLDzo/IMGzxUSJKMxboJohYKFCQ+o5z8Qfm4CsWisRqOcJeLUdHs1X2uZBNnhPyCHsMPULudPpytKQFLqdt4fCbVw4zGQcBT8m87YQ/seYa1riCV6vZMr1OZ+vr9Wp2nbx+MXv5Yp2tcvzt9dXVK9lsQnKyRhNSgL5aLsPXGOAfn6ZIlPtKHBbLSKZGM2oOy8Haqr+ki68UYurz7ZjkK6bBDtYZi45Vi9i0n9Mt/YWcliLty2Cw9A65NJmMZWepVrNYLjoxaVE/qNoshmFK56bloLhV5ca2dWSMdtPKRwIOHs5Dyb0zbisSryoOt+zGq3Rr5uL3dkBpAYJSqCCpMBI7X7GaMWrQLLg0vihZWGeCapHgEsXNOC3qEEgi8aQ0EiGFW5SZ45YF6Ew4r4O50JEIC4tjqjcf37crMqAyMeCyuYzkLTrqdrSaL+fBdNIa4h20B9Lb71zakRgPx8V4zwtbgWorgHdVmOtk/9x7OATHQzsfs24iWRrisLauEyD85KqmCcPdZQtPWaYoqJDJOIeKTm1dHw12eSH84V62uB/W5luofFjU3tFn5TSughNcBjX5Z9lMlMIJAn0dfhbw/6mGU0fR1eIj+ib8cSrAP9Epv/zdl8pfxbAs/hC8HwS9H4IfSB193Wya6NA3PI3NdHM1och5e3fh0Uy3U48zGDR0l5rjrH2aRD1v20a43bI3aYqWB3NnD1Cw0MOT8e7Pf2XT/AfQLepJ
+sidebar_class_name: "get api-method"
+info_path: docs/qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Fetch campaigns"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/coupons/{coupon_id}/campaigns"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Fetch campaigns
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"x-auth-username","in":"header","schema":{"type":"string"},"description":"Username for identification","example":"{{x-auth-username}}"},{"name":"x-auth-password","in":"header","schema":{"type":"string"},"description":"Password for authentication","example":"{{x-auth-password}}"},{"name":"x-organization-id","in":"header","schema":{"type":"string"},"description":"Organization id","example":"{{organization_id}}"},{"name":"status","in":"query","schema":{"type":"string"},"description":"Optional filter to get coupon sets by specified status","example":"active"},{"name":"budgeted","in":"query","schema":{"type":"boolean"},"description":"Optional filter to get coupon sets with budget","example":"true"},{"name":"take","in":"query","schema":{"type":"integer"},"description":"Optional page size. Default is 10","example":"10"},{"name":"skip","in":"query","schema":{"type":"integer"},"description":"Optional page offset. Default is 0","example":"0"},{"name":"coupon_id","in":"path","schema":{"type":"string"},"required":true,"description":"Coupon id","example":"4a4e1a61-0c9c-4941-9b83-534d1fe78226"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

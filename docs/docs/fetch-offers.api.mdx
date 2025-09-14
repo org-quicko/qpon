@@ -1,0 +1,71 @@
+---
+id: fetch-offers
+title: "Fetch offers"
+description: "Fetch offers"
+sidebar_label: "Fetch offers"
+hide_title: true
+hide_table_of_contents: true
+api: eJytVk1z2zYQ/SuYPdOylE7TKU9Jpx/TU+Jpc/J4PBC4JGGRAIJdOnY0/O+dhT5JybTrmBeJIPa9t4vl466BdUWQX8OnssRIcJNB0FG3yHKXX6/B6RYhh4cL3XF90RHGtJKBdZBDjbrACBmQqbHVkK+BH4MEEEfrKugzKJBMtIGtl4gvWwRV+qhsgY5taY1OTzPAB92GRuLX6xFl30OfjfUETfTNx+L1ej5vEZIewRRFU3p2lGM9Plba2e8p8sL+gKJPR0AqAR2rOKa5tSMV+MBSrObWMra3BxFfO4yP5zRYx1hhFBEHkp8X797/tPhlnq7F4v3i1/lZEtMR+xbjS4ieTDb90Y0qbcMYFXtVIasdtKKARhpEGd8F75TxBdKgJPeW6nt9Z/nD186alZ8Z3x7LJR/5LeUJntJk0BXWVcpHJSGbu4EwWT4WUlgyvnN8mzhfruiAGDAadDzIbmXD/znlJ9ILukLly5KQZ+p3LHXXsLKk5oOMBm3AevV8Fi9kJvsdB7yLIfFiDv1NBhEpeEdIwvBuPpefIew/nTFIVHaN2m2GDIx3LHXL16BDaLav9+UdScz6VLVf3qGRpgnRB4xsE2OfrnEifyKbWkonhplBi1z7AnKoMAForiGHy/1z60qfmCynzK5C8pkhpixKFfSu60ux5G8+rtSysw2r5aO62jS7+i0tWKe0IqMbvWwwU23XsL1gdNqx4tp3Vc0qRC+1yRTXqK6GsOgkkNSyI+uQCElavfDK6DZoWzlS2hUqdm6bqpKN1QHq4+e/045CU730OhYzyOAeI20yWszmM+keCJ641ans2z4aFXBQif2JMD7wZWi0dQLSxUaebYp7DX7/7ao9says10tN+CU2fS/Lm/aUr1lhSRItIC91Q5jBCh/P++a9bjphTi1/EjZSuW+wV/vZ2TxH4oZ++3YCn3G0CWlbb52Wstk6dr8flT/lWFOKN375JuznXWuCfGuZB/IbuYlW2CG/vumz3bhwtleflDU9U00IOp3qXlmY6SnqeQVHc9xrj+ZkappkPZ3WBrybbR+NwXDc4CdfDznBveX/9ce/0Pf/AQAu6MU=
+sidebar_class_name: "get api-method"
+info_path: docs/qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Fetch offers"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/offers"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Fetch offers
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"x-auth-username","in":"header","schema":{"type":"string"},"description":"Username for identification","example":"{{x-auth-username}}"},{"name":"x-auth-password","in":"header","schema":{"type":"string"},"description":"Password for authentication","example":"{{x-auth-password}}"},{"name":"x-organization-id","in":"header","schema":{"type":"string"},"description":"Organization id","example":"{{organization_id}}"},{"name":"external_item_id","in":"query","schema":{"type":"integer"},"example":"5126317000000116190"},{"name":"external_customer_id","in":"query","schema":{"type":"string"},"description":"Optional filter to get customer specific coupon codes","example":"vishvajit@quicko.com"},{"name":"sort","in":"query","schema":{"type":"string"},"description":"Optional filter to sort ascending or descending","example":"desc"},{"name":"discount_type","in":"query","schema":{"type":"string"},"example":"percent"},{"name":"skip","in":"query","schema":{"type":"integer"},"description":"Optional page offset. Default is 0","example":"0"},{"name":"take","in":"query","schema":{"type":"integer"},"description":"Optional page size. Default is 10","example":"10"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

@@ -1,0 +1,71 @@
+---
+id: fetch-items
+title: "Fetch items"
+description: "Fetch items"
+sidebar_label: "Fetch items"
+hide_title: true
+hide_table_of_contents: true
+api: eJytVMlu2zAQ/RViTi2g2k6PuqXogpzadDkFRjGWxhJjiWQ4wzSOoH8vRl5lp+mC6kJp9Oa9WdmBYMWQ38CVUMswzyBgxJaEopo7cNgS5MArGyAD6yCHu0RxDRlwUVOLkHcg66Ag64QqitBnUBIX0QaxXj0+Di/YmIAVGb9cMsnEvKUlpkaMZTODDOgB29Aozwz6bK8suKL/pcz2kUa6F2Phi5HycPxOmSVaV6nwgUaI5ZjIxwqdfUQN5bstd5wBpX6eMtJdspFKyCUmOpbouhPSvod+rh4cvGNi5Xs9m+kxrsiXVBTEvEyN2YEhg8I7IScKxxAaWwy801tWn+48Rr+4pUIggxB9oCh2UOyH57QH70mK2thhwDJoSWpfQg4VDf5ahBymZ/lMdw7WLf2gbGVI/Tp4B6caatSGoil80velTvEPH1dmkWwjZrE218kWKz8xbwaDdQYNF9jgoqHMtKkR+0rIoRMjtU9VLSZEr7XKjNRkrse05NSRzSKxdcRMbMSb0psC24C2cmzQlSYmpwNPkY0CqwPV5aerAVEi1wuPsZxABvcUeZPRxWQ20XGE4FlaHNqwnadxQUeF2DdI6EGmoUHrlCPFRv9tin0D+RMTudv/2rMopusWyPQtNn2v5s0C6I1QWtbMS8iX2DCdBbAfpT9b+yfjXdH6cOncY5MUMqzUv6o/vfrPiG/vnefFN9DtRXGAzvUjWsX+ZclefN6u/Evzq/C2RnTrY81dLKed7ed9BjVhSXEIZYO6LAoKcuR/tvSaw35VP7z7Cn3/E1RAHAQ=
+sidebar_class_name: "get api-method"
+info_path: docs/qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Fetch items"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/{organization_id}/items"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Fetch items
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"skip","in":"query","schema":{"type":"integer"},"description":"Optional page offset. Default is 0","example":"0"},{"name":"take","in":"query","schema":{"type":"integer"},"description":"Optional page size. Default is 10","example":"10"},{"name":"name","in":"query","schema":{"type":"string"},"example":"test"},{"name":"organization_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{organization_id}}"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

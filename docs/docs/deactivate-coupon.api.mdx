@@ -1,0 +1,71 @@
+---
+id: deactivate-coupon
+title: "Deactivate coupon"
+description: "Deactivate coupon"
+sidebar_label: "Deactivate coupon"
+hide_title: true
+hide_table_of_contents: true
+api: eJylVslu2zAQ/RViTi1AL+1Rt6S99JS4SU6GUYylkcVEIhUuSVxB/14MJTuyZbiI44MXkfPe45uFbsDjxkGyhB8m1EbDSoKl50DOX5tsC0kDqdGetIekaVsJNVqsyJPloAY0VgQJvE0w+GISHNn4RILSkEBBmJEFCS4tqEJG89uaA5y3Sm+glZCRS62qvTIc8dAjiNxYoTLSXuUqxbgqgd6wqkuOb5ojyraFVh7rqdG5V2Ozy/Xc9ghRD2OyonN6dpTHeozdoFZ/Y+REfULRzQBIRKChiiHNH3Wk4mhxp6FGX5xXwBWhLGWQeBvoA4xpLKpPcR2evqvS8bn3RMwfa9jVRjtyzPF9PuePQ6S7kKbkXB5KsdsMclDsgHVd9qmePTqOaca6zfqRUg8Samtqsl5Fxja+jrX/JEy9ekFPopMLEiryhcnYGOMiDPuTwGzoqpuNTJ51AG42OPgs2+NHt3MTdSofLVp0fIeKFtFLJ7AXJHJu7ldjn8Q6qNKL9VYsgkqfzFRcxwdKCxQuxRLXJUlRhdKriSeN2gtfmLApvKitYWel8AWJxSEsaQ50Yh2c0uQcOeGNyIxIsapRbbQTqDNhgxYmz8k6wRs371BXt7/ijgxdsTZosylIeCHruhN9m86ncy4j9rPCmLS+Fk/Zf2DHPqme3vysLlFpRgq25LUuM8uDJnIgIRl3VZ8cXhw2wCA/KwkFJzxZQtOs0dGDLduWHz8HsltIlisJL2gVuxUHbaYcf88gybF0x30xmNLw5XffQV8FyNNH6h+i3rJ5WAb+BRKeaHtiTHA/X0Q/bNYLdLx7165auRuVHzPj/H1yUlRHPr7R9vo+5sf5G+T/CgZ32IUKxjfGWdbxTXXA22370aFP7hnp5I6rNKXaD9ZG85Tn9H7+3d7c3YOEdf+nozIZx1h8BRnfGbtt/wFcgAdE
+sidebar_class_name: "post api-method"
+info_path: docs/qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Deactivate coupon"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/organizations/{organization_id}/coupons/{coupon_id}/deactivate"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Deactivate coupon
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"x-auth-username","in":"header","schema":{"type":"string"},"description":"Username for identification","example":"{{x-auth-username}}"},{"name":"x-auth-password","in":"header","schema":{"type":"string"},"description":"Password for authentication","example":"{{x-auth-password}}"},{"name":"x-organization-id","in":"header","schema":{"type":"string"},"description":"Organization id","example":"{{organization_id}}"},{"name":"organization_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{organization_id}}"},{"name":"coupon_id","in":"path","schema":{"type":"string"},"required":true,"description":"Coupon id","example":"{{coupon_id}}"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

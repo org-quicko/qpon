@@ -1,0 +1,71 @@
+---
+id: update-item
+title: "Update item"
+description: "Update item"
+sidebar_label: "Update item"
+hide_title: true
+hide_table_of_contents: true
+api: eJy9VE1P3EAM/Ssjn1pp2KU95gZVpXIDCie0qpzEmwwkM8PYAbZR/nvlybKwLKqqqmoO0cTjj/ee7Ywg2DAUN3Am1DOsLCS6H4jlNNQbKEaoghfyokeMsXMVigt+ecvBq42rlnrUk2wiQQGhvKVKwAI9YR870quauEouaiAUIMRiXpumaefNUIzTpIaICXsSSopuBI99zp4a9O5nxvDD1WDBacqI0oI9BMOSnG9gmlm5RDUUkgZ6hQ7G8U3SaYLJ7io6of6fVdom0wpZaY7BcyYNn4+PD6X6PlQVMa+Hzjw7g/37lsQUIiVxO5lV6P2K17FGIaNAwUJP0oZ6pl0p70y/gOWBZkuN4OWOIVhQPJcvw/T1z+dBtV6HzMBJlu4iBg9vsarRODZoqjDoea0j8xjSnSkH14kpN+ZicNVdWJjTbHDeoOEKOyw7sqYfOnFHQh69GGnD0LRiYgqquTXSkrnYT0teA9mUAztPzMRGgqmDqbCP6BrPBn1t0uBNWK8psVHH5iXVyflZ9qiR2zJgqhdg4YESz4w+LY4Xx8o/BpYeczu3c7jfmD0hdo0WepJl7NBlDYfU6d3cshso3tmdvPMWiuchX1loA4u6j2OJTNepmyY13w+UNlDcrCw8YHIqQ97L2rGeayjW2DEdINvNKny43C7GRwP2fcRbI/qNqoLdoF9g4Y427+y+Lul/LP+s0bSaLLSENaWswHz7ZS50dKU5XqIP9lNBzxEnVUVRfuu7erWB5ydXX76BhXL7X+5DrUEJH8Hmd4YaMvP8Q8m2ETr0zYCN+s5J9fkFKxoSsQ==
+sidebar_class_name: "patch api-method"
+info_path: docs/qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Update item"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"patch"}
+  path={"/{organization_id}/items/{item_id}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Update item
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"organization_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{organization_id}}"},{"name":"item_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{item_id}}"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","example":{"description":"test description"}},"examples":{}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

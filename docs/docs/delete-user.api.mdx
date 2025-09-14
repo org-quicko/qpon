@@ -1,0 +1,71 @@
+---
+id: delete-user
+title: "Delete user"
+description: "Delete user"
+sidebar_label: "Delete user"
+hide_title: true
+hide_table_of_contents: true
+api: eJy9U8Fu2zAM/RWBpw3QkmxH3zq0hwE7rNt6KoKBtplYrSypItU1M/zvA9U0a5oei/liiSIfyUe+CQS3DM01XDFlWFtImHEkoazWCQKOBA3EvMXg/qC4GH65Hiy4AA0klAEscDfQiNBMILuk7izZhS3MFjLdFZeph0ZyIQv0gGPy6jNNL0DnGWZ7yFiY8ptl2oNphrV6coqBiRXn02qlv564yy5pKdDAj9J1xLwp3jw5g4UuBqEg6o4pedfVypc3rDHTaW2xvaFOwELKMVEWVzPO9bMvMp6TJyGjhYKFkWSIPTTQV7NCaP8NLJ9zxssTCpcKwMtDw5W+TaxFOalsXKYY4GV6NRrHBk0Xi543ugW/Y741bXFeTLszl8V1t3FhPleDCwYNd+ix9WTNWLy4D0IBgxgZYtkOYlKOSqM1MpC5PIaloIFs2sIuEDOxkWj6aDocE7ptYIOhN7kEEzcbymzUcfsP6uzbl+rRIw9txNwvwMI9ZX7s6ONitVjpXqTIMmKd0H61jrk+IuIwO6EHWSaPLihGyV7fHodwfaQGBgvNqTzqHPTpaY/XFobIouHT1CLTVfbzrOa7QnkHzfXawj1mp7RU6fWO9dxDs0HPdFLpYR3h3ff97r83YF/vYG/EsFOW0Be9gYVb2r0ib9Xhf0z/xNG8ni0MhD3lysDj61nXUZJncSfiU1EfJHN+8fXi5wXM81/cZa+7
+sidebar_class_name: "delete api-method"
+info_path: docs/qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Delete user"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/organizations/{organization_id}/users/{user_id}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Delete user
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"organization_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{organization_id}}"},{"name":"user_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{user_id}}"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

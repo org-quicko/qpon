@@ -1,0 +1,71 @@
+---
+id: create-coupon
+title: "Create coupon"
+description: "Create coupon"
+sidebar_label: "Create coupon"
+hide_title: true
+hide_table_of_contents: true
+api: eJytVktv2zgQ/ivEnHYBOvbuUae2QQ89bdLHyTCCsTSy2EgkSw6TuIb++2Ik2ZZl12mL+mAQw3l88/qoHTBuImRLuHXJOwsrDYG+JYr8zhVbyHaQO8tkWY7ofW1yZOPs/Gt0VmQxr6hBOfHWE2Tg1l8pZ9Dgg/MU2FCU2zdk2XDnsaASU82QQd4HbTVYbGjkJHIwdiMXhYm5S5Yf+puphgayqZEEPIWcLOOGQENpXqiA1dj+Ces0dmBTs6ZwEiJ5dhc1DFPzkDsbOaDpa/EjGFjXoCF6yk1p8g6CWMeRDYaAWziX75NuNURGThfuRnFyNk+SqrHDcdWKJb1g4+uu5m0n8BiwIaYgbd4NhYaXGSauZilS6CTiBzKoCAsKksC0raOOUMyD8TIFkMGXwYMqXVCmkC6Xw4zAAQ1ksNtNQrYttHqKx2OMzy4Uv4/nbvDQ4RGfgugann3IKR4XNmjN985yZn4J0TjK2M2DmUSZXO5jeOTqegTZUROogIxDolcjdlsdvbOxX8Z/F4t+EceV+5TynGIsU632yqD/0Pq3bT+MpxFvAyGTGlhAQ0NcuUIK4GLnQuqQwXycUZyfJTjvHUTQILA+Hvnr/b4sh4of9mjCK6f0MSWNxRlJLC6QwrD7w1ov97FWx3Xeb62Qgi17rjHc9e2+L8FpgUSoTFQ41EiVssvPLjyqdTI1q/VW3SeTP7ob9a4TGKtQxRxrXNekVZNqNjMmi5YVVy5tKlY+OGm0VlyRuj91S1YMo1qnaCzFSFGxU4VTOTYezcZGhbZQIVnlypJCVKK4Obp6e/eh0ygwVmuHobgBDU8UYp/RPzeLm4XkLy1u0I5aM52Gk1Ic5ovphee+RtM9GynUctcPyvJkn2QcsvMF28/KSkMlU5YtYbdbY6QvoW5bEX9LFLaQLVcanjAYqUfHnIWJci4gK7GOdAbwsCnw18dhPf9WoC8D3z8FVh6CYcoANDzS9gIvtPKMDMzza1Cu0/NFaD2E8wfigFII7OcRXCfk1xGMnoTfRPBamHOmPwnUq9327mafxdNR44wTjxZv85w8X9VdjTjv7r9Pn0HDevjsalwhNgGfQXf/XR7O96Od7XrZDmq0mySslUHvU37/AwM5b+s=
+sidebar_class_name: "post api-method"
+info_path: docs/qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Create coupon"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/organizations/{organization_id}/coupons"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Create coupon
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"x-auth-username","in":"header","schema":{"type":"string"},"description":"Username for identification","example":"{{x-auth-username}}"},{"name":"x-auth-password","in":"header","schema":{"type":"string"},"description":"Password for authentication","example":"{{x-auth-password}}"},{"name":"x-organization-id","in":"header","schema":{"type":"string"},"example":"{{organization_id}}"},{"name":"organization_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{organization_id}}"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"@entity":{"default":"coupon"},"name":{"type":"string"},"discount_type":{"type":"string","enum":["percentage","fixed"]},"discount_value":{"type":"number"},"discount_upto":{"type":"number"},"item_constraint":{"type":"string","enum":["all","specific"]},"items":{"type":"array","items":{"type":"string"}},"status":{"type":"string","enum":["active","inactive"]}}},"examples":{}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

@@ -1,0 +1,71 @@
+---
+id: fetch-coupon-codes-by-code
+title: "Fetch coupon codes by code"
+description: "Fetch coupon codes by code"
+sidebar_label: "Fetch coupon codes by code"
+hide_title: true
+hide_table_of_contents: true
+api: eJy1VtuO2zYQ/RViniWvvbtFUhcBmiZpkYcmXTR9CBZGMaZGEmOJZDmjzW4M/XtByTfZjlPvpn6xPRyec+bCIZcgWDBMb+GVa7yz6pXLCGYJeAxYk1CIi0uwWBNM4T51oUBrvqAYZ1OTQQLGwhRKwowCJMC6pBphugR58HELSzC2gDaBjFgH4+NOmML7HSDVAdE91r6Ke65/vNLXE8R0fDWZpNfPLp+neEnj9Cof/zDR+Gyun+fQJjuyUGvyknacj5b0wamCRAVi7yyTMlZ5LIxFoUxVhkXlLtQoA63ofWV0F8bFJ3b2p97nBZdEkkbLntJGyrRhCp3lDK1byuVyD6Ztj3B4ZP7swlklOsKxhhly6NgmK+B/GgoP/xX37bvXv79/9+bj5XgXjgWl4TMA93qp+4GVyk0lFJT0hdR9S0etrOYPij1pkxvK1IZvK8xY1GLuaBBlw+JqCn9vG/2R2vaVrYDXkvRA60DX2vXnokZTjbSrdxUKLr5dB2OFCgon8uaxIMXmC43Ua8qxqUQZVpPxQMlkWLKF8d+L2eU5kwy4h9RjaGcJrA8mR4bL8Th+DWH/bLQm5rypNqcYEtDOClmJ7vunNdoOVLv5J9LxlPvgPAUxHWPbffYD+ZVElwedtjoeNUnpMphCQR0cSglTuOi903Wtjc1dx26kC/bGOwv7PNEY84JrrjzO588uLNS8MZVE1pvG6IUbqV86g7EKFWuscF5RouqmEpMKWbSipHRNUYrywcV8JUpKUjdDWLJxI6t5w8YSM3Hs3swpjbVHU1hWaDMVGhvrR4FVdCy2UC//eNt5ZMjl3GHIRpDAHQXuI5qMxqPYUeAdS41dKVa9dTKpg7xsaiZ0Lxe+QhPHLTShimt9wm9hkPBZAqVjifblco5Mf4WqbaO5b+N43WWGY/AZTHOsmBJY0MN26t1h1UTO7jgcuO7p2zTfE6bU0Rh7SRufJ4k6dzydEDScmU9N1YnBdELDaip+F/KvzKZTJekn45Z9Fv8EE+lhejtrk/VdfLTVvq7r4MV0QsSxl9oj83HGs+ikoOEb7ZFivkmy97z6P2l2XlgDmt7pZRfuztrB3RMbY3NF/PbmA7Ttv1bO9f8=
+sidebar_class_name: "get api-method"
+info_path: docs/qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Fetch coupon codes by code"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/coupon-codes"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Fetch coupon codes by code
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"x-organization-id","in":"header","schema":{"type":"string"},"description":"Organization id","example":"493c41aa-0311-4728-a2e0-3f051ca7bc8f"},{"name":"x-accept-type","in":"header","schema":{"type":"string"},"description":"To get response in paginated list format","example":"application/json;format=sheet-json"},{"name":"x-auth-username","in":"header","schema":{"type":"string"},"example":"{{x-auth-username}}"},{"name":"x-auth-password","in":"header","schema":{"type":"string"},"example":"{{x-auth-password}}"},{"name":"code","in":"query","schema":{"type":"string"},"example":"INDMONEY20"},{"name":"status","in":"query","schema":{"type":"string"},"description":"Optional filter to get coupon codes by specified status","example":"inactive"},{"name":"customer_id","in":"query","schema":{"type":"string"},"description":"Option filter to get customer specific coupon codes","example":"customer@gmail.com"},{"name":"take","in":"query","schema":{"type":"integer"},"description":"Optional page size. Default is 10","example":"10"},{"name":"skip","in":"query","schema":{"type":"integer"},"description":"Optional page offset. Default is 0","example":"0"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

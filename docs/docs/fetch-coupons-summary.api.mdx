@@ -1,0 +1,71 @@
+---
+id: fetch-coupons-summary
+title: "Fetch coupons summary"
+description: "Fetch coupons summary"
+sidebar_label: "Fetch coupons summary"
+hide_title: true
+hide_table_of_contents: true
+api: eJytVk1v2zAM/SsCTxvgJumOvu0bO63dx2kIBsambTW2pInU1izwfx+kOG0ct+naLZckkvjeE/lEaQuCNUP+DV7b4KyBZQYOPXYk5OP4Fgx2BDlcn2GQ5iww+TSSgTaQQ0NYkocMuGioQ8i3IBsXA1i8NjX0GZTEhddOtI0RXwcEVVmvdElGdKULTLMZ0DV2ro3x2+0RZd9Dnx3rccj8y/ry6XouBoSkJ2JGRaf07CmP9Vhfo9G/U+SZ/gdFHw+AVAI6VHFI810fqShSFb/fsv8I5DePId/5YEp7gzwmFFzTg1zaCNXk79hp+oGtcliTYv2bZuoNVRhaUZrV+WIk4nxxyMxr7f4Xs60qJhlxj6lHzEcV2ItwKM3pTHv6EbSnEnLxgR4s6zJGsLOGiSPei8Uifo038jkUBTFXoVX7xZBBYY2QkbgcnWsHP8+vOMZspxrt6ooKgQyct4686MTYp89x6t6RFI3a+YEVh67DlPyOpLEl5FBTQorpyGF+uDGeT/Y5H4Dmt0DaVDZp05KSc+nSURyruEwuZYWDElXFrvXL+rVaBd2KWm3UZdDF2s7UqzSgjULFBba4ailTXWhFnwkZNKKksaFuRDlvYzYzJQ2pyzEsmRjIahVYG2ImVmJVaVWBnUNdG1ZoSuWDiX4izyourG+hXl58SCtK5GZl0ZczyOAned7t6Hy2mEWfgbMsHaZCDY67L+WjlNwUU+ha5q5FbSJa8G2c25Xj28i8DBnkUzcPPNHLA9Myg8ayxPjtdoVMX33b93F4d/LiPVFqjvkpIa+wZZqIu7HkqMXcKXlNm6Ne9hPbENelY/j3TH/TX04oGJrbfyG/p8WcYB8a3C37Mv7xOtI/MuPPPg2d57m6j3MYRLM55NxrOTZJv+yz/c32OCmnr/8T6Zg+QJ5Yl9MX/sMKDp4cT3XG5II/yTp9WIx4d8teFgU5OZib9P3on5se/f7tF+j7P2qIdxM=
+sidebar_class_name: "get api-method"
+info_path: docs/qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Fetch coupons summary"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/organizations/{organization_id}/coupons/summary"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Fetch coupons summary
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"x-auth-username","in":"header","schema":{"type":"string"},"description":"Username for identification","example":"{{x-auth-username}}"},{"name":"x-auth-password","in":"header","schema":{"type":"string"},"description":"Password for authentication","example":"{{x-auth-password}}"},{"name":"x-organization-id","in":"header","schema":{"type":"string"},"description":"Organization id","example":"{{organization_id}}"},{"name":"coupon_id","in":"query","schema":{"type":"string"},"description":"Coupon id","example":"{{coupon_id}}"},{"name":"take","in":"query","schema":{"type":"integer"},"description":"Optional page size. Default is 10","example":"10"},{"name":"skip","in":"query","schema":{"type":"integer"},"description":"Optional page offset. Default is 0","example":"0"},{"name":"organization_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{organization_id}}"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

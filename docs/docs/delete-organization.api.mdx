@@ -1,0 +1,71 @@
+---
+id: delete-organization
+title: "Delete organization"
+description: "Delete organization"
+sidebar_label: "Delete organization"
+hide_title: true
+hide_table_of_contents: true
+api: eJydlE1v2zAMhv+KwNMGqEm2o28dmsOAAWu39VQEA2PTsVpbUkWpbWb4vw9U0tT5QPbhi22JevnoFcUeIq4Yijv4GlZozS+MxllYaPAYsKNIQWZ7sNgRFPBygSk2F4kp5BENxkIBDWFFATRw2VCHUPQQ114WcAzGrmDQUBGXwfisX8DtVkHVLihTkY2mNuUmuwZ6wc63sr7vD1IOAwz6kMcj87ML1f/zXG8VMo9oCtE5nteU+zxu5OJPs+PxGJvzNIEekwlUQRFDokO68eGoLDsmOkgqRAtRZO8sE0u+j7OZvPZVv6eyJOY6teo1GDSUzkayUcLR+3ZrwvSeZU1/vAe3vKcyggYfnKcQTc445OdwH1fUUiQ1BgYNHcXGVVBAladFSvwqYDoO5OnRRrO9tcswJmY3bnyW3E8rg8qwQlW6JN+11PazCw9qmUwb1XKtbpIpH9xEfcoDxipUXGKLy5a06lIbzUUkizaq2Li0aqLywYl9WsWG1M2+LFlZyGqZ2FhiJlbRqcqpEjuPZmVZoa1USFa5uqbASgJXb1KX159zRIXcLB2GagIanijwZkcfJrPJTOrGO44d5pPZluBpj/cM2Z1dpJc49S0aK1optDK3Mf9ur5YZNBSHxb3Q0DiOEtv3S2S6De0wyPBjorCG4m6h4QmDES9yF6kMy3cFRY0tH5Z5/1Z78O7b9kK8V8fFf5J+O4h2LU5hm+QPNDzQ+sTFHBaDfm0T/0Z2vnOdRNsgHPfOHaV0kL8nON+r/kww6pZ7BJugy7IkH0dzR11Ausvuzl7Nv8x/zGEYfgNcojXY
+sidebar_class_name: "delete api-method"
+info_path: docs/qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Delete organization"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/organizations/{organization_id}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Delete organization
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"x-auth-username","in":"header","schema":{"type":"string"},"description":"Username for identification","example":"{{x-auth-username}}"},{"name":"x-auth-password","in":"header","schema":{"type":"string"},"description":"Password for authentication","example":"{{x-auth-password}}"},{"name":"organization_id","in":"path","schema":{"type":"string"},"required":true,"description":"Organization id","example":"{{organization_id}}"}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      
