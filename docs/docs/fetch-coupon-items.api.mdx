@@ -1,0 +1,71 @@
+---
+id: fetch-coupon-items
+title: "Fetch coupon items"
+description: "Fetch coupon items"
+sidebar_label: "Fetch coupon items"
+hide_title: true
+hide_table_of_contents: true
+api: eJy1VMFu2zAM/RWBpw1Qk/bq2zZsQ2/LsJ2KYGBsxhZiS6pId80M//sgO3HixG2TATsZlqj3nh6p14BgzpA8wCdXe2fVvVAFSw0eA1YkFOJmAxYrggR4YzxoMBYSeKwpbEFDoMfaBMogWWPJpIGesfJlLL8FDZwWVCEkDcjWx0VjhXIK0LZ6wBXc0BW4dxcDd5/LgYVYpqBZgrH5CPn5Br252dB2D18QZhSm8DPiNBgvxsW6D9/uVX/swNs0A1zbXiWAKQ0k/6JhOHkuo9+6WIkLOVrzByP4L5PtxXiUYiRFQk1jupOTFzOm3bBexzWceYNlGWHYO8vEkDTtqXdfSNJC9WjKCFUMGiqSwmWQQN5Z2slJYH58P56fXXfeo/D8SNx8D2ns2nX6jHQ3WHhn4VTMohPBCveC1vHZ/nZho1a1KUWttmpRm3TjZupjt2CsQsUplrgqSauqLsXcCFm0oqRwdV6I8sGlxKyVFKQWY1iy8SCrVc3GEjOxEqcyp1KsPJrcskKbqVBb5dZrCqxiYX6AirMXKzLkYuUwZDPQ8ESB+xvdzW5nt9Bq8I6lQhst2HV90vmRH0M3hZ5l7ks0NkLVoYx7fVceRvMaIZLzAd41Jm6OZq0jXWooHEuEapoVMv0MZdvG5T5iYmBmhqNPhwcYn/wQoE9Y1lEmxJl+oXSXiZeU7lLuULqMP8HE2mk1J66lzgpZgQTefd89ofcK9LSbu0W022POvZZTLydl/z/6Q7faZav3gXidB4eEnhTQEx3n/+s9epVnSOE3qYbKUZuH4Pn6+Qe07V8l0Kmg
+sidebar_class_name: "get api-method"
+info_path: docs/qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Fetch coupon items"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/organizations/{organization_id}/coupons/{coupon_id}/items"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Fetch coupon items
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"skip","in":"query","required":false,"example":"0","schema":{"type":"integer"}},{"name":"take","in":"query","required":false,"example":"10","schema":{"type":"integer"}},{"name":"name","in":"query","required":false,"example":"test","schema":{"type":"string"}},{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"{{x-api-key}}","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"{{x-api-secret}}","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"{{organization_id}}","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"example":"{{coupon_id}}","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{}}
+>
+  
+</StatusCodes>
+
+
+      
