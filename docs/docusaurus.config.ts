@@ -37,6 +37,7 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           docItemComponent: "@theme/ApiItem",
+          sidebarCollapsible: true,
           editUrl:
             'https://github.com/org-quicko/qpon/tree/main/docs',
         },

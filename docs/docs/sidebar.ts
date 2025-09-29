@@ -331,7 +331,7 @@ const sidebar: SidebarsConfig = {
         },
         {
           type: "doc",
-          id: "fetch-items",
+          id: "fetch-coupon-items",
           label: "Fetch items",
           className: "api-method get",
         },
