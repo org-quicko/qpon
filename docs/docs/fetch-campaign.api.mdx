@@ -5,7 +5,7 @@ description: "Fetch campaign"
 sidebar_label: "Fetch campaign"
 hide_title: true
 hide_table_of_contents: true
-api: eJylVU1v2zAM/SsCTxugfGxH37qiG3Zas62nIhgYm47V2pIqSm0zw/99kOKkjlNkaJpLEkp87+mJpFrwuGbIbuESG4tqrWEpwaLDhjy5uNKCxoYgg+cJBl9NApNLEQlKQwYVYUEOJHBeUYOQteA3Niawd0qvoZNQEOdOWa9MzLjpEURpnFAFaa9KlWNalUDP2Ng65rftiLLroJNjPRaZn4wrztdz3SMkPREzKjqlZ0c51mPcGrX6mzIn6h2KfgyARAIaqhjS/FEjFbkJNoV37BZ9dZrb0UNQjgrIvAs01nKZAI9V7IlG/H0dvUvBAc8LYGRaxt1sjWbiiPV5Po9fh5p/hTwn5jLUYrcZJORGe9I+bkdr6/6KZ3ccc9pjfWZ1R7kHCdYZS86rxNilz9ilr+TzSuy0goSGfGUKyGBNCSJ6kMFs6xrPBvbNdlkxOjhssq80SZDyyY2FTSV5SL1I18MCxRZTlLF7n4y7F6ugai9WG7EIKr83U/ElBZQWKDjHGlc1SdGE2quJJ43aC1+ZsK68sM5EC6XwFYnFISzpmMhiFVhpYiYW3ojC7M/PAnUhXNDClCU5FnHj+gXq4vp72lEgVyuDrpiChEdyvD3Rp+l8Oo91YQ37BtPt9OV15POBF/ur8/TsZ7ZGpSNMcHVc297Bbd8iDBKyYbfsxaeFQRkvJVSGfUxt2xUy3bi662L4IZDbQHa7lPCITkVX0sQsFMffBWQl1jxuqfalEuHDz770P4pho716jD6IehPdwjrEfyDhnjYHjR+78SwFZxIPrOqWndzNu7cZcfpReFXWlv74WdorfJsRp5+B/ysYPERnKjge+ydZj5+bA97ttos8J+sHa0ejL47U/bT6dvUbuu4fF7rPwA==
+api: eJy9VU2P0zAQ/SvWnEBy2+WaGyBA3CiCU1WhaTJNrE1sr8cpLVH+O5qkTZN20bYc9pZ4Zt578+FxAxFzhmQFH7HyaHILaw0eA1YUKYilAYsVQQL7GXoze6QDaDAWEigIMwqgIdBTbQJlkGyxZNKQEafB+Gic+L3/9lX1YbTHypcC1jQDXNuCBk4LqhCSBuLBiwPHYGwObasvBDClgeL/aBgir2X0ppuVuJCjNX9QwH+Z7CTGYywmUmKoaUp3EXkzY+pqfy/XEHM7y3EI7uQ5R73AtBYg9s4yMSRNe9mlzxTTQp3wQENFsXAZJJB3jevEJLAYV5EXV0Vd9JnzYlSCxQlVTkeCuzy3rlNrYpfR0jvhnkqTQ2VYoeox1VbuyG8XHtWmNmVUm4Na1iZ9dHP1oTswVqHiFEvclKRVVZfRzCJZtFHFwtV5EZUPLiVmrWJBajmFJSuBrDY1G0vMxCo6lbmhPqzQZirUVrntlgIrcczPUDLz4pEhFxuHIZuDhh0F7jN6N3+YP0CrwTuOFVopwXEOrvowqcXQ10j7uPAlGiswdSjF1vdoNbkjDBqS60tzbJMYx/M95NcZRiO51lA4joLeNBtk+hnKtpXjp5rCAZLVWsMOg5HCdasrMyzf/9gKDaTORrIREnjz/TjhbxXo5xM8HqKVVbbDspY/0CC77XonyLV6RfpzAV+beNSgdt3q00q+r/znN+JZCT3V+AUadNyX7uQdeJFq8DyzrUdL6cunH9C2fwHe1X+m
 sidebar_class_name: "get api-method"
 info_path: docs/qpon
 custom_edit_url: null
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"get"}
-  path={"/coupons/{coupon_id}/campaigns/{campaign_id}"}
+  path={"/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}"}
   context={"endpoint"}
 >
   
@@ -47,7 +47,7 @@ Fetch campaign
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"x-auth-username","in":"header","schema":{"type":"string"},"description":"Username for identification","example":"{{x-auth-username}}"},{"name":"x-auth-password","in":"header","schema":{"type":"string"},"description":"Password for authentication","example":"{{x-auth-password}}"},{"name":"x-organization-id","in":"header","schema":{"type":"string"},"description":"Organization id","example":"{{organization_id}}"},{"name":"coupon_id","in":"path","schema":{"type":"string"},"required":true,"description":"Coupon id","example":"{{coupon_id}}"},{"name":"campaign_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{campaign_id}}"}]}
+  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"{{x-api-key}}","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"{{x-api-secret}}","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"{{organization_id}}","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"example":"{{coupon_id}}","schema":{"type":"string"}},{"name":"campaign_id","in":"path","required":true,"example":"{{campaign_id}}","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>
@@ -62,7 +62,7 @@ Fetch campaign
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+  responses={{}}
 >
   
 </StatusCodes>

@@ -5,7 +5,7 @@ description: "Deactivate campaign"
 sidebar_label: "Deactivate campaign"
 hide_title: true
 hide_table_of_contents: true
-api: eJylVk1z2jAQ/SuaPbUzItAefUvTS3tJaNLpgWEyi73GCrakSDIJ9fi/d1YYsIFJJ4QDH9Lue89PuysaCLj0kMzgBiuLaqlhLsHRc00+fDPZBpIGUqMD6QBJ07YSLDqsKJDjtAY0VgQJYB0K49RfDMpokKA0JFAQZuRAgk8LqpCxwsZyuA9O6SW0EjLyqVM2piXw88+DwDQl70UwK2IkesXKlpzUNNutx7jVttDKPf/rCK0arWhzOff13Q+xoo3IjRMqIx1UrtLd8wxUWPW4os05AWty/kMGsIgDSJ+1Wz1mNW6JuvN9pLLLmW97QCIC9dn7NI8qG6pITW3j8o7dYije5uYSU44ySIKr6VjLTQQ8VbEnOuLvavdDCgY8B0Bmii3hrdGePGN9nUz4Y6j5vo7Fmdel2AWD7PUOoLVlV1DjJ885zak+s3iiNIAE64wlF1RkbOPr2KXvhGlQawwkdoJBQkWhMBlbYHwEYicSGG+98+OeieNdGq/2Hnmc7ZGjn7mJClWI9kxtrM2hlmk8Ly9QbOFFzlPixbiVWNSqDGKxEdNapStzJb7FBaUFCp9iiYuSpKjqMqhRII06iFCYelkEYZ1hT6UIBYnpEJY0J3qxqL3S5D3xyBCZ2XvhBepMuFoLk+fkvODA5QGKW40jMvTFwqDLrkDCrvcS+HI1uZpwobCPFcbj6urtvPEDQ/YHGug1jG2JSjNW7Ure257JrGscDxKSfg/tnyBuDIq7dzJzCQUfcTKDplmgp9+ubFtefq7JbSCZzSWs0Sn2Kc7qTHn+nkGSY+mPu6436OHTr647Pot+L559pm4RNc/eNZY1/wIJPIz7s4Eb9iIFFxL3fGvnrdyNxPcZ8ealcFbVlr1/H+2lvc+B4VXwX65D6IV8pxfAm5ynF8+Adxt2s0UfPTDS2YjrNCUbensnY5LH736o3d3eP4CERffXpDIZ5zh8ARnfGbtt/wE+0Qy2
+api: eJydVU2T2jAM/SsendoZQ7bX3Nrtpacu/TgxTEckgnhI7KzlUGgm/72jBEIC7CxwSyzpvSfJkmsIuGaI5/CMRYlmbWGhoUSPBQXyYqnBYkEQw26CpZlsaA8ajIUYMsKUPGjw9FoZTynEK8yZNKTEiTdlME78Pr98U10Y7bAocwGr6x6uaUADJxkVCHENYV+KAwdv7BqaRp8JYEo8hUc09JGXMjrTzUqcX6M1/1DA/5j0KKbEkI2kBF/RmO4s8mbGxFXlLVzjrJ/bKNVGDVX0aLfzH67HfdkOot5hWggQl84yMcR1c57JV8IkmC0GUkdQ0FBQyFwqWhxLY1tJMUTDKnN0UfSoy5+jQSGiI6ycDmRHac/cJr5yrXwT2hRnpRMdY62ztuasUHXwaiXj9Nf5jVpWJg9quVezyiQbN1Vf2gNjFSpOMMdlTloVVR7MJJBFG1TIXLXOgiq9S4hZq5CRmo1hyUogq2XFxhIzsQpOpa6vFSu0qfKVVW61Is9KHNcnKBkP8UiRs6VDn05Bw5Y8dxl9mj5Nn6DRbZ0LtFKCw8W43phRQfpuB9qFqMzRWMGqfC62rmfz0UwxaIgvh+zQNjEO56FPsjWMLuqgeQsNmdySeA51vUSm3z5vGjl+rcjvIZ4vNGzRGyllu/dSw/L9xkqpIXE2kA0Qw4cfhyH4qEBfz/ZwiFb24BbzSv5AgyzGy4Uik/cQ/XDiH9BxKuvDCh4kHrStWTT6uNjv68PppbkqoaMavmO9jvvSHb0m71L1nie2xWB3vXz/+Qua5j/7bZnZ
 sidebar_class_name: "post api-method"
 info_path: docs/qpon
 custom_edit_url: null
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"post"}
-  path={"/coupons/{coupon_id}/campaigns/{campaign_id}/deactivate"}
+  path={"/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/deactivate"}
   context={"endpoint"}
 >
   
@@ -47,14 +47,14 @@ Deactivate campaign
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"authorization","in":"header","schema":{"type":"string"},"description":"JWT access token","example":"{{access_token}}"},{"name":"x-api-key","in":"header","schema":{"type":"string"},"description":"API key for identification","example":"{{api_key}}"},{"name":"x-api-version","in":"header","schema":{"type":"string"},"description":"API version","example":"{{version}}"},{"name":"x-organization-id","in":"header","schema":{"type":"string"},"description":"Organization id","example":"{{organization_id}}"},{"name":"coupon_id","in":"path","schema":{"type":"string"},"required":true,"description":"Coupon id","example":"{{coupon_id}}"},{"name":"campaign_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{campaign_id}}"}]}
+  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"{{x-api-key}}","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"{{x-api-secret}}","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"{{organization_id}}","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"description":"Coupon id","example":"{{coupon_id}}","schema":{"type":"string"}},{"name":"campaign_id","in":"path","required":true,"example":"{{campaign_id}}","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
-  body={{"content":{}}}
+  body={undefined}
 >
   
 </RequestSchema>
@@ -62,7 +62,7 @@ Deactivate campaign
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+  responses={{}}
 >
   
 </StatusCodes>

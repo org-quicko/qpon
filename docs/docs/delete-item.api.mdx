@@ -5,7 +5,7 @@ description: "Delete item"
 sidebar_label: "Delete item"
 hide_title: true
 hide_table_of_contents: true
-api: eJy9U01v2zAM/SsCTxugJdmOvnVoDwV2WPZxKoKBlplYrS2pItU1M/zfB6pptjQ9DvPFNvX4SD7xTSC4Y2hu4FpoZNhYSJhxJKGs4QkCjgQNxLzD4H+h+Bh++A4s+AANJJQeLLDraURoJpB9UjhL9mEHs4VM98Vn6qCRXMgCPeKYBsVM0wvSeYbZHit6ofGfVTqQaYWNIjnFwMTK82G10ldH7LJP2go08LU4R8zbMphnMFhwMQgFUTimNHhXO1/esuZM573F9pacgIWUY6Isvlac62NfVLykgYSMNgoWRpI+dtBAV8NKofM3sDwTbakpvDyOWAXbxtqGlzr/OsUALwtq0Hg2aFws+r3Ve/8Z851pix/EtHuzLt7dxYX5WAM+GDTscMB2IGvGMoh/JxQwiJE+ll0vJuWowlkjPZn1KS0FTWTTFvaBmImNRNNF43BM6HeBDYbO5BJM3G4ps1Hg7g/VxefriuiQ+zZi7hZg4YEyP030frFarHQTUmQZsd7JYZlO1T0R4nhbQo+yTAP6oBwlD3r2JPsNNK8YoDrGQvO8qRsLfWRR+DS1yPQ9D/Os4ftCeQ/NzcbCA2avMlRzdZ71u4NmiwPTWWfHhYM3Xw7b/daAfb3jQxDDXlXBoegfWLij/SsGVqf9x/LPGs2b2UJP2FGuCjydXjhHSf7KO7OX2vZoisurT1ffrmCefwO0gKPf
+api: eJy9VD1v20AM/SsEpxY42+mqrUU8BOjQFO1kGAUt0dYh0p1ypNy4gv57QX/LcZCkQzeJR773+Nmh0kowm+Gdco1zhw0lqlk5mbXDQDVjhk8javzogTfo0AfMsGQqOKHDxI+tT1xgtqRK2GHBkiffqI/m9/nbHezC+InqpjKwrjvC9T06lLzkmjDrUDeNOYgmH1bY9+5CgHCeWP9FwzHyuYzd05uVxLSi4P+Qgf/yxUFMQ1oOpGhqeUh3EflmRq9cv49pH/EKw9xApIlBWDDr+su63XLFymBg6LBmLWOBGRZbM7qdkAwn53nJ5FmaEwOQyVHUNo9l3CryulV838SAl/RmBC9AkMfWvpc2mb9jeoBF6yuFxQbuW58/xDF82Rp8AALJqaJFxQ7qtlI/Ug4UFLSM7apUaFLMWcSBlgz3Q1gOFiiwaMUHFmEBjVBEyKluyK+CAIUCUhsgLpecBMxxdYKySTOPgqRcRErFGB2uOckuo0/jm/EN9g6bKFpTsBLsezys9aAQx8YpP+mkqcgHw2hTZW+7JswGYynoMLsyp9YHezoM1NxhGUUtvOsWJPwzVX1v5seW0waz2dzhmpK3smzPQeHFvl/YtA7zGJSDYoYfvu/n8yOgu57B3kjBzsOaqtb+0KHdi+d7ZgvxH+kPNernvTtcmvdV4HT6rtLvaM4P61HD+1IdnLdXqY6eJ7b52XLfTr9Of0yx7/8CuB8XTg==
 sidebar_class_name: "delete api-method"
 info_path: docs/qpon
 custom_edit_url: null
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"delete"}
-  path={"/{organization_id}/items/{item_id}"}
+  path={"/organizations/{organization_id}/items/{item_id}"}
   context={"endpoint"}
 >
   
@@ -47,7 +47,7 @@ Delete item
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"organization_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{organization_id}}"},{"name":"item_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{item_id}}"}]}
+  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"{{x-api-key}}","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"{{x-api-secret}}","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"{{organization_id}}","schema":{"type":"string"}},{"name":"item_id","in":"path","required":true,"example":"{{item_id}}","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>
@@ -62,7 +62,7 @@ Delete item
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+  responses={{}}
 >
   
 </StatusCodes>

@@ -5,7 +5,7 @@ description: "Fetch campaign summary"
 sidebar_label: "Fetch campaign summary"
 hide_title: true
 hide_table_of_contents: true
-api: eJytlU1v2zAMhv+KwLObpDv61n1iu2zFOuxQBAFj07ZqW9IkumsW+L8PdJzETtJ0yJpLEol6H5IiqTUw5gHie3iHtUOdG5hH4NBjTUxedtZgsCaIARsurNd/kLU1EIE2EENBmJKHCEJSUI0Qr4FXTswDe21yaCNIKSReu+5YDF9+3ilMEgpBsS1JlOgJa1fJofV6s7XottoW2mjHf7pCp69KWl3Ovvn2WZW0Upn1SqdkWGc62cYz8sLpRUmrUw48kg//lQBxYi8ypParh1TrczR93q90ejn560BIdUJD+hCz0OnYi6Qvj8We/6shvzqPH8oPFMbSjCW9qKkNU07+REzdD6yUw5xU0H9oot5Thk3FSgd1PRtFeT0bkkOp3WuRbZYF4hF7jJ5BO4/AU3DWBApCeDObyddY9nvTdUDWVGprDBEk1jAZFnN0ruqrdvoQ5Mz62Gu7fKCEIQLnrSPPuiO23ecwkI/ESaG296NCU9fY5aImLmwKMeTUSSEXEMN0axmme1NtMtvhNXfR3rquuscgWZTEoEpsI78zmTO/rS/VstEVq+VK3TY6Ke1Eve0WtFGoQoIVLiuKVN1UrK+YDBpWXNgmL1g5byVhkeKC1O1YlowcDGrZBG0oBJKho1K7izYoNKnyjZELJB+UGOZ7KWlWsUgxFEuLPp1ABNvujeF6MptISYGzgWvs7qIvrmezOsrJ7sKYnnjqKtRG5Bpfyd4m4/e77gtSoL3QPILCBpbt9XqJgX74qm1leVPKMrlTHST+FOIMq0ARyPQ8bOZHrBrxoOuMoxMH3u7q8J8a72RsGx/6rn8V+DO9d4bed/6ePpc/Xgse4vt5G23H68k0PuvX2QfmjD/Dt+3ClIyflRdZe9NLr+DoMTnLPH7ERtyN2U2SkOPB3tGsk4vajaVPH+6gbf8C2h4B3g==
+api: eJy9VU2P1DAM/SuRTyBlpnAt4gAIEDcWwWk1Qp7W04Ztk2zsLjtU/e8o7Uw/dlh2B6S9tXbs9/wcOy0IFgzpJbzD2qMpLGw0eAxYk1CInhYs1gQp3K4wy8jLSvaeQIOxkEJJmFMADYGuGxMoh3SHFZMGusXaVzEQva9MhmKcTX6ws692LtQor7kkklW0gAbOSqoR0hb69CmwBGML6Do9Z+DN6or2D6PnxFkwPmJCCm8+f1JD2MSqbcd0XXcWAaYskPwLhzHylMbgejQTFwq05lcv6neTH8l4lHJBRUJDS7g7kY9GzFzjz8UaYx6PcriGZ+JMUQ8gbWIi9s4yMaRtd7dLH0iyUh3zKW7qGkO8ODVJ6XJIoegb2JNKIZmrycmJuMmgACczKZJj9midEU8mMGN3rmdvpK/wwvczsqQajcqwQjXkVrs4tT9duFLbxlSitnt10Zjsyq3V295grELFGVa4rUiruqnErIQsWlFSuqYoRfngMmLWSkpSF8u0ZGMgq23DxhIzsRKncjfqxQptrkJjldvtKLCKB4spVZyBeCJHLrcOQ74GDTcUeKjo5frF+gV0GrxjqdFGCQ734t6+LDQZ+y10K4mv0NiYrglV9A09u1zMDoOG9HSYDm2Lzvm9H+vsHYuremS00VA6lojTtltk+haqrovm64bCHtLLjYYbDCZK2a/X3HD8vmdvtJA5K2QFUnj25TADzxXoP5d6MKKN2txg1cQ/0BC33+nWiIP3hPCTlE8NPGtVt+n0cWmfJ/992APG3edxJHFerdNT9Xes8SH8D5zxOXoQajw5oW1mO/Hj+6/Qdb8BQB7b+A==
 sidebar_class_name: "get api-method"
 info_path: docs/qpon
 custom_edit_url: null
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"get"}
-  path={"/campaigns/summary"}
+  path={"/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/summary"}
   context={"endpoint"}
 >
   
@@ -47,7 +47,7 @@ Fetch campaign summary
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"authorization","in":"header","schema":{"type":"string"},"description":"JWT access token","example":"{{access_token}}"},{"name":"x-api-key","in":"header","schema":{"type":"string"},"description":"API key for identification","example":"{{api_key}}"},{"name":"x-api-version","in":"header","schema":{"type":"string"},"description":"API version","example":"{{version}}"},{"name":"x-organization-id","in":"header","schema":{"type":"string"},"description":"Organization id","example":"{{organization_id}}"},{"name":"campaign_id","in":"query","schema":{"type":"string"},"example":"{{campaign_id}}"},{"name":"take","in":"query","schema":{"type":"integer"},"description":"Optional page size. Default is 10","example":"10"},{"name":"skip","in":"query","schema":{"type":"integer"},"description":"Optional page offset. Default is 0","example":"0"}]}
+  parameters={[{"name":"x-accept-type","in":"header","required":false,"example":"application/json;format=sheet-json","schema":{"type":"string"}},{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"{{x-api-key}}","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"{{x-api-secret}}","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"{{organization_id}}","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"example":"{{coupon_id}}","schema":{"type":"string"}},{"name":"campaign_id","in":"path","required":true,"example":"{{campaign_id}}","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>
@@ -62,7 +62,7 @@ Fetch campaign summary
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+  responses={{}}
 >
   
 </StatusCodes>

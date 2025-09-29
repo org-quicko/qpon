@@ -1,0 +1,71 @@
+---
+id: login
+title: "Login"
+description: "Login"
+sidebar_label: "Login"
+hide_title: true
+hide_table_of_contents: true
+api: eJytVNuO2zYQ/RVinun1JU7bqMjDbrIIiibobmKjATZGMJLGEmOJZDjkeh1B/x6Q8nbt1Gj9ED/YmvGcozlz68BjxZDdwZLJwUqCRYcteXLRu5LgiK3RTAxZB/PJNP7UhGUK6ODj6MZsyVE5utpFm4uaWoxPfmcJMmDvlK6gl0AP2Nom+q4frCPm6HxltCftR4sUfSYerW1UgV4ZPf7CRv8uihodk38Z/Hr02yHvW9KVr08yK+2pIndM/exFtK8XWJ2dzd/jTzD7dfQ+397fvCguy6bZzK8dltvlcvrqDX6cFJ8gIl6jP1/iog5STH4R79CJ2WT2XEyfZbN5NpuLN+8We4GailiCszk3RHaEjbqn6P8zWpfJOpfAq5ZM8C+fQ99LKIkLp+yQQhwNsdQYfG2c+kYlSCiGHkTSHzt28pUm/0KFBwnWGUvOq2HoClPS6ba1xIwVnci6P8z7kWI+mR5g0sQLbbxYm6DLiIkoR18Dsb8y5W5A/hQN1KJqTlbXIvPWuPL/Rew5oOs4WHKfsWyV/py8fQ+HTD+EPP7R9zBoPO7cW1MpDbEyvjYRbQ0nBRgXB8aByfG42UdF5e+fanT97/z26R8l9KRX6bVJWpVPM3VrTaQ9Tik6hWKBojAhPq/jUdoatxF5UI0X+U7cBlVszIW4Sg6lBQousMG8ISna0Hg18qRRe+FrE6raC+tMQcxS+JrE7TEt6QhkkQdWmpiJhTeiNKLA1qKqNAvUpXBBC7Nek2MRA6snqsubP1JEiVznBl15ARLuyfGgaHoxuZikfhv2Labh0djSQf2PSvDPMHh68GPboNIRHVyaoqE1d5BaAxKG5qwk1LF12R10XY5MSxcnYyXhayC3G+75PToVpUarl/tTDtldBxvaQXZ8kGN4E06dXOjlI+KyKMj6/4xdHUzXzV8fFiAh3y9Ym1YTHG5Bpu8MQIJJZUirk3wdNKirMCzuwBk/3wEN+E/S
+sidebar_class_name: "post api-method"
+info_path: docs/qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Login"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/users/login"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Login
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"email":{"type":"string"},"password":{"type":"string"}}},"example":{"email":"{{super_admin_email}}","password":"{{super_admin_password}}"}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"401":{"headers":{"X-Powered-By":{"schema":{"type":"string"},"example":"Express"},"Content-Type":{"schema":{"type":"string"},"example":"application/json; charset=utf-8"},"Content-Length":{"schema":{"type":"integer"},"example":"39"},"ETag":{"schema":{"type":"string"},"example":"W/\"27-RbwvP9cAdllk4EradwUU1CGaX0c\""},"Date":{"schema":{"type":"string"},"example":"Thu, 06 Mar 2025 13:24:24 GMT"},"Connection":{"schema":{"type":"string"},"example":"keep-alive"},"Keep-Alive":{"schema":{"type":"string"},"example":"timeout=5"}},"description":"401 Unauthorized","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"}}},"example":{"code":401,"message":"User not found"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

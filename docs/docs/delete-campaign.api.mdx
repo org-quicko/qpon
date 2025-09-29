@@ -5,7 +5,7 @@ description: "Delete campaign"
 sidebar_label: "Delete campaign"
 hide_title: true
 hide_table_of_contents: true
-api: eJy9U01v2zAM/SsCTxugJdmOvnVrDgN2WPdxCoKBtplYrSypItU1MPzfBzofTZodh/lim3x8pJ74BhDcMlQr+IR9QrcNsLaQMGNPQlkzAwTsCSpoYkkx/HItWHABKkgoHVjgpqMeoRpAdkmBLNmFLYwWMj0Wl6mFSnIhC/SMffKKGYYT3TjCaF+6HOb4d31eCLXTWtGcYmBi5fqwWOirJW6yS+KidvxemoaYN8WbIxgsNDEIBVE4puRdgwqf37PWDNfzxfqeGgELKcdEWdzUcZwe+6rjLXkSMsdhwUJP0sUWKminlNKoDhXM98rx/EzC+bFQo2cHniTcxGkoJ5Midykq/WV7DRrHBs2e02x0A37H/GDq4ryYemfuimse4sx8nAIuGDTcoMfakzV98eLeCQUMYqSLZduJSTmqjNZIR+bukpaCFrKpC7tAzMRGomnjSQI2GFqTSzBxs6HMRoHbF6qbr58nRIvc1RFzOwMLT5R5f6L3s8VsobuRIkuP0w0dVuxa6wsxTvcn9Czz5NEF5SnZa25/CauDGxgsVOfGOE0/Jc52eW2hiyxaOgw1Mv3Mfhw1/Fgo76BarS08YXYqy2S71rF+t1Bt0DNdTXlaR3jz7bD/bw3Yv09/CGLYqUroi/6BhQfaXVhbnfg/G58pNK5HCx1hS3k6/x5x0zSU5Kz2ynpq6ZNZbpdflj+WMI5/AI5VrT4=
+api: eJy9VU1v2zAM/SsETxugJt3Vt23tYcAO67CdimBgbCYWakuqKHfNDP/3gXbi2E2HNjv0Zovke48folpMtBXMbvEz1YHs1uHKYKBINSeOamnRUc2Y4eMFBXtxxzs0aB1mWDIVHNFg5PvGRi4w21AlbLBgyaMNyXr1+/jtCwxh/Eh1qBSsbUe4rkODkpdcE2Ytpl1QB0nRui12nXkiQDiPnP5Hwxh5KmMwvVqJj1ty9g8p+C9bHMQESuVMSooNz+meRL6aMfdNOJdrjHk9y34IzuQ5Rr3AtFIgCd4JC2Zt97RLV1xxYjgAosGaU+kLzLDoTWgGQRkup5WU5Ulhl0P2spyUYXkA1tOJ6D7Xje8V29RndRO80s/l6SFYAYIBEzZ6T377eAfrxlYJ1ju4aWx+5xfwqT+wDggkp4rWFRuomyrZi8SOXIJU+mZbJgjR5yxiIJUMN3NYdhoosG7EOhZhgeSh8GOJBMgVEBsHfrPhKKCO2yOUzr16FCTl2lMsFmjwgaMMGX1YXC4usTMYvKSanJZgPwunvZgVY2xu4se0DBVZpzhNrNQ2NOl2dlEEDWanN2ffJzVOh3xMsDdM5nJlsPSSFL1t1yT8M1Zdp8f3DccdZrcrgw8UrVau31+FFf3+x2poMfcusUuY4bvv+zF/D2ieT3B/SE732QNVjf6hQV1wp4tB79Yb0h8L+NbEkwZ1q84c9vJ55T8+FM9KGKimz9Co47x0Z4/Bi1Sj55FtNVlMV9dfr39cY9f9BTmXgn4=
 sidebar_class_name: "delete api-method"
 info_path: docs/qpon
 custom_edit_url: null
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"delete"}
-  path={"/coupons/{coupon_id}/campaigns/{campaign_id}"}
+  path={"/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}"}
   context={"endpoint"}
 >
   
@@ -47,7 +47,7 @@ Delete campaign
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"coupon_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{coupon_id}}"},{"name":"campaign_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{campaign_id}}"}]}
+  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"{{x-api-key}}","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"{{x-api-secret}}","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"{{organization_id}}","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"example":"{{coupon_id}}","schema":{"type":"string"}},{"name":"campaign_id","in":"path","required":true,"example":"{{campaign_id}}","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>
@@ -62,7 +62,7 @@ Delete campaign
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+  responses={{}}
 >
   
 </StatusCodes>

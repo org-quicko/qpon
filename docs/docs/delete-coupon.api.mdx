@@ -5,7 +5,7 @@ description: "Delete coupon"
 sidebar_label: "Delete coupon"
 hide_title: true
 hide_table_of_contents: true
-api: eJy9U01v2zAM/SsCTxugJdmOvm1rDwN2WPdxKoKBlplYrSypItU1M/zfBzpZ2jQ9DvPFNkk9Pj3yjSC4ZWiu4WOqOUVYW8hYcCChovERIg4EDaSyxeh/o/gUf/oOLPgIDWSUHiyw62lAaEaQXdZyluLjFiYLhe6qL9RBI6WSBXrAIQetGcdnoNMEkz12dDOjf9brCKdd1lrLOUUmVqR3q5W+OmJXfFY60MC36hwxb2owf4vBgktRKIqWY87Bu5n98ob1zHjOLrU35AQs5JIyFfFzx2l+7LOOFxRIyOypgoWBpE8dNNDNCQVRDRpYPlWOl2dCLvcQvHxy7VnGTZqpeZlVudq3OSWhQePZ4IGH2eg+/Erl1rTVBzHtzlxV727TwnyYAz4aNOwwYBvImqEG8W+EIkYx0qe67cXkklRMa6Qnc3UKS1EPsmkr+0jMxEaS6ZJxOGT028gGY2dKjSZtNlTYaOH2Eer9l09zRYfctwlLtwAL91R4f6O3i9VipfuRE8uA85wOS/Zc8RMpjjMUepBlDuijotQSNLcfxfWJMxgsNOdWOUxDk49bvbbQJxaFGMcWmX6UME0avqtUdtBcry3cY/EqzmzFzrN+d9BsMDCdsT2uJrz6enDCawP25Vscghh3qhWGqn9g4ZZ2L9hdffkf2z+qNK0nCz1hR2XWYJ9/7xxleXLyzIpq8aN9Li4/X36/hGn6A+PQuA0=
+api: eJy9VE1v2kAQ/SujObXSBtKrb23DoVIPpWpPCFWDPdgr7F1nZ0yhlv97tTYBDIkSeujNno/33nzstKiUCyYL/Oyb2jtcGqwpUMXKIdpbdFQxJri7o9rebXiPBq3DBAumjAMaDPzY2MAZJmsqhQ1mLGmwtVof4z5++wJDGu+oqssI1rZHuK5Dg5IWXBEmLeq+jgGiwbocu85cCBBOA+u/aDhmXssYXG9W4kNOzv6hCP7LZk9iatJiJEVDw2O6i8w3M6b9cG7jOua8wrKMMFJ7JyyYtN1l7x64ZGUY4NBgxVr4DBPMegeaQUyC0/PqZHpV7HSAkOmZtL6ete91We2VzweasYhoBCtABx2wjjv624cNrBpbKqz2MG9suvET+NQbrAMCSamkVckGqqZUe6fsyClo4Zu8UKiDT1nEgBYM8zEsu5gosGrEOhZhAfWQeUipqsnmToBcBqFx4NdrDgIxMD9BxZ2LERlJsfIUsgka3HKQoaIPk/vJPXYGay9akYstOEz7suOjVhwHqLzTaV2SdRGlCWX0DaNYjFZU0GByvbOHaUTnab2WBgsvGiHadkXCP0PZddH82HDYY7JYGtxSsLE5/XnIrMTvF15ei6l3yk4xwXffD9v6HtA8X8XBSC6eiy2VTfxDg/F+XL+7+ED+I/2pS92yM0+357YenI7hswIGovNTe1RxW7Gjg/cq1THyxLY8e+gPs6+zHzPsur8kYSBA
 sidebar_class_name: "delete api-method"
 info_path: docs/qpon
 custom_edit_url: null
@@ -47,7 +47,7 @@ Delete coupon
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"organization_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{organization_id}}"},{"name":"coupon_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{coupon_id}}"}]}
+  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"{{x-api-key}}","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"{{x-api-secret}}","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"{{organization_id}}","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"example":"{{coupon_id}}","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>
@@ -62,7 +62,7 @@ Delete coupon
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+  responses={{}}
 >
   
 </StatusCodes>

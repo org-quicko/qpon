@@ -5,7 +5,7 @@ description: "Create item"
 sidebar_label: "Create item"
 hide_title: true
 hide_table_of_contents: true
-api: eJytVE1v2zAM/SsCTxugJtmOPq0tduhp/dopCArapm21tuRK1NrM8H8fKDtN2gTbZT4YAkk9ku+RGoCxDpCt4YqpC7DR4Ok5UuALV24hG6BwlsmyHLHvW1MgG2eXj8FZsYWioQ7lxNueIAOXP1LBoKH3rifPhoJ4v5FlwwmxpApjy5CBYepg1GCxowOIwN7YWhwlhcKbXjKe9BcxsOseKkNtGf5dxBNtT8L8wjaeKkA+DfSKXd8mhMnQo8eOmLwQN8zVg/M1WvM70fNgStBgLGTQIzegj3naZxfCjacSMvaR3vJBBsPwAXQcYUwShd7ZMDX1dbWaWD2gCu5iUVAIVWzVLhj0f9JynHl5n/HSEzKpJKmGjrhxpbTvQgIQFjJYHjW0NGnuNEgRt/vR+74j4Y3fmbCPed/MR7OQ1N77Z5H34opAlUvtGk583/TOHiUQozJBoSpclHMl6r84/6TyaFpW+VbdRFM8uYW6SAZjFapQYIt5S1p1sWVzxmTRsuLGxbph1XsnAmnFDamb97Bk5WJQeQzGUggUFDtVOlVg16OpbVBoS+WjVa6qyAclgfUe6vz6KkWUGJrcoS8X0j/5MHX0ZbFarGTyRJwO7QHJ71U8vX5Mr7zsWzRWMKJvxTcJvIbsxBrsXpZGZiFbwzDkGOinb8dRzM+R/Bay9UY08kZ6T3tVmiDnErIK20BH5bxNM3y6nVfoswJ9uszZiHZ7MAqg5yH5WPS4GTU0hCX5VMoUdTklPLsXrD3K0SqNenfjvCio57/Gbg6W5frH3T1oyOent3Ol3PH4Ajr9U8UuEZAmPNkGaNHWEWuJnTDl+wN3WQnf
+api: eJydVU1v2zAM/SsCTxugNOlhF9/WYoee1nbdKQgK2mZstbakSnTbzPB/H2inzodTdF1OCk0+Pj7Kzy0wFhGSJVwx1bDS4DFgTUxBoi1YrAkSeJ2hN7NH2oAGYyGBkjCnABoCPTUmUA7JGqtIGnKKWTCejZO879dXaiijV6x9JWBtO8J1HWiIWUk1QtICb7wkRA7GFtB1+ohApCwQ/w+HsXJKY3j0z0xcKNCaPyjg9yZ/I+ORywMqHBo6bHdU+UHHlYBF72ykCEnbDdgU+cLlGynInGWyLEf0vjJZDzx/iDJ0O0V26QNlIoEPzlNg0+Nux5r0PxLxxPOsiezq+7WhKo8f9/HBZPuNjGUqKEDXdSITU7BYiaAntOj2hBwXwRRZGaZancPxyvtn+6ETdLeEvi0WxwT68nPpeywDXAZCpr4taKiJSycF3sV+YrkECcz3Nx3nk8XPpTyCBtnV7W6rPyYzbhU4ZjGG3xtqOtJub8auXS+y4f5i3vhen8MOElQmKlSZa+S8Flt4ceFRpY2pWKUbddOY7NGdqYs+YKxCFTOsMK1Iq7qp2MyYLFpWXLqmKFn54DKKUSsuSd0cwpKVwqjSJhpLMVJU7FTuVIa1R1PYqNDmKjRWufWaQlSSWOyg5DWXjBxjmToM+RloeKYQh4nOzxZnC5lfdlWj3VP5cKmn7z3TK899hcYKRhOqXu1+38sDT5C9JidMol/5SkMpVyVZQtumGOl3qLpOwk8NhQ0ky5WGZwxGtOgNODdRzu94254LwJfbrfd8VaBP094G0YohP2PVyD/QIA49dbZu1ek3k/0clZ3rn6QxtNv/poxcxGg/12d09g9bjZkH3YaMywFzdicgu4yJsYotj2/99c9fd6Ah3Rpy7XKpCfgiHwJ8GbR1frgVSTvEWqjQFg0Wkjtgyu8vk5abGw==
 sidebar_class_name: "post api-method"
 info_path: docs/qpon
 custom_edit_url: null
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"post"}
-  path={"/{organization_id}/items"}
+  path={"/organizations/{organization_id}/items"}
   context={"endpoint"}
 >
   
@@ -47,14 +47,14 @@ Create item
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"organization_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{organization_id}}"}]}
+  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"{{x-api-key}}","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"{{x-api-secret}}","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"{{organization_id}}","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
-  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"@entity":{"default":"item"},"name":{"type":"string"},"description":{"type":"string"},"custom_fields":{"type":"object","properties":{"key":{"type":"string"},"value":{"type":"string"}}}}},"examples":{}}}}}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"name":{"type":"string"},"description":{"type":"string"},"custom_fields":{"type":"object","properties":{"price":{"type":"integer"}}},"external_id":{"type":"string"}}},"example":{"name":"test item 1","description":"test description","custom_fields":{"price":500},"external_id":"test1"}}}}}
 >
   
 </RequestSchema>
@@ -62,7 +62,7 @@ Create item
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+  responses={{}}
 >
   
 </StatusCodes>

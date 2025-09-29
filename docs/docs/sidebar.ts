@@ -4,7 +4,8 @@ const sidebar: SidebarsConfig = {
   apisidebar: [
     {
       type: "doc",
-      id: "qpon",
+      id: "index",
+      label: "Introduction",
     },
     {
       type: "category",
@@ -39,12 +40,6 @@ const sidebar: SidebarsConfig = {
           id: "delete-organization",
           label: "Delete organization",
           className: "api-method delete",
-        },
-        {
-          type: "doc",
-          id: "fetch-organization-summary",
-          label: "Fetch organization summary",
-          className: "api-method get",
         },
       ],
     },
@@ -100,6 +95,12 @@ const sidebar: SidebarsConfig = {
           label: "Fetch coupons summary",
           className: "api-method get",
         },
+        {
+          type: "doc",
+          id: "fetch-coupon-summary",
+          label: "Fetch coupon summary",
+          className: "api-method get",
+        },
       ],
     },
     {
@@ -111,12 +112,6 @@ const sidebar: SidebarsConfig = {
           id: "create-campaign",
           label: "Create campaign",
           className: "api-method post",
-        },
-        {
-          type: "doc",
-          id: "fetch-campaigns",
-          label: "Fetch campaigns",
-          className: "api-method get",
         },
         {
           type: "doc",
@@ -138,6 +133,12 @@ const sidebar: SidebarsConfig = {
         },
         {
           type: "doc",
+          id: "fetch-campaigns",
+          label: "Fetch campaigns",
+          className: "api-method get",
+        },
+        {
+          type: "doc",
           id: "deactivate-campaign",
           label: "Deactivate campaign",
           className: "api-method post",
@@ -147,6 +148,12 @@ const sidebar: SidebarsConfig = {
           id: "reactivate-campaign",
           label: "Reactivate campaign",
           className: "api-method post",
+        },
+        {
+          type: "doc",
+          id: "fetch-campaigns-summary",
+          label: "Fetch campaigns summary",
+          className: "api-method get",
         },
         {
           type: "doc",
@@ -186,21 +193,27 @@ const sidebar: SidebarsConfig = {
         },
         {
           type: "doc",
-          id: "fetch-coupon-codes-by-code",
-          label: "Fetch coupon codes by code",
+          id: "fetch-coupon-code-by-code",
+          label: "Fetch coupon code by code",
           className: "api-method get",
         },
         {
           type: "doc",
           id: "deactivate-coupon-code",
           label: "Deactivate coupon code",
-          className: "api-method post",
+          className: "api-method patch",
         },
         {
           type: "doc",
           id: "reactivate-coupon-code",
           label: "Reactivate coupon code",
-          className: "api-method post",
+          className: "api-method patch",
+        },
+        {
+          type: "doc",
+          id: "delete-coupon-code",
+          label: "Delete coupon code",
+          className: "api-method delete",
         },
       ],
     },
@@ -210,39 +223,135 @@ const sidebar: SidebarsConfig = {
       items: [
         {
           type: "doc",
-          id: "fetch-offers",
-          label: "Fetch offers",
-          className: "api-method get",
-        },
-        {
-          type: "doc",
           id: "fetch-offer",
           label: "Fetch offer",
           className: "api-method get",
         },
-      ],
-    },
-    {
-      type: "category",
-      label: "Redemptions",
-      items: [
         {
           type: "doc",
-          id: "redeem-coupon-code",
-          label: "Redeem coupon code",
-          className: "api-method post",
-        },
-        {
-          type: "doc",
-          id: "fetch-redemptions",
-          label: "Fetch redemptions",
+          id: "fetch-offers",
+          label: "Fetch offers",
           className: "api-method get",
         },
       ],
     },
     {
       type: "category",
-      label: "Items",
+      label: "User",
+      items: [
+        {
+          type: "doc",
+          id: "create-super-admin",
+          label: "Create super admin",
+          className: "api-method post",
+        },
+        {
+          type: "doc",
+          id: "fetch-users",
+          label: "Fetch users",
+          className: "api-method get",
+        },
+        {
+          type: "doc",
+          id: "create-user",
+          label: "Create user",
+          className: "api-method post",
+        },
+        {
+          type: "doc",
+          id: "fetch-users-of-an-organization",
+          label: "Fetch users of an organization",
+          className: "api-method get",
+        },
+        {
+          type: "doc",
+          id: "update-user",
+          label: "Update user",
+          className: "api-method patch",
+        },
+        {
+          type: "doc",
+          id: "delete-user",
+          label: "Delete user",
+          className: "api-method delete",
+        },
+        {
+          type: "doc",
+          id: "login",
+          label: "Login",
+          className: "api-method post",
+        },
+        {
+          type: "doc",
+          id: "update-user-role-in-organization",
+          label: "Update user role in organization",
+          className: "api-method patch",
+        },
+        {
+          type: "doc",
+          id: "fetch-organizations-for-a-user",
+          label: "Fetch organizations for a User",
+          className: "api-method get",
+        },
+        {
+          type: "doc",
+          id: "fetch-user",
+          label: "Fetch user",
+          className: "api-method get",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Api Key",
+      items: [
+        {
+          type: "doc",
+          id: "create-api-key",
+          label: "Create Api Key",
+          className: "api-method post",
+        },
+        {
+          type: "doc",
+          id: "fetch-api-key",
+          label: "Fetch Api key",
+          className: "api-method get",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Coupon Item",
+      items: [
+        {
+          type: "doc",
+          id: "add-items",
+          label: "Add items",
+          className: "api-method post",
+        },
+        {
+          type: "doc",
+          id: "fetch-items",
+          label: "Fetch items",
+          className: "api-method get",
+        },
+        {
+          type: "doc",
+          id: "update-items",
+          label: "Update items",
+          className: "api-method patch",
+        },
+        {
+          type: "doc",
+          id: "remove-item",
+          label: "Remove item",
+          className: "api-method delete",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Item",
       items: [
         {
           type: "doc",
@@ -274,11 +383,17 @@ const sidebar: SidebarsConfig = {
           label: "Fetch item",
           className: "api-method get",
         },
+        {
+          type: "doc",
+          id: "upsert-item",
+          label: "Upsert item",
+          className: "api-method put",
+        },
       ],
     },
     {
       type: "category",
-      label: "Customers",
+      label: "Customer",
       items: [
         {
           type: "doc",
@@ -304,35 +419,77 @@ const sidebar: SidebarsConfig = {
           label: "Delete customer",
           className: "api-method delete",
         },
-      ],
-    },
-    {
-      type: "category",
-      label: "User",
-      items: [
         {
           type: "doc",
-          id: "create-user",
-          label: "Create user",
-          className: "api-method post",
-        },
-        {
-          type: "doc",
-          id: "fetch-users",
-          label: "Fetch users",
+          id: "fetch-customer",
+          label: "Fetch customer",
           className: "api-method get",
         },
         {
           type: "doc",
-          id: "update-user",
-          label: "Update user",
+          id: "upsert-customer",
+          label: "Upsert Customer",
+          className: "api-method put",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Customer coupon code",
+      items: [
+        {
+          type: "doc",
+          id: "add-customers",
+          label: "Add customers",
+          className: "api-method post",
+        },
+        {
+          type: "doc",
+          id: "fetch-customers",
+          label: "Fetch customers",
+          className: "api-method get",
+        },
+        {
+          type: "doc",
+          id: "update-customers",
+          label: "Update customers",
           className: "api-method patch",
         },
         {
           type: "doc",
-          id: "delete-user",
-          label: "Delete user",
+          id: "delete-customers",
+          label: "Delete customers",
           className: "api-method delete",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Redemption",
+      items: [
+        {
+          type: "doc",
+          id: "redeem-coupon-code",
+          label: "Redeem coupon code",
+          className: "api-method post",
+        },
+        {
+          type: "doc",
+          id: "fetch-redemptions",
+          label: "Fetch redemptions",
+          className: "api-method get",
+        },
+        {
+          type: "doc",
+          id: "fetch-redemptions-for-coupon-code",
+          label: "Fetch redemptions for coupon code",
+          className: "api-method get",
+        },
+        {
+          type: "doc",
+          id: "generate-redemption-report",
+          label: "Generate Redemption Report",
+          className: "api-method get",
         },
       ],
     },

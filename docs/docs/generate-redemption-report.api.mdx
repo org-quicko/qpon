@@ -1,0 +1,71 @@
+---
+id: generate-redemption-report
+title: "Generate Redemption Report"
+description: "Generate Redemption Report"
+sidebar_label: "Generate Redemption Report"
+hide_title: true
+hide_table_of_contents: true
+api: eJylVE1vm0AQ/SurObUSNk6qXqh6aKUq6q2J2lNkRWMYYGvY3ewMSVzEf68WHGycxInbG+zOvPfmY18LggVDcg1XlFHtRFsDywgceqxJyIe7FgzWBAmIrunGkdc2gwi0gQRuG/IbiMDTbaM9ZZDkWDFFQA9Yu6rPKjXf3BOtIQJOS6oRkhZk48Ili9emgK6LRpbc2/oE+MVZvPgQny/OPz6Hr41QQX5CIPY0+LPFSfAPM0xTcjLrY7ZMJWFG/jgVOlfpFMMM4t9szafc+hrlM5dEMgsnEwkZOU8pyoh1IMLp2Zo2rwvIiFOvh9En8OXHdzWk7YS17QjXdW+c4pDBlHqSf9EwZj6VMVy9WYn1BRr9p+/rjR4316GUEyniG5rSHWS+wrgMYOysYWJI2u6wqgsy5FFI7Z6auiJnfaiyJiltBgkUfdG9uATifQUcPxEU+xGKY99jcV9fbnuFWvpKLl2/OlM54VBpVqhS24TvPDz5e+vXatXoStRqoy4bna7tXH3tD7RRqDjFClcVRapuKtEzIYNGlJS2KUpRztuUmCMlJanLKSyZkMhq1bA2xEysxKrMqhRrh7owrNBkyjdG2TwnzyoEFjuosBchIkMuVxZ9NocI7sjzUNHZfDFfQBeBsyw1mtCC7Q4c7f2kL+NchR4kdhVqEyAbX4W7YS7Xk50KHU+eLtneaPq/YTjLCErLEjDadoVMv3zVdeF48KLgtpnm0Kjd6wjv8dB977BqgkwIm/5CxtZJ3xLae+IucBl+vA6Rz0s66FlqjZARSODd1fZBvVcQPd/L7SGazT7no5LDTnbLLnp0jtOkvMQ/8Bza9PEuvUiy88vjXKMb/wfP6ImvUo2Rk5GOJnPx7Sd03V81NLpt
+sidebar_class_name: "get api-method"
+info_path: docs/qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Generate Redemption Report"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/organizations/{organization_id}/redemptions/reports"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Generate Redemption Report
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"time_period","in":"query","required":false,"example":"this_week","schema":{"type":"string"}},{"name":"from","in":"query","required":false,"example":"01/03/2025","schema":{"type":"integer"}},{"name":"to","in":"query","required":false,"example":"01/10/2025","schema":{"type":"integer"}},{"name":"x-accept-type","in":"header","required":false,"example":"application/json;format=sheet-json","schema":{"deprecated":false}},{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"{{x-api-key}}","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"{{x-api-secret}}","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"{{organization_id}}","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{}}
+>
+  
+</StatusCodes>
+
+
+      

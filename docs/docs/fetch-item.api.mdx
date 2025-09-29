@@ -5,7 +5,7 @@ description: "Fetch item"
 sidebar_label: "Fetch item"
 hide_title: true
 hide_table_of_contents: true
-api: eJy9U01v2zAM/SsCTxugJdmOvnXANvS27uNUBAMtM7ZaW1JFqmtm+L8PVNNsTXoc5ott6pF8fOKbQbBnaK7hUmhi2FpImHEioazhGQJOBA3E3GPwv1B8DD98BxZ8gAYSygAW2A00ITQzyD4pnCX70MNiIdNd8Zk6aCQXskAPOKVRMfN8UnRZYLHHjl5o+medDsW0w1aRnGJgYq3zbrPRV0fssk9KBRr4Wpwj5l0ZzRMYLLgYhIIoHFMavavM1zesOfM5t9jekBOwkHJMlMXXjkt97EnHjyRuMMoTLEwkQ+yggZ5qus7ewPpMsLXieX0cr4q1i5WClzr7VYoBTptp0Hg2aFws+r3TO/8Z861pix/FtHtzVby7jSvzvgZ8MGjY4YjtSNZMZRT/RihgECNDLP0gJuWoolkjA5mr52UpaCKbtrAPxExsJJouGodTQt8HNhg6k0swcbejzEaB/Z9SF58vK6JDHtqIuVuBhXvK/DjR29VmtdEtSJFlwnofh0V6puwzHY4XJfQg6zSiD1qi5FHPHlW/huaF3a9msdA8LenWwhBZFD7PLTJ9z+OyaPiuUN5Dc721cI/ZqwrVV51n/e6g2eHIdMbsuGvw6sthsV8bsC8zPgQx7FUUHIv+gYVb2r/gXTXZf2z/pNGyXSwMhB3lqsDj6YVzlOSvvDNnqWOPhvj04Rssy2/BO6EH
+api: eJy9VE1v1EAM/SuWTyBNd8s1N5AA9UYRnKoV8ibeZNRkJh07pUuU/46c/czuVm05cEs8tt/z80ePSqVgdoc3yg0uHLaUqGHlZNYeAzWMGT5dUeuv7nmNDn3ADCumghM6TPzQ+cQFZiuqhR0WLHnyrfpofh+/3cAmjJ+oaWtL1vf7dMOADiWvuCHMetR1aw6iyYcSh8GdEBDOE+u/cNhHntPYPL2aSUwlBf+HLPkvX+zItKTVhIqmjqdwJ5GvRvTKzduQthEvICwsibQxCAtm/XCq2xfWvALLhQ4b1ioWmGE5yjiSyHB+XJPMz0qcW7TM94TGGlZxZON1ZHvbxoCn0GYEL0CQx86+VzaVv2O6h2Xna4XlGm47n9/HGXwaDT4AgeRU07JmB01Xq79SDhQUtIpdWSm0KeYs4kArhttpWg4WKLDsxAcWYQGNUETIqWnJl0GAQgGpCxBXK04C5lgeUtmUmUdBUi0jpWKGDh85yaaiD7Pr2TUODtso2lAwCbb9neg80WHfM+Unnbc1+WApulTb26YHd5OJFHSYXRhRa4M97WZp4bCKohbe90sS/pnqYTDzQ8dpjdndwuEjJW+qjJeg8GLfzyxZj3kMykExw3fft6P5HtBdrmBrpGCX4ZHqzv7QoZ2K8xWzXfiP8DuNhsXgdkfmbQocrt5F+A3M8U3dc3hbqZPL9iLU3vOAtjha7K+ff+Aw/AXqKxR2
 sidebar_class_name: "get api-method"
 info_path: docs/qpon
 custom_edit_url: null
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"get"}
-  path={"/{organization_id}/items/{item_id}"}
+  path={"/organizations/{organization_id}/items/{item_id}"}
   context={"endpoint"}
 >
   
@@ -47,7 +47,7 @@ Fetch item
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"organization_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{organization_id}}"},{"name":"item_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{item_id}}"}]}
+  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"{{x-api-key}}","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"{{x-api-secret}}","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"{{organization_id}}","schema":{"type":"string"}},{"name":"item_id","in":"path","required":true,"example":"{{item_id}}","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>
@@ -62,7 +62,7 @@ Fetch item
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+  responses={{}}
 >
   
 </StatusCodes>

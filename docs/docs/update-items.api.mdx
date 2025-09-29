@@ -1,0 +1,71 @@
+---
+id: update-items
+title: "Update items"
+description: "Update items"
+sidebar_label: "Update items"
+hide_title: true
+hide_table_of_contents: true
+api: eJy9VU1v2zgQ/SvEnLoAFcdxHFu6tcEC7a0p2lNgLEbSyGIjkSxJJXEF/fdiJEe27Cza7GF9kocz7w3ffLCFgFsPyT3cmsYaLT4FqmEjwaLDmgI5PmxBY02QwHOEVkUPtAMJSkMCJWFODiQ4+tEoRzkkBVaeJOTkM6dsUIb93n/+JIYwesbaVgzWtiNc14EEn5VUIyQthJ1lBx+c0lvoOnmSgKfMUfgvOYyR52kMR3+ciXFb1OonMvg/Kn9JxmIoJ6kE19CU7iTyjxmzvkJv4xpjfsOyYRhvjfbkIWm7AZV8+GDyHQdkRgfSgT/R2kplffqz756lbc+RTfqdMhbaOmPJBdXjggpU+yM3dA77Zjqxj4l13dGFxvh7uFnO10V+tYrSq6ur6Lq4iaN4tVhFy0U8X8WrOF6ma5CQx+tssVgV0fp6WUTXeJlGMdEyWqaL9by4nBc3eQybgWbaLd9sjoHEQCihplCafBA9Y9V78ROYHVfTz86KOxsq4GdHpZi9gLJ6Xw46//3KPfdCbDqueWF6iVToq3tnjYbTtNkolBcoBj5R8Bw/Gfcg0kZVQaQ7cdeo7MFciA+9QWmBwmdYYVqRFHVTBRUF0qiDCKVptmUQ1pmMvJcilCTuprCkOdCLtPFKk/fkRTAiNyLD2qLaai9Q58I1WpiiIOcFO24PUDyX7JGjL1ODLr8ACY/k/HCj+cXlxSV0Eqzxoca+3fYTcVKjiRJjKwV6DjNbodIM0riKz4bq3U+mmCGS87HeF5APJxPYk24klMYHhmrbFD19c1XXsflHQ24Hyf1GwiM6xRr1mzRXnr//ZUkdDRq8+7If7L8EyNdv8zJFmmfoEauG/4EEXrXnK4p3yf9If1Cr4/bdr+m3aXB4N15NYCA6fpXGLN522cnb8Fuq0XPCNnjcDpjRVwY5eJwtTV6541L5/P7r7UeQkO63bW1yDnL4xPsdnwZZjR3aNGkHWwsV6m2DW/YdQPn3C03Tqvw=
+sidebar_class_name: "patch api-method"
+info_path: docs/qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Update items"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"patch"}
+  path={"/organizations/{organization_id}/coupons/{coupon_id}/items"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Update items
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"{{x-api-key}}","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"{{x-api-secret}}","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"{{organization_id}}","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"example":"{{coupon_id}}","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"items":{"type":"array","items":{"type":"string"}}}},"example":{"items":["6518fd27-b222-4f69-9737-5391797995b8","d98c337f-845f-4a0b-9ee5-5b381f01f6d9"]}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{}}
+>
+  
+</StatusCodes>
+
+
+      

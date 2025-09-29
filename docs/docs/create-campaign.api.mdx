@@ -5,7 +5,7 @@ description: "Create campaign"
 sidebar_label: "Create campaign"
 hide_title: true
 hide_table_of_contents: true
-api: eJytVk1v2zgQ/SvEnLqAHHv3qNO2QQ972qQfp8AoRuJIYiORKjlM4jX034uhLFm2A/cD64PBkMM3b97wjbMHxjpA/gC32PVoagvbDDx9ixT4ndM7yPdQOstkWZbY960pkY2z66/BWdkLZUMdyop3PUEOrvhKJUMGvXc9eTYU5PRvsmw4IWqqMLYMOZRT2iEDix0tYAJ7Y2s5KKKuiRdHNnYFeTmiFyZvsf1i9KtXJ/xVYOQYLmMyIBs7UQBLNk8EGRg7L+mlwRiYNGyHIaXDrm9TPUPa6NFjR0xeRNwfSoCXFUZuVjEIt27EhBwaQk0eskvJjoQ1hdKbXhSGHD4fEFTlvDJaFKwO+sPMBnLY789SDgMM2TmfHkN4dl7/Pp+7A0LiI5jC6BqfKeU5H+drtOa/dHNlfonRMssS5os5y1K62KftCb1Hbq5jy8s3njTk7COdV3+bAFUCXLKYE0n+5J/QOxvGZ//XZjM++SXSx1iWFEIVWzUFQ/Y/GW0Yxqd5xt0TMqnZbxl0xI3TIosLCUTUyWE9VhPWi7LW07UAGQidD8cJ8X4SYtZ9dtbk282ZT48RF/acXDhIyyqXijWcdL7v0yM7Les+NSQoVCNbVYkfn51/VEU0Latip+6jKR/djXqXNoxVqEKJLRYtZaqLLZsVk0XLihsX64ZV7520J1PckLo/hSUrF4MqYjCWQqCg2CntZmmDQquVj1a5qiIflATWR6i3d/+kCI2hKRx6fQMZPJEPY0V/3mxuNlK/tKVDuxD2socnYszvgumF132LJo3V6Fs5G9v7cHCFNDJfGuTY4W0GjbyI/AH2+wIDffbtMMj2t0h+B/nDNoMn9EZ0SFNPmyBrDXmFbTi3zeIHBN58OBjsD7U006u8D5tod6IPtlH+ggweaXdi7mE7ZNPg+DU216frq6TG5JfzfeYn8+fnGVyfpz9msJjov8ngR2kuB/VJojHsdoRbfRKkY8TFEDveeFuW1PPV2O1iRN39+/GTDJTDfySd03LH4zNk6TvV4VJ5aeimvT20aOuItcSOmPL5DpwiHWk=
+api: eJydVU1zm0AM/Ss7OrUz2E6v3JpMD700cZKePJ6OABk2gd3NakniMvz3jsDBYNLJh094V3p6ekKPBgLmDPEGLrByqHMD2wgceqwokJebBgxWBDE8L9DpxT3tIQJtIIaCMCMPEXh6qLWnDOIdlkwRZMSp1y5oK3Hfr36qPo2esXKlgDXNANe2EAGnBVUIcQNh7ySAg9cmh7aNTggwpZ7CZzgMmXMa/dW7mVifo9F/UcD/6OyFjMNQTKgEX9O03EnmuyumtnbvqTXt+qLLUl3WmMWA9kb9rRRgZw0TQ9y0fT3icG6zvSSk1gQyQR7RuVKnXWOrO5byzRzZJneUygict4580B3uoclZfSEdyBsspfFX+LWjtgapbomDWl9d/lI3P27hBAMCcZDMdqaVJwyk0pc9iKCiUFjJcZY7ziJ5DKvxDHk1G+mqV5dXI5lXI1gR5/oo449ZA4f2TpkfVdFmZzs5dOgGunZWgKf9rLvJs0LV01A7Weon6+9VUusyqGSv1rVO7+1SnXcH2ihUnGKJSUmRquoy6EUggyaoUNg6L4Jy3qbEHKlQkFpPYclIIqukZm2ImVgFqzI7aMoKTaZ8bZTd7cizksD8CCVLKhEZcpFY9NkSIngkz31H35ZnyzPpX+ZRoRlJNh/eRIzhzQn0HFauRG0Ep/al3PVz3Uy2miGCeL7mh9HK5Xgj05F5FvKyxBtomgSZfvuybeX4oSa/h3izjeARvRalOnPNNMvzf3xrtGHw5fqw618VRK83dDhEI2b7iGUt/yACcd+5a4m9fKr82FY+weOoXLttoxcL/5gYx2/KqwT6QuMv1sDiY11PvhtvlhoiJ9X6iIsec3ErIMeImW2K6Q7Oc3V5IxaWHOy2spnkeHwS68enXlXr+jc2bvqzBko0eY25xPaY8vsHosi7OA==
 sidebar_class_name: "post api-method"
 info_path: docs/qpon
 custom_edit_url: null
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"post"}
-  path={"/coupons/{coupon_id}/campaigns"}
+  path={"/organizations/{organization_id}/coupons/{coupon_id}/campaign"}
   context={"endpoint"}
 >
   
@@ -47,14 +47,14 @@ Create campaign
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"x-auth-username","in":"header","schema":{"type":"string"},"description":"Username for identification","example":"{{x-auth-username}}"},{"name":"x-auth-password","in":"header","schema":{"type":"string"},"description":"Password for authentication","example":"{{x-auth-password}}"},{"name":"x-organization-id","in":"header","schema":{"type":"string"},"example":"{{organization_id}}"},{"name":"coupon_id","in":"path","schema":{"type":"string"},"required":true,"description":"Coupon id","example":"{{coupon_id}}"}]}
+  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"{{x-api-key}}","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"{{x-api-secret}}","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"{{organization_id}}","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"description":"Coupon id","example":"{{coupon_id}}","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
-  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"@entity":{"default":"campaign"},"name":{"type":"string"},"budget":{"type":"number"},"external_id":{"type":"string"},"campaign-status":{"type":"string","enum":["active","inactive","exhausted"]}}},"examples":{}}}}}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"name":{"type":"string"},"external_id":{"type":"string"}}},"example":{"name":"Test QPON SET","external_id":"test"}}}}}
 >
   
 </RequestSchema>
@@ -62,7 +62,7 @@ Create campaign
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+  responses={{}}
 >
   
 </StatusCodes>
