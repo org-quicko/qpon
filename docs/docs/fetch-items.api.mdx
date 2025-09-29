@@ -5,7 +5,7 @@ description: "Fetch items"
 sidebar_label: "Fetch items"
 hide_title: true
 hide_table_of_contents: true
-api: eJytVMlu2zAQ/RViTi2g2k6PuqXogpzadDkFRjGWxhJjiWQ4wzSOoH8vRl5lp+mC6kJp9Oa9WdmBYMWQ38CVUMswzyBgxJaEopo7cNgS5MArGyAD6yCHu0RxDRlwUVOLkHcg66Ag64QqitBnUBIX0QaxXj0+Di/YmIAVGb9cMsnEvKUlpkaMZTODDOgB29Aozwz6bK8suKL/pcz2kUa6F2Phi5HycPxOmSVaV6nwgUaI5ZjIxwqdfUQN5bstd5wBpX6eMtJdspFKyCUmOpbouhPSvod+rh4cvGNi5Xs9m+kxrsiXVBTEvEyN2YEhg8I7IScKxxAaWwy801tWn+48Rr+4pUIggxB9oCh2UOyH57QH70mK2thhwDJoSWpfQg4VDf5ahBymZ/lMdw7WLf2gbGVI/Tp4B6caatSGoil80velTvEPH1dmkWwjZrE218kWKz8xbwaDdQYNF9jgoqHMtKkR+0rIoRMjtU9VLSZEr7XKjNRkrse05NSRzSKxdcRMbMSb0psC24C2cmzQlSYmpwNPkY0CqwPV5aerAVEi1wuPsZxABvcUeZPRxWQ20XGE4FlaHNqwnadxQUeF2DdI6EGmoUHrlCPFRv9tin0D+RMTudv/2rMopusWyPQtNn2v5s0C6I1QWtbMS8iX2DCdBbAfpT9b+yfjXdH6cOncY5MUMqzUv6o/vfrPiG/vnefFN9DtRXGAzvUjWsX+ZclefN6u/Evzq/C2RnTrY81dLKed7ed9BjVhSXEIZYO6LAoKcuR/tvSaw35VP7z7Cn3/E1RAHAQ=
+api: eJy1VMFu2zAM/RWCpw1wk/bq2zZsQ2/rsJ2KYGBsxhZiS6pId80M//sgO3HiNG2TATsZpsj3nh4ptqhUCKb3+Mk13lm4Va5xkaCnQDUrh3jYoqWaMUVZG48JGospPjQcNphg4IfGBM4xXVElnCA/Ue2rmH6NCUpWck2YtqgbH4PGKhccsOuSEVdpzRfg3pwN3H/OB1YWPQUtGowtJshPV+TN1Zo3O/iSKedwCj9nyYLxalzM+/DtFoayPW/bjnBdd5EA4Syw/ouGsfK5jOHobCUuFGTNH4rgv0y+E+NJy4kUDQ1P6Y4qz2bM+mG9jGuseYNlEWHEOyssmLbdsXdfWLMSjHItmGDNWrocUyx6L3sdKc4PLybzZ/ecD2JkfqBqvoM0duV6YUZ76XfeWTxWEYNgBAgGBFjF9/rbhTUsG1MpLDdw15hs7WbwsQ8YCwSSUUXLihOom0rNlbIlq6Cla4pSwQeXsUgCWjLcTWHZxkKBZSPGsggLqIPcQUa1J1NYAbI5hMaCW604CMTEYg8Vhy5m5CTl0lHIZ5jgIwcZbnQzu55dY5egd6I12WjBtt1TyydGjP1TftK5r8jYiNGEKp4N7bifTGiESJ+P7LYj8XAyXT3pIsHSiUaotl2S8M9QdV0MD0slrsjcSDRo/+TiIx9X5iNVTZSJcYpfSN1uwXNSt3ttn7qIP8HE3NNqjlzLnFW2iim++759NO8Bk9NuboNkN4ecOy3HXp6U/f/o993qFl2yW4GXebDfyScFDESHG//1Hr3KM+7dN6nGzEmbx43z9fMP7Lq/e5akOA==
 sidebar_class_name: "get api-method"
 info_path: docs/qpon
 custom_edit_url: null
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"get"}
-  path={"/{organization_id}/items"}
+  path={"/organizations/{organization_id}/coupons/{coupon_id}/items"}
   context={"endpoint"}
 >
   
@@ -47,7 +47,7 @@ Fetch items
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"skip","in":"query","schema":{"type":"integer"},"description":"Optional page offset. Default is 0","example":"0"},{"name":"take","in":"query","schema":{"type":"integer"},"description":"Optional page size. Default is 10","example":"10"},{"name":"name","in":"query","schema":{"type":"string"},"example":"test"},{"name":"organization_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{organization_id}}"}]}
+  parameters={[{"name":"skip","in":"query","required":false,"example":"0","schema":{"type":"integer"}},{"name":"take","in":"query","required":false,"example":"10","schema":{"type":"integer"}},{"name":"name","in":"query","required":false,"example":"test","schema":{"type":"string"}},{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"{{x-api-key}}","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"{{x-api-secret}}","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"{{organization_id}}","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"example":"{{coupon_id}}","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>
@@ -62,7 +62,7 @@ Fetch items
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+  responses={{}}
 >
   
 </StatusCodes>

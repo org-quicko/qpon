@@ -5,8 +5,8 @@ description: "Reactivate coupon code"
 sidebar_label: "Reactivate coupon code"
 hide_title: true
 hide_table_of_contents: true
-api: eJy1V01z2zgM/SscnHZn6Di7R93anLqXJm06e8hkMrAEW6wlkiWpJF6N/vsOaH1QtutMnV1fYpMg3sMDASItBNx4yB7gxjTWaHFjCoJHCY5+NOTDR1PsIGshNzqQDpC1XSfBosOaAjk+2YLGmiCD1wVatdjSDiQoDRmUhAU5kODzkmpkP2Fn2dQHp/QGOgkF+dwpG5ThEx9uP4kt7cTaOKEK0kGtVY5xUwK9Ym0rPt62aNXTlnZdB50cCWATSuPUP8OBC0n89fe9wDwn70UwWzqCjltPcWuOvxfgmZx/Fz6LMDlJofvVQ1TjNqj7sBequBz5c+JIREcpegrzpIqj2JtQLhpPLq5czOFb7+HtO3AAeZKPRe9fjHuHJre9h8iHfTKjc3wGyDmfPJbX05Qdi6E8z4NLUDkqIAuuoUNefb0eZWkEOsDH2qLa/A8MPIUTLCa4kzrkpqD/ngp7/akiPSTTif3NW6M9eUb78/qa/8x9fm1ioa+bSgzGIJNGCGht1d+E5XfPZ9rjCMzqO+UBJFhnLLmgImIXP4dRfCHMg3rGQCKfAgIJNYXSFKyT8dEXy5XBcm/ll0nSl4PyvJokobddsMfpwKDJ0o3QMSVrE0NQIUp4Z+Ndn5O9i7fPCxy4rvlNeDFuK1aNqoJY7cRdo/KtuRIf44LSAoXPscJVRVLUTRXUIpBGHUQoTbMpg7DOsOhShJLE3dwtaT7oxarxSpP3xP1ZFEaMIQvUhXCNFma9JucFG24mV9xY2aJAX64MuuIKJAydNoM/rq6vrvmusco1xnz2t/anmZlpMiY90GtY2gqVZneNq3hvn7SHvgI8SMjSpjAGETdm1ZqmLjk21VCSvUcJJV+S7AHadoWevrmq63j5R0NuB9nDo4RndIq1jK93oTx/LyBbY+UPSyt5+uG3L30R/i7S7nMy6H4RNU8Dz1g1/Ask8HiQdkNuDe9hMHafS1gkKr+Xx9R6LpdjSGj32Mnhpfq1DJ2dn04S2xNIR7eR3a9JMp9a3sSaTC/EO55VzmIez0gX4p6fT87HfTAhXcjg/ETyNoNkJpox2Bvd7HEW9+znpMWHPCcbkr2jh5Af2PHNuv389R4krPr/JGpunBk4fOHGhS/Rd9f9C3eRWGE=
-sidebar_class_name: "post api-method"
+api: eJylVktv2zAM/isCTxugxN3Vt66X9dYU26kICsZmYqG25Ip01szwfx9kO370gbbuLZFIfh8/PuQaBA8M8R1cuap0Vl25lGCroUSPBQn5cFmDxYIghqcVlmb1QCfQYCzEkBGm5EGDp8fKeEoh3mPOpCElTrwpxbhgd3lzrTo3esKizEOwuh7CNQ1o4CSjAiGuQU5lMGDxxh6gafQzAkyJJ1nCYfB8SaO7+jAT5w9ozT8Mwa/TM5cSJZsxEV/RHG3qeG/SDwMmbYHuzXtY86T7srZeUxZDtI/jY1GiOSxlwCSvsBhjflaHxKW0kEpwfVORPu47dLYBiktnmRjiunmOdEuYiDmikEpGUNBQkGQu7QgngXFLPIZo2hYc1fP2aqIuCkeTwkVn9cLpRMjedhUQR4dzXpEfqLXa7V2bn5FWhk3pLDxPZtN2ECs857IPu+Gv8w9qV5lc1O6kNpVJHtxa/WwPjFWoOMEcdzlpVVS5mJWQRStKMlcdMlGldwkxayUZqc08LNngyGpXsbHETKzEqdSpIWWFNlW+ssrt9+RZBcPDGCrMerBIkbOdQ5+uQcORPHcZ/VhfrC+g0VA6lgJtkKBvrzcrN9Nk6AihJ4nKHI0N4Sqfh7uupnezHcGgIX6xNPqyhrvpfA9pthezwZsWd+I2jsOkvlsNmWMJVOp6h0x/fN404fixIn+C+G6r4YjeBLXbPZ8aDr/fWKE1JM4KWYEYvt32o/ZdgX5djf4Qbdj7R8yr8A80hIfgxQINE74IfbrhFtAYZf8qg2HDLWExqfFXeYzrbbkc53Zqto0+P7Cf64/xxX+VRYc2/Z4YqHwu/9mr/i7UYDmibSdL+eby99UvaJr/cGgjkw==
+sidebar_class_name: "patch api-method"
 info_path: docs/qpon
 custom_edit_url: null
 ---
@@ -27,8 +27,8 @@ import Heading from "@theme/Heading";
 </Heading>
 
 <MethodEndpoint
-  method={"post"}
-  path={"/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/reactivate"}
+  method={"patch"}
+  path={"/organizations/{organizationId}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/reactivate"}
   context={"endpoint"}
 >
   
@@ -47,14 +47,14 @@ Reactivate coupon code
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"x-api-key","in":"header","schema":{"type":"string"},"description":"API key for identification","example":"{{api_key}}"},{"name":"authorization","in":"header","schema":{"type":"string"},"description":"JWT access token","example":"{{access_token}}"},{"name":"x-api-version","in":"header","schema":{"type":"string"},"description":"API version","example":"{{version}}"},{"name":"x-organization-id","in":"header","schema":{"type":"string"},"description":"Organization id","example":"{{organization_id}}"},{"name":"x-auth-username","in":"header","schema":{"type":"string"},"description":"Username for identification","example":"{{x-auth-username}}"},{"name":"x-auth-password","in":"header","schema":{"type":"string"},"description":"Password for authentication","example":"{{x-auth-password}}"},{"name":"coupon_id","in":"path","schema":{"type":"string"},"required":true,"description":"Coupon id","example":"{{coupon_id}}"},{"name":"campaign_id","in":"path","schema":{"type":"string"},"required":true,"description":"Coupon set id","example":"{{campaign_id}}"},{"name":"coupon_code_id","in":"path","schema":{"type":"string"},"required":true,"description":"Coupon code id","example":"{{coupon_code_id}}"}]}
+  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"{{x-api-key}}","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"{{x-api-secret}}","schema":{"type":"string"}},{"name":"organizationId","in":"path","required":true,"example":"{{organization_id}}","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"description":"Coupon id","example":"{{coupon_id}}","schema":{"type":"string"}},{"name":"campaign_id","in":"path","required":true,"description":"Coupon set id","example":"{{campaign_id}}","schema":{"type":"string"}},{"name":"coupon_code_id","in":"path","required":true,"description":"Coupon code id","example":"{{coupon_code_id}}","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
-  body={{"content":{}}}
+  body={undefined}
 >
   
 </RequestSchema>
@@ -62,7 +62,7 @@ Reactivate coupon code
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+  responses={{}}
 >
   
 </StatusCodes>

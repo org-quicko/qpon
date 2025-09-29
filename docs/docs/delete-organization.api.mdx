@@ -5,7 +5,7 @@ description: "Delete organization"
 sidebar_label: "Delete organization"
 hide_title: true
 hide_table_of_contents: true
-api: eJydlE1v2zAMhv+KwNMGqEm2o28dmsOAAWu39VQEA2PTsVpbUkWpbWb4vw9U0tT5QPbhi22JevnoFcUeIq4Yijv4GlZozS+MxllYaPAYsKNIQWZ7sNgRFPBygSk2F4kp5BENxkIBDWFFATRw2VCHUPQQ114WcAzGrmDQUBGXwfisX8DtVkHVLihTkY2mNuUmuwZ6wc63sr7vD1IOAwz6kMcj87ML1f/zXG8VMo9oCtE5nteU+zxu5OJPs+PxGJvzNIEekwlUQRFDokO68eGoLDsmOkgqRAtRZO8sE0u+j7OZvPZVv6eyJOY6teo1GDSUzkayUcLR+3ZrwvSeZU1/vAe3vKcyggYfnKcQTc445OdwH1fUUiQ1BgYNHcXGVVBAladFSvwqYDoO5OnRRrO9tcswJmY3bnyW3E8rg8qwQlW6JN+11PazCw9qmUwb1XKtbpIpH9xEfcoDxipUXGKLy5a06lIbzUUkizaq2Li0aqLywYl9WsWG1M2+LFlZyGqZ2FhiJlbRqcqpEjuPZmVZoa1USFa5uqbASgJXb1KX159zRIXcLB2GagIanijwZkcfJrPJTOrGO44d5pPZluBpj/cM2Z1dpJc49S0aK1optDK3Mf9ur5YZNBSHxb3Q0DiOEtv3S2S6De0wyPBjorCG4m6h4QmDES9yF6kMy3cFRY0tH5Z5/1Z78O7b9kK8V8fFf5J+O4h2LU5hm+QPNDzQ+sTFHBaDfm0T/0Z2vnOdRNsgHPfOHaV0kL8nON+r/kww6pZ7BJugy7IkH0dzR11Ausvuzl7Nv8x/zGEYfgNcojXY
+api: eJydlE2P00AMhv+K5RNI03a55gbaHpCQoAhOVYTcxE1GTWayY6e0RPnvaNJum36sluU28cfrZxx7OlQqBJMlfg0FOfuH1HqHqcGGAtWsHKK3Q0c1Y4K7CTV2suE9GrQOEyyZcg5oMPBTawPnmKypEjaYs2TBNoNegh+/fYZDGu+obqoo1nUnub5Hg5KVXBMmHeq+iQGiwboC+95cAQhngfV/GE6ZtxgH1z+T+FHDftn8GaYhLS9QNLQ3JONmw5A7xrlSfoUojcWk8U5YMOn661qPXLEyjEXRYM1a+hwTzAc3mgN4grNxoMxuYIZ7rv1AYnUgXjSD5GXZaAQrQJD5Np7XcZ5++7CBVWsrhdUeFq3NNn4KnwaDdUAgGVW0qthA3VZqJ8qOnIKWvi1KhSb4jEUMaMmwuJRlFxMFVq1YxyIsoB5yDxnVDdnCCZDLIbQO/HrNQSAGFmepOB8xIicpV55CPkWDWw5yuNGH6cP0AXuDjRetycUWHGfhfo8vGnL6cco7nTUVWRe12lBF36H5y4uhEjSYXE9ZarD0ojG261Yk/DNUfR/NTy2HPSbL1OCWgo29GDY3txLPLyxFh5l3yk4xwXffj0P7Hm4H9C790UguLvaWqjZ+ocG46bcb0qe9eV7Wt5GdX4+7GIdy47fpxBIX9m11Ti/Eq6VOkedq6WizHudf5j/m2Pd/ASYZ3YQ=
 sidebar_class_name: "delete api-method"
 info_path: docs/qpon
 custom_edit_url: null
@@ -47,7 +47,7 @@ Delete organization
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"x-auth-username","in":"header","schema":{"type":"string"},"description":"Username for identification","example":"{{x-auth-username}}"},{"name":"x-auth-password","in":"header","schema":{"type":"string"},"description":"Password for authentication","example":"{{x-auth-password}}"},{"name":"organization_id","in":"path","schema":{"type":"string"},"required":true,"description":"Organization id","example":"{{organization_id}}"}]}
+  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"{{x-api-key}}","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"{{x-api-secret}}","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"description":"Organization id","example":"{{organization_id}}","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>
@@ -62,7 +62,7 @@ Delete organization
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+  responses={{}}
 >
   
 </StatusCodes>

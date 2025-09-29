@@ -5,7 +5,7 @@ description: "Update item"
 sidebar_label: "Update item"
 hide_title: true
 hide_table_of_contents: true
-api: eJy9VE1P3EAM/Ssjn1pp2KU95gZVpXIDCie0qpzEmwwkM8PYAbZR/nvlybKwLKqqqmoO0cTjj/ee7Ywg2DAUN3Am1DOsLCS6H4jlNNQbKEaoghfyokeMsXMVigt+ecvBq42rlnrUk2wiQQGhvKVKwAI9YR870quauEouaiAUIMRiXpumaefNUIzTpIaICXsSSopuBI99zp4a9O5nxvDD1WDBacqI0oI9BMOSnG9gmlm5RDUUkgZ6hQ7G8U3SaYLJ7io6of6fVdom0wpZaY7BcyYNn4+PD6X6PlQVMa+Hzjw7g/37lsQUIiVxO5lV6P2K17FGIaNAwUJP0oZ6pl0p70y/gOWBZkuN4OWOIVhQPJcvw/T1z+dBtV6HzMBJlu4iBg9vsarRODZoqjDoea0j8xjSnSkH14kpN+ZicNVdWJjTbHDeoOEKOyw7sqYfOnFHQh69GGnD0LRiYgqquTXSkrnYT0teA9mUAztPzMRGgqmDqbCP6BrPBn1t0uBNWK8psVHH5iXVyflZ9qiR2zJgqhdg4YESz4w+LY4Xx8o/BpYeczu3c7jfmD0hdo0WepJl7NBlDYfU6d3cshso3tmdvPMWiuchX1loA4u6j2OJTNepmyY13w+UNlDcrCw8YHIqQ97L2rGeayjW2DEdINvNKny43C7GRwP2fcRbI/qNqoLdoF9g4Y427+y+Lul/LP+s0bSaLLSENaWswHz7ZS50dKU5XqIP9lNBzxEnVUVRfuu7erWB5ydXX76BhXL7X+5DrUEJH8Hmd4YaMvP8Q8m2ETr0zYCN+s5J9fkFKxoSsQ==
+api: eJy9VE1v2zAM/SsCTxugJO3Vt3aX9dYO7akIBsZmYq22pIp0m8zwfx9o58tJh7Y7LCeHIt8jn6jXguCKIXuEG6Ea5hYiJqxJKGm0BY81QQbrCUY3eaINWHAeMigJC0pgIdFz4xIVkC2xYrJQEOfJRXFB865ub8xQRmusY6VgbbuH6zqwwHlJNULWgmyiJrAk51fQdfakAaY8kfxLD/vK8zaGow93EtIKvfuNCv7TFbtmIko5akVSQ2O6k8oPMzqh+nNM24p3GOYKwjF4Joas7QZMYrkOxUYL8uCFvOgnxli5vG999otV1vaA3B2xt0BroeSx0pYzEGK5hK7rutNreYgFChntFSzUJGUohvFyna8fM4PZsWo8OxNxpvU824/cq7QM/bxOej3uYvBwyq5B49igyUOj30vd+9eQnsyicZWYxcbcNS5/ClNz3QecN2g4xwoXFVlTN5W4iZBHL0bK0KxKMTGFnJitkZLM3RiWvBayWTTsPDETGwmmCCbHOqJbeTboC5Mab8JySYmNJq4OULrHmlEgl4uAqZiChRdKPEx0Ob2YXkBnIQaWGvsr2m7QWOqREPu1EFrLLFbovGI0qdKz4RIeR0vPYCF74xXoPejRbl3nFsrAouVtu0Cmh1R1nYafG0obyB7nFl4wOZWlN5vCsX7/5R0f7SN8+bHd/q8G7NsTbIPo1XxesGr0H1hQNzp/xfrc/iP9TqNu3tmdj31OgYOxvkk/0Bzb9r6Hz406Ms93qfaZI7Yh49uAOblXkEPGmbOoL+3d4Pbq/tt3sLDYWlIdCi1K+KoWiK+DqCEOi5m1Q6yFCv2qwZXmDqD6+wO6e2Dk
 sidebar_class_name: "patch api-method"
 info_path: docs/qpon
 custom_edit_url: null
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"patch"}
-  path={"/{organization_id}/items/{item_id}"}
+  path={"/organizations/{organization_id}/items/{item_id}"}
   context={"endpoint"}
 >
   
@@ -47,14 +47,14 @@ Update item
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"organization_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{organization_id}}"},{"name":"item_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{item_id}}"}]}
+  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"{{x-api-key}}","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"{{x-api-secret}}","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"{{organization_id}}","schema":{"type":"string"}},{"name":"item_id","in":"path","required":true,"example":"{{item_id}}","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
-  body={{"content":{"application/json":{"schema":{"type":"object","example":{"description":"test description"}},"examples":{}}}}}
+  body={{"content":{"application/json":{"schema":{},"example":{"external_id":"test1"}}}}}
 >
   
 </RequestSchema>
@@ -62,7 +62,7 @@ Update item
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+  responses={{}}
 >
   
 </StatusCodes>

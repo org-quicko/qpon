@@ -1,0 +1,71 @@
+---
+id: create-super-admin
+title: "Create super admin"
+description: "Create super admin"
+sidebar_label: "Create super admin"
+hide_title: true
+hide_table_of_contents: true
+api: eJytVe9v2kgQ/VdW83khkJBry6lSoc396DXX5JKqOaXRabAHe4O9u91ZBxDy/34aGyhcUMSH4wve8ZvnN/Nmd1cQMWMY3sMXpgAPGjwGLClSkOiDhkDsnWViGK5g0Hsjfzlh2gBWcNe5cnMKlHbGS1lzklOJ8hSXnmAIHIOxGdQaaIGlLyR2sfCBmCX43tlINnZuG/SR+eh9YRKMxtmTR3b2Z5XkGJji2ypOO693eT+RzWJ+kNnYSBmFferzvqwvbjE7Ws3Xk29wdtZ5/efs69l4dD3+bfH0+Grw+Zfy7mPZv/n7rup9A8n4gPH4Ei+d1ar/Sl1iUKe903PV7w9Pfxr2BurXy9t1gZYSacHRnDMi38HCPJHE/5DVqFkdSxBNSa6Kb8+hrjWkxEkwvpUgo6FuKk9BjdLSWIVFIEyXihaGI4OGpHVEPvFf/w4KcJNHSiJo8MF5CtG0I5i4lA6bWBIzZnSghnq3ig3FoPdmJwde0F7XDUOg7xVxHLt02bL8L/VYLA9J1kAlmuL5Gw1TF0qMMFwjatmzzHMX0hfRVUw6pSkKw5RIUnDFEb1q5cFHl1v1wRFsdQFLw7ooDXsXiWM3cSXsaoH+6dkANh9q8f80eGgbuj9A7wNhJNXAVAsTf2LuhMs7bnqHspnhpGI5fzRIt//64cvFM+HbPmxkS+a7dYHPJW/hG9FbO4yduqZdJjZvrr0Tgfs1SFAZVqgSV8nzVA7TuQszNalMEdVkqa4rk8xcV42bgEyb4gQLnBSkVVkV0XQiWbRRxdxVWR6VDy4hZq1iTup6n5asJLKaVGwsMROr6FTqVIKlR5NZVmhTFSqr3HRKgZUAsx9Uo6vfG0SKnE8chrQLGp4ocFtRv9vr9poZcxxLtDutPWjYXj+2wxVpEU98gWK9hio0c916eQ+tlw8acvF4eA+r1QSZvoSiriX8vaKwbC+jJwxG6pVVrdf3EAzvVzCjpUjavU0EXlSH7guo9SZjlCTk44vYh50xvPp8cwsaJuszoGxOEgg4l5HBOQwBNLim/GZ3N7EVFGizqj1nWk75/QujlYve
+sidebar_class_name: "post api-method"
+info_path: docs/qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Create super admin"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/users"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Create super admin
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"name":{"type":"string"},"email":{"type":"string","format":"email"},"password":{"type":"string","format":"utc-millisec"},"role":{"type":"string"}}},"example":{"name":"John Doe","email":"super.admin@test.com","password":"1234","role":"super_admin"}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"409":{"headers":{"X-Powered-By":{"schema":{"type":"string"},"example":"Express"},"Content-Type":{"schema":{"type":"string"},"example":"application/json; charset=utf-8"},"Content-Length":{"schema":{"type":"integer"},"example":"51"},"ETag":{"schema":{"type":"string"},"example":"W/\"33-8NkW3BAQBHxvj74OFmXJm1SYXu0\""},"Date":{"schema":{"type":"string"},"example":"Mon, 17 Mar 2025 11:26:04 GMT"},"Connection":{"schema":{"type":"string"},"example":"keep-alive"},"Keep-Alive":{"schema":{"type":"string"},"example":"timeout=5"}},"description":"409 Super Admin already exists","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"}}},"example":{"code":409,"message":"Super Admin already exists"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

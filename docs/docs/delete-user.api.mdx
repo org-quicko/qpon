@@ -5,7 +5,7 @@ description: "Delete user"
 sidebar_label: "Delete user"
 hide_title: true
 hide_table_of_contents: true
-api: eJy9U8Fu2zAM/RWBpw3QkmxH3zq0hwE7rNt6KoKBtplYrSypItU1M/zvA9U0a5oei/liiSIfyUe+CQS3DM01XDFlWFtImHEkoazWCQKOBA3EvMXg/qC4GH65Hiy4AA0klAEscDfQiNBMILuk7izZhS3MFjLdFZeph0ZyIQv0gGPy6jNNL0DnGWZ7yFiY8ptl2oNphrV6coqBiRXn02qlv564yy5pKdDAj9J1xLwp3jw5g4UuBqEg6o4pedfVypc3rDHTaW2xvaFOwELKMVEWVzPO9bMvMp6TJyGjhYKFkWSIPTTQV7NCaP8NLJ9zxssTCpcKwMtDw5W+TaxFOalsXKYY4GV6NRrHBk0Xi543ugW/Y741bXFeTLszl8V1t3FhPleDCwYNd+ix9WTNWLy4D0IBgxgZYtkOYlKOSqM1MpC5PIaloIFs2sIuEDOxkWj6aDocE7ptYIOhN7kEEzcbymzUcfsP6uzbl+rRIw9txNwvwMI9ZX7s6ONitVjpXqTIMmKd0H61jrk+IuIwO6EHWSaPLihGyV7fHodwfaQGBgvNqTzqHPTpaY/XFobIouHT1CLTVfbzrOa7QnkHzfXawj1mp7RU6fWO9dxDs0HPdFLpYR3h3ff97r83YF/vYG/EsFOW0Be9gYVb2r0ib9Xhf0z/xNG8ni0MhD3lysDj61nXUZJncSfiU1EfJHN+8fXi5wXM81/cZa+7
+api: eJy9VD1v20AM/SsEpxa42OmqrUUyFOjQFM0UGAUt0dYh0p1y5KVxBf33gvJHIjtBkg7dJB753uNnj0prweIGr4UTLhx2lKhl5WTWHgO1jAU+nFHnz255gw59wAJrpooTOkx8l33iCosVNcIOK5Yy+U59NL/P37/CNowfqO0aA+v7A9wwoEMpa24Jix5105mDaPJhjcPgjgQIl4n1XzQcIk9lbJ/erCSmNQX/hwz8l6/2YjrSeiJFU+Yp3VHkmxmzcHof0y7iFYaFgUgXg7Bg0Q/HdbvghpXBwNBhy1rHCgusRjO6rZAC50/zkvlJmnMDkPlB1JjHKo6KvI6Kr7oY8JjejOAFCMqY7Xtlk/k7pltYZt8oLDdwlX15G2fwZTT4AARSUkPLhh20uVF/phwoKGgd87pW6FIsWcSB1gxXU1gOFiiwzOIDi7CARqgilNR25NdBgEIFKQeIqxUnAXNcP0LZpJlHRVIvI6Vqhg7vOck2o0+z89k5Dg67KNpSsBLsejyt9aQQh8YpP+i8a8gHw8ipsbdtE24mYynosDid07EP9rQfqIXDOopaeN8vSfg6NcNg5rvMaYPFzcLhPSVvZRnPQeXFvl/YtB7LGJSDYoEffuzm8yOgez6DnZGCnYd7arL9oUO7F6d7ZgvxH+n3NRoWg9tfmvdV4PH0PUu/pXl6WA8a3pfq5Ly9SnXwfGRbPFnui8tvlz8vcRj+AtdxF+4=
 sidebar_class_name: "delete api-method"
 info_path: docs/qpon
 custom_edit_url: null
@@ -47,7 +47,7 @@ Delete user
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"organization_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{organization_id}}"},{"name":"user_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{user_id}}"}]}
+  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"{{x-api-key}}","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"{{x-api-secret}}","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"{{organization_id}}","schema":{"type":"string"}},{"name":"user_id","in":"path","required":true,"example":"{{user_id}}","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>
@@ -62,7 +62,7 @@ Delete user
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+  responses={{}}
 >
   
 </StatusCodes>

@@ -5,7 +5,7 @@ description: "Deactivate coupon"
 sidebar_label: "Deactivate coupon"
 hide_title: true
 hide_table_of_contents: true
-api: eJylVslu2zAQ/RViTi1AL+1Rt6S99JS4SU6GUYylkcVEIhUuSVxB/14MJTuyZbiI44MXkfPe45uFbsDjxkGyhB8m1EbDSoKl50DOX5tsC0kDqdGetIekaVsJNVqsyJPloAY0VgQJvE0w+GISHNn4RILSkEBBmJEFCS4tqEJG89uaA5y3Sm+glZCRS62qvTIc8dAjiNxYoTLSXuUqxbgqgd6wqkuOb5ojyraFVh7rqdG5V2Ozy/Xc9ghRD2OyonN6dpTHeozdoFZ/Y+REfULRzQBIRKChiiHNH3Wk4mhxp6FGX5xXwBWhLGWQeBvoA4xpLKpPcR2evqvS8bn3RMwfa9jVRjtyzPF9PuePQ6S7kKbkXB5KsdsMclDsgHVd9qmePTqOaca6zfqRUg8Samtqsl5Fxja+jrX/JEy9ekFPopMLEiryhcnYGOMiDPuTwGzoqpuNTJ51AG42OPgs2+NHt3MTdSofLVp0fIeKFtFLJ7AXJHJu7ldjn8Q6qNKL9VYsgkqfzFRcxwdKCxQuxRLXJUlRhdKriSeN2gtfmLApvKitYWel8AWJxSEsaQ50Yh2c0uQcOeGNyIxIsapRbbQTqDNhgxYmz8k6wRs371BXt7/ijgxdsTZosylIeCHruhN9m86ncy4j9rPCmLS+Fk/Zf2DHPqme3vysLlFpRgq25LUuM8uDJnIgIRl3VZ8cXhw2wCA/KwkFJzxZQtOs0dGDLduWHz8HsltIlisJL2gVuxUHbaYcf88gybF0x30xmNLw5XffQV8FyNNH6h+i3rJ5WAb+BRKeaHtiTHA/X0Q/bNYLdLx7165auRuVHzPj/H1yUlRHPr7R9vo+5sf5G+T/CgZ32IUKxjfGWdbxTXXA22370aFP7hnp5I6rNKXaD9ZG85Tn9H7+3d7c3YOEdf+nozIZx1h8BRnfGbtt/wFcgAdE
+api: eJydVMuO2zAM/BWCpxZQku3Vtz4uPXXTxykICsZmYiG25BXlNKnhfy9oZx17k2IfN1siZ4ZDig1G2gkmK/zs68o7XBusKFDJkYOeN+ioZEzwOKPKzvZ8QoPWYYI5U8YBDQZ+qG3gDJMtFcIGM5Y02Cpar3Ef779Cn8ZHKqtCwZpmgGtbNChpziVh0mA8VRogMVi3w7Y1TwQIp4HjWzQMmdcy+qsXK/FhR87+JQX/bbNHMRXFfCIlhpqndE8yX8yYds15nmtadd9S6LLGKga0Z/jXSiCVd8KCSdM+xf/ClEZ7oMjQQ6LBkmPuM1XoRc3uhCa4GFcuiysjFj2ALEbiFtmA35W99Z1IG7sylj3fVNGyq1eAzoJgq6P8x4c9bGpbRNicYFnbdO/n8Kk7sA4IJKWCNgUbKOsi2llkRy5CzH29yyNUwacsYiDmDMspLDtNFNjUYh2LsED0kHlIqazI7pwAuQxC7cBvtxwENHB3gdLR1IiMJN94CtkcDR44SF/Rh/nd/A5b0/lZklMLzkNxy/6JHUNHIx/joirIOkWqQ6F3fWdWk2kWNJhcj/e5OXo5nsRRf9YGc214ssKm2ZDwr1C0rR4/1BxOmKzWBg8UrLrVrZXMin7/58U2mHoX2UVM8N3385S/BzS3SzofktM1c6Ci1j80qHvn+r3qw3oT/fhBvUHHxbt23ZrH5fU6My7b9KaAnmi8qwcVr6t6sjGfpRoiL2zr0S64//bjJ7btP6q+N5s=
 sidebar_class_name: "post api-method"
 info_path: docs/qpon
 custom_edit_url: null
@@ -47,14 +47,14 @@ Deactivate coupon
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"x-auth-username","in":"header","schema":{"type":"string"},"description":"Username for identification","example":"{{x-auth-username}}"},{"name":"x-auth-password","in":"header","schema":{"type":"string"},"description":"Password for authentication","example":"{{x-auth-password}}"},{"name":"x-organization-id","in":"header","schema":{"type":"string"},"description":"Organization id","example":"{{organization_id}}"},{"name":"organization_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{organization_id}}"},{"name":"coupon_id","in":"path","schema":{"type":"string"},"required":true,"description":"Coupon id","example":"{{coupon_id}}"}]}
+  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"{{x-api-key}}","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"{{x-api-secret}}","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"{{organization_id}}","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"description":"Coupon id","example":"{{coupon_id}}","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
-  body={{"content":{}}}
+  body={undefined}
 >
   
 </RequestSchema>
@@ -62,7 +62,7 @@ Deactivate coupon
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+  responses={{}}
 >
   
 </StatusCodes>

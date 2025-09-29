@@ -5,7 +5,7 @@ description: "Update campaign"
 sidebar_label: "Update campaign"
 hide_title: true
 hide_table_of_contents: true
-api: eJy9Vt9v2zYQ/leIe9oA+keN7kVPS4MNa1/aZCmGITCCs3iWWEskQ1JpPEH/e3GUZUtxkaEeMD/Y8vF4391HfndqIWIRILuHa6wd6sLAWoKnx4ZCfGfVHrIWcmsimciP6Fylc4zamsWXYA3bQl5SjfwU944gA7v5QnkECfSMtauIl34lE3Xc86ov5o+Nznd2/uismecDsAStIIO2HSwPWnUdSDBYc9irv8VquXo7Wy1Xv4j3d7fid11pU0DXHZECZG3XscGhx5oieS6uHUI8z9Dp2Y72DGYgg5JQkQd5XkSIPgWXoCjkXjuumbP49F7saC+21gutuKrtgZBxwdC26PTDjvZdB508JoBNLK3X/wwbLkziw193AvOcQhDR7ugMOi09pKUpfk/AE/nwn/CZhFOQMfTB+hLV+gLNoeyZVpcjfxwFEinQGH0M09+eURa5bVwyD+gOY/k6NgtBe1KQRd/Qy1yuU8DzLI5AL/BP1/ryDCY4E510SbjBWROSDmC1XPLPNOc/m3Q3tk0lBmeQlyvceevIR31UXnd2Yp+dwkhiJPOaYmlVX37O9ScaMlj0xIXFiMHFsI+to3pBAmd3e+pUv/0/zYZPbmsTFzqmg7hxSQXTqm/SzQgCRV+L2HI/+mr9TmwaXUWx2YubPjHxLhm0EShCjhVuKpKibqqoZ5EMmihiaZuijMJ5y6cnRSxJ3EzDkuGNQWyaoA2FQNwbhLJH5oNAo4RvjLDbLfkg2LE4hWJRs4fCUG4sejUHCYPKM3gzX86XXL+zIdaYLsaBrPMjnpBxvDaRnuPCVagNx2l8xWv94d8f5BlAQjZW6jH7tDCS0FpCaUPkrW27wUCffdV1bH5syO8hu19LeEKvmZY0BJQO/Kwg22IVXsp5NOfgp9uD7H4WY5F/t4yDEQ0PlSesGv4HEnjKjJsOd4KLMrgQeERVt+7k0Gt/jIhXp913s+rRx4P2mNqPMTCdMf+KdXK9EO98sryKeT7RJri923UffXbHkU4eZz32tOMqz8nFV33Xow766eru+g+QsDm8qtVW8SaPX0Gm73QjbCo3DYVka6FCUzRYsG8flD/fAOvidRk=
+api: eJy9VU1P5DAM/SuRT7tS5oNrb4BW2r0BghMardzW0wbaJCQpMFv1v6/czHRaygpmD8yp49jv2c+x00LAwkNyD5dYW1SFho0Eiw5rCuT4pAWNNUECrwu0avFIO5CgNCRQEubkQIKjp0Y5yiHZYuVJQk4+c8oGZdjv/OqXiGH0irWtGKxtB7iuAwk+K6lGSFoIO8sOPjilC+g6+SYBT5mj8D85DJHzNOLRpzMxrkCt/iCD/1b5IRmLoZykElxDU7o3kZ9mzExjT+UaYj7Psr8EJ/Icoz5g2jCQt0Z78pC0XcQlHy5MvuOAzOhAOvAnWluprBdq9eC5ie0c2aQPlHFLrTOWXFA9LqRNXlAY+SkdqCAHXdeNcj86nq3X63XXn07vzZ3NMZA4lAgSagqlyaMyGUvTK5TAatxav5p1ehXb4VejvqwOuGwdqQgSuOSbozg/5jmvO27R1vRlqtA349oaznFaAxuF8gJFZBZbHu8X4x5F2qgqiHQnrhuVPZqluOgNSgsUPsMK04qkqJsqqEUgjTqIUJqmKIOwzmTkvRShJHE9hSXNgV6kjVeavCcvghG5GXT0AnUuXKOF2W7JecGOxRGKx5U9cvRlatDlS5DwTM7His6W6+UaOgnW+FBjfzf2V3jesIkYw40I9BpWtkKlGadxFZ/FVt5P5tuDhGQ+8Ptu8uF4NocC+4PROG0klMYHRm/bFD3duarr2PzUkNtBcr+R8IxOsXL92s2V5+9/bLTRrMC3m/10fhcg3y9wb0TNa/gZq4b/gQTey/N9xivhC+mPAn418ahB3aaTh+fkNPmP79u7KUSq8es55HFauZM37EOqwXPCFj0uI+bilkGOHrOVywt72HdX57eXP0FCut/Vtck5yOELvw/4EoU1Ng5N0kZbCxXqosGCfSMo//4CWWPq0Q==
 sidebar_class_name: "patch api-method"
 info_path: docs/qpon
 custom_edit_url: null
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"patch"}
-  path={"/coupons/{coupon_id}/campaigns/{campaign_id}"}
+  path={"/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}"}
   context={"endpoint"}
 >
   
@@ -47,14 +47,14 @@ Update campaign
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"x-api-key","in":"header","schema":{"type":"string"},"description":"API key for identification","example":"{{api_key}}"},{"name":"authorization","in":"header","schema":{"type":"string"},"description":"JWT access token","example":"{{access_token}}"},{"name":"x-api-version","in":"header","schema":{"type":"string"},"description":"API version","example":"{{version}}"},{"name":"x-organization-id","in":"header","schema":{"type":"string"},"description":"Organization id","example":"{{organization_id}}"},{"name":"coupon_id","in":"path","schema":{"type":"string"},"required":true,"description":"Coupon id","example":"{{coupon_id}}"},{"name":"campaign_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{campaign_id}}"}]}
+  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"{{x-api-key}}","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"{{x-api-secret}}","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"{{organization_id}}","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"example":"{{coupon_id}}","schema":{"type":"string"}},{"name":"campaign_id","in":"path","required":true,"example":"{{campaign_id}}","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
-  body={{"content":{"application/json":{"schema":{"type":"object","example":{"@entity":"org.quicko.qpon.campaign","id":"{{campaign_id}}","name":"AY 2024-2025 ITR Filing"}},"examples":{}}}}}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"budget":{"type":"integer"}}},"example":{"budget":10000}}}}}
 >
   
 </RequestSchema>
@@ -62,7 +62,7 @@ Update campaign
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+  responses={{}}
 >
   
 </StatusCodes>

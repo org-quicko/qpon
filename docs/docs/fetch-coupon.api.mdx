@@ -5,7 +5,7 @@ description: "Fetch coupon"
 sidebar_label: "Fetch coupon"
 hide_title: true
 hide_table_of_contents: true
-api: eJylVctu2zAQ/BViTy1AP9qjbmnRFj01bptTYBS0tJKYSCTDJZO4gv69ICXbegQu4vhim+TODIf7aMCJgiC5hc/aG61gy8EIK2p0aMN6A0rUCAk8L4R35cIT2rjCQSpIoESRoQUOlJZYC0gacHsTAshZqQpoOWRIqZXGSR0ibnoElmvLZIbKyVymIu5ywGdRmyrEN82Esm2h5VM9RhA9aZtdrue6R4h6AmZQdE7PgXKqR9tCKPk3Ri7kGxT9GACxCDRUMaT5IycqJpsHDUa48rwCiw9eWswgcdbjKxjTmDdv4hrfvkvE+b2PRIF/G1DIaEVIgePjeh2+xki/fJoiUe4rdjgMHFKtHCoXjgtjqv6pV3cUYpq5br27w9QBB2O1QetkZGzjZ6r9K7q0ZJ1S4FCjK3UGCRQYAYIzCayGftJqZu+qi6fV4MrR3FxHWdJFRzYdx1jAJlpHTPQiWB5q+Unbe7bzsnJst2cbL9N7vWSf4oJUTDBKRSV2FXJW+8rJhUMllGOu1L4oHTNWByM5cyWyzRgWVQgktvMkFRIhMadZplkqaiNkoYgJlTHrFdN5jpZYOFicoK6uv8cTmaByp4XNlsDhES11N/qwXC/XIWuMJleL+EZ96k3cHjlxfD6Hz25lKiFVAPG2CnvdS9yOyoWAQzKvn/4xwuYp1bccSk0uQDTNThDe2Kptw/KDR7uH5HbL4VFYGbyJXTSTFH5nkOSiomnSN6eshHc/+/J4z4C/fIt+Uah9sEpUPvwDDve4f6EHhGK9iH5YiRfoONnVblt+6IOvM+P8sHhRVEc+H1dHfa/z4/x4+L+CwYC6UMF8HJxlnY+hEW937CpN0bjB3qwVhhZ77F/fvvyGtv0HDdjajw==
+api: eJy9VE2P00AM/SuWTyBN2+WaGyBA3CiCU1UhN3GT0SYz2bFTWqL8dzRJN23aXe2WA7fEY7/3/NmiUi6YrPCjb2rvcG2wpkAVK4dob9FRxZjgfka1nd3zAQ1ahwkWTBkHNBj4obGBM0y2VAobzFjSYGu1Pvq9//YVhjDeU1WXEaxtR7iuQ4OSFlwRJi3qoY4OosG6HLvOXAgQTgPrv2gYI69lDE+vVuJDTs7+oQj+y2aPYmrSYiJFQ8NTuovIVzOmfXNu4xpjXmBZRxipvRMWTNrusnafWdMCBjQ0WLEWPsME876YvZAEF+eZyeIq0cUQL4szWX0uW99rstqrXg4cUwHRCFaAjiJgG+fztw/3sGlsqbA5wLKx6b2fw4feYB0QSEolbUo2UDWl2pmyI6eghW/yQqEOPmURA1owLKew7GKgwKYR61iEBdRD5iGlqiabOwFyGYTGgd9uOQhEx/wEFectemQkxcZTyOZocMdBhozeze/md9gZrL1oRS6W4Njpi2pPKjH2Tnmvi7ok6yJIE8r4NnRiNZlOQYPJ9bgemxEfT5O1Nlh40QjRthsS/hnKrovmh4bDAZPV2uCOgo216S9DZiV+P7N0LabeKTvFBN98Pw7qW0DzdBZHI7l4KXZUNvEPDcbTcb1ycTf+I/2pSt26M49n57YanO7gkwIGovMrO6q4LdnJrXuRavQ8sa3PlvzLpx/YdX8BEWQdaA==
 sidebar_class_name: "get api-method"
 info_path: docs/qpon
 custom_edit_url: null
@@ -47,7 +47,7 @@ Fetch coupon
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"x-auth-username","in":"header","schema":{"type":"string"},"description":"Username for identification","example":"{{x-auth-username}}"},{"name":"x-auth-password","in":"header","schema":{"type":"string"},"description":"Password for authentication","example":"{{x-auth-password}}"},{"name":"x-organization-id","in":"header","schema":{"type":"string"},"description":"Organization id","example":"{{organization_id}}"},{"name":"organization_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{organization_id}}"},{"name":"coupon_id","in":"path","schema":{"type":"string"},"required":true,"description":"Coupon id","example":"{{coupon_id}}"}]}
+  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"{{x-api-key}}","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"{{x-api-secret}}","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"{{organization_id}}","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"example":"{{coupon_id}}","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>
@@ -62,7 +62,7 @@ Fetch coupon
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+  responses={{}}
 >
   
 </StatusCodes>

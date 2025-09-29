@@ -5,7 +5,7 @@ description: "Update coupon"
 sidebar_label: "Update coupon"
 hide_title: true
 hide_table_of_contents: true
-api: eJy1Vk1v4zYQ/SvEnFqAttMedWo2KNCemqS7p8BYjKWxxI1EMhxyE1fQfy9Gkm3ZClzEi/oQM8PhmzffbiFiyZA9wZ1L3llYawj0kojjJ1fsIGshdzaSjXJE72uTYzTOrr6xsyLjvKIG5RR3niADt/lGeQQN9IaNr0mufiMbTdzJbSiXL8nkz2754p1d5oNZDRYbef1IcijUQW4iNV9zZzkGNEIDsK6h6w74DFnbdSLwGLChSEEcaveIbwtMsVokptBLNBgLGVSEBQXQcwc4BmNL6DQUxHkwXvyFDL6MCGrrgjKFuLQdozH1Ftr2zGTXQafP+XhkfnWhuJ7P/YjQ8xFMYXSJz97kOR8XSrTmn/7lwvwAo78mQKoHmrKYmvlqzlicXe45eIzVZQZSrSZQAVkMiT5gcaiwH7J16v3QQXO/D4bEft9f7J3lvnDh15sb+TpF+jvlOTFvU632yqCvb0QfnKcQzaFVunlt+wIjHbuuoVi5YghKLlHpg5PBahpSXs0ivBoQeDXxGjQIx8fjWPn9/5wMks2t6+NgYp+Ch0H/1OOHPlescARUWxkery48q00ydVSbnXoY6KhPvcBYhYpzrHFTk1ZNqqNZRLJoo4qVS2UVlQ9OMqdVrEg9nMKSlYesNomNJWZiFZ0qnMqx8WhKywptoUKyym23FFiJYnmEur3/s9cokKuNw1AsQcN3Cjx49MvyZnkj/nvHscG+KMbYnaf3JBSHgon0Fle+RmMFJYVa7obEP500KIOGbN6xY+7l8thcaw2V4ygQbbtBpi+h7joRvyQKO8ie1hq+YzASnH5uF4blXEC2xZrP22yykOCnx7Ehf1ag3/diFKLdSaywTvIfaHim3TtTR8bDVeanvX8Fj2O4unWn95P3Y8G4vJ7eJTUYny/IA7+PxePyQvpvBpOVeCWD+QK6aHW++E7sDmp3A/risyAdNWYj+PjiNs/Jx4u668mIvb/9fPcHaNiMP7gaV8ijgK+g+799oTg/dF7WDrIWarRlwlJ0B1D5/AuNhG31
+api: eJy9VcFu2zAM/RWBpw1Qku7qW1sM2G5t0Z6KoKBtxlZrS6oot80M//tAK03ipFvbHZaTI5OPj4/icw8RK4bsFs5d552FpQaPAVuKFOS8B4stQQYvM/Rm9kBr0GAsZFATlhRAQ6DHzgQqIVthw6ShJC6C8dE4iTu9+KlSGr1g6xsB6/st3DCABi5qahGyHuLaSwDHYGwFw6APCDAVgeK/cNhmHtNIrz7MxIUKrfmFAn5nylcyHmM9oRJDR9NyB5kfrliMw/lcrW3OO1WWAsPeWSaGrB8SKnE8c+VaEgpnI9koj+h9Y4qR/uKeRdr+GNnl91SI0D44TyGaERdMpPaucJZjQJPgDqkMex28kQDsqTArU0jocDjjG19iJJXaBg0txdqVSatCxBo1y2CxPwReHM1kkRB4sacgaJB2r3bCfP8rz01DMqyVGzs1cRzLZeI2ZS6HyrDCDXm1kgV8duFB5Z1posrX6rIzxYObq7PxwFiFigtsMG9Iq7ZroplFsmijirXrqjoqH1xBzFrFmtTlFJasJLLKOzaWmIlVdKp0qsDWo6ksK7SlCp1VbrWiwEoCqx2ULJRElMh17jCUc9DwRIFTR9/mJ/MT6d87ji2O92RzlQ/HNJFieyUivcSFb9BYQelCI+/SAG8n+8egITteyM0M5eVud5YaasdRIPo+R6ab0AyDHD92FNaQ3S41PGEwIs7ofaVhef6DreytBny52qziVwX67S42h2jFC5+w6eQfaBBzPDYV2f7/WH6n0rAc9Kuxfk6DndO/SSAV2v+ObFl8rtmJm79bahs5qZYizhPm7FpAdhFHNicmufWTi9Pr8x+gId/4Y+tKSQr4LI6Mz0lW59P1zPp01kODtuqwktgEKr/fnXOZCA==
 sidebar_class_name: "patch api-method"
 info_path: docs/qpon
 custom_edit_url: null
@@ -47,14 +47,14 @@ Update coupon
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"x-auth-username","in":"header","schema":{"type":"string"},"description":"Username for identification","example":"{{x-auth-username}}"},{"name":"x-auth-password","in":"header","schema":{"type":"string"},"description":"Password for authentication","example":"{{x-auth-password}}"},{"name":"x-organization-id","in":"header","schema":{"type":"string"},"description":"Organization id","example":"{{organization_id}}"},{"name":"organization_id","in":"path","schema":{"type":"string"},"required":true,"example":"{{organization_id}}"},{"name":"coupon_id","in":"path","schema":{"type":"string"},"required":true,"description":"Coupon id","example":"{{coupon_id}}"}]}
+  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"{{x-api-key}}","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"{{x-api-secret}}","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"{{organization_id}}","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"example":"{{coupon_id}}","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>
 
 <RequestSchema
   title={"Body"}
-  body={{"content":{"application/json":{"schema":{"type":"object","example":{"@entity":"org.quicko.qpon.coupon","name":"Renamed coupon","item_constraint":"all"}},"examples":{}}}}}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"item_constraint":{"type":"string"}}},"example":{"item_constraint":"specific"}}}}}
 >
   
 </RequestSchema>
@@ -62,7 +62,7 @@ Update coupon
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+  responses={{}}
 >
   
 </StatusCodes>

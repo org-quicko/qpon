@@ -5,7 +5,7 @@ description: "Fetch campaigns"
 sidebar_label: "Fetch campaigns"
 hide_title: true
 hide_table_of_contents: true
-api: eJytVk2P2zYQ/SsETy0gf22cNKtbmrZBTsm2zSkwgpE0khjLJMMZ7q4j6L8XlOS1ZKdarLO+2CY58x4fH4dTS4aCZPxZvoWdBVVouYmkBQc7ZHRhppYadihjeT8Dz+XME7p2JJJKy1iWCBk6GUlKS9yBjGvJexsCiJ3ShWwimSGlTllWJkR86jOI3DihMtSscpVCOxtJvIedrUJ8XZ9ANo1solM+FojujMsu5/Oxz9DyCTkDoyk+B8hTPsYVoNX3NnKmfoLRh0Ei0SYashjCfFEnLIiBPR2gv3l0+ychtz+gErmqGJ1gIwpkkRpvjRaETCLZC7KYqlxhJh7gjgQhZXWLQ06JzwpkzB5llRhTIeiLaN0pLkWHNKLDzo/IMGzxUSJKMxboJohYKFCQ+o5z8Qfm4CsWisRqOcJeLUdHs1X2uZBNnhPyCHsMPULudPpytKQFLqdt4fCbVw4zGQcBT8m87YQ/seYa1riCV6vZMr1OZ+vr9Wp2nbx+MXv5Yp2tcvzt9dXVK9lsQnKyRhNSgL5aLsPXGOAfn6ZIlPtKHBbLSKZGM2oOy8Haqr+ki68UYurz7ZjkK6bBDtYZi45Vi9i0n9Mt/YWcliLty2Cw9A65NJmMZWepVrNYLjoxaVE/qNoshmFK56bloLhV5ca2dWSMdtPKRwIOHs5Dyb0zbisSryoOt+zGq3Rr5uL3dkBpAYJSqCCpMBI7X7GaMWrQLLg0vihZWGeCapHgEsXNOC3qEEgi8aQ0EiGFW5SZ45YF6Ew4r4O50JEIC4tjqjcf37crMqAyMeCyuYzkLTrqdrSaL+fBdNIa4h20B9Lb71zakRgPx8V4zwtbgWorgHdVmOtk/9x7OATHQzsfs24iWRrisLauEyD85KqmCcPdZQtPWaYoqJDJOIeKTm1dHw12eSH84V62uB/W5luofFjU3tFn5TSughNcBjX5Z9lMlMIJAn0dfhbw/6mGU0fR1eIj+ib8cSrAP9Epv/zdl8pfxbAs/hC8HwS9H4IfSB193Wya6NA3PI3NdHM1och5e3fh0Uy3U48zGDR0l5rjrH2aRD1v20a43bI3aYqWB3NnD1Cw0MOT8e7Pf2XT/AfQLepJ
+api: eJytlU1v2zAMhv+KwNMGuEl79W3rPrDTlmE7FcFA27QtxJZckW6bGv7vg+zUsZM2H21viSXxfURSfBsQzBjCG7jGskKdGVgGUKHDkoScX2nAYEkQAgtKzRCANhDCbU1uDQE4uq21owTCFAumABLi2OlKtPXbfnY/sFCpLoScEqsyEhXburJGMQmraK24olinmhI1iNADllXhdTEWfUcQAMc5lQhhA7KueiKnTQZtGwyQUZ1kJJS8P+a9llz14Sd44upn4SJrC0IzoRNc0WvJKsxIsX6kmfpCKdaFKM3q6nIC0/3dQ9FGKCM3QeGVrt6EYtOUSSYwU5aTUR4usNIXK1o/8eSECbnjQJ9+/VD9sa1q0wzh2vbEpulPMMWuq+3ZDMPJfYx+6WQS6zI0+hF98H966OIKJZ+g+Kabyu2cPFmxb/HjWtNbX/cPozs1phiiHdFfegGurGFiCJt2N/43kjhX8WYm+XlQkuQ2gRD699dRhjAfX5vne1mY90A8H5HNx2G1SW0HqKW7wqKyBnZpFt1dWeHTQEj9fLy3bqWiWhfiR9ii1vHKztTn7oM2ChXHWGBUUKDKuhB9IWTQiJLc1lkuqnI2JuZASU5qMQ1Lxh9kFdWsDTET+5GU2G1KFJpEudr4d0iOld+YbUP5tvQ7EuQ8suiSGQRwR477G13NLmeX0AZQWZYSjU/BpiH2Uz9JxlBLoQeZVwVq4+PUrvBrfVluJn3sQ4T7jb2pjF8c9+BWeBlAbll8uKaJkOmvK9rWf+7nlbemRLNP1AuPs4HYGiEjbzGiZ6/rp87IEe+wqP0m8A/rXZmmrnOAZWR8b6U54DQHADbe9i7iL3jLoVL0drZVX/o/Tnv5Mzvlw+/N6PuoXtLcfESzHms+sez2+nmZGMmPp+wrOLbPql22wZOjnZeMrcUeSP7YwF9Z/4mNHpUadk7qPVjE969/oG3/Axhku6Q=
 sidebar_class_name: "get api-method"
 info_path: docs/qpon
 custom_edit_url: null
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"get"}
-  path={"/coupons/{coupon_id}/campaigns"}
+  path={"/organizations/{organization_id}/coupons/{coupon_id}/campaigns"}
   context={"endpoint"}
 >
   
@@ -47,7 +47,7 @@ Fetch campaigns
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"x-auth-username","in":"header","schema":{"type":"string"},"description":"Username for identification","example":"{{x-auth-username}}"},{"name":"x-auth-password","in":"header","schema":{"type":"string"},"description":"Password for authentication","example":"{{x-auth-password}}"},{"name":"x-organization-id","in":"header","schema":{"type":"string"},"description":"Organization id","example":"{{organization_id}}"},{"name":"status","in":"query","schema":{"type":"string"},"description":"Optional filter to get coupon sets by specified status","example":"active"},{"name":"budgeted","in":"query","schema":{"type":"boolean"},"description":"Optional filter to get coupon sets with budget","example":"true"},{"name":"take","in":"query","schema":{"type":"integer"},"description":"Optional page size. Default is 10","example":"10"},{"name":"skip","in":"query","schema":{"type":"integer"},"description":"Optional page offset. Default is 0","example":"0"},{"name":"coupon_id","in":"path","schema":{"type":"string"},"required":true,"description":"Coupon id","example":"4a4e1a61-0c9c-4941-9b83-534d1fe78226"}]}
+  parameters={[{"name":"status","in":"query","required":false,"description":"Optional filter to get coupon sets by specified status","example":"active","schema":{"type":"string"}},{"name":"budgeted","in":"query","required":false,"description":"Optional filter to get coupon sets with budget","example":"true","schema":{"type":"boolean"}},{"name":"take","in":"query","required":false,"description":"Optional page size. Default is 10","example":"10","schema":{"type":"integer"}},{"name":"skip","in":"query","required":false,"description":"Optional page offset. Default is 0","example":"0","schema":{"type":"integer"}},{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"{{x-api-key}}","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"{{x-api-secret}}","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"{{organization_id}}","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"description":"Coupon id","example":"{{coupon_id}}","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>
@@ -62,7 +62,7 @@ Fetch campaigns
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{}}}}}}}
+  responses={{}}
 >
   
 </StatusCodes>

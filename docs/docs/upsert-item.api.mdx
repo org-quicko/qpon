@@ -1,0 +1,71 @@
+---
+id: upsert-item
+title: "Upsert item"
+description: "Upsert item"
+sidebar_label: "Upsert item"
+hide_title: true
+hide_table_of_contents: true
+api: eJydVE1v2zAM/SsCTxugfLRLu9W3ddiht7ZoT0Uw0DYTq7UlVZTbZIb/+0A7zffQdTkpFPn4+Gi9BiLOGZIHuIpUwVSDx4AVRQoSbcBiRZDAYoDeDJ5oCRqMhQQKwpwCaAj0XJtAOSQzLJk05MRZMD4aJ3nfr69UX0YLrHwpYE2zhmtb0MBZQRVC0kBcekngGIydQ9vqPQJMWaD4PxzWlYc0+qt/ZuLCHK35jQL+y+RvZDzGYodKDDXttturfKfjVMDYO8vEkDRtj00cL12+lILM2Ug2yhG9L03WAY8eWYZuDpFd+kiZSOCD8xSi6XBXYx303xPxyD0tIgWLpYhwhH+7NfxavEgclYlUqVPYX1N3tx3aawEnk284+Tq5GJyms4vBZHw2G+DZ+cngfHJ2mo9xln65GEvjfe5w75lC3xc0VBQLJ3i+7tSQxSUw2t4Ojw6WNZJqHtUdFGgQmW83C/l5MOpKiH0u6/DubBtZjZ25Tk8Tu+/mxndS7KJIUBlWqDJXy3kmr/bVhSeV1qaMKl2qm9pkT26oLruAsQoVZ1hiWpJWVV1GM4hk0UYVC1fPi6h8cBkxaxULUje7sGSlkFVas7HETKyiU7lTGVYezdyyQpurUFvlZjMKrCRxvoGSVygZOXKROgz5EDS8UOB+opPheDiW+b3jWKHdUnJ3fcc/y0iLOPIlGisYdSjlrl/tw86TZdCQHHnDsl3QsNrvVEPhOEpx06TIdB/KtpXwc01hCcnDVMMLBiOidEaZG5bzXzxo67XCp9uVR3xWoI/zXwXRinG+YFnLP9AgTnroQO201W9m+DEqG3c+SqNvt+39ay5iiB/rs3bgd1utM3e69Rk/eszBnYBsMg4MUOxz/dCv7+9AQ7ryzcrlUhLwVfwaX3tpne+/jqTpYw2UaOc1ziW3h5TfH+kxeJI=
+sidebar_class_name: "put api-method"
+info_path: docs/qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Upsert item"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"put"}
+  path={"/organizations/{organization_id}/items/upsert"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Upsert item
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"{{x-api-key}}","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"{{x-api-secret}}","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"{{organization_id}}","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"name":{"type":"string"},"description":{"type":"string"},"external_id":{"type":"string"}}},"example":{"name":"test item 2","description":"test description","external_id":"148a4749-2bf9-405f-a561-6452d0afb390"}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{}}
+>
+  
+</StatusCodes>
+
+
+      
