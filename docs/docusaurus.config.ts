@@ -18,6 +18,8 @@ const config: Config = {
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'org-quicko', // Usually your GitHub org/user name.
   projectName: 'qpon', // Usually your repo name.
+  deploymentBranch: 'feat-docs',
+  trailingSlash: false,
 
   onBrokenLinks: 'ignore',
   onBrokenMarkdownLinks: 'warn',
@@ -38,6 +40,7 @@ const config: Config = {
           sidebarPath: './sidebars.ts',
           docItemComponent: "@theme/ApiItem",
           sidebarCollapsible: true,
+          breadcrumbs: true,
           editUrl:
             'https://github.com/org-quicko/qpon/tree/main/docs',
         },
