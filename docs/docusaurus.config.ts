@@ -40,7 +40,6 @@ const config: Config = {
           sidebarPath: './sidebars.ts',
           docItemComponent: "@theme/ApiItem",
           sidebarCollapsible: true,
-          breadcrumbs: true,
           editUrl:
             'https://github.com/org-quicko/qpon/tree/main/docs',
         },
