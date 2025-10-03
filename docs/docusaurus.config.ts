@@ -37,6 +37,7 @@ const config: Config = {
       'classic',
       {
         docs: {
+          routeBasePath: '/',
           sidebarPath: './sidebars.ts',
           docItemComponent: "@theme/ApiItem",
           sidebarCollapsible: true,
@@ -69,21 +70,6 @@ const config: Config = {
       },
     ],
     [
-      '@docusaurus/plugin-client-redirects',
-      {
-        redirects: [
-          {
-            from: '/',
-            to: '/docs',
-          },
-          {
-            from: '/qpon',
-            to: '/docs',
-          },
-        ],
-      },
-    ],
-    [
       require.resolve("@easyops-cn/docusaurus-search-local"),
       {
         indexDocs: true,
@@ -100,7 +86,7 @@ const config: Config = {
       title: 'Qpon',
       logo: {
         src: "*",
-        href: '/docs',
+        href: '/',
       },
       items: [
         {
