@@ -11,24 +11,28 @@ Qpon can be deployed using Docker. It requires a PostgreSQL database to run.
 
 The latest image is available on Docker Hub at [<u>labsatquicko/qpon:latest</u>](https://hub.docker.com/r/labsatquicko/qpon) 
 
+#### Download the compose file
+```bash
+curl -LO https://github.com/org-quicko/qpon/raw/main/docker-compose.yml
+```
+#### Set the environment variables
 
 ```bash
-# Download the compose file
-curl -LO https://github.com/org-quicko/qpon/raw/main/docker-compose.yml
-
-# set the environment variables
 curl -LO https://github.com/org-quicko/qpon/raw/main/.env.example
 
-# create a .env file
+# create a .env file and set the environment variables
 cp .env.example .env
-
-# Run the services in the background
+```
+#### Start the services
+```bash
 docker compose up -d
 ```
 
 Visit [<u>http://localhost:3000/setup</u>](http://localhost:3000/setup) to set up the super admin user.
 
-## Environment Variables
+### Environment Variables
+
+<div style={{fontSize: '12px'}}>
 
 | Variable         | Description                        | Example                       |
 |------------------|------------------------------------|-------------------------------|
@@ -38,5 +42,7 @@ Visit [<u>http://localhost:3000/setup</u>](http://localhost:3000/setup) to set u
 | DB_HOST          | Database host                      | db (use 'db' for Docker)      |
 | JWT_SECRET       | JWT signing secret                 | any-random-string             |
 | SALT_ROUNDS      | Bcrypt salt rounds for passwords   | 10                            |
+
+</div>
 
 These variables can be set in a `.env` file, in your shell, or directly in `docker-compose.yml`.

@@ -69,17 +69,22 @@ const config: Config = {
         },
       },
     ],
-    [
-      require.resolve("@easyops-cn/docusaurus-search-local"),
-      {
-        indexDocs: true,
-        indexBlog: true,
-        language: "en",
-      },
-    ],
   ],
 
-  themes: ['docusaurus-theme-openapi-docs'],
+  themes: [
+    'docusaurus-theme-openapi-docs',
+
+    [
+      require.resolve("@easyops-cn/docusaurus-search-local"),
+      /** @type {import("@easyops-cn/docusaurus-search-local").PluginOptions} */
+      ({
+        hashed: true,
+        docsRouteBasePath: "/",
+        docsDir: "docs",
+        highlightSearchTermsOnTargetPage: true,
+      })
+    ]
+  ],
 
   themeConfig: {
     navbar: {
