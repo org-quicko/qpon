@@ -5,9 +5,9 @@ description: "Delete user"
 sidebar_label: "Delete user"
 hide_title: true
 hide_table_of_contents: true
-api: eJy9VD1v20AM/SsEpxa42OmqrUUyFOjQFM0UGAUt0dYh0p1y5KVxBf33gvJHIjtBkg7dJB753uNnj0prweIGr4UTLhx2lKhl5WTWHgO1jAU+nFHnz255gw59wAJrpooTOkx8l33iCosVNcIOK5Yy+U59NL/P37/CNowfqO0aA+v7A9wwoEMpa24Jix5105mDaPJhjcPgjgQIl4n1XzQcIk9lbJ/erCSmNQX/hwz8l6/2YjrSeiJFU+Yp3VHkmxmzcHof0y7iFYaFgUgXg7Bg0Q/HdbvghpXBwNBhy1rHCgusRjO6rZAC50/zkvlJmnMDkPlB1JjHKo6KvI6Kr7oY8JjejOAFCMqY7Xtlk/k7pltYZt8oLDdwlX15G2fwZTT4AARSUkPLhh20uVF/phwoKGgd87pW6FIsWcSB1gxXU1gOFiiwzOIDi7CARqgilNR25NdBgEIFKQeIqxUnAXNcP0LZpJlHRVIvI6Vqhg7vOck2o0+z89k5Dg67KNpSsBLsejyt9aQQh8YpP+i8a8gHw8ipsbdtE24mYynosDid07EP9rQfqIXDOopaeN8vSfg6NcNg5rvMaYPFzcLhPSVvZRnPQeXFvl/YtB7LGJSDYoEffuzm8yOgez6DnZGCnYd7arL9oUO7F6d7ZgvxH+n3NRoWg9tfmvdV4PH0PUu/pXl6WA8a3pfq5Ly9SnXwfGRbPFnui8tvlz8vcRj+AtdxF+4=
+api: eJy9VUtv4zYQ/ivEnFpAivWyLPu2xeZQoIem7Z4CoxiSI5sbmeSSVBrX0H8vKMeOFWfbzR56EjWcxzcPfnOAgBsPq3v45MnBOgGLDncUyEXpATTuCFbwlKJV6QPtIQGlYQVbQkkOEnD0pVeOJKxa7DwlIMkLp2xQJup9+PVndjSjJ9zZLjqTNad5hiLLxXzeZHUh6/miFgXO57zkixIS8GJLO4TVAcLeRhsfnNIbGIbkFSZPwlH4HlhnyxdkLV/mheBtSXlZNjnNGyJZLeqSl0LW81bypqSGy2XFW44ZCaorUZVVhrLJ2vniG5Ebt0Gt/sYI5k8lT+Athu0EenA9XcLjpVwsSSxSahtMq+WySHldLFKUguctF3mT5d8Ioffk3hO6knVdVSJPBc/rtKqwSBtZVGkt81I2zbKU9b/3bR29e2u0Jx/viyyLn2lbiixjv/dCkPdt33V7JqmjQJJFuJCAMDqQDtEQre2UGEs4++yj9eE6uuGfScQWW2csuaCOsYWRdKGldKANORgS2JH3uKG3EhguynFyUWTZhQ18Hfow2ldZdZ1zlVUsPj6mTWCt6bX8/kTfwlhl1SXGV6GGI7IppI8j9FPRdxS2RsZ3O4pjNeO0rGCGVs0uZ9nPDq9Ge5hFJ352eJ63YRy41ozQVRhH684aDa8hRCFTniETpo/nNtLSX8Y9MN6rLjC+Z3e9Eg/mhv00CpRmyLzADnlHCdv1XVBpII06sLA1/WYbmHUmNihhYUvsbuqWdDT0jPdeafKePAuGScME7iyqjfYMtWSu18y0LTnPouLmxVXklKgh0W+5QSdvIIFHcv6YUX6T3WSxQ9b4sMOxj8+PcVrvSSHOHQ70FGa2Q6Wjj9518e7YiHtAqyCZ0IqHBFbXPDN2I16d3v86ga3xITo5HDh6+uS6YYjiLz25Pazu1wk8olOxOONGkMrH81eY9fAyuvDDb8908iOD5O08noWo44Z4xK6Pf5BAXBnXPBn5638Mf6rRsB6S02Z5XwVett+b4Y9hLnfrGcP7Up2ss/8MddacRDtqfBCC7OXdFf1EJj9TwsfbX27/uIVh+Acr28cv
 sidebar_class_name: "delete api-method"
-info_path: docs/qpon
+info_path: qpon
 custom_edit_url: null
 ---
 
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"delete"}
-  path={"/organizations/{organization_id}/users/{user_id}"}
+  path={"/api/organizations/{organization_id}/users/{user_id}"}
   context={"endpoint"}
 >
   
@@ -47,7 +47,7 @@ Delete user
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"{{x-api-key}}","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"{{x-api-secret}}","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"{{organization_id}}","schema":{"type":"string"}},{"name":"user_id","in":"path","required":true,"example":"{{user_id}}","schema":{"type":"string"}}]}
+  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"d6be50ac01c558062d6576c2a55b3b73","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"user_id","in":"path","required":true,"example":"4d6644c1-cb16-44a2-8d24-6d13d8893d63","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>
@@ -62,7 +62,7 @@ Delete user
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{}}
+  responses={{"200":{"description":"200 Successfully deleted user","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"}}},"example":{"code":200,"message":"Successfully deleted user"}}}},"404":{"description":"404 User not found","content":{"application/json":{"schema":{"type":"object"},"example":{"code":404,"message":"User not found"}}}}}}
 >
   
 </StatusCodes>

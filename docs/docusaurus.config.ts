@@ -22,7 +22,12 @@ const config: Config = {
   trailingSlash: false,
 
   onBrokenLinks: 'ignore',
-  onBrokenMarkdownLinks: 'warn',
+
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'warn',
+    }
+  },
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
@@ -31,6 +36,25 @@ const config: Config = {
     defaultLocale: 'en',
     locales: ['en'],
   },
+
+  headTags: [
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'icon',
+        href: '/qpon/favicon/favicon-dark.svg',
+        media: '(prefers-color-scheme: dark)',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'icon',
+        href: '/qpon/favicon/favicon.svg',
+        media: '(prefers-color-scheme: light)',
+      },
+    }
+  ],
 
   presets: [
     [
@@ -44,7 +68,6 @@ const config: Config = {
           editUrl:
             'https://github.com/org-quicko/qpon/tree/main/docs',
         },
-        blog: false,
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -65,7 +88,7 @@ const config: Config = {
             sidebarOptions: {
               groupPathsBy: 'tag',
             },
-          },
+          }
         },
       },
     ],
@@ -81,7 +104,8 @@ const config: Config = {
         hashed: true,
         docsRouteBasePath: "/",
         docsDir: "docs",
-        highlightSearchTermsOnTargetPage: true,
+        indexDocs: true,
+        indexBlog: false,
       })
     ]
   ],
@@ -96,8 +120,9 @@ const config: Config = {
       items: [
         {
           href: 'https://github.com/org-quicko/qpon',
-          label: 'GitHub',
           position: 'right',
+          className: 'header-github-link',
+          'aria-label': 'GitHub repository',
         },
       ],
     },

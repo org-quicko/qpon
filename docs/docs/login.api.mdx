@@ -5,9 +5,9 @@ description: "Login"
 sidebar_label: "Login"
 hide_title: true
 hide_table_of_contents: true
-api: eJytVNuO2zYQ/RVinun1JU7bqMjDbrIIiibobmKjATZGMJLGEmOJZDjkeh1B/x6Q8nbt1Gj9ED/YmvGcozlz68BjxZDdwZLJwUqCRYcteXLRu5LgiK3RTAxZB/PJNP7UhGUK6ODj6MZsyVE5utpFm4uaWoxPfmcJMmDvlK6gl0AP2Nom+q4frCPm6HxltCftR4sUfSYerW1UgV4ZPf7CRv8uihodk38Z/Hr02yHvW9KVr08yK+2pIndM/exFtK8XWJ2dzd/jTzD7dfQ+397fvCguy6bZzK8dltvlcvrqDX6cFJ8gIl6jP1/iog5STH4R79CJ2WT2XEyfZbN5NpuLN+8We4GailiCszk3RHaEjbqn6P8zWpfJOpfAq5ZM8C+fQ99LKIkLp+yQQhwNsdQYfG2c+kYlSCiGHkTSHzt28pUm/0KFBwnWGUvOq2HoClPS6ba1xIwVnci6P8z7kWI+mR5g0sQLbbxYm6DLiIkoR18Dsb8y5W5A/hQN1KJqTlbXIvPWuPL/Rew5oOs4WHKfsWyV/py8fQ+HTD+EPP7R9zBoPO7cW1MpDbEyvjYRbQ0nBRgXB8aByfG42UdF5e+fanT97/z26R8l9KRX6bVJWpVPM3VrTaQ9Tik6hWKBojAhPq/jUdoatxF5UI0X+U7cBlVszIW4Sg6lBQousMG8ISna0Hg18qRRe+FrE6raC+tMQcxS+JrE7TEt6QhkkQdWmpiJhTeiNKLA1qKqNAvUpXBBC7Nek2MRA6snqsubP1JEiVznBl15ARLuyfGgaHoxuZikfhv2Labh0djSQf2PSvDPMHh68GPboNIRHVyaoqE1d5BaAxKG5qwk1LF12R10XY5MSxcnYyXhayC3G+75PToVpUarl/tTDtldBxvaQXZ8kGN4E06dXOjlI+KyKMj6/4xdHUzXzV8fFiAh3y9Ym1YTHG5Bpu8MQIJJZUirk3wdNKirMCzuwBk/3wEN+E/S
+api: eJzFVF1T2zoQ/SuafVYTG1JmmqdSQsEZkjTFoRCGYWR7Y4vYktAHxMnkv9+RDZfkltvehztTP9jyand1ds9ZbcCy3ED/FmYGNdxRUEyzCi1qb72joNEoKQwa6G/gIAj8J0OTaq4slwL63kguXZqiMQtXljUpZZ5jRrgACqkUFoX1UUypkqfMR3UfjA/dgEkLrJhf2Voh9EEmD5haoKC0VKgtbw9OZYY7XlxYzFHDlkKFxrB8d9NYzUXu9zJm/0Nu1kC/t3KJ4p00/qGAK1apEt+wHATBzuHwrw14xbB/CmA9LJKzlE/4MJqto3DMIxOJ7x/Tk+goWqrrq5Phpw7Ww3X2I+ITHgWjeLoaPeTP88ugngxOg4t4upqfndpJnIfjy5DP4+Xh6MdNbz5YHo7PZvziZKhurqd88nB6OI6XHyfxqDceHJuouur5Q0ZxejAaHPdGgygYnQedgI3Ppxfzq/URv3c3n7Qrwml1lA3y9er6fj17PP+qgnOnnuKj3mtPekH4sxp6QUhmgjlbSM3XmP1ZDbxLXS8Id6nzyidCWrKQTmSvxWl8dGjsF5nVbeT/UgNWjJfvalUxY56lzn5fxEsOME6h7rCs4uKzRWM7qaxgNxGEB4ctWfQfJF3IvBFnhbaQ3lNJ04BltoA+dJniXWdQm2754ukL/f7WktN34LRo9wC8lcfFQjalcevDYKpkMx17sLyRcEMYSaXz64W/i56lXpLE8dKSpCZTx9Ol7JAvjYELwohJWcmSEimpXGn5B4uCCUtsIV1eWKK09KNHiS2QTPfTovCBhiTOcIHGoCFWkkySlFWK8VwYwkRGtBNELhaoDfGO+Vuq429R45ExUySS6awDFJ5Qm7aisBN0goZeaWzFGq0IVuEOB3st+Jt7iyvbVSXjwkc73YimpecWmOJAoSEIKLQU3VEoPIn9W9hsEmZwpsvt1psfHeq6vcyfmOa+YP+3pVAgy1BD/3YDS6yhDyetyj/EHoR3L50H85Pit/Q14jhNUdlf+t7t6Ozb5DIGCsnLVFXNPIJmz0Cbdx+Agmya0cxLY9tAyUTu2mltc/rnL/ouTlw=
 sidebar_class_name: "post api-method"
-info_path: docs/qpon
+info_path: qpon
 custom_edit_url: null
 ---
 
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"post"}
-  path={"/users/login"}
+  path={"/api/users/login"}
   context={"endpoint"}
 >
   
@@ -54,7 +54,7 @@ Login
 
 <RequestSchema
   title={"Body"}
-  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"email":{"type":"string"},"password":{"type":"string"}}},"example":{"email":"{{super_admin_email}}","password":"{{super_admin_password}}"}}}}}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"email":{"type":"string"},"password":{"type":"string"}}},"example":{"email":"super.admin@test.com","password":"1234"}}}}}
 >
   
 </RequestSchema>
@@ -62,7 +62,7 @@ Login
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{"401":{"headers":{"X-Powered-By":{"schema":{"type":"string"},"example":"Express"},"Content-Type":{"schema":{"type":"string"},"example":"application/json; charset=utf-8"},"Content-Length":{"schema":{"type":"integer"},"example":"39"},"ETag":{"schema":{"type":"string"},"example":"W/\"27-RbwvP9cAdllk4EradwUU1CGaX0c\""},"Date":{"schema":{"type":"string"},"example":"Thu, 06 Mar 2025 13:24:24 GMT"},"Connection":{"schema":{"type":"string"},"example":"keep-alive"},"Keep-Alive":{"schema":{"type":"string"},"example":"timeout=5"}},"description":"401 Unauthorized","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"}}},"example":{"code":401,"message":"User not found"}}}}}}
+  responses={{"200":{"description":"200 Successfully logged in","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"},"data":{"type":"object","properties":{"access_token":{"type":"string"}}}}},"example":{"code":200,"message":"Successfully logged in","data":{"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MTQxMjgwZS0yODE0LTQxZGEtOTg1NS1iZTk3MWY4ZDk3NGUiLCJpYXQiOjE3NTk5OTM4NDAsImV4cCI6MTc2MDA4MDI0MH0.0aNHQLZVz6i_uY9ruh1Qm6dDgzxX_zUqHFp0HupvT64"}}}}},"401":{"description":"401 Unauthorized","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"}}},"example":{"code":401,"message":"User not found"}}}}}}
 >
   
 </StatusCodes>

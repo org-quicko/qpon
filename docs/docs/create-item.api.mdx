@@ -5,9 +5,9 @@ description: "Create item"
 sidebar_label: "Create item"
 hide_title: true
 hide_table_of_contents: true
-api: eJydVU1v2zAM/SsCTxugNOlhF9/WYoee1nbdKQgK2mZstbakSnTbzPB/H2inzodTdF1OCk0+Pj7Kzy0wFhGSJVwx1bDS4DFgTUxBoi1YrAkSeJ2hN7NH2oAGYyGBkjCnABoCPTUmUA7JGqtIGnKKWTCejZO879dXaiijV6x9JWBtO8J1HWiIWUk1QtICb7wkRA7GFtB1+ohApCwQ/w+HsXJKY3j0z0xcKNCaPyjg9yZ/I+ORywMqHBo6bHdU+UHHlYBF72ykCEnbDdgU+cLlGynInGWyLEf0vjJZDzx/iDJ0O0V26QNlIoEPzlNg0+Nux5r0PxLxxPOsiezq+7WhKo8f9/HBZPuNjGUqKEDXdSITU7BYiaAntOj2hBwXwRRZGaZancPxyvtn+6ETdLeEvi0WxwT68nPpeywDXAZCpr4taKiJSycF3sV+YrkECcz3Nx3nk8XPpTyCBtnV7W6rPyYzbhU4ZjGG3xtqOtJub8auXS+y4f5i3vhen8MOElQmKlSZa+S8Flt4ceFRpY2pWKUbddOY7NGdqYs+YKxCFTOsMK1Iq7qp2MyYLFpWXLqmKFn54DKKUSsuSd0cwpKVwqjSJhpLMVJU7FTuVIa1R1PYqNDmKjRWufWaQlSSWOyg5DWXjBxjmToM+RloeKYQh4nOzxZnC5lfdlWj3VP5cKmn7z3TK899hcYKRhOqXu1+38sDT5C9JidMol/5SkMpVyVZQtumGOl3qLpOwk8NhQ0ky5WGZwxGtOgNODdRzu94254LwJfbrfd8VaBP094G0YohP2PVyD/QIA49dbZu1ek3k/0clZ3rn6QxtNv/poxcxGg/12d09g9bjZkH3YaMywFzdicgu4yJsYotj2/99c9fd6Ah3Rpy7XKpCfgiHwJ8GbR1frgVSTvEWqjQFg0Wkjtgyu8vk5abGw==
+api: eJydVcmS2zYQ/RVUn5IqakSJohbebJcPPsXjOKcplasBNCV4SIAGwFmi4r+nmpS1O47DE9js5fXr5sMOIm4CFA/wIVIN6wQa9FhTJM/WHVisCQp4GWFjRo/0CgkYCwVsCTV5SMDTt9Z40lCUWAVKQFNQ3jTROPZ78/GDGMLoBeum4mR6LilPUaUTlefLdD7V83wxV1PMc5nJRQYJBLWlGqHYQXxtOCZEb+wGui65wBRIeYr/B9Yh8oislKvJVMkyo0mWLSeUL4n0bDHPZKb0PC+1XGa0lHo1k6XElBTNZ2qWzVLUy7TMF/8RufMbtOZvZDBfjP4OvsG4PYMefUun8GSmFytSixGVSxzNVqvpSM6nixFqJSelVJNlOvlXCGvOHhpnAwUodt1QjEJ86/QrByhnI9nIR2yayqge4/hrYNZ215md/EqKOWy8a8hH0+fd93lV/2IKN76rNkRXfykNVTr8vE7jjTotZGykDXnouo55i+QtVszwDS66E2YPk4kUojCRasFEnu9M/+3UdAPuHlCeppcA+vAJ172kAd55wkh9WUigprh1HNC40HfMW1HAGBszPl2cMN5d7FE35hQBEuB5fTpO9v1Vn3sWLpEczD9q7Lqt4+yMLV1PtIn9tt43PUfnFdgoTBAolGv5XLLcPDv/KGRrqijkq7hvjXp0d+JtbzBWoAgKK5QVJaJuq2hGkSzaKOLWtZttFI13ikJIRNySuD9PS5YDg5BtMJZCoCCiE9oJhXWDZmODQKuFb61wZUk+CHbcHFOxVrCHxrCVDr2+gwSeyIeho8ldepdy/zyvGu0Jy+eDvb37kV7iuKnQWM7R+qpnu5/5A2BjIDmTC55ucUM/+sGvE9jy0hQPsNtJDPSXr7qOzd9a8q9QPKwTeEJvmJFe3rUJfP6BTJ7oAfz2aS9LvwtIboPfG9Gy3D9h1fIbJMD6fy163bpLvuv1r0E53ik3YQzlTm+sAxbW4F+rc7gkflrq4HlWbfB4N+QcfeYkR48riWWBPvz/H//48zMkIPfSXDvNMR6f+Y7A54Fb1wxbUewG2w4qtJsWN+w75OTnHwQRr2w=
 sidebar_class_name: "post api-method"
-info_path: docs/qpon
+info_path: qpon
 custom_edit_url: null
 ---
 
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"post"}
-  path={"/organizations/{organization_id}/items"}
+  path={"/api/organizations/{organization_id}/items"}
   context={"endpoint"}
 >
   
@@ -47,7 +47,7 @@ Create item
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"{{x-api-key}}","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"{{x-api-secret}}","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"{{organization_id}}","schema":{"type":"string"}}]}
+  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"d6be50ac01c558062d6576c2a55b3b73","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>

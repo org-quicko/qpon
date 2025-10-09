@@ -5,9 +5,9 @@ description: "Update user role in organization"
 sidebar_label: "Update user role in organization"
 hide_title: true
 hide_table_of_contents: true
-api: eJy9VE1v2zAM/SsCTxugNN3Vt3aX7dYO7akIBsZibK22pIpy28zQfx9op06cdGi7w3JyKPLx8ev1kLBiKO7glinCSkPAiC0limLtwWFLUMDzAoNd3NMWNFgHBdSEhiJoiPTQ2UgGig02TBoMcRltSNaL38XVdzWG0TO2oRGwvp/gcgYNXNbUIhQ9pG0QB07Rugpy1kcEmMpI6V84TJGnNMandzPxsUJnf6OA/7TmhUzAVM+opNjRPN1R5FFGQyFSiWkq4zBpxxQ/lmwX8XaSleBw8I6JoejzCEucLr3ZSkzpXSKX5BNDaGw5FLD8xdLcfg+eDwj0EP1AhIxNPkLOOR+P5TYYTKSEqBJvZZ06bBFoaCnV3owFl1LxUHgBy0M/Xp50dimgvJyasBzYSPM2fpiuTQO76zCkmfMSo7KsUJW+k++NXMSTj/dq3dkmqfVWXXe2vPdn6nIwWKdQcYkNrhvSqu2aZBeJHLqkUu27qk4qRF8Ss1apJnU9hyUngazWHVtHzMQqeWW8KrENaCvHCp1RsXPKbzYUWYljtYeSDRcPg1yvPUZzBhoeKfJY0Zez87NzyBqC59TiMLbdYr1jCLPuTJeR6DktQ4PWCXAXG3kbx3M3uxEGDcXp0QwTkqf9ag9DWmmoPSdB6fs1Mt3GJmcxP3QUt1DcrTQ8YrTSskGijGX5/sv1H+wvfPqxO5jPCvTrheyM6ESyHrHp5B9oEA07vX250P+Y/qVVeZX1i/p9rAN7OX41/ZjmUOwnDh8rdSa5b6aaPGfZRo+vI+biRkD2HidKJDo2ycXVxc3Xb6BhvZOw1hsJivgka4ZPY1N9GPdT1EpsPTToqg4r8R1B5fcHa492Og==
+api: eJy9VcFy4zYM/RUOTu2MFEuWLMu+ZffS3jbt5pTx7IAkZHMji1ySSuJ69O8dSo4tbdIm6aE+yRTw3iMAPRzB49bB+g5uHVnYRGDQ4p482XB6hAb3BGt4itGo+J4OEIFqYA07QkkWIrD0o1WWJKwrrB1FIMkJq4xXOsRdf/mdDWn0hHtTBzBZcFokKJJULBZlUsxlsVgWYo6LBc/4MoMInNjRHmF9BH8wIcd5q5otdF30kyZHwpL/L7LOmRdlFV+lc8GrjNIsK1NalEQyXxYZz4QsFpXkZUYll6ucVxwTElTkIs/yBGWZVIvlO5Vru8VG/YVBzDcln8Ub9LuJdG9bGsvjmVyuSCxjqkqM89VqHvNivoxRCp5WXKRlkk4kSDKWBPpzHcYqWkf2I+y5LIo8F2kseFrEeY7zuJTzPC5kmsmyXGWyyN5i3wQCZ3TjyIWQeZIMkePmzJOE/dkKQc5VbV0fWGtkQGFBMbO6JohA6MZT40M2GlMr0Vdz9t0FiOPLNmj+nUTotrHakPVqECC0pFGUajxtyUIXwZ6cwy291sluVJZniHmSjHLgDf1d16OEYpPzn7Q8DEjvu9OUvwdcA0nltYUBeFrQ257/Qs9Uw8YzCEG532k5jIEIc9CPwxpmaNRsHOtmx5/Gt5sFYDc7ngaqm51apJpK9+VTvld4Y3qqqbZwyJRjyIRuw3MV/OdR23vGW1V7xg/splXiXl+xT/2BahgyJ7BGXlPE9m3tVeypwcYzv9PtdueZsTqUP2J+R+xmCktNSHSMt0415Bw55jWTmgncG1TbxjFsJLNtw3RVkXUsBG4vUME8QoREt+MarbyCCB7IuuFG6VVylYQJMtr5PfatO31y72jEpDrn0fP05GemRtUE4NbW4d3QojtAoyCamIqDCNYvXabvU3h1+fT7Vm0i2GnnA9bxyNHRra27Lhz/aMkeYH23ieABrQqF69eCVC48/4O9jiYZfvnjZCi/Mohev87pEJuwJh6wbsM/iCDsjZdmGRzsf6R/LlW36aLn9fKxClxW4Kv0A814wZ41fOyqk532JtU5csI2RHweMOOvAeQS8cKTLhnXQpDx/xq7GZnMl+uvn3+DCPjJ+Pa9hYLFxzCS+Dg0QJthloPHhbMj1Nhs28FgB9Dw+xuJh/XL
 sidebar_class_name: "patch api-method"
-info_path: docs/qpon
+info_path: qpon
 custom_edit_url: null
 ---
 
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"patch"}
-  path={"/organizations/{organization_id}/users/{user_id}/role"}
+  path={"/api/organizations/{organization_id}/users/{user_id}/role"}
   context={"endpoint"}
 >
   
@@ -47,7 +47,7 @@ Update user role in organization
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"{{x-api-key}}","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"{{x-api-secret}}","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"{{organization_id}}","schema":{"deprecated":false}},{"name":"user_id","in":"path","required":true,"example":"{{user_id}}","schema":{"deprecated":false}}]}
+  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"d6be50ac01c558062d6576c2a55b3b73","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"deprecated":false}},{"name":"user_id","in":"path","required":true,"example":"4d6644c1-cb16-44a2-8d24-6d13d8893d63","schema":{"deprecated":false}}]}
 >
   
 </ParamsDetails>
@@ -62,7 +62,7 @@ Update user role in organization
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{}}
+  responses={{"200":{"description":"200 Successfully updated user role","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"}}},"example":{"code":200,"message":"Successfully updated user role"}}}}}}
 >
   
 </StatusCodes>
