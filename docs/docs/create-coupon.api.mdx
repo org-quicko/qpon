@@ -5,9 +5,9 @@ description: "Create coupon"
 sidebar_label: "Create coupon"
 hide_title: true
 hide_table_of_contents: true
-api: eJydVdtu2zAM/RWBwIANUC599dtarMCeeln3FAQFbTO2GltSJblNZvjfB0auc3G2rsuTQZGHPLyctBCw8JAs4Mo01mhYSrDosKZAju0taKwJEthM0KrJmrYgQWlIoCTMyYEER8+NcpRDssLKk4ScfOaUDcqw39fb7yKG0QZrWzFY2w5wXQcSfFZSjZC0ELaWHXxwShfQdfKkAE+Zo/A/NQyR4zLi0z9XYlyBWv1CBn9U+VsxFkN5VEpwDR2nO4l8J+OSwbw12pOHpO0iNvlwafItB2RGB9KBP9HaSmU74NmTZ9LtGNmkT5RxC6wzllxQO9ye1ii/hFz5zDQ6PMaXv3m8YNUcuigdqCDHPipQ/ZgZ7YNDFas9ZdodtGlo88X8k7i5voZRHbBSG8phnP1iPj+TDrCqOEd3uhVXjjCQyOLmS6gplCbnSRq/6xIPNIHZ4dT8bDTEWQTwIIE7f7+f0bcRp57xmNL4oed0ltF+AEqvzK6jKux27C5SOSbKRqG8wJ6rWPGFvxq3FmmjqiDSrbhrVLY2U3G5MygtUPgMK0wrkqJuqqAmgTTqIEJpmqIMwjqTkfdShJLE3TEsaQ70Im280uQ9eRGMyI3IsLaoCu0F6ly4RguzWpHzgh2LPRRfLHvk6MvUoMunIOGFnI+MLqbz6Zz586hq1ActPp3qUSuG1Qu0CTNbodKM0riK3+LAF0cHzmNNxhf/NvOlhJK3JVlA26bo6aeruo7Nzw25LSSLpYQXdIr7sdPTXHn+/oNUHRw1fL7vpeSLAHm+8N6ImvW13xgACSy4Y6Hqlp1808yPlbIX8bNlxHSHfxFDLaybH8szCPW7qQbPo2zR4ypiTh4YZO8x0klW2eHwb29+PICEtNfX2uQc4/CVdR1fY2+NjXuRtNHWQoW6aLBg34jJv9/xmYva
+api: eJydVdtu4zYQ/RVigAItQMeS5aveukEX6NNuttunwAiG5MjmRiK1JJXEFfTvBS3HN6V7qZ6E4VzOmRkethBw4yG/h1vb1NbAmkONDisK5KK9BYMVQQ4vI6z16JF2wEEbyGFLqMgBB0dfG+1IQV5g6YmDIi+droO20e/3j3+yPoxesKrLmEzNBc0SlEkqZ7NlMp+o+WwxlxOczUQmFhlw8HJLFULeQtjVMcYHp80Guo5fYfIkHYX/A+sYeUJWiFU6kaLIKM2yZUqzJZGaLuaZyKSazwollhkthVpNRSEwIUnzqZxm0wTVMilmix9Ebt0Gjf4HI5gHrV7B1xi2F9CDa+gcnsjUYkVyMaJiiaPpajUZiflkMUIlRVoImS6T9JsQ1jG7r63x5CFvu74Y+fDOql0MkNYEMiH+Yl2XWu4xjr/42LV2mNmKLyRjD2tna3JB7/MeeA7qc1DaS9uY8NCffMvjCcvm3EWbQBty0UcHqh6kNT441D3aa6bdWd+OfU+TX9iH9+9hgAMK/UIKhtXTJHmjHGBZxhrd9VrdOsJATPa3iUNFYWtVHK31+y7FCecwxlqPz5fAj9urnejGfRIPHGL3P53m9MeA14H1kNbw4MDrTVanIWhT2H1Xddgv3l1P55JsNDLtGR74siIqx7N1j0w0ugxM7Nhdo+WjvWHv9gZtGDIvsURREmdVUwY9CmTQBBa2ttlsA6udleQ9Z2FL7O4yLZkY6JlovDbkPXkWLFOWSaxq1BvjGRrFXGOYLQpynkXHzSlVvPbRQ6HfCotO3QCHJ3K+Z5TeJDdJ5B/HVaE5a/H1ZC9acVy/QC9hXJeoTczSuDKe9UO/B6w18Iu7H4ebD8XgdfJrDtu4N/k9tK1AT3+7suui+WtDbgf5/ZrDEzodu7JXa6V9/P8P1Tu73vDrp4PK/MaAvw3/YEQT1fuwNwAcopwPNaxbd/xVfn8OyumJeBNGX+78ATpiiZL6c3WOmv/dUkfPi2q9x22fc/Q5Jjl5DBQz6u1RAj5++OszcBAHpa2sijEOn6Pk43PfW1v3e5G3va2FEs2mwU307XPG71/AtaAr
 sidebar_class_name: "post api-method"
-info_path: docs/qpon
+info_path: qpon
 custom_edit_url: null
 ---
 
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"post"}
-  path={"/organizations/{organization_id}/coupons"}
+  path={"/api/organizations/{organization_id}/coupons"}
   context={"endpoint"}
 >
   
@@ -47,7 +47,7 @@ Create coupon
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"{{x-api-key}}","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"{{x-api-secret}}","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"{{organization_id}}","schema":{"type":"string"}}]}
+  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"d6be50ac01c558062d6576c2a55b3b73","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>

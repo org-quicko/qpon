@@ -35,8 +35,8 @@
         "name": "User"
       }
     ],
-      "paths": {
-    "/organizations": {
+    "paths": {
+    "/api/organizations": {
       "parameters": [],
       "post": {
         "summary": "Create organization",
@@ -44,52 +44,16 @@
           "Organization"
         ],
         "parameters": [],
+        "security": [
+          {
+            "tokenAuth": []
+          },
+          {
+            "apiKeySecretAuth": []
+          }
+        ],
         "responses": {
           "201": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "329"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"149-BOQ/Sq4mKSRXRewMoCetC9vMDeo\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Tue, 18 Mar 2025 12:32:59 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "201 Organization created",
             "content": {
               "application/json": {
@@ -145,50 +109,6 @@
             }
           },
           "400": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "46"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"2e-S6ktU/kKyDAnH8el1umyRd/rvOs\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Tue, 18 Mar 2025 12:33:36 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "400 Invalid body",
             "content": {
               "application/json": {
@@ -211,50 +131,6 @@
             }
           },
           "409": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "75"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"4b-6DxNXoNy6altkagw5PVggArG/ZM\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Tue, 18 Mar 2025 12:39:02 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "409 Organization already exists",
             "content": {
               "application/json": {
@@ -271,7 +147,7 @@
                 },
                 "example": {
                   "code": 409,
-                  "message": "Organization with this name or slug already exists"
+                  "message": "Organization with this name already exists"
                 }
               }
             }
@@ -313,8 +189,8 @@
             "name": "external_id",
             "in": "query",
             "required": false,
-            "description": "filter to get organizations by external id",
-            "example": "{{external_id}}",
+            "description": "Filter to get organizations by external id",
+            "example": "c393348c-4e79-425d-83ea-bb8b2949bd24",
             "schema": {
               "type": "string"
             }
@@ -333,7 +209,7 @@
             "name": "skip",
             "in": "query",
             "required": false,
-            "description": "Describe the offset",
+            "description": "Optional page offset. Default is 0",
             "example": "0",
             "schema": {
               "type": "integer"
@@ -343,27 +219,8 @@
             "name": "name",
             "in": "query",
             "required": false,
-            "description": "filter to get organization by name",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API Key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API Secret",
-            "example": "{{x-api-secret}}",
+            "description": "Filter to get organization by name",
+            "example": "test organization",
             "schema": {
               "type": "string"
             }
@@ -371,50 +228,6 @@
         ],
         "responses": {
           "200": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "1395"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"573-LWEJ5FjY7pDyhKuk4hWxZqhu+PY\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Tue, 18 Mar 2025 12:40:03 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "200 Successfully fetched",
             "content": {
               "application/json": {
@@ -467,48 +280,27 @@
                   "data": [
                     {
                       "organization_id": "787a00c9-f317-4463-b3c5-8e152c9a7388",
-                      "name": "pro-quicko-qpon-test-1",
+                      "name": "test organization 1",
                       "currency": "INR",
-                      "theme_colour": "default theme",
-                      "external_id": "org-quicko-qpon-api@quicko.pro",
+                      "external_id": "test-org-1",
                       "created_at": "2025-03-13T11:33:11.643Z",
                       "updated_at": "2025-03-13T11:33:11.643Z"
                     },
                     {
                       "organization_id": "e1a4ccad-7568-45ee-8b17-6e5cc2457294",
-                      "name": "pro-quicko-qpon-test-2",
+                      "name": "test organization 2",
                       "currency": "INR",
-                      "theme_colour": "default theme",
-                      "external_id": "org-quicko-qpon-api@quicko.pro",
+                      "external_id": "test-org-2",
                       "created_at": "2025-03-13T11:33:52.032Z",
                       "updated_at": "2025-03-13T11:33:52.032Z"
                     },
                     {
                       "organization_id": "7f00b0e1-fc77-4a84-bea0-9390c47276e2",
-                      "name": "pro-quicko-qpon-test-3",
+                      "name": "test organization 3",
                       "currency": "INR",
-                      "theme_colour": "default theme",
-                      "external_id": "org-quicko-qpon-api@quicko.pro",
+                      "external_id": "test-org-3",
                       "created_at": "2025-03-17T11:35:42.726Z",
                       "updated_at": "2025-03-17T11:35:42.726Z"
-                    },
-                    {
-                      "organization_id": "ba2b67b1-f932-4f56-abb2-fc445869bcab",
-                      "name": "pro-quicko-qpon-test",
-                      "currency": "INR",
-                      "theme_colour": "default theme",
-                      "external_id": "org-quicko-qpon-api@quicko.com",
-                      "created_at": "2025-03-12T14:53:14.255Z",
-                      "updated_at": "2025-03-17T11:39:15.802Z"
-                    },
-                    {
-                      "organization_id": "c39c3e9d-1e70-45cb-bd9a-6245000773bb",
-                      "name": "pro-quicko-qpon-test-4",
-                      "currency": "INR",
-                      "theme_colour": "default theme",
-                      "external_id": "org-quicko-qpon-api@quicko.pro",
-                      "created_at": "2025-03-18T12:39:48.903Z",
-                      "updated_at": "2025-03-18T12:39:48.903Z"
                     }
                   ]
                 }
@@ -516,50 +308,6 @@
             }
           },
           "404": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "48"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"30-R7ladzqs0peCmjnBd0DttwzlKTA\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Tue, 18 Mar 2025 12:42:06 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "404 Organization not found",
             "content": {
               "application/json": {
@@ -584,14 +332,14 @@
         }
       }
     },
-    "/organizations/{organization_id}": {
+    "/api/organizations/{organization_id}": {
       "parameters": [
         {
           "name": "organization_id",
           "in": "path",
           "required": true,
           "description": "Organization id",
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -602,74 +350,17 @@
         "tags": [
           "Organization"
         ],
-        "parameters": [
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API Key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
+            "tokenAuth": []
           },
           {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API Secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
+        "parameters": [],
         "responses": {
           "200": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "305"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"131-tMVuXE62YFI1U/xJOMyYxgLM0FQ\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Tue, 18 Mar 2025 12:43:00 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "200 Organization fetched",
             "content": {
               "application/json": {
@@ -714,7 +405,7 @@
                   "message": "Successfully fetched organization",
                   "data": {
                     "organization_id": "c39c3e9d-1e70-45cb-bd9a-6245000773bb",
-                    "name": "pro-quicko-qpon-test-4",
+                    "name": "test organization",
                     "currency": "INR",
                     "external_id": "test",
                     "created_at": "2025-03-18T12:39:48.903Z",
@@ -725,50 +416,6 @@
             }
           },
           "404": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "47"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"2f-vmRxVEuRUeJfT2EJVCqgAmCYvwU\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Tue, 18 Mar 2025 12:44:24 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "404 Organization not found",
             "content": {
               "application/json": {
@@ -797,74 +444,17 @@
         "tags": [
           "Organization"
         ],
-        "parameters": [
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
+            "tokenAuth": []
           },
           {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
+        "parameters": [],
         "responses": {
           "200": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "320"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"140-jw+Z3ZYcPtnP016EQ0ZozgpuSVE\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Tue, 18 Mar 2025 12:50:19 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "200 Organization updated",
             "content": {
               "application/json": {
@@ -889,9 +479,6 @@
                         "currency": {
                           "type": "string"
                         },
-                        "theme_colour": {
-                          "type": "string"
-                        },
                         "external_id": {
                           "type": "string"
                         },
@@ -912,9 +499,8 @@
                   "message": "Successfully updated organization",
                   "data": {
                     "organization_id": "c39c3e9d-1e70-45cb-bd9a-6245000773bb",
-                    "name": "pro-quicko-qpon-test-4",
+                    "name": "modified test organization",
                     "currency": "INR",
-                    "theme_colour": "default theme",
                     "external_id": "org-quicko-qpon-api",
                     "created_at": "2025-03-18T12:39:48.903Z",
                     "updated_at": "2025-03-18T12:50:19.644Z"
@@ -924,50 +510,6 @@
             }
           },
           "404": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "47"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"2f-vmRxVEuRUeJfT2EJVCqgAmCYvwU\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Tue, 18 Mar 2025 14:22:53 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "404 Organization not found",
             "content": {
               "application/json": {
@@ -1001,11 +543,15 @@
                   },
                   "external_id": {
                     "type": "string"
+                  },
+                  "currency": {
+                    "type": "string"
                   }
                 }
               },
               "example": {
                 "name": "test 1",
+                "currency": "INR",
                 "external_id": "3DSG3FS536GS3D14GF3"
               }
             }
@@ -1017,38 +563,70 @@
         "tags": [
           "Organization"
         ],
-        "parameters": [
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
+            "tokenAuth": []
           },
           {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
-        "responses": {}
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "200 Organization deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "code": 200,
+                  "message": "Successfully deleted organization"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404 Organization not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "code": 404,
+                  "message": "Organization not found"
+                }
+              }
+            }
+          }
+        }
       }
     },
-    "/organizations/{organization_id}/api-keys": {
+    "/api/organizations/{organization_id}/api-keys": {
       "parameters": [
         {
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -1059,17 +637,14 @@
         "tags": [
           "Api Key"
         ],
+        "security": [
+          {
+            "tokenAuth": []
+          }
+        ],
         "parameters": [],
         "responses": {
-          "default": {
-            "headers": {
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json"
-              }
-            },
+          "201": {
             "description": "201 Successfully created api keys",
             "content": {
               "application/json": {
@@ -1119,6 +694,28 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "404 Organization not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "code": 404,
+                  "message": "Organization not found"
+                }
+              }
+            }
           }
         }
       },
@@ -1128,64 +725,13 @@
           "Api Key"
         ],
         "parameters": [],
+        "security": [
+          {
+            "tokenAuth": []
+          }
+        ],
         "responses": {
           "200": {
-            "headers": {
-              "Server": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "openresty"
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Mon, 23 Jun 2025 11:57:10 GMT"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "235"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Access-Control-Allow-Origin": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "*"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"eb-DCs1qBhRK24IkibTJc4OmFE0fPo\""
-              },
-              "X-Served-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "dev-qpon.quicko.com"
-              }
-            },
             "description": "200 Successfully fetched api key",
             "content": {
               "application/json": {
@@ -1231,11 +777,33 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "404 Api key not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "code": 404,
+                  "message": "Api key not found"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/users": {
+    "/api/users": {
       "parameters": [],
       "post": {
         "summary": "Create super admin",
@@ -1243,52 +811,38 @@
           "User"
         ],
         "parameters": [],
+        "security": [
+          {
+            "tokenAuth": []
+          },
+          {
+            "apiKeySecretAuth": []
+          }
+        ],
         "responses": {
-          "409": {
-            "headers": {
-              "X-Powered-By": {
+          "201": {
+            "description": "201 Successfully created super admin",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "type": "string"
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
                 },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "51"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"33-8NkW3BAQBHxvj74OFmXJm1SYXu0\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Mon, 17 Mar 2025 11:26:04 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
+                "example": {
+                  "code": 201,
+                  "message": "Successfully created super admin"
+                }
               }
-            },
+            }
+          },
+          "409": {
             "description": "409 Super Admin already exists",
             "content": {
               "application/json": {
@@ -1318,18 +872,21 @@
                 "type": "object",
                 "properties": {
                   "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "John Doe"
                   },
                   "email": {
                     "type": "string",
-                    "format": "email"
+                    "format": "email",
+                    "example": "super.admin@test.com"
                   },
                   "password": {
                     "type": "string",
-                    "format": "utc-millisec"
+                    "example": "1234"
                   },
                   "role": {
-                    "type": "string"
+                    "type": "string",
+                    "default": "super_admin"
                   }
                 }
               },
@@ -1349,58 +906,16 @@
           "User"
         ],
         "parameters": [],
+        "security": [
+          {
+            "tokenAuth": []
+          },
+          {
+            "apiKeySecretAuth": []
+          }
+        ],
         "responses": {
           "200": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Access-Control-Allow-Origin": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "*"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "805"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"325-cEhkNTyXRp0OVaQzmPdVicVdDgs\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Fri, 02 May 2025 10:00:31 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "200 Successfully fetched",
             "content": {
               "application/json": {
@@ -1463,7 +978,7 @@
                       {
                         "user_id": "e90ca62d-a707-4fab-9743-e552e9b8ff63",
                         "name": "Van Gogh",
-                        "email": "van.gogh@quicko.com",
+                        "email": "van.gogh@test.com",
                         "created_at": "2025-04-25T09:56:57.297Z",
                         "updated_at": "2025-04-25T09:56:57.297Z"
                       },
@@ -1484,7 +999,7 @@
                       {
                         "user_id": "4ca6cbbd-cab2-4946-8b7f-0a74bb06a9e5",
                         "name": "Test User",
-                        "email": "test.user@quicko.com",
+                        "email": "test.user@test.com",
                         "created_at": "2025-04-23T13:53:20.826Z",
                         "updated_at": "2025-04-23T13:53:20.826Z"
                       }
@@ -1496,17 +1011,39 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "404 Users not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "code": 404,
+                  "message": "Users not found"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/organizations/{organization_id}/users": {
+    "/api/organizations/{organization_id}/users": {
       "parameters": [
         {
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -1517,80 +1054,17 @@
         "tags": [
           "User"
         ],
-        "parameters": [
+        "parameters": [],
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
+            "tokenAuth": []
           },
           {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
         "responses": {
           "201": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Access-Control-Allow-Origin": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "*"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "299"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"12b-HRUvyEq86b++WDx5UIymtuoMP8Q\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Wed, 23 Apr 2025 13:53:21 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "201 User created successfully",
             "content": {
               "application/json": {
@@ -1619,10 +1093,6 @@
                         "role": {
                           "type": "string"
                         },
-                        "last_accessed_at": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
                         "created_at": {
                           "type": "string",
                           "format": "date-time"
@@ -1641,9 +1111,8 @@
                   "data": {
                     "user_id": "4ca6cbbd-cab2-4946-8b7f-0a74bb06a9e5",
                     "name": "Test User",
-                    "email": "test.user@quicko.com",
+                    "email": "test.user@test.com",
                     "role": "admin",
-                    "last_accessed_at": "2025-04-23T13:53:20.826Z",
                     "created_at": "2025-04-23T13:53:20.826Z",
                     "updated_at": "2025-04-23T13:53:20.826Z"
                   }
@@ -1652,56 +1121,6 @@
             }
           },
           "400": {
-            "headers": {
-              "Server": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "openresty"
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Mon, 23 Jun 2025 12:02:07 GMT"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "46"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Access-Control-Allow-Origin": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "*"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"2e-S6ktU/kKyDAnH8el1umyRd/rvOs\""
-              }
-            },
             "description": "400 Bad request",
             "content": {
               "application/json": {
@@ -1724,56 +1143,6 @@
             }
           },
           "409": {
-            "headers": {
-              "Server": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "openresty"
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Mon, 23 Jun 2025 12:02:30 GMT"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "44"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Access-Control-Allow-Origin": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "*"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"2c-6Lhg+sefIn78HW2VBvWRcUXcLrI\""
-              }
-            },
             "description": "409 User already exists",
             "content": {
               "application/json": {
@@ -1799,7 +1168,39 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {},
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Robert Langdon"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "robert.langdon@test.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "1234"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": [
+                      "admin",
+                      "editor",
+                      "viewer"
+                    ],
+                    "example": "admin"
+                  }
+                },
+                "required": [
+                  "name",
+                  "email",
+                  "password",
+                  "role"
+                ]
+              },
               "example": {
                 "name": "Robert Langdon",
                 "email": "robert.langdon@test.com",
@@ -1815,72 +1216,17 @@
         "tags": [
           "User"
         ],
-        "parameters": [
+        "parameters": [],
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
+            "tokenAuth": []
           },
           {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
         "responses": {
           "200": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "228"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"e4-jGUTGdUROEx/RF+N/84aWlrv914\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Thu, 06 Mar 2025 13:16:02 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "200 Fetch users",
             "content": {
               "application/json": {
@@ -1934,17 +1280,39 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "404 Users not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "code": 404,
+                  "message": "Users not found"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/organizations/{organization_id}/users/{user_id}": {
+    "/api/organizations/{organization_id}/users/{user_id}": {
       "parameters": [
         {
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -1953,7 +1321,7 @@
           "name": "user_id",
           "in": "path",
           "required": true,
-          "example": "{{user_id}}",
+          "example": "4d6644c1-cb16-44a2-8d24-6d13d8893d63",
           "schema": {
             "type": "string"
           }
@@ -1964,74 +1332,17 @@
         "tags": [
           "User"
         ],
-        "parameters": [
+        "parameters": [],
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
+            "tokenAuth": []
           },
           {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
         "responses": {
           "200": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "224"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"e0-/q6Izq9OEs5ZQdQRR/0At1YcrCs\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Thu, 06 Mar 2025 13:26:13 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "200 Successfull",
             "content": {
               "application/json": {
@@ -2081,6 +1392,28 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "404 User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "code": 404,
+                  "message": "User not found"
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -2111,32 +1444,56 @@
         "tags": [
           "User"
         ],
-        "parameters": [
+        "parameters": [],
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
+            "tokenAuth": []
           },
           {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
-        "responses": {}
+        "responses": {
+          "200": {
+            "description": "200 Successfully deleted user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "code": 200,
+                  "message": "Successfully deleted user"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404 User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "code": 404,
+                  "message": "User not found"
+                }
+              }
+            }
+          }
+        }
       }
     },
-    "/users/login": {
+    "/api/users/login": {
       "parameters": [],
       "post": {
         "summary": "Login",
@@ -2145,51 +1502,40 @@
         ],
         "parameters": [],
         "responses": {
-          "401": {
-            "headers": {
-              "X-Powered-By": {
+          "200": {
+            "description": "200 Successfully logged in",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "type": "string"
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "access_token": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
                 },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "39"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"27-RbwvP9cAdllk4EradwUU1CGaX0c\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Thu, 06 Mar 2025 13:24:24 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
+                "example": {
+                  "code": 200,
+                  "message": "Successfully logged in",
+                  "data": {
+                    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MTQxMjgwZS0yODE0LTQxZGEtOTg1NS1iZTk3MWY4ZDk3NGUiLCJpYXQiOjE3NTk5OTM4NDAsImV4cCI6MTc2MDA4MDI0MH0.0aNHQLZVz6i_uY9ruh1Qm6dDgzxX_zUqHFp0HupvT64"
+                  }
+                }
               }
-            },
+            }
+          },
+          "401": {
             "description": "401 Unauthorized",
             "content": {
               "application/json": {
@@ -2227,21 +1573,21 @@
                 }
               },
               "example": {
-                "email": "{{super_admin_email}}",
-                "password": "{{super_admin_password}}"
+                "email": "super.admin@test.com",
+                "password": "1234"
               }
             }
           }
         }
       }
     },
-    "/organizations/{organization_id}/users/{user_id}/role": {
+    "/api/organizations/{organization_id}/users/{user_id}/role": {
       "parameters": [
         {
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "deprecated": false
           }
@@ -2250,7 +1596,7 @@
           "name": "user_id",
           "in": "path",
           "required": true,
-          "example": "{{user_id}}",
+          "example": "4d6644c1-cb16-44a2-8d24-6d13d8893d63",
           "schema": {
             "deprecated": false
           }
@@ -2261,29 +1607,39 @@
         "tags": [
           "User"
         ],
-        "parameters": [
+        "parameters": [],
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
+            "tokenAuth": []
           },
           {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
-        "responses": {},
+        "responses": {
+          "200": {
+            "description": "200 Successfully updated user role",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "code": 200,
+                  "message": "Successfully updated user role"
+                }
+              }
+            }
+          }
+        },
         "requestBody": {
           "content": {
             "application/json": {
@@ -2296,34 +1652,26 @@
         }
       }
     },
-    "/users/{user_id}/organizations": {
+    "/api/users/{user_id}/organizations": {
       "parameters": [
         {
           "name": "user_id",
           "in": "path",
           "required": true,
-          "example": "{{user_id}}",
+          "example": "4d6644c1-cb16-44a2-8d24-6d13d8893d63",
           "schema": {
             "type": "string"
           }
         }
-      ],
-      "get": {
-        "summary": "Fetch organizations for a User",
-        "tags": [
-          "User"
-        ],
-        "parameters": [],
-        "responses": {}
-      }
+      ]
     },
-    "/users/{user_id}": {
+    "/api/users/{user_id}": {
       "parameters": [
         {
           "name": "user_id",
           "in": "path",
           "required": true,
-          "example": "{{user_id}}",
+          "example": "4d6644c1-cb16-44a2-8d24-6d13d8893d63",
           "schema": {
             "type": "string"
           }
@@ -2334,80 +1682,17 @@
         "tags": [
           "User"
         ],
-        "parameters": [
+        "parameters": [],
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
+            "tokenAuth": []
           },
           {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
         "responses": {
           "200": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Access-Control-Allow-Origin": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "*"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "257"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"101-yqGjeaSdGkvCF3bsJceXcJjI5GU\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Wed, 26 Mar 2025 06:27:17 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "200 Fetched user",
             "content": {
               "application/json": {
@@ -2458,17 +1743,39 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "404 User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "code": 404,
+                  "message": "User not found"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/organizations/{organization_id}/coupons": {
+    "/api/organizations/{organization_id}/coupons": {
       "parameters": [
         {
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -2479,29 +1786,76 @@
         "tags": [
           "Coupon"
         ],
-        "parameters": [
+        "parameters": [],
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
+            "tokenAuth": []
           },
           {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
-        "responses": {},
+        "responses": {
+          "201": {
+            "description": "201 Successfully created coupon",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "coupon_id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "discount_type": {
+                          "type": "string"
+                        },
+                        "discount_value": {
+                          "type": "integer"
+                        },
+                        "item_constraint": {
+                          "type": "string"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "code": 201,
+                  "message": "Successfully created coupon",
+                  "data": {
+                    "coupon_id": "09028cb3-3361-427e-b828-22fcf21eacfc",
+                    "name": "10% OFF",
+                    "discount_type": "percentage",
+                    "discount_value": 100,
+                    "item_constraint": "all",
+                    "created_at": "2025-03-12T14:54:03.653Z",
+                    "updated_at": "2025-03-12T14:54:03.653Z"
+                  }
+                }
+              }
+            }
+          }
+        },
         "requestBody": {
           "content": {
             "application/json": {
@@ -2624,80 +1978,18 @@
             "schema": {
               "type": "string"
             }
+          }
+        ],
+        "security": [
+          {
+            "tokenAuth": []
           },
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
         "responses": {
           "200": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Access-Control-Allow-Origin": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "*"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "1141"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"475-W5ZWICsTG3s0MiQtGiKYvdTVuiI\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Wed, 26 Mar 2025 11:45:29 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "200 Fetched coupons",
             "content": {
               "application/json": {
@@ -2725,17 +2017,20 @@
                                 "type": "string"
                               },
                               "discount_type": {
-                                "type": "string"
+                                "type": "string",
+                                "enum": ["percentage", "fixed"]
                               },
                               "discount_upto": {
-                                "type": "string",
-                                "format": "color"
+                                "type": "number"
+                                
                               },
                               "item_constraint": {
-                                "type": "string"
+                                "type": "string",
+                                "enum": ["all", "specific"]
                               },
                               "status": {
-                                "type": "string"
+                                "type": "string",
+                                "enum": ["active", "inactive"]
                               },
                               "created_at": {
                                 "type": "string",
@@ -2785,26 +2080,6 @@
                         "status": "active",
                         "created_at": "2025-03-17T14:34:45.960Z",
                         "updated_at": "2025-03-17T15:03:07.453Z"
-                      },
-                      {
-                        "coupon_id": "c52c9acb-5369-4460-87c6-e0a3fd63b54c",
-                        "name": "10% OFF for all IT users 2",
-                        "discount_type": "fixed",
-                        "discount_value": "100",
-                        "item_constraint": "all",
-                        "status": "active",
-                        "created_at": "2025-03-18T08:11:09.343Z",
-                        "updated_at": "2025-03-18T08:11:09.343Z"
-                      },
-                      {
-                        "coupon_id": "8c2c0ae3-ea98-410f-91e4-4faf5a0abf72",
-                        "name": "10% OFF for all IT users 3",
-                        "discount_type": "fixed",
-                        "discount_value": "100",
-                        "item_constraint": "all",
-                        "status": "active",
-                        "created_at": "2025-03-18T09:49:38.089Z",
-                        "updated_at": "2025-03-18T11:55:22.664Z"
                       }
                     ],
                     "count": 4,
@@ -2818,13 +2093,13 @@
         }
       }
     },
-    "/organizations/{organization_id}/coupons/{coupon_id}": {
+    "/api/organizations/{organization_id}/coupons/{coupon_id}": {
       "parameters": [
         {
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -2833,7 +2108,7 @@
           "name": "coupon_id",
           "in": "path",
           "required": true,
-          "example": "{{coupon_id}}",
+          "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
           "schema": {
             "type": "string"
           }
@@ -2844,58 +2119,218 @@
         "tags": [
           "Coupon"
         ],
-        "parameters": [
+        "parameters": [],
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
+            "tokenAuth": []
           },
           {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
-        "responses": {}
+        "responses": {
+          "200": {
+            "description": "200 Fetched coupon",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "coupon_id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "discount_type": {
+                          "type": "string"
+                        },
+                        "discount_upto": {
+                          "type": "number"
+                        },
+                        "item_constraint": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "code": 200,
+                  "message": "Successfully fetched coupon",
+                  "data": {
+                    "coupon_id": "09028cb3-3361-427e-b828-22fcf21eacfc",
+                    "name": "10% OFF",
+                    "discount_type": "percentage",
+                    "discount_upto": "100",
+                    "item_constraint": "all",
+                    "status": "active",
+                    "created_at": "2025-03-12T14:54:03.653Z",
+                    "updated_at": "2025-03-12T14:54:03.653Z"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404 Coupon not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "code": 404,
+                  "message": "Coupon not found"
+                }
+              }
+            }
+          }
+        }
       },
       "patch": {
         "summary": "Update coupon",
         "tags": [
           "Coupon"
         ],
-        "parameters": [
+        "parameters": [],
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
+            "tokenAuth": []
           },
           {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
-        "responses": {},
+        "responses": {
+          "200": {
+            "description": "200 Successfully updated coupon",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "coupon_id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "discount_type": {
+                          "type": "string"
+                        },
+                        "discount_upto": {
+                          "type": "number"
+                        },
+                        "item_constraint": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    },
+                    "example": {
+                      "code": 200,
+                      "message": "Successfully updated coupon",
+                      "data": {
+                        "coupon_id": "09028cb3-3361-427e-b828-22fcf21eacfc",
+                        "name": "10% OFF",
+                        "discount_type": "percentage",
+                        "discount_upto": "100",
+                        "item_constraint": "all",
+                        "status": "active",
+                        "created_at": "2025-03-12T14:54:03.653Z",
+                        "updated_at": "2025-03-12T14:54:03.653Z"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "code": 200,
+                  "message": "Successfully updated coupon",
+                  "data": {
+                    "coupon_id": "09028cb3-3361-427e-b828-22fcf21eacfc",
+                    "name": "10% OFF",
+                    "discount_type": "percentage",
+                    "discount_upto": "100",
+                    "item_constraint": "all",
+                    "status": "active",
+                    "created_at": "2025-03-12T14:54:03.653Z",
+                    "updated_at": "2025-03-12T14:54:03.653Z"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404 Coupon not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "code": 404,
+                  "message": "Coupon not found"
+                }
+              }
+            }
+          }
+        },
         "requestBody": {
           "content": {
             "application/json": {
@@ -2919,38 +2354,71 @@
         "tags": [
           "Coupon"
         ],
-        "parameters": [
+        "parameters": [],
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
+            "tokenAuth": []
           },
           {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
-        "responses": {}
+        "responses": {
+          "200": {
+            "description": "200 Successfully deactivated coupon",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "code": 200,
+                  "message": "Successfully deactivated coupon"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404 Coupon not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+                },
+                "example": {
+                  "code": 404,
+                  "message": "Coupon not found"
+                }
+              }
+            }
+          }
+        }
       }
     },
-    "/organizations/{organization_id}/coupons/{coupon_id}/deactivate": {
+    "/api/organizations/{organization_id}/coupons/{coupon_id}/deactivate": {
       "parameters": [
         {
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -2960,7 +2428,7 @@
           "in": "path",
           "required": true,
           "description": "Coupon id",
-          "example": "{{coupon_id}}",
+          "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
           "schema": {
             "type": "string"
           }
@@ -2971,38 +2439,17 @@
         "tags": [
           "Coupon"
         ],
-        "parameters": [
-          {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {}
       }
     },
-    "/organizations/{organization_id}/coupons/{coupon_id}/reactivate": {
+    "/api/organizations/{organization_id}/coupons/{coupon_id}/reactivate": {
       "parameters": [
         {
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "deprecated": false
           }
@@ -3012,7 +2459,7 @@
           "in": "path",
           "required": true,
           "description": "Coupon id",
-          "example": "{{coupon_id}}",
+          "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
           "schema": {
             "deprecated": false
           }
@@ -3023,38 +2470,25 @@
         "tags": [
           "Coupon"
         ],
-        "parameters": [
+        "parameters": [],
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
+            "tokenAuth": []
           },
           {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
         "responses": {}
       }
     },
-    "/organizations/{organization_id}/coupons/summary": {
+    "/api/organizations/{organization_id}/coupons/summary": {
       "parameters": [
         {
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -3071,7 +2505,7 @@
             "in": "query",
             "required": false,
             "description": "Coupon id",
-            "example": "{{coupon_id}}",
+            "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
             "schema": {
               "type": "string"
             }
@@ -3104,80 +2538,18 @@
             "schema": {
               "type": "string"
             }
+          }
+        ],
+        "security": [
+          {
+            "tokenAuth": []
           },
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
         "responses": {
           "200": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Access-Control-Allow-Origin": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "*"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "1199"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"4af-ny7nXwEjT5X4GFxA/9MPAoEo+RY\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Tue, 01 Apr 2025 06:30:57 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "200 Fetched summary of all coupons in an organization",
             "content": {
               "application/json": {
@@ -3355,13 +2727,13 @@
         }
       }
     },
-    "/organizations/{organization_id}/coupons/{coupon_id}/summary": {
+    "/api/organizations/{organization_id}/coupons/{coupon_id}/summary": {
       "parameters": [
         {
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -3370,7 +2742,7 @@
           "name": "coupon_id",
           "in": "path",
           "required": true,
-          "example": "{{coupon_id}}",
+          "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
           "schema": {
             "type": "string"
           }
@@ -3410,80 +2782,18 @@
             "schema": {
               "type": "string"
             }
+          }
+        ],
+        "security": [
+          {
+            "tokenAuth": []
           },
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
         "responses": {
           "200": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Access-Control-Allow-Origin": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "*"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "619"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"26b-rv00rqA88PIbVPinSG7qICzlvm0\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Tue, 01 Apr 2025 06:30:17 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "200 Fetched coupon summary",
             "content": {
               "application/json": {
@@ -3617,7 +2927,7 @@
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -3626,7 +2936,7 @@
           "name": "coupon_id",
           "in": "path",
           "required": true,
-          "example": "{{coupon_id}}",
+          "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
           "schema": {
             "type": "string"
           }
@@ -3643,7 +2953,7 @@
             "in": "header",
             "required": false,
             "description": "API key",
-            "example": "{{x-api-key}}",
+            "example": "d6be50ac01c558062d6576c2a55b3b73",
             "schema": {
               "type": "string"
             }
@@ -3653,7 +2963,7 @@
             "in": "header",
             "required": false,
             "description": "API secret",
-            "example": "{{x-api-secret}}",
+            "example": "fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57",
             "schema": {
               "type": "string"
             }
@@ -3840,7 +3150,7 @@
             "in": "header",
             "required": false,
             "description": "API key",
-            "example": "{{x-api-key}}",
+            "example": "d6be50ac01c558062d6576c2a55b3b73",
             "schema": {
               "type": "string"
             }
@@ -3850,7 +3160,7 @@
             "in": "header",
             "required": false,
             "description": "API secret",
-            "example": "{{x-api-secret}}",
+            "example": "fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57",
             "schema": {
               "type": "string"
             }
@@ -3869,7 +3179,7 @@
             "in": "header",
             "required": false,
             "description": "API key",
-            "example": "{{x-api-key}}",
+            "example": "d6be50ac01c558062d6576c2a55b3b73",
             "schema": {
               "type": "string"
             }
@@ -3879,7 +3189,7 @@
             "in": "header",
             "required": false,
             "description": "API secret",
-            "example": "{{x-api-secret}}",
+            "example": "fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57",
             "schema": {
               "type": "string"
             }
@@ -3917,7 +3227,7 @@
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -3926,7 +3236,7 @@
           "name": "coupon_id",
           "in": "path",
           "required": true,
-          "example": "{{coupon_id}}",
+          "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
           "schema": {
             "type": "string"
           }
@@ -3952,7 +3262,7 @@
             "in": "header",
             "required": false,
             "description": "API key",
-            "example": "{{x-api-key}}",
+            "example": "d6be50ac01c558062d6576c2a55b3b73",
             "schema": {
               "type": "string"
             }
@@ -3962,7 +3272,7 @@
             "in": "header",
             "required": false,
             "description": "API secret",
-            "example": "{{x-api-secret}}",
+            "example": "fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57",
             "schema": {
               "type": "string"
             }
@@ -3971,13 +3281,13 @@
         "responses": {}
       }
     },
-    "/organizations/{organization_id}/items": {
+    "/api/organizations/{organization_id}/items": {
       "parameters": [
         {
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -3994,7 +3304,7 @@
             "in": "header",
             "required": false,
             "description": "API key",
-            "example": "{{x-api-key}}",
+            "example": "d6be50ac01c558062d6576c2a55b3b73",
             "schema": {
               "type": "string"
             }
@@ -4004,7 +3314,7 @@
             "in": "header",
             "required": false,
             "description": "API secret",
-            "example": "{{x-api-secret}}",
+            "example": "fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57",
             "schema": {
               "type": "string"
             }
@@ -4097,7 +3407,7 @@
             "in": "header",
             "required": false,
             "description": "API key",
-            "example": "{{x-api-key}}",
+            "example": "d6be50ac01c558062d6576c2a55b3b73",
             "schema": {
               "type": "string"
             }
@@ -4107,7 +3417,7 @@
             "in": "header",
             "required": false,
             "description": "API secret",
-            "example": "{{x-api-secret}}",
+            "example": "fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57",
             "schema": {
               "type": "string"
             }
@@ -4274,7 +3584,7 @@
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -4300,7 +3610,7 @@
             "in": "header",
             "required": false,
             "description": "API key",
-            "example": "{{x-api-key}}",
+            "example": "d6be50ac01c558062d6576c2a55b3b73",
             "schema": {
               "type": "string"
             }
@@ -4310,7 +3620,7 @@
             "in": "header",
             "required": false,
             "description": "API secret",
-            "example": "{{x-api-secret}}",
+            "example": "fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57",
             "schema": {
               "type": "string"
             }
@@ -4339,7 +3649,7 @@
             "in": "header",
             "required": false,
             "description": "API key",
-            "example": "{{x-api-key}}",
+            "example": "d6be50ac01c558062d6576c2a55b3b73",
             "schema": {
               "type": "string"
             }
@@ -4349,7 +3659,7 @@
             "in": "header",
             "required": false,
             "description": "API secret",
-            "example": "{{x-api-secret}}",
+            "example": "fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57",
             "schema": {
               "type": "string"
             }
@@ -4368,7 +3678,7 @@
             "in": "header",
             "required": false,
             "description": "API key",
-            "example": "{{x-api-key}}",
+            "example": "d6be50ac01c558062d6576c2a55b3b73",
             "schema": {
               "type": "string"
             }
@@ -4378,7 +3688,7 @@
             "in": "header",
             "required": false,
             "description": "API secret",
-            "example": "{{x-api-secret}}",
+            "example": "fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57",
             "schema": {
               "type": "string"
             }
@@ -4393,7 +3703,7 @@
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -4410,7 +3720,7 @@
             "in": "header",
             "required": false,
             "description": "API key",
-            "example": "{{x-api-key}}",
+            "example": "d6be50ac01c558062d6576c2a55b3b73",
             "schema": {
               "type": "string"
             }
@@ -4420,7 +3730,7 @@
             "in": "header",
             "required": false,
             "description": "API secret",
-            "example": "{{x-api-secret}}",
+            "example": "fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57",
             "schema": {
               "type": "string"
             }
@@ -4460,7 +3770,7 @@
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -4470,7 +3780,7 @@
           "in": "path",
           "required": true,
           "description": "Coupon id",
-          "example": "{{coupon_id}}",
+          "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
           "schema": {
             "type": "string"
           }
@@ -4487,7 +3797,7 @@
             "in": "header",
             "required": false,
             "description": "API key",
-            "example": "{{x-api-key}}",
+            "example": "d6be50ac01c558062d6576c2a55b3b73",
             "schema": {
               "type": "string"
             }
@@ -4497,7 +3807,7 @@
             "in": "header",
             "required": false,
             "description": "API secret",
-            "example": "{{x-api-secret}}",
+            "example": "fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57",
             "schema": {
               "type": "string"
             }
@@ -4533,7 +3843,7 @@
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -4542,7 +3852,7 @@
           "name": "coupon_id",
           "in": "path",
           "required": true,
-          "example": "{{coupon_id}}",
+          "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
           "schema": {
             "type": "string"
           }
@@ -4551,7 +3861,7 @@
           "name": "campaign_id",
           "in": "path",
           "required": true,
-          "example": "{{campaign_id}}",
+          "example": "d6eace49-a8df-4269-9dc3-8dadf7b713cb",
           "schema": {
             "type": "string"
           }
@@ -4568,7 +3878,7 @@
             "in": "header",
             "required": false,
             "description": "API key",
-            "example": "{{x-api-key}}",
+            "example": "d6be50ac01c558062d6576c2a55b3b73",
             "schema": {
               "type": "string"
             }
@@ -4578,7 +3888,7 @@
             "in": "header",
             "required": false,
             "description": "API secret",
-            "example": "{{x-api-secret}}",
+            "example": "fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57",
             "schema": {
               "type": "string"
             }
@@ -4597,7 +3907,7 @@
             "in": "header",
             "required": false,
             "description": "API key",
-            "example": "{{x-api-key}}",
+            "example": "d6be50ac01c558062d6576c2a55b3b73",
             "schema": {
               "type": "string"
             }
@@ -4607,7 +3917,7 @@
             "in": "header",
             "required": false,
             "description": "API secret",
-            "example": "{{x-api-secret}}",
+            "example": "fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57",
             "schema": {
               "type": "string"
             }
@@ -4643,7 +3953,7 @@
             "in": "header",
             "required": false,
             "description": "API key",
-            "example": "{{x-api-key}}",
+            "example": "d6be50ac01c558062d6576c2a55b3b73",
             "schema": {
               "type": "string"
             }
@@ -4653,7 +3963,7 @@
             "in": "header",
             "required": false,
             "description": "API secret",
-            "example": "{{x-api-secret}}",
+            "example": "fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57",
             "schema": {
               "type": "string"
             }
@@ -4668,7 +3978,7 @@
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -4678,7 +3988,7 @@
           "in": "path",
           "required": true,
           "description": "Coupon id",
-          "example": "{{coupon_id}}",
+          "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
           "schema": {
             "type": "string"
           }
@@ -4735,7 +4045,7 @@
             "in": "header",
             "required": false,
             "description": "API key",
-            "example": "{{x-api-key}}",
+            "example": "d6be50ac01c558062d6576c2a55b3b73",
             "schema": {
               "type": "string"
             }
@@ -4745,7 +4055,7 @@
             "in": "header",
             "required": false,
             "description": "API secret",
-            "example": "{{x-api-secret}}",
+            "example": "fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57",
             "schema": {
               "type": "string"
             }
@@ -4760,7 +4070,7 @@
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -4770,7 +4080,7 @@
           "in": "path",
           "required": true,
           "description": "Coupon id",
-          "example": "{{coupon_id}}",
+          "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
           "schema": {
             "type": "string"
           }
@@ -4779,7 +4089,7 @@
           "name": "campaign_id",
           "in": "path",
           "required": true,
-          "example": "{{campaign_id}}",
+          "example": "d6eace49-a8df-4269-9dc3-8dadf7b713cb",
           "schema": {
             "type": "string"
           }
@@ -4796,7 +4106,7 @@
             "in": "header",
             "required": false,
             "description": "API key",
-            "example": "{{x-api-key}}",
+            "example": "d6be50ac01c558062d6576c2a55b3b73",
             "schema": {
               "type": "string"
             }
@@ -4806,7 +4116,7 @@
             "in": "header",
             "required": false,
             "description": "API secret",
-            "example": "{{x-api-secret}}",
+            "example": "fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57",
             "schema": {
               "type": "string"
             }
@@ -4821,7 +4131,7 @@
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -4831,7 +4141,7 @@
           "in": "path",
           "required": true,
           "description": "Coupon id",
-          "example": "{{coupon_id}}",
+          "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
           "schema": {
             "type": "string"
           }
@@ -4840,7 +4150,7 @@
           "name": "campaign_id",
           "in": "path",
           "required": true,
-          "example": "{{campaign_id}}",
+          "example": "d6eace49-a8df-4269-9dc3-8dadf7b713cb",
           "schema": {
             "type": "string"
           }
@@ -4857,7 +4167,7 @@
             "in": "header",
             "required": false,
             "description": "API key",
-            "example": "{{x-api-key}}",
+            "example": "d6be50ac01c558062d6576c2a55b3b73",
             "schema": {
               "type": "string"
             }
@@ -4867,7 +4177,7 @@
             "in": "header",
             "required": false,
             "description": "API secret",
-            "example": "{{x-api-secret}}",
+            "example": "fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57",
             "schema": {
               "type": "string"
             }
@@ -4882,7 +4192,7 @@
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -4891,7 +4201,7 @@
           "name": "coupon_id",
           "in": "path",
           "required": true,
-          "example": "{{coupon_id}}",
+          "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
           "schema": {
             "type": "string"
           }
@@ -4937,7 +4247,7 @@
             "in": "header",
             "required": false,
             "description": "API key",
-            "example": "{{x-api-key}}",
+            "example": "d6be50ac01c558062d6576c2a55b3b73",
             "schema": {
               "type": "string"
             }
@@ -4947,7 +4257,7 @@
             "in": "header",
             "required": false,
             "description": "API secret",
-            "example": "{{x-api-secret}}",
+            "example": "fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57",
             "schema": {
               "type": "string"
             }
@@ -4962,7 +4272,7 @@
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -4971,7 +4281,7 @@
           "name": "coupon_id",
           "in": "path",
           "required": true,
-          "example": "{{coupon_id}}",
+          "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
           "schema": {
             "type": "string"
           }
@@ -4980,7 +4290,7 @@
           "name": "campaign_id",
           "in": "path",
           "required": true,
-          "example": "{{campaign_id}}",
+          "example": "d6eace49-a8df-4269-9dc3-8dadf7b713cb",
           "schema": {
             "type": "string"
           }
@@ -5006,7 +4316,7 @@
             "in": "header",
             "required": false,
             "description": "API key",
-            "example": "{{x-api-key}}",
+            "example": "d6be50ac01c558062d6576c2a55b3b73",
             "schema": {
               "type": "string"
             }
@@ -5016,7 +4326,7 @@
             "in": "header",
             "required": false,
             "description": "API secret",
-            "example": "{{x-api-secret}}",
+            "example": "fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57",
             "schema": {
               "type": "string"
             }
@@ -5031,7 +4341,7 @@
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "deprecated": false
           }
@@ -5047,7 +4357,7 @@
             "name": "x-api-key",
             "in": "header",
             "required": false,
-            "example": "{{x-api-key}}",
+            "example": "d6be50ac01c558062d6576c2a55b3b73",
             "schema": {
               "type": "string"
             }
@@ -5056,7 +4366,7 @@
             "name": "x-api-secret",
             "in": "header",
             "required": false,
-            "example": "{{x-api-secret}}",
+            "example": "fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57",
             "schema": {
               "type": "string"
             }
@@ -5376,7 +4686,7 @@
             "in": "header",
             "required": false,
             "description": "API Key",
-            "example": "{{x-api-key}}",
+            "example": "d6be50ac01c558062d6576c2a55b3b73",
             "schema": {
               "type": "string"
             }
@@ -5386,7 +4696,7 @@
             "in": "header",
             "required": false,
             "description": "API secret",
-            "example": "{{x-api-secret}}",
+            "example": "fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57",
             "schema": {
               "type": "string"
             }
@@ -5534,13 +4844,13 @@
         }
       }
     },
-    "/organizations/{organization_id}/customers/{customer_id}": {
+    "/api/organizations/{organization_id}/customers/{customer_id}": {
       "parameters": [
         {
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "deprecated": false
           }
@@ -5549,7 +4859,7 @@
           "name": "customer_id",
           "in": "path",
           "required": true,
-          "example": "{{customer_id}}",
+          "example": "73a61b54-f6ba-44f6-a72d-67ed7f2df65d",
           "schema": {
             "deprecated": false
           }
@@ -5560,74 +4870,17 @@
         "tags": [
           "Customer"
         ],
-        "parameters": [
+        "parameters": [],
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API Key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
+            "tokenAuth": []
           },
           {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
         "responses": {
           "200": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "283"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"11b-mp2zsxP8f8ihwBlst2nBBeGQ5bg\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Thu, 06 Mar 2025 14:37:37 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "200 Updated Customer",
             "content": {
               "application/json": {
@@ -5687,50 +4940,6 @@
             }
           },
           "401": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "37"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"25-Y/9DhNk+fkg6hkvizDVGX7cBV4I\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Thu, 06 Mar 2025 14:37:21 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "401 Unauthorized",
             "content": {
               "application/json": {
@@ -5771,74 +4980,17 @@
         "tags": [
           "Customer"
         ],
-        "parameters": [
+        "parameters": [],
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
+            "tokenAuth": []
           },
           {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
         "responses": {
           "200": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "283"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"11b-tY8GeR1kS7UKgdLwfCKGQFq7PGY\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Thu, 06 Mar 2025 14:39:03 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "200 Deleted customer",
             "content": {
               "application/json": {
@@ -5924,89 +5076,10 @@
             "schema": {
               "deprecated": false
             }
-          },
-          {
-            "name": "email",
-            "in": "query",
-            "required": false,
-            "example": "guy@test.com",
-            "schema": {
-              "deprecated": false
-            }
-          },
-          {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
           "200": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Access-Control-Allow-Origin": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "*"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "338"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"152-rmIgi5rmoAA/19e81uPiNYikk/o\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Wed, 26 Mar 2025 11:38:15 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "200 Fetched Customer",
             "content": {
               "application/json": {
@@ -6097,13 +5170,13 @@
         }
       }
     },
-    "/organizations/{organization_id}/customers/upsert": {
+    "/api/organizations/{organization_id}/customers/upsert": {
       "parameters": [
         {
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "deprecated": false
           }
@@ -6114,80 +5187,17 @@
         "tags": [
           "Customer"
         ],
-        "parameters": [
+        "parameters": [],
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API Key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
+            "tokenAuth": []
           },
           {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
         "responses": {
           "200": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Access-Control-Allow-Origin": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "*"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "329"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"149-E8NAJvdATg/wJlTtrwuUkMxNadU\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Thu, 15 May 2025 11:11:52 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "200 Successfully upserted customer",
             "content": {
               "application/json": {
@@ -6269,13 +5279,13 @@
         }
       }
     },
-    "/organizations/{organizationId}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes": {
+    "/api/organizations/{organizationId}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes": {
       "parameters": [
         {
           "name": "organizationId",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -6285,7 +5295,7 @@
           "in": "path",
           "required": true,
           "description": "Coupon id",
-          "example": "{{coupon_id}}",
+          "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
           "schema": {
             "type": "string"
           }
@@ -6294,8 +5304,8 @@
           "name": "campaign_id",
           "in": "path",
           "required": true,
-          "description": "Coupon set id",
-          "example": "{{campaign_id}}",
+          "description": "Campaign id",
+          "example": "d6eace49-a8df-4269-9dc3-8dadf7b713cb",
           "schema": {
             "type": "string"
           }
@@ -6306,88 +5316,17 @@
         "tags": [
           "Coupon Code"
         ],
-        "parameters": [
+        "parameters": [],
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API Key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
+            "tokenAuth": []
           },
           {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
         "responses": {
           "201": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string",
-                  "minLength": 0,
-                  "maxLength": 0
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string",
-                  "minLength": 0,
-                  "maxLength": 0
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "string",
-                  "minLength": 0,
-                  "maxLength": 0
-                },
-                "example": "425"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string",
-                  "minLength": 0,
-                  "maxLength": 0
-                },
-                "example": "W/\"1a9-Lyrl5aL5VU1vvYgeVkJrONL4utk\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string",
-                  "minLength": 0,
-                  "maxLength": 0
-                },
-                "example": "Fri, 07 Mar 2025 06:49:16 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string",
-                  "minLength": 0,
-                  "maxLength": 0
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string",
-                  "minLength": 0,
-                  "maxLength": 0
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "201 Coupon code created",
             "content": {
               "application/json": {
@@ -6518,38 +5457,36 @@
             "name": "status",
             "in": "query",
             "required": false,
-            "description": "Optional filter to get coupon codes by specified status",
+            "description": "Filter to get coupon codes by specified status",
             "example": "inactive",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "active",
+                "inactive"
+              ]
             }
           },
           {
             "name": "visibility",
             "in": "query",
             "required": false,
-            "description": "Optional filter to get coupon codes as per specified visibility",
+            "description": "Filter to get coupon codes as per specified visibility",
             "example": "private",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "public",
+                "private"
+              ]
             }
           },
           {
             "name": "external_customer_id",
             "in": "query",
             "required": false,
-            "description": "Option filter to get customer specific coupon codes",
-            "example": "customer@gmail.com",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "duration_type",
-            "in": "query",
-            "required": false,
-            "description": "Optional filter to get coupon codes by specified duration type",
-            "example": "recurring",
+            "description": "Filter to get customer specific coupon codes",
+            "example": "a3571f49-15e5-472e-967c-d985b6c8d7d2",
             "schema": {
               "type": "string"
             }
@@ -6573,74 +5510,10 @@
             "schema": {
               "type": "integer"
             }
-          },
-          {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
           "200": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "789"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"315-GVWm+qfH7qmUuKgt0D3onpajoe8\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Fri, 07 Mar 2025 06:52:58 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "200 Coupon codes fetched",
             "content": {
               "application/json": {
@@ -6745,13 +5618,13 @@
         }
       }
     },
-    "/organizations/{organizationId}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}": {
+    "/api/organizations/{organizationId}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}": {
       "parameters": [
         {
           "name": "organizationId",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "deprecated": false
           }
@@ -6761,7 +5634,7 @@
           "in": "path",
           "required": true,
           "description": "Coupon id",
-          "example": "{{coupon_id}}",
+          "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
           "schema": {
             "deprecated": false
           }
@@ -6771,7 +5644,7 @@
           "in": "path",
           "required": true,
           "description": "Coupon set id",
-          "example": "{{campaign_id}}",
+          "example": "d6eace49-a8df-4269-9dc3-8dadf7b713cb",
           "schema": {
             "deprecated": false
           }
@@ -6781,7 +5654,7 @@
           "in": "path",
           "required": true,
           "description": "Coupon code id",
-          "example": "{{coupon_code_id}}",
+          "example": "7f4eff08-9b6f-4634-9348-d29e7075293c",
           "schema": {
             "deprecated": false
           }
@@ -6792,74 +5665,17 @@
         "tags": [
           "Coupon Code"
         ],
-        "parameters": [
+        "parameters": [],
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API Key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
+            "tokenAuth": []
           },
           {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
         "responses": {
           "200": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "425"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"1a9-sQYXmWt5UkLIsjSbIX5IekTgFQE\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Fri, 07 Mar 2025 06:59:39 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "200 Coupon code fetched",
             "content": {
               "application/json": {
@@ -6942,50 +5758,6 @@
             }
           },
           "401": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "37"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"25-Y/9DhNk+fkg6hkvizDVGX7cBV4I\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Fri, 07 Mar 2025 06:59:21 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "401 Unauthorized",
             "content": {
               "application/json": {
@@ -7008,50 +5780,6 @@
             }
           },
           "404": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "46"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"2e-Av9itLYFhYon1J2kGAbyTkYpJBE\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Fri, 07 Mar 2025 07:01:34 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "404 Coupon code not found",
             "content": {
               "application/json": {
@@ -7080,26 +5808,13 @@
         "tags": [
           "Coupon Code"
         ],
-        "parameters": [
+        "parameters": [],
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
+            "tokenAuth": []
           },
           {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
         "responses": {},
@@ -7115,13 +5830,13 @@
         }
       }
     },
-    "/organizations/{organization_id}/coupon-codes": {
+    "/api/organizations/{organization_id}/coupon-codes": {
       "parameters": [
         {
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -7137,6 +5852,7 @@
             "name": "code",
             "in": "query",
             "required": false,
+            "description": "Filter to get coupon codes by specified code",
             "example": "TEST1234",
             "schema": {
               "type": "string"
@@ -7146,7 +5862,7 @@
             "name": "status",
             "in": "query",
             "required": false,
-            "description": "Optional filter to get coupon codes by specified status",
+            "description": "Filter to get coupon codes by specified status",
             "example": "inactive",
             "schema": {
               "type": "string"
@@ -7156,7 +5872,7 @@
             "name": "customer_id",
             "in": "query",
             "required": false,
-            "description": "Option filter to get customer specific coupon codes",
+            "description": "Filter to get customer specific coupon codes",
             "example": "customer@gmail.com",
             "schema": {
               "type": "string"
@@ -7191,74 +5907,18 @@
             "schema": {
               "type": "string"
             }
+          }
+        ],
+        "security": [
+          {
+            "tokenAuth": []
           },
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
         "responses": {
           "200": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "819"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"333-sOH1v9SKaeK0hVvg20kR+zW0+60\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Fri, 07 Mar 2025 10:52:59 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "200 Fetched Sheet json",
             "content": {
               "application/json": {
@@ -7400,50 +6060,6 @@
             }
           },
           "404": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "47"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"2f-M8d0zgHsFHghla/XBLmX/7wJfcY\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Fri, 07 Mar 2025 10:54:00 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "404 Not Found",
             "content": {
               "application/json": {
@@ -7468,13 +6084,13 @@
         }
       }
     },
-    "/organizations/{organizationId}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/deactivate": {
+    "/api/organizations/{organizationId}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/deactivate": {
       "parameters": [
         {
           "name": "organizationId",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -7484,7 +6100,7 @@
           "in": "path",
           "required": true,
           "description": "Coupon id",
-          "example": "{{coupon_id}}",
+          "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
           "schema": {
             "type": "string"
           }
@@ -7494,7 +6110,7 @@
           "in": "path",
           "required": true,
           "description": "Coupon set id",
-          "example": "{{campaign_id}}",
+          "example": "d6eace49-a8df-4269-9dc3-8dadf7b713cb",
           "schema": {
             "type": "string"
           }
@@ -7504,7 +6120,7 @@
           "in": "path",
           "required": true,
           "description": "Coupon code id",
-          "example": "{{coupon_code_id}}",
+          "example": "7f4eff08-9b6f-4634-9348-d29e7075293c",
           "schema": {
             "type": "string"
           }
@@ -7515,38 +6131,25 @@
         "tags": [
           "Coupon Code"
         ],
-        "parameters": [
+        "parameters": [],
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
+            "tokenAuth": []
           },
           {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
         "responses": {}
       }
     },
-    "/organizations/{organizationId}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/reactivate": {
+    "/api/organizations/{organizationId}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/reactivate": {
       "parameters": [
         {
           "name": "organizationId",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -7556,7 +6159,7 @@
           "in": "path",
           "required": true,
           "description": "Coupon id",
-          "example": "{{coupon_id}}",
+          "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
           "schema": {
             "type": "string"
           }
@@ -7566,7 +6169,7 @@
           "in": "path",
           "required": true,
           "description": "Coupon set id",
-          "example": "{{campaign_id}}",
+          "example": "d6eace49-a8df-4269-9dc3-8dadf7b713cb",
           "schema": {
             "type": "string"
           }
@@ -7576,7 +6179,7 @@
           "in": "path",
           "required": true,
           "description": "Coupon code id",
-          "example": "{{coupon_code_id}}",
+          "example": "7f4eff08-9b6f-4634-9348-d29e7075293c",
           "schema": {
             "type": "string"
           }
@@ -7587,38 +6190,25 @@
         "tags": [
           "Coupon Code"
         ],
-        "parameters": [
+        "parameters": [],
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
+            "tokenAuth": []
           },
           {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
         "responses": {}
       }
     },
-    "/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}": {
+    "/api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}": {
       "parameters": [
         {
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -7627,7 +6217,7 @@
           "name": "coupon_id",
           "in": "path",
           "required": true,
-          "example": "{{coupon_id}}",
+          "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
           "schema": {
             "type": "string"
           }
@@ -7636,7 +6226,7 @@
           "name": "campaign_id",
           "in": "path",
           "required": true,
-          "example": "{{campaign_id}}",
+          "example": "d6eace49-a8df-4269-9dc3-8dadf7b713cb",
           "schema": {
             "type": "string"
           }
@@ -7645,7 +6235,7 @@
           "name": "coupon_code_id",
           "in": "path",
           "required": true,
-          "example": "{{coupon_code_id}}",
+          "example": "7f4eff08-9b6f-4634-9348-d29e7075293c",
           "schema": {
             "type": "string"
           }
@@ -7656,38 +6246,25 @@
         "tags": [
           "Coupon Code"
         ],
-        "parameters": [
+        "parameters": [],
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
+            "tokenAuth": []
           },
           {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
         "responses": {}
       }
     },
-    "/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/customers": {
+    "/api/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/customers": {
       "parameters": [
         {
           "name": "coupon_id",
           "in": "path",
           "required": true,
-          "example": "{{coupon_id}}",
+          "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
           "schema": {
             "type": "string"
           }
@@ -7696,7 +6273,7 @@
           "name": "campaign_id",
           "in": "path",
           "required": true,
-          "example": "{{campaign_id}}",
+          "example": "d6eace49-a8df-4269-9dc3-8dadf7b713cb",
           "schema": {
             "type": "string"
           }
@@ -7705,7 +6282,7 @@
           "name": "coupon_code_id",
           "in": "path",
           "required": true,
-          "example": "{{coupon_code_id}}",
+          "example": "7f4eff08-9b6f-4634-9348-d29e7075293c",
           "schema": {
             "type": "string"
           }
@@ -7716,74 +6293,17 @@
         "tags": [
           "Customer coupon code"
         ],
-        "parameters": [
+        "parameters": [],
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
+            "tokenAuth": []
           },
           {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
         "responses": {
           "201": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "366"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"16e-x+iKujQ9XJbgxNmiUWtitTUrbE0\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Mon, 10 Mar 2025 06:58:02 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "201 Customer added",
             "content": {
               "application/json": {
@@ -7859,50 +6379,6 @@
             }
           },
           "400": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "93"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"5d-gGc7Ak4stZoeXqFDe4OBz9qsqb0\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Mon, 10 Mar 2025 07:04:30 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "400 Invalid customer",
             "content": {
               "application/json": {
@@ -7928,7 +6404,17 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {},
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "customers": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
               "example": {
                 "customers": [
                   "ec060b62-3293-47af-a78c-5f1108ed8fc0"
@@ -7943,74 +6429,17 @@
         "tags": [
           "Customer coupon code"
         ],
-        "parameters": [
+        "parameters": [],
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
+            "tokenAuth": []
           },
           {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
         "responses": {
           "200": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "336"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"150-U9mLlX4LIpIbIkIi6GJkePLawUg\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Mon, 10 Mar 2025 07:05:52 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "200 Successfully fetched",
             "content": {
               "application/json": {
@@ -8088,74 +6517,17 @@
         "tags": [
           "Customer coupon code"
         ],
-        "parameters": [
+        "parameters": [],
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
+            "tokenAuth": []
           },
           {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
         "responses": {
           "200": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "600"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"258-rwPUfSlLD+G3rNy3Z8UZQ3qTLaE\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Mon, 10 Mar 2025 07:07:44 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "200 Successfully Updated",
             "content": {
               "application/json": {
@@ -8265,13 +6637,13 @@
         }
       }
     },
-    "/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/customers/{customer_id}": {
+    "/api/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/customers/{customer_id}": {
       "parameters": [
         {
           "name": "coupon_id",
           "in": "path",
           "required": true,
-          "example": "{{coupon_id}}",
+          "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
           "schema": {
             "type": "string"
           }
@@ -8280,7 +6652,7 @@
           "name": "campaign_id",
           "in": "path",
           "required": true,
-          "example": "{{campaign_id}}",
+          "example": "d6eace49-a8df-4269-9dc3-8dadf7b713cb",
           "schema": {
             "type": "string"
           }
@@ -8289,7 +6661,7 @@
           "name": "coupon_code_id",
           "in": "path",
           "required": true,
-          "example": "{{coupon_code_id}}",
+          "example": "7f4eff08-9b6f-4634-9348-d29e7075293c",
           "schema": {
             "type": "string"
           }
@@ -8298,7 +6670,7 @@
           "name": "customer_id",
           "in": "path",
           "required": true,
-          "example": "{{customer_id}}",
+          "example": "73a61b54-f6ba-44f6-a72d-67ed7f2df65d",
           "schema": {
             "type": "string"
           }
@@ -8309,74 +6681,17 @@
         "tags": [
           "Customer coupon code"
         ],
-        "parameters": [
+        "parameters": [],
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
+            "tokenAuth": []
           },
           {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
         "responses": {
           "200": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "71"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"47-wz4tFue/0AITImVAhimwN904Ym8\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Mon, 10 Mar 2025 07:12:22 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "200 Successfully deleted",
             "content": {
               "application/json": {
@@ -8401,13 +6716,13 @@
         }
       }
     },
-    "/organizations/{organization_id}/offer": {
+    "/api/organizations/{organization_id}/offer": {
       "parameters": [
         {
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -8423,8 +6738,8 @@
             "name": "external_customer_id",
             "in": "query",
             "required": false,
-            "description": "Optional filter to get customer specific offer",
-            "example": "nihgydljad9wy327",
+            "description": "Filter to get customer specific offer",
+            "example": "1d5ad1e1-f38a-4fc3-939e-fe0c055c1195",
             "schema": {
               "type": "string"
             }
@@ -8433,6 +6748,7 @@
             "name": "code",
             "in": "query",
             "required": false,
+            "description": "Filter to get offers by code",
             "example": "CUSTOMEr5678",
             "schema": {
               "type": "string"
@@ -8442,7 +6758,8 @@
             "name": "external_item_id",
             "in": "query",
             "required": false,
-            "example": "all",
+            "description": "Filter to get offers by item id",
+            "example": "d9b7ef73-e7b5-4e42-95c7-66ad48904cef",
             "schema": {
               "type": "string"
             }
@@ -8455,72 +6772,15 @@
             "schema": {
               "type": "string"
             }
-          },
+          }
+        ],
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
         "responses": {
           "200": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "564"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"234-7sd5yM/Mt5v9Fw553kADqfJf2Ic\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Wed, 12 Mar 2025 05:44:19 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "200 Successfully fetched offer",
             "content": {
               "application/json": {
@@ -8652,13 +6912,13 @@
         }
       }
     },
-    "/organizations/{organization_id}/offers": {
+    "/api/organizations/{organization_id}/offers": {
       "parameters": [
         {
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -8683,8 +6943,8 @@
             "name": "external_customer_id",
             "in": "query",
             "required": false,
-            "description": "Optional filter to get customer specific coupon codes",
-            "example": "vishvajit@quicko.com",
+            "description": "Filter to get customer specific coupon codes",
+            "example": "a3571f49-15e5-472e-967c-d985b6c8d7d2",
             "schema": {
               "type": "string"
             }
@@ -8693,7 +6953,7 @@
             "name": "sort",
             "in": "query",
             "required": false,
-            "description": "Optional filter to sort ascending or descending",
+            "description": "Sort the results",
             "example": "desc",
             "schema": {
               "type": "string"
@@ -8703,6 +6963,7 @@
             "name": "discount_type",
             "in": "query",
             "required": false,
+            "description": "Filter to get offers by discount type",
             "example": "percentage",
             "schema": {
               "type": "string"
@@ -8736,72 +6997,15 @@
             "schema": {
               "type": "string"
             }
-          },
+          }
+        ],
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
         "responses": {
           "200": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "676"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"2a4-2Dv0Tr1uJ+fWRjobfOIIr2Jw1Bc\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Wed, 12 Mar 2025 05:46:00 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "200 Successfully fetched offers",
             "content": {
               "application/json": {
@@ -8945,13 +7149,13 @@
         }
       }
     },
-    "/organizations/{organization_id}/coupon-codes/redeem": {
+    "/api/organizations/{organization_id}/coupon-codes/redeem": {
       "parameters": [
         {
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -8962,80 +7166,14 @@
         "tags": [
           "Redemption"
         ],
-        "parameters": [
+        "parameters": [],
+        "security": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
+            "apiKeySecretAuth": []
           }
         ],
         "responses": {
           "201": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Access-Control-Allow-Origin": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "*"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "58"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"3a-y87HSytmqUm79BdOy+yPIAMH11E\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Tue, 22 Apr 2025 11:35:41 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "200 Successfully redeemed",
             "content": {
               "application/json": {
@@ -9058,56 +7196,6 @@
             }
           },
           "400": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Access-Control-Allow-Origin": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "*"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "49"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"31-hMV6Snv8nj2NnPP0F4HRWJBPKYI\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Tue, 22 Apr 2025 11:34:01 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "400 Customer not eligible",
             "content": {
               "application/json": {
@@ -9130,56 +7218,6 @@
             }
           },
           "404": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Access-Control-Allow-Origin": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "*"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "46"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"2e-Av9itLYFhYon1J2kGAbyTkYpJBE\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Tue, 22 Apr 2025 11:34:53 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "404 Coupon code not found",
             "content": {
               "application/json": {
@@ -9202,56 +7240,6 @@
             }
           },
           "409": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Access-Control-Allow-Origin": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "*"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "71"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"47-KaWg2X2MAb9gMLpHEnNqfSjJ+h4\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Tue, 22 Apr 2025 11:35:13 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "409 Customer has already redeemed coupon code",
             "content": {
               "application/json": {
@@ -9309,13 +7297,13 @@
         }
       }
     },
-    "/organizations/{organization_id}/redemptions": {
+    "/api/organizations/{organization_id}/redemptions": {
       "parameters": [
         {
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -9331,8 +7319,8 @@
             "name": "coupon_id",
             "in": "query",
             "required": false,
-            "description": "Option filter to get redemptions for a coupon",
-            "example": "{{coupon_id}}",
+            "description": "Filter to get redemptions for a coupon",
+            "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
             "schema": {
               "type": "string"
             }
@@ -9341,8 +7329,8 @@
             "name": "campaign_id",
             "in": "query",
             "required": false,
-            "description": "Option filter to get redemptions for a campaign",
-            "example": "{{campaign_id}}",
+            "description": "Filter to get redemptions for a campaign",
+            "example": "d6eace49-a8df-4269-9dc3-8dadf7b713cb",
             "schema": {
               "type": "string"
             }
@@ -9351,8 +7339,8 @@
             "name": "coupon_code_id",
             "in": "query",
             "required": false,
-            "description": "Option filter to get redemptions for a coupon code",
-            "example": "{{coupon_code_id}}",
+            "description": "Filter to get redemptions for a coupon code",
+            "example": "7f4eff08-9b6f-4634-9348-d29e7075293c",
             "schema": {
               "type": "string"
             }
@@ -9394,74 +7382,10 @@
             "schema": {
               "deprecated": false
             }
-          },
-          {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "deprecated": false
-            }
-          },
-          {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
           "200": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "1079"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"437-NDM1YmokJg/2QZgG/uouQ4KLsoc\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Thu, 13 Mar 2025 13:44:46 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "200 Successfully fetched redemptions",
             "content": {
               "application/json": {
@@ -9619,13 +7543,13 @@
         }
       }
     },
-    "/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/redemptions": {
+    "/api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/redemptions": {
       "parameters": [
         {
           "name": "organization_id",
           "in": "path",
           "required": true,
-          "example": "{{organization_id}}",
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
           "schema": {
             "type": "string"
           }
@@ -9634,7 +7558,7 @@
           "name": "coupon_id",
           "in": "path",
           "required": true,
-          "example": "{{coupon_id}}",
+          "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
           "schema": {
             "type": "string"
           }
@@ -9643,7 +7567,7 @@
           "name": "campaign_id",
           "in": "path",
           "required": true,
-          "example": "{{campaign_id}}",
+          "example": "d6eace49-a8df-4269-9dc3-8dadf7b713cb",
           "schema": {
             "type": "string"
           }
@@ -9652,7 +7576,7 @@
           "name": "coupon_code_id",
           "in": "path",
           "required": true,
-          "example": "{{coupon_code_id}}",
+          "example": "7f4eff08-9b6f-4634-9348-d29e7075293c",
           "schema": {
             "type": "string"
           }
@@ -9668,8 +7592,8 @@
             "name": "coupon_id",
             "in": "query",
             "required": false,
-            "description": "Option filter to get redemptions for a coupon",
-            "example": "{{coupon_id}}",
+            "description": "Filter to get redemptions for a coupon",
+            "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
             "schema": {
               "type": "string"
             }
@@ -9678,8 +7602,8 @@
             "name": "campaign_id",
             "in": "query",
             "required": false,
-            "description": "Option filter to get redemptions for a campaign",
-            "example": "{{campaign_id}}",
+            "description": "Filter to get redemptions for a campaign",
+            "example": "d6eace49-a8df-4269-9dc3-8dadf7b713cb",
             "schema": {
               "type": "string"
             }
@@ -9688,8 +7612,8 @@
             "name": "coupon_code_id",
             "in": "query",
             "required": false,
-            "description": "Option filter to get redemptions for a coupon code",
-            "example": "{{coupon_code_id}}",
+            "description": "Filter to get redemptions for a coupon code",
+            "example": "7f4eff08-9b6f-4634-9348-d29e7075293c",
             "schema": {
               "type": "string"
             }
@@ -9701,26 +7625,6 @@
             "example": "dan@test.com",
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "from",
-            "in": "query",
-            "required": false,
-            "description": "Option filter to get redemptions redeemed from time in EPOCH",
-            "example": "1716364274000",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "to",
-            "in": "query",
-            "required": false,
-            "description": "Option filter to get redemptions redeemed to time in EPOCH",
-            "example": "1716531482000",
-            "schema": {
-              "type": "integer"
             }
           },
           {
@@ -9751,74 +7655,10 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
           "200": {
-            "headers": {
-              "X-Powered-By": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Express"
-              },
-              "Content-Type": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "application/json; charset=utf-8"
-              },
-              "Content-Length": {
-                "schema": {
-                  "type": "integer"
-                },
-                "example": "1079"
-              },
-              "ETag": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "W/\"437-NDM1YmokJg/2QZgG/uouQ4KLsoc\""
-              },
-              "Date": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "Thu, 13 Mar 2025 13:44:46 GMT"
-              },
-              "Connection": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "keep-alive"
-              },
-              "Keep-Alive": {
-                "schema": {
-                  "type": "string"
-                },
-                "example": "timeout=5"
-              }
-            },
             "description": "200 Successfully fetched redemptions",
             "content": {
               "application/json": {
@@ -9976,83 +7816,21 @@
         }
       }
     },
-    "/organizations/{organization_id}/redemptions/reports": {
-      "parameters": [
-        {
-          "name": "organization_id",
-          "in": "path",
-          "required": true,
-          "example": "{{organization_id}}",
-          "schema": {
-            "type": "string"
-          }
+    "components": {
+      "securitySchemes": {
+        "tokenAuth": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT",
+          "in": "header",
+          "description": "JWT token authentication. Format: `Authorization: Bearer <access_token>`"
+        },
+        "apiKeySecretAuth": {
+          "type": "apiKey",
+          "name": "x-api-key",
+          "in": "header",
+          "description": "API key authentication (requires both x-api-key and x-api-secret headers)"
         }
-      ],
-      "get": {
-        "summary": "Generate Redemption Report",
-        "tags": [
-          "Redemption"
-        ],
-        "parameters": [
-          {
-            "name": "time_period",
-            "in": "query",
-            "required": false,
-            "example": "this_week",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "from",
-            "in": "query",
-            "required": false,
-            "example": "01/03/2025",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "to",
-            "in": "query",
-            "required": false,
-            "example": "01/10/2025",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "x-accept-type",
-            "in": "header",
-            "required": false,
-            "example": "application/json;format=sheet-json",
-            "schema": {
-              "deprecated": false
-            }
-          },
-          {
-            "name": "x-api-key",
-            "in": "header",
-            "required": false,
-            "description": "API key",
-            "example": "{{x-api-key}}",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-api-secret",
-            "in": "header",
-            "required": false,
-            "description": "API secret",
-            "example": "{{x-api-secret}}",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {}
       }
     }
-  }
 }

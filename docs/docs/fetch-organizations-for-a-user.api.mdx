@@ -5,9 +5,9 @@ description: "Fetch organizations for a User"
 sidebar_label: "Fetch organizations for a User"
 hide_title: true
 hide_table_of_contents: true
-api: eJyFUsFu2zAM/RWCpw3Qku6q2wZsw25L0Z6CYKBt2hZiS6pIdc0M/fsgJ2ibbUBv0iP1+PT4FlQaBO0e74UTHgxGSjSzcqrogp5mRotZOP10HRp0Hi1G0hENJn7ILnGHVlNmg/xEc5xq/7JcXpSCBqUdeSa0C+op1rJocn7AUg6VRGLwwoJ2KQY7lja5qC7UQV9Z2xFCGsi731RBgT4kIFj1GpxZx9ChxYEVzVmYxW2dLttnEdsrhvUXfVj1OF317mLw+PfwCoITIGhDrue+WvMrpCM02U0KzQl22bXHsIHPK+A8EEhLEzUTG5jzpO6DsievoGPIw6gQU2hZxICODLtrWvb1oUCTxXkWYQEN0AVoaY7kBi9AvoOUPYS+5yRQG4cXqk8/vq8dHcnYBErdBg0+cpLzjz5ubjY3WAzGIDqTrxZcNvym01fePG9S+Um3cSLnK21OU62dt7BfU1Pdti/xuV7EweAYRGvvsjQkfJ+mUir8kDmd0O4PBh8puWrLmsfOST13aHuahP+R1Qav7BUtvru9pPM9oPm/3AtI/lRdoinXGxo88ulV5suhvMrZty93WMofeqcdQQ==
+api: eJyFU8Fu2zAM/RWCpw1QkqYNgs63DdiG3dZhPRXBQFuMLcSWVJHqmhn+90Fu0DbbgN2kJ5J47/FpRKVWsLrDW+GEO4OREg2snAo6oqeBscIsnH44iwadxwojaYcGE99nl9hipSmzQX6kIfalfmO3282mWS+aer1dbDZ0ubi2l5vF1q6v7PX1uyu7vUKD0nQ8EFYj6jGWPtHkfIvTtCvTJQYvLFiNk0HL0iQX1YXC4BNr00FILXn3iwoosA8JCGYhBgfWLlissGVF88S4whVFtypiZDWeNE2rsymzxH2YOTmdxdzE4PFPAgUEJ0DQhFzO++Lbz5AOUGfXK9RHuMmuOYQlfJgB54FAGuqp7tnAkHt1C2VPXkG7kNtOIabQsIgB7RhuzseyL40CdRbnWYQFNIAN0NAQybVegLyFlD2E/Z6TQClsX0a9//plrrAkXR0o2SUafOAkT4rWy4vlBU4GYxAdyBcLTuv/r9tn3jxvU/lRV7En58vYnPry9rSJO6To0MzBKp5XLwk7X8fOYBdES8c41iR8m/ppKvB95nTE6m5n8IGSK+bMkbVOytlitade+C9yTfDKXrHCN99OAX4LaP5N+gSSPxavqM/lhgYPfHz1Labd9Cpxnz9+x2n6DXSfJGE=
 sidebar_class_name: "get api-method"
-info_path: docs/qpon
+info_path: qpon
 custom_edit_url: null
 ---
 
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"get"}
-  path={"/users/{user_id}/organizations"}
+  path={"/api/users/{user_id}/organizations"}
   context={"endpoint"}
 >
   
@@ -47,7 +47,7 @@ Fetch organizations for a User
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"user_id","in":"path","required":true,"example":"{{user_id}}","schema":{"type":"string"}}]}
+  parameters={[{"name":"user_id","in":"path","required":true,"example":"4d6644c1-cb16-44a2-8d24-6d13d8893d63","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>
