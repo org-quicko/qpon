@@ -5,7 +5,7 @@ description: "Upsert item"
 sidebar_label: "Upsert item"
 hide_title: true
 hide_table_of_contents: true
-api: eJydVcuO2zgQ/BWiT7uANJYsya/bZrGH3DJB5jQwgibZspmRSIWkZsZr+N8XbTl+7yPrE93sri5Wk6UtRFwFWDzDx0gtLBPo0GNLkTxHt2CxJVjAe4qdSV9oAwkYCwtYE2rykICn773xpGFRYxMoAU1BedNF4zjvt08fxVBG79h2DYPpiaQqQ5Xlqqpm2WSsJ9V0osZYVbKQ0wISCGpNLcJiC3HTcU2I3tgV7HbJFadAylP8P7SOlSdmtZznYyXrgvKimOVUzYh0OZ0UslB6UtVazgqaST0vZS0xI0WTUpVFmaGeZXU1/Y/MnV+hNX8ik/lq9A/yHcb1BfXoezqnJws9nZOaplTPMC3n83EqJ+NpilrJvJYqn2X5P1JYMnronA0UYLHdDc0oxA9Ob7hAORvJRl5i1zVG7TmOvgVWbXuL7OQ3Uqxh511HPpo97uGcN/2vpnBnn94jeYsNq3KH/+5MjaOakUIUJlIrxnA95/3eeeiqBeTlDMtpOU/Hsp6nZVbVKVaTPJ2U1VhnWMtinnHja+7w1AXyQ19IoKW4dozX9Xs1eJILGJ0POoy2V3Pfjbg6jPo9FCTAMn8+DeSPm6MehLjmcgxfnu0kq7G12+tp4v4iPXZ7KS5ROChMECiU63ldsxO8Of8iZG+aKORGPPZGvbgH8WEfMFagCAoblA0lou2baNJIFm0Uce361TqKzjtFISQirkk8XsKS5cIgZB+MpRAoiOiEdkJh26FZ2SDQauF7K1xdkw+CE1cnKH7GnKExrKVDrx8ggVfyYThR/pA9ZHz+zoXYoj1T8nJ8969lpPc46ho0ljF63/DeMNrnizccIIHFnUfN04UEDvNdJrB2IXLxdisx0JNvdjsOf+/Jb2DxvEzgFb1hUfbmq03g9d+Y2NlrhV8+H0zjVwHJff6HIFo241dsev4HCbA731rSbrlLfrjpz1E5Of5dGkO78+/JkQs75M/1OVr4v7Y6Zl50GzJ+HzDTLwxyyrgxQLbP40P/9PQFEpAH32yd5hKPb2zg+DZI67rhdiy2Q2wLDdpVjyvOHSD59xc9ZonQ
+api: eJxtVMtu3DoM/RWBq15Azjw6eYx37cVdBHfTtM0qGBS0TY/V2JIqUU2mhv+9oD2YZB5eyUfSIXlInR6cp4BsnL2vIIfkIwXODFMHGhi3EfInuJffjQaPATtiCoL2YLEjyMGFLVrzZyT5YSrQYCzk4JEb0BDoVzKBKsg5JNJAr9j5Vu4VH6vbNZW3GdV3mK3W62VW3CxvM6zKYlEX5eJuvgANsWyoQ8h74J2Xe5GDsVsYho2GSGUKhndjPuyeyX5K3ED+tBl0D+jN/7T7RmUgPuAbySl6ZyNFyPthSpEif3bVTsKUzjJZliV635pyrGz2Mzor2Fk+rvhJJYMGH0RMNiPvXp2zrDVUFMtgvJBe3KdXpmCxFS0vVD280/DQA6bISrqmlnASYdp7D52EgMXqDle3q3W2LOp1tppf1xle3yyym9X1sppjXXxczyXwae7wOE6L2k9LR9w44fNpVEP6n8MMvZm9H5E4608mZpgJQ5xNwwcaROqvb03576zcvRin+Rzg4/repDW2dqOmhscRfPCjHMcsAioTFarSJVnXMvUvLjyrIpmWVbFTD8mUz+5KfR4BYxWqWGKLRUtadallkzFZtKy4cWnbsPLBlRSjVtyQejimJSsXoypSNJZipKjYqcqpEjuPZmujQlupkKxydU0hKjm4faP69OV+PFFhbAqHoboCDb8pxKmixdX8ai71exe5Q/tOyeMWXh5Nplee+RaNFY4UWtmb2vskbwz0kQdE0JBfMAXpMei9xYidNC6yUPR9gZEeQzsMAv9KFORBbzT8xmBEmvF5VybKuoK8xjbSWbaHdwsfvu5N5x8lLnapij2IdidKYZvkDzQ80+6CpQ2bQUNDWFEYU5lO/TsFzL4L1xvLmWmI5Rwex5fH76Ch2HtN5yq5EvBFrBJfpiScn3TM+wnroUW7TbiVsxOlfH8BfLv5IA==
 sidebar_class_name: "put api-method"
 info_path: qpon
 custom_edit_url: null
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"put"}
-  path={"/organizations/{organization_id}/items/upsert"}
+  path={"/api/organizations/{organization_id}/items/upsert"}
   context={"endpoint"}
 >
   
@@ -47,7 +47,7 @@ Upsert item
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"d6be50ac01c558062d6576c2a55b3b73","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}}]}
+  parameters={[{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>

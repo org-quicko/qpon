@@ -5,7 +5,7 @@ description: "Delete item"
 sidebar_label: "Delete item"
 hide_title: true
 hide_table_of_contents: true
-api: eJy9VEtv2zAM/isCTxugNE4c5+HbhvYwYId12E5FMFASHQu1JVeSu2aG//ugvJN1W7vDbjZF8vv48dFBwJWH/A4+BKphyaFBhzUFctHagcGaIIenATZ6cE9r4KAN5FASKnLAwdFDqx0pyAusPHFQ5KXTTdA2+r379IFtw+gJ66aKydRUUJagTEYyy+bJdKym2Wwqx5hlIhWzFDh4WVKNkHcQ1k2M8cFps4K+5xecPElH4V9oHSKPzAqxGI2lKFIapel8RNmcSE1m01SkUk2zQol5SnOhFhNRCExI0nQiJ+kkQTVPimz2QubWrdDoHxjJfNNqT77BUJ5RD66lU3oiVbMFydmAijkOJovFeCCm49kAlRSjQsjRPBm9kIIOVL8Guut2EX3/R4RlTOIbazx5yLv+UvhrqigQi8mAQ02htCqOxMYMfEskh+GpRH7YXSjWD2MCPzyQ2tRR2A0jHTaMbxtr4BI+Gpn2DJm0bfwu4rR/t+6eiVZXgYk1u221vLdX7P3GoA1D5iVWKCrirG6roAeBDJrAQmnbVRlY46wk7zkLJbHb87RkYqBnovXakPfkWbBMWSaxblCvjGdoFHOtYbYoyHkWHVfHVHFUo4dCXwqLTl0Bh0dyflvR6Cq5SqDn0FgfajRRgl2Pz7U+E+LQuEBPYdhUqE3M0boqvm2bcHc2px445M8MbuxDfNoP1JJDaX2I4V0n0NNXV/V9ND+05NaQ3y05PKLTUZbNiVHax+/frGoH0ppAJkAObz7v5vMtA/58BTsjmnhyHrFq4x9wiDfo18WLC/Ef4fca9cue70/V6xQ4ntNn4bcwp8f6wOF1pZ7dx79CHTyPaMuT5b6++Xjz5Qb6/idApSiM
+api: eJy9k01v2zAMhv+KwNMGKEnTDWvrW4f2UGyHdR+nIhhom46F2JIqUt0yw/99oJumTVcM2GU3iRK/Hr4cIERKKC74qxoKqKkjoZkT6sGC4JqhuIErva4sREzYk1BS6wAee4ICQlqjd7+mIN9dDRachwIiSgsWEt1ml6iGQlImC/QT+9ipX/mmPjmj6mRGzSnO3p6dHc/Kd8cnM6yrctmU1fL0aAkWuGqpRygGkG1UP5bk/BrG0e5L0Hr/JfUw7DzG8a8ZVhaYqpycbKeOJWzIn2dpobhZaX6M7gNtv1CVSPb2labmGDwTQzGMFmriKrmohKCAiwmy2UHuSdrwyB7sffkFLDC6xVO4vBiesR4XGoQX+3YmAk2YenEy9Xodg4fnJajRODZoqpD13Ohkf4S0MWV2nZhya66zqzZhbt5PBucNGq6ww7Ija/rciZsJefRipA153YqJKVTEbI20ZK4Pw5JXRzZlZueJmdhIMHUwFfYR3dqzQV+blL0JTUOJjX5cP4Y6/3Q1/aiR2zJgqudg4Y4S33e0nB/Nj2C0EANLj14R7NRxyPsAxH7kQj9lETt0XmPk1Onb/SBudMpgD3TOYKF4Qfg6DX16EOTKQhtYNMgwlMj0LXXjqObbTElFtbJwh8kpnElitWM911A02DH9UW8VvJAXKODV552+Xxvd1Zf62BnRb5UVdllvYGFD2xcWVwX9H9M/MBpX45MtuLj8ePn1EsbxNziFlA0=
 sidebar_class_name: "delete api-method"
 info_path: qpon
 custom_edit_url: null
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"delete"}
-  path={"/organizations/{organization_id}/items/{item_id}"}
+  path={"/api/organizations/{organization_id}/items/{item_id}"}
   context={"endpoint"}
 >
   
@@ -47,7 +47,7 @@ Delete item
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"d6be50ac01c558062d6576c2a55b3b73","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"item_id","in":"path","required":true,"example":"{{item_id}}","schema":{"type":"string"}}]}
+  parameters={[{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"item_id","in":"path","required":true,"example":"{{item_id}}","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>

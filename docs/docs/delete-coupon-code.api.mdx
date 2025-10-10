@@ -5,7 +5,7 @@ description: "Delete coupon code"
 sidebar_label: "Delete coupon code"
 hide_title: true
 hide_table_of_contents: true
-api: eJzFVslu2zAQ/RViTi1Ax7JledGtSw4FemiK9hQYxZAcWURkUiWpNKmgfy/oVXZSZDm0N3u292alWgi48pBfwwfb1NawD1YRLDnU6HBNgVxUtmBwTZDD3QBrPbihe+CgDeRQEipywMHRz0Y7UpAXWHnioMhLp+ugbbR79+UT27rRHa7rKgZTU0FZgjIZySybJ9OxmmazqRxjlolUzFLg4GVJa4S8hXBfRx8fnDYr6Dp+xsmTdBReQ+vgeWRWiMVoLEWR0ihN5yPK5kRqMpumIpVqmhVKzFOaC7WYiEJgQpKmEzlJJwmqeVJks2cyt26FRv/GSOaHVnvyNYbyhHpwDfXpiVTNFiRnAyrmOJgsFuOBmI5nA1RSjAohR/Nk9EwKctP1l4C37cGn656Lgusa9eqlOEev5yNtuUmr6FVJ7RyfwFvGWL62xpOHvO3Ox+ojVRSIbWOyGBM4rCmUVsW532iBb2nlMOzPgR+2Z2PRDbdx/LBX+eG+OFHaq9POdhAxjw77rDb1KOwmJR02mV/V1sA5/yhk2jPcp1DEY/DLuhsmGl0FJu7ZVaPljb1g7zcCbRgyL7FCURFn66YKehDIoAkslLZZlYHVzkrynrNQErs6DUsmOnomGq8NeU+eBcuUZYc8GRrFXGOYLQpynkXD1TFU3ORoodCXwqJTF8DhlpzfZjS6SC4S6DjU1oc1mliC3cg82qyTehwGINBdGNYVahNDNa6Kum0Xr0+22QOH/OF67xoZlf3FO+S4UZzsSr+dPbf9fC85lNaHCN+2Aj19d1XXRfHPhtw95NdLDrfodKzu5pAr7ePvvxzEFqQ1gUyAHN583a3LWwb88QrshGjiYb/Fqon/gEO89A/PW1zTfwh/rPC/Bu518P/kvB+Pbtnx/Vv4suYf3+tHWWzR+l8DByovy/jkAX4S6mB5RFv2DuvHy8+X3y6h6/4A1Z7/wQ==
+api: eJzFVE2P0zwQ/ivWnECyt2mbbZrc+NgDggP7AqdVhcb2pLE2tYPtAH2r/Hfk9HNhhdgL3JIZz8fzzDOzA9eRx2icfaOhAk0tRRLK9Z2zQjlNwCHiOkB1B69GK3uVrCsOHXrcUCSfnDuwuCGowPk1WvP/mPKz0cDBWKigw9gAB09feuNJQxV9TxzoO266NsXJuS5KUoWgeokiL8uZkItZIVArOa2lmi6zKXAIqqENQrWDuO1SXIje2DUMAz+1sO/+KcWz5bS4XmYkdKlmIpeSBOYKhbzOsqLIMlnn5Z8Wx02HZv2k8npBqCgvBS51LfLZohSlVnOx1KjrQhbTuZJPw54m95QOijqnus6WopSLWuSLeS7Keb4UelZSkRXXs3KuftvBikMg1XsTt6Maorsn+6KPDVR3q9QfduYtbT+Q8hRP9lXqKXTOBgpQ7QYOmoLypkvqgQpej3Jke1DsIMcNxcadxQp8D6+CCXZmcqm/MNn9JMdhss8VJruTSobJcWbJeh7f8e24BueAA7XDyG3tRjJMHFm87ZyFnzEkIzOB4RFGndbmm/P3TPamjUxu2W1v1L27Yi9Hg7EMWVDYomyJs03fRiMiWbSRxcb16yayzjtFIXAWG2K3D9OSTYGByT4YSyFQYNEx7dgJJ0Orme8tc3VNPrD0cH1O9eL9m/GFxtBIh15fAYev5MMe0fQqu8pg4NC5EDdoEwUH+T06sAd8nKQT6XucdC0am1L1vk2+/STvklqAP7glAThUvx6XwziT83LtT0hHx4OVvBzqRdhxY1YcGhdiamK3kxjok2+HIZm/9OSTuFccvqI3ieNR6tqE9K2hqrEN9Ate5WwkG6GCZ/8dFvA5S2f1MR4ORrTbRDm2ffoDDve0feS4psX6i+XPDP/twhcT/DeYj/IYVsPFBXp98+7m4w0Mww/YzXcq
 sidebar_class_name: "delete api-method"
 info_path: qpon
 custom_edit_url: null
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"delete"}
-  path={"/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}"}
+  path={"/api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}"}
   context={"endpoint"}
 >
   
@@ -47,7 +47,7 @@ Delete coupon code
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"d6be50ac01c558062d6576c2a55b3b73","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"example":"{{coupon_id}}","schema":{"type":"string"}},{"name":"campaign_id","in":"path","required":true,"example":"{{campaign_id}}","schema":{"type":"string"}},{"name":"coupon_code_id","in":"path","required":true,"example":"{{coupon_code_id}}","schema":{"type":"string"}}]}
+  parameters={[{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"example":"0817580e-d9c2-4bbe-a4ca-b5007700bf49","schema":{"type":"string"}},{"name":"campaign_id","in":"path","required":true,"example":"d6eace49-a8df-4269-9dc3-8dadf7b713cb","schema":{"type":"string"}},{"name":"coupon_code_id","in":"path","required":true,"example":"7f4eff08-9b6f-4634-9348-d29e7075293c","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>

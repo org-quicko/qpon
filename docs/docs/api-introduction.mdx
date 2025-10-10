@@ -1,0 +1,82 @@
+---
+id: api-introduction
+title: "API Introduction"
+description: "Introduction to QPON API authorization methods"
+sidebar_label: "Introduction"
+hide_title: true
+hide_table_of_contents: true
+---
+
+# API Introduction
+
+The Qpon API supports two authorization methods for authenticating your requests. Choose the method that best fits your use case.
+
+## Authorization Methods
+
+### 1. Bearer Token Authentication
+
+This method uses JWT tokens obtained through the login endpoint. Include the token in the `Authorization` header.
+
+**Usage:**
+```http
+Authorization: Bearer <your-jwt-token>
+```
+
+**Example:**
+```http
+GET /api/coupons
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MTQxMjgwZS0yODE0LTQxZGEtOTg1NS1iZTk3MWY4ZDk3NGUiLCJpYXQiOjE3NTk5OTM4NDAsImV4cCI6MTc2MDA4MDI0MH0.0aNHQLZVz6i_uY9ruh1Qm6dDgzxX_zUqHFp0HupvT64
+```
+
+**How to get a token:**
+1. Call the `/api/users/login` endpoint with your email and password
+2. Extract the `access_token` from the response
+3. Use this token in subsequent API calls
+
+### 2. API Key Authentication
+
+This method uses API keys for programmatic access. Include both the API key and secret in the request headers.
+
+**Usage:**
+```http
+x-api-key: <your-api-key>
+x-api-secret: <your-api-secret>
+```
+
+**Example:**
+```http
+GET /api/coupons
+x-api-key: 1234567890abcdef
+x-api-secret: abcdef1234567890
+```
+
+**How to get API keys:**
+1. Call the `/api/api-keys` endpoint to create an API key
+2. Store the returned `api_key` and `api_secret` securely
+3. Use these credentials in your API requests
+
+## Choosing an Authorization Method
+
+- **Bearer Token**: Best for user-facing applications where users log in with their credentials
+- **API Key**: Best for server-to-server communication, integrations, and automated systems
+
+## Security Notes
+
+- Keep your tokens and API keys secure and never expose them in client-side code
+- API keys should be rotated regularly for security
+- Bearer tokens have expiration times and need to be refreshed
+- Use HTTPS for all API requests to protect credentials in transit
+
+## Error Responses
+
+Both authorization methods return `401 Unauthorized` if:
+- The token is invalid or expired
+- The API key/secret combination is incorrect
+- Required headers are missing
+
+```json
+{
+  "code": 401,
+  "message": "Unauthorized"
+}
+```

@@ -5,7 +5,7 @@ description: "Fetch campaign"
 sidebar_label: "Fetch campaign"
 hide_title: true
 hide_table_of_contents: true
-api: eJy9Vclu2zAQ/RViTi1Ax7JledGtLdqit6ZoT4FRDMmRRUQmVZJK4wr694Je5SRF4h5yk4ac996sbCHgykN+Ax9wXaNeGVhyqNHhmgK5eNKCwTVBDvcDrPXgljbAQRvIoSRU5ICDo1+NdqQgL7DyxEGRl07XQdt4793XL2znRve4rqsIpqaCsgRlMpJZNk+mYzXNZlM5xiwTqZilwMHLktYIeQthU0cfH5w2K+g6/kCTJ+ko/I+so+dJWSEWo7EURUqjNJ2PKJsTqclsmopUqmlWKDFPaS7UYiIKgQlJmk7kJJ0kqOZJkc1eqNy6FRr9B6OYn1odxNcYyjPpwTXUlydSNVuQnA2omONgsliMB2I6ng1QSTEqhBzNk9ELJUjb1JeRt+3Rp+teyrJvrAt5Tl7PMC0jkK+t8eQhb7uHZf5EQZbsgAcc1hRKqyCH1bbyWzE5DPsF8cP2QX264S5yP+ylYHhAjdae4G2chd2q1WEb0XVtI/e5tGhk2jNkO0xWxLn7bd0tE42uAhMbdt1oeWuv2PutQRuGzEusUFTE2bqpgh4EMmgCC6VtVmVgtbOSvOcslMSuz2HJREfPROO1Ie/Js2CZssf8eIZGMdcYZouCnGfx4uoEFYcm3lDoS2HRqSvgcEfO7yIaXSVXCXQcauvDGk1Mwb4PHtXhLBfHuga6D8O6Qm0iTOOqeLar0c3Z0HjgkD+eon2Z4mG/v4/xbQ96LbnkUFofInrbCvT0w1VdF82/GnIbyG+WHO7Q6Zi47TpU2sfvf6yVFqQ1gUyAHN5823f4Wwb86QD3RjRxPd5h1cQ/4BD35eMlEcfqFelPCXxt4l6BumXHDzv9svSf3p0nJeyo+q/aUcdl4Z49JM9SHW+e2Ja9pfT543four+5T5Dk
+api: eJy9VE1v2zAM/SsCTxsgJ06a1rFv3bANxS7rPk5FMFASHQuxJVeSu2aG//sgJ02TtRjWS282KfGR7z2qB9uSw6CtuVJQQElBVonEpkW9NsAh4NpDcQPvH0IrDi06bCiQi5keDDYEBVi3RqN/j7V+agUctIECWgwVcHB022lHCorgOuJA99i0dbwnzlSWk8wSKpeYLPJ8noiLeZagkmJWCjlbpjPg4GVFDULRQ9i28Z4PTps1DAM/tCBt174MPF3OsvNlSonK5TxZCEEJLiQm4jxNsyxNRbnI/xd8z9BL4NUFoaRFnuBSlclifpEnuZJnyVKhKjORzc6k+Cf8ioMn2TkdtqMWwW7IXHahguJmFZvDVn+m7TeSjsIhvoo9+dYaTx6KfuCgyEun26gdFPAxuoAduaChUNnojzUF4Lu5Cphiq6fHsvtp/5cLhulOEz/tD+IM04fKMfrI2jDSVtpxTh1Ggq5bG/FP24tBpj1DtqvJyujHX9ZtmOh0HZjYsutOy42dsHdjQBuGzEusUdTEWdPVQSeBDJrAQmW7dRVY66wk7zkLFbHr07Jk4kXPROe1Ie/Js2CZsgeOPEOjmOsMs2VJzrN4cP1Y6vLL1XhCoa+ERacmwOGOnN9NNJukkxQGDq31oUETKdjb6okWJ1wcHBHoPkzbGrWJZTpXx9xOp5toAuAnC+qBQ/F0Y/dixeTxLh2mHBNHPl9xqKwPEaPvBXr64ephiOHbjly05IrDHTod6RsNqrSP3wqKEmtPT8aR1gQyAQp483W/Nm9ZfIeeG3MfRLONbGLdxT/gsKHtMw9SXIdXhH8k8LWBjwQaVsPR9n768B2G4Q8gjAVs
 sidebar_class_name: "get api-method"
 info_path: qpon
 custom_edit_url: null
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"get"}
-  path={"/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}"}
+  path={"/api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}"}
   context={"endpoint"}
 >
   
@@ -47,7 +47,7 @@ Fetch campaign
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"d6be50ac01c558062d6576c2a55b3b73","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"example":"{{coupon_id}}","schema":{"type":"string"}},{"name":"campaign_id","in":"path","required":true,"example":"{{campaign_id}}","schema":{"type":"string"}}]}
+  parameters={[{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"example":"0817580e-d9c2-4bbe-a4ca-b5007700bf49","schema":{"type":"string"}},{"name":"campaign_id","in":"path","required":true,"example":"d6eace49-a8df-4269-9dc3-8dadf7b713cb","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>

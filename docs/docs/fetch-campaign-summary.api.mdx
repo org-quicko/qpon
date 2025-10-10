@@ -5,7 +5,7 @@ description: "Fetch campaign summary"
 sidebar_label: "Fetch campaign summary"
 hide_title: true
 hide_table_of_contents: true
-api: eJy9VU2P2zgM/SsCT13AnjhxnA8v9rBdbIveOsX2NAgKSqJjdWzJleTpTA3/94WcxEmmnc5kF+jNpkS+Rz6S6sDj1kF+A39h3aDaathE0KDFmjzZcNKBxpogh/sYhaDGx/6hIYhAacihJJRkIQJLX1plSUJeYOUoArrHuqmCIzZNpQR6ZfTkszP698LYGv0friTycbBABE6UVCPkHQzhc3DeKr2Fvo9OGTQqvqWH59ElOWFVEzAhhz/fv2M7tyMrueCUJSiSqciyVbKYyUW2XIgZZhlP+TK9iJMjYcn/F1qj55FZwdfTmeBFStM0XU0pWxHJ+XKR8lTIRVZIvkppxeV6zguOCQlazMU8nScoV0mRLV/I3NgtavVt0OWTkgfyDfryjLq37ZmcPJXLNYllTMUK4/l6PYv5YraMUQo+LbiYrpLpCykI0zaXgXfd6NP3L0XZt/aFOEevZ5A2IZBrjHbkIO/6xzK/IS9KdojHXFvXaEMz1uRLIyGH7dABA6kcJqfCuEn3SKd+squAm5yUYnKIHqwnxCdHMKULM7BXfsjwuhnm7pxqMDLlGLJdbFaETfDV2FvGW1V5xh/YdavErblirweD0gyZE1ghryhidVt5FXvSqD3zpWm3pWeNNYKci5gviV2fhyUdHB3jrVOanCPHvGHSjPVyDLVkttXMFAVZx8LF7TFUGKJwQ6IruUErryCCO7Jul9H0KrlKoI+gMc7XqEMJ9n3xpC5nNRn19nTvJ02FSodwra3C2U6zm7NhchBB/v107WULh6d9P+Y5HJy16oHRJoLSOB9wuo6jo4+26vtg/tKSfYD8ZhPBHVoVSjmsbKlc+H5i8XQgjPakPeTw6sN+Bn5jEP041b0RdajNHVZt+IMIwkb9fo2EwfuF8MdS/mrgE6n6TR8dtv5l5X8Ke4fx+MkdSVyW6/H5+znW+Lj+D5zxPXsWarx5RNuc7MS3f/8Dff8vE5btNg==
+api: eJy9VU1v2zAM/SsCTxsg1U6bNomHHbphG4pd1n2cimCgJTrWakuqJHfNAv/3Qc5X032gvfSWkDbfI98jvQLryGPU1lwoKKCiKGshsXWoF0aErm3RL4FDxEWA4greblIw5+DQY0uRfMqswGBLUMCdQCnJRRGXjoCDNlBATajIAwdPN532pKCosAnEge6wdU16EZ1rtBy4ZD+CNa8q61uMr0NNFEWKAIcga2oRihUM5QsI0WuzgL7nOwbWL9DoX0Ol71ptOTiM9QGD6LsDAuWJmsxITgRVUxTj2exYlGfHE4FKlqOqlKNpPnokBWk79zTwfDqanE5zEmomj8W4LEngWKIoT/N8MsnzshrPHgu+0egp8OqMUNJ4JnCqKjE+PpuJmZInYqpQVZNyMjqR5X/h5xwCyc7ruBzcEO01mfMu1lBczRM5dPojLb+Q9BR38XniFJw1gQIUq56DoiC9dkk7KOB98iPbNsT2fmwp1jY5dkER+Lq/AjJ0Orsvf8hWD9zQZ2ttQrbaidRnW4QU3U+vz/aA2lR26FvHYWCXbvDjId0UZDowZOvarEob8tP6a1Z2uomsXLLLTstre8TeDAFtGLIgscGyIc7arolaRDJoIou17RZ1ZM5bSSFwFmtil4dlyaQXAyu7oA2FQIFFy5TdzSwwNIr5zjBbVeQDSw8u9qXOP10MTygMdWnRqyPgcEs+rDsaHeVHOfQcnA2xRZNGsLHZP7U5mMnOKZHuYuYa1CaV63yTcmvdrpI5gB8sbgAOxZ+bvBEvJe/v2K7bIXHg/y2vOYfahpjQVqsSA33zTd+n8E1HPpl2zuEWvU4DHSysdEi/97fqQWPSmkgmQgEvPm8W6yVLt/JvDW+CaNKEbrHp0j/gcE3Lv5ystDDPCL8f5XMD35Oqn/d8+6F42vj/hb3GePhB2pFI12d3Rz68+wp9/xvzPGiY
 sidebar_class_name: "get api-method"
 info_path: qpon
 custom_edit_url: null
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"get"}
-  path={"/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/summary"}
+  path={"/api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/summary"}
   context={"endpoint"}
 >
   
@@ -47,7 +47,7 @@ Fetch campaign summary
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"x-accept-type","in":"header","required":false,"example":"application/json;format=sheet-json","schema":{"type":"string"}},{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"d6be50ac01c558062d6576c2a55b3b73","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"example":"{{coupon_id}}","schema":{"type":"string"}},{"name":"campaign_id","in":"path","required":true,"example":"{{campaign_id}}","schema":{"type":"string"}}]}
+  parameters={[{"name":"x-accept-type","in":"header","required":false,"example":"application/json;format=sheet-json","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"example":"0817580e-d9c2-4bbe-a4ca-b5007700bf49","schema":{"type":"string"}},{"name":"campaign_id","in":"path","required":true,"example":"d6eace49-a8df-4269-9dc3-8dadf7b713cb","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>

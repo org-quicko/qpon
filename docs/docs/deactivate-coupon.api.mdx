@@ -5,7 +5,7 @@ description: "Deactivate coupon"
 sidebar_label: "Deactivate coupon"
 hide_title: true
 hide_table_of_contents: true
-api: eJydlMlu2zAQhl+FmFML0LFsWV5063LpqUmXk2EUQ3JkEZFJhaTcpILevaDseEnSZrlJJGfmm3+WFgKuPeRL+GSb2hpYcajR4YYCuXjegsENQQ63A6z14JrugIM2kENJqMgBB0c3jXakIC+w8sRBkZdO10Hb+O7D5Re2M6Nb3NRVdKamgrIEZTKSWTZPpmM1zWZTOcYsE6mYpcDBy5I2CHkL4a6ONj44bdbQdfwBkyfpKLwF62B5JCvEYjSWokhplKbzEWVzIjWZTVORSjXNCiXmKc2FWkxEITAhSdOJnKSTBNU8KbLZC8mtW6PRfzDC/NLqHr7GUJ6hB9fQKZ5I1WxBcjagYo6DyWIxHojpeDZAJcWoEHI0T0YvRJB9wZ8Pfi7brk1Yb3XEatuDt677b/xVDOBrazx5yNvuof/PhDLoLQZiO5fAYUOhtCoSWh+r1YPmMDwV0Q/bB5p2w50DPzyBG6qD/z7twvaQOvRpXO3inRNd9fl6hnsgVsTx+G3dNRONrgITd+yq0fLaXrCP/YE2DJmXWKGoiLNNUwU9CGTQBBZK26zLwGpnJXnPWSiJXZ27JRMNPRON14a8J8+CZcoyiZsa9dp4hkYx1xhmi4KcZ/Hh+ugq9nZ8odCXwqJTF8BhS87vMhpdJBcJdLzXc4MmSrBviqfkP5PjUNFAt2FYV6hN9NS4Kt7tKrM8a28PHPLH/b4vTrw87cST+qw4lLHg+RLaVqCnn67qunh805C7g3y54rBFp6Na/apS2sfvf4x8C9KaQCZADu++7bv8PQP+dEr7QzRxdW2xauIfcIi77PEAx8F6U/jTgXoDx1G7btXx++33OjGOG/pJgF2g0/1/oHhd1mcr99lQh5fHaKuTXXD59fsP6Lq/81FI2Q==
+api: eJydU8tu2zAQ/BViTy1AWXLq1DZvfVxyatzHyTCKJbmyiEikQlJpXEH/XlA2/GrQArmRS+7u7MxOD64lj9E4e6dBgCZU0TxhpEy5rnUWOETcBhBr+LQPbDi06LGhSD7Fe7DYEAhwfovW/B6L/TQaOBgLAlqMFXDw9NgZTxpE9B1xoGds2jrlyXd6viQ1z6hcYDZbLm8y+f5mnqFWclpKNV0UU+AQVEUNgugh7tqUF6I3dgvDwI8Q9pj/31xTUN60CSmIw2BszDrBKhbT+e2ioEwv1U02k5IynCnM5G1RzOdFIcvZ8p+wNqlvaJ0NFED0w3Xbz0eu2ZHrhmLlkhCtCxH4Hr+AHFuTn/Mb8v6K7iHfFwl5f2RhyE96joyUbgRq4jjhat/zEtVqpCIwPIBiZdL6l/MPTHamjkzu2Koz6sFN2McxYCxDFhTWKGvirOnqaLJIFm1ksXLdtoqs9U5RCJzFitjqsizZlBiY7IKxFAIFFh3TjilsWjRbGxhazXxnmStL8oGlj9tTqQ/3d+MPjaGSDr2eAIcn8mE/0XRSTAoY+MhpgzZRcNiXlyS4oOOoaqTnmLc1Gpsqdb5Ob3t11oCtAX6x/wE4iL8NcZAoPZ6v6plKGw5Vkl6soe8lBvrh62FI4ceO/A7EesPhCb1JnI3u0yakswZRYh2ul7sH5WwkG0HAm68HG7xlydYvDXYIot0lCrHu0g04PNDuBYcn572q/bnjXoHjxN2wGc5Mc//l23cYhj/tr6cu
 sidebar_class_name: "post api-method"
 info_path: qpon
 custom_edit_url: null
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"post"}
-  path={"/organizations/{organization_id}/coupons/{coupon_id}/deactivate"}
+  path={"/api/organizations/{organization_id}/coupons/{coupon_id}/deactivate"}
   context={"endpoint"}
 >
   
@@ -47,7 +47,7 @@ Deactivate coupon
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"d6be50ac01c558062d6576c2a55b3b73","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"description":"Coupon id","example":"{{coupon_id}}","schema":{"type":"string"}}]}
+  parameters={[{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"description":"Coupon id","example":"0817580e-d9c2-4bbe-a4ca-b5007700bf49","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>
