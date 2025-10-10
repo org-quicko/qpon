@@ -5,7 +5,7 @@ description: "Deactivate coupon code"
 sidebar_label: "Deactivate coupon code"
 hide_title: true
 hide_table_of_contents: true
-api: eJyllk1v2zgQhv8KMacuIMeyZflDtzQ9bG9NsT0FxmJIjiwiMqmQVDapoP++oGxLcpogqXuzSc7MM+8Mh2rA485Bdgc3pq6MZjdGEmwjqNDinjzZsNmAxj1BBk8TrNTknp4hAqUhg4JQkoUILD3UypKELMfSUQSSnLCq8sqEc9ffvrKDGT3hviqDM7nklMYo4plI03W8nMtlulqKOaYpT/gqgQicKGiPkDXgn6tg47xVegdtG71gciQs+UuwesuBLOeb2VzwPKFZkqxnlK6J5GK1THgi5DLNJV8ntOZys+A5x5gELRdikSxilOs4T1cfJDd2h1r9xADzVZ7YK/TFGbm3NY3peCJXGxKrCeVrnCw2m/mEL+erCUrBZzkXs3U8+yCB6Ir+r3ov+Llqx1bprAaspum9te1H4+O+QrW7lMCRf4Vi8PlxjgO5MJIuRAmmbypy9PsOzjaEcpXRjhxkTfsy0hdC4dUjemJiCAoR7MkXRh6ARSDuwDOYjhvMTZvzfmunBy9uOirc9KReWB0JeTw7CREHg1NeU9mjddrlpstP+U6G28poeJnMbddBjuEplzzMm/+MvWe8VqVn/Jnd1krcmyv2uVtQmiFzAkvkJUVsX5deTTxp1J75wtS7wrPKGkHORcwXxG7P3ZIOho7x2ilNzpFj3jBpWJ8yQy2ZrTUzeU7WsXBwN7gKwyKckOgKbtDKK4jgkaw7ZDS7iq9iaCOojPN71EGCY3u9WbkzTfqO8PTkp1WJSgd3tS3D3qGmd2dDw0EE2S9T5FjWsDe+332a3cbZxRsXd2Q2XIdRfbcRFMb5gNI0HB39sGXbhuWHmuwzZHfbCB7RqqB293ZI5cLvN2ZwA8JoT9pDBp++H6/aXwyi19U4LqIOb8kjlnX4BxGEx+WXiRpu+EXRxxPuAoxB9j8l6CfcJRSjGv8pxzDeLpfj1E7tto1OL/Tv9cfwFfEqxSHa+BulR/m9/M8+C94N1Z8com1HQ/nb9T83f0Pb/g/WcTSZ
+api: eJylVMuO4zYQ/BWiTwlAjmVbY1m6TSaHLHLZyeM0MIIW2bKIkUktSU3WEfTvAeWHbG+e3pvUZDerq6q7B9uSw6Ct+aCgAEUog37HQELarrVGSKsIOATceihe4XmMsucY3XBo0eGOArl42IPBHUEB1m3R6D9OZTloAwW0GGrg4OhTpx0pKILriAN9xl3bxLRyqbKcZCaoWqNI83whytUiE6hkOa9KOV8nc+DgZU07hKKHsG9jng9Omy0MAz8jOID/Tf/b44q8dLqNQKE4NTdmTbCS9Tx7XCckVC4XIi1LEphKFOVjkmRZkpRVmv9XWLhrUW/vBeYp3IJTK0JJaS5wrSqRLla5yJVcirVCVWVlNl/K8v9xFgW/E19MvQWYVSlVVbIWebmqRLpapiJfpmuhFjllSfa4yJfyHwFuOHiSndNhP3os2DcyT12ooXjdRPjY6h9p/zNJR+Ec30TIvrXGk4eiH24Rf382OpMTeOCwo1BbdWhcxs5HAgqYYatnl8b2s/7a58PsUMnP+rP9htlJ8hid1D/dHcdrSjhyP8ymORx1qOzIjA4jpS+tNXDb0MvoXM/w1E8VJ/N3695Y2ekmsHLPXjot3+wD+24MaMOQeYkNlg1xtuuaoEUggyawUNtuWwfWOivJe85CTezluiyZmOhZ2XltyHvyLFimLDu3zNAo5jrDbFWR8yxe3E6lnj5+GG8o9HVp0akH4PBOzh86mj8kDwkMHFrrww5NpOBo1b9V74qTs5cCfQ6ztkFtYrnONfHsoOtrtA/wq5XlgUPxxQ47ihvPLrfLudnx4Gq+LyW+SJsG7ELlDYfa+hAB9X2Jnn51zTDE8KeOXHT+hsM7Oh05H+dAaR+/FRQVNv52JHuQ1gQyAQr45qfj8H7L4ib/K06OQTT7KAE2XfwDDm+0/3Kfx6G76/XL/XoHjIn2r0VwXqT3oLjQ+GtxTAvzfjpOdho2w8X2+vj0y/MPMAx/Aji4rZo=
 sidebar_class_name: "patch api-method"
 info_path: qpon
 custom_edit_url: null
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"patch"}
-  path={"/organizations/{organizationId}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/deactivate"}
+  path={"/api/organizations/{organizationId}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/deactivate"}
   context={"endpoint"}
 >
   
@@ -47,7 +47,7 @@ Deactivate coupon code
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"d6be50ac01c558062d6576c2a55b3b73","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57","schema":{"type":"string"}},{"name":"organizationId","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"description":"Coupon id","example":"{{coupon_id}}","schema":{"type":"string"}},{"name":"campaign_id","in":"path","required":true,"description":"Coupon set id","example":"{{campaign_id}}","schema":{"type":"string"}},{"name":"coupon_code_id","in":"path","required":true,"description":"Coupon code id","example":"{{coupon_code_id}}","schema":{"type":"string"}}]}
+  parameters={[{"name":"organizationId","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"description":"Coupon id","example":"0817580e-d9c2-4bbe-a4ca-b5007700bf49","schema":{"type":"string"}},{"name":"campaign_id","in":"path","required":true,"description":"Coupon set id","example":"d6eace49-a8df-4269-9dc3-8dadf7b713cb","schema":{"type":"string"}},{"name":"coupon_code_id","in":"path","required":true,"description":"Coupon code id","example":"7f4eff08-9b6f-4634-9348-d29e7075293c","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>

@@ -5,7 +5,7 @@ description: "Deactivate campaign"
 sidebar_label: "Deactivate campaign"
 hide_title: true
 hide_table_of_contents: true
-api: eJydlclu2zAQQH+FmFML0LFsWV5063LpqUmXU2AUQ3JkEZFJhaTSpIL+vaDs2HKSoolvEsmZebO3EHDjIb+GT7itUW8MrDnU6HBLgVy8acHgliCH+xHWenRDD8BBG8ihJFTkgIOj20Y7UpAXWHnioMhLp+ugbXz34fIL24nRPW7rKipTc0FZgjKZyCxbJvOpmmeLuZxilolULFLg4GVJW4S8hfBQRxkfnDYb6Dr+hMmTdBTOwTpIHskKsZpMpShSmqTpckLZkkjNFvNUpFLNs0KJZUpLoVYzUQhMSNJ8JmfpLEG1TIps8Upy6zZo9B+MML+0eoSvMZQn6ME1NMQTqVqsSC5GVCxxNFutpiMxny5GqKSYFEJOlsnklQjSNvVrjJ+G7VMvxXqpI1bbHrR13Wvt70vuLe637UDqP5bWUZGvrfHkIW+7p558JpRB32Eg9qgUOGwplFZFFutjZfRIOYyHCfPj9kn+uvHOfz8eBGL8qDaeDrDH6mC5d7ywPb4OvYtXtY0cp6xXfcw9Q7ZTz4rYor+tu2Gi0VVg4oFdNVre2Av2sT/QhiHzEisUFXG2baqgR4EMmsBCaZtNGVjtrCTvOQslsatTtWSioGei8dqQ9+RZsEzZQ6w8Q6OYawyzRUHOs/hwc1QV+yu+UOhLYdGpC+BwR87vPJpcJBcJdLyP8xZNDMG+MF5OzElADtkOdB/GdYXaRF2Nq+LdLmfXJ03mgUP+vOv2aYuXw344ONlfnBTqIHlrDmWskvwa2lagp5+u6rp4fNuQe4D8es3hDp2OoexnqdI+fv9jJrUgrQlkAuTw7tu+Cd4z4C97uz9EE2frHVZN/AMOcdg+nzCx884yP+z4MziOYT2b4EzDg7R1644/boa35eG4vV5E2Jka7sYDx9vcPVlH/zV1eHm0th7Mrsuv339A1/0FnmSrFw==
+api: eJydVE1v2zAM/SsCTxsgN06a1rFvXXcpdlizbqcgGGiJjoXYkivJXTPD/32Qk+ajK4YuN5sSycf3HtWBaciiV0bfSchAEgqvntBTJLBuUK00cPC4cpAt4PYltOTQoMWaPNlw0oHGmiADY1eo1e+h4E8lgYPSkEGDvgQOlh5bZUlC5m1LHOgZ66YKefmlTFISSUTFDKNpmk6i/HqSRChFPi5yMZ7FY+DgREk1QtaB3zQhz3mr9Ar6nu8hCNM272kuyQmrmoAUMrgdstiQdYAVz8bJ1SymSKZiEk3znCKcCozyqzhOkjjOi2n6Xlg77v6HFXlNKGiaRjiTRTSdXKdRKsVlNJMoiyRPxpci/2f7JQdHorXKbwaVvFmTvml9CdliGcBho77Q5oGEJb+PLwMm1xjtyEHW9a+5+rw3CTsySU2+NMFDjXEe+Ha6DEbYqNGxLdyoe+WSfrTVzI26vXj96KV0iB6460cHiw48FmYYXPmBsXljApZTvPNBWceQbcuzIlj3l7Frlreq8izfsHmrxNpcsE9DQGmGzAmsMK+Is7qtvIo8adSe+dK0q9KzxhpBznHmS2Lz07KkQ6JjeeuUJufIMW+YNHu+HEMtmW01M0VB1rFwcXUodXN/N9yQ6MrcoJUXwOGJrNtONL6IL2Lo+cB1jTpQsPPZ2+KcELL3iadnP2oqVDrUam0Vzra6LYI1gJ8stAMO2d8bvhMvHB7v3n7U4eDE/UcSLjmUwS/ZArouR0c/bNX3IfzYkg2uXXJ4QqsCoYOHpXLhW0JWYOVeL3IHwmhP2kMGH77tNusjC4/YWzPvgqg3gV+s2vAHHNa0eeM1CxtzVvvj1+UMHAdaz0ZwZuMj2fplf7Tk918fvkPf/wHNkSGv
 sidebar_class_name: "post api-method"
 info_path: qpon
 custom_edit_url: null
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"post"}
-  path={"/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/deactivate"}
+  path={"/api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/deactivate"}
   context={"endpoint"}
 >
   
@@ -47,7 +47,7 @@ Deactivate campaign
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"d6be50ac01c558062d6576c2a55b3b73","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"description":"Coupon id","example":"{{coupon_id}}","schema":{"type":"string"}},{"name":"campaign_id","in":"path","required":true,"example":"{{campaign_id}}","schema":{"type":"string"}}]}
+  parameters={[{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"description":"Coupon id","example":"0817580e-d9c2-4bbe-a4ca-b5007700bf49","schema":{"type":"string"}},{"name":"campaign_id","in":"path","required":true,"example":"d6eace49-a8df-4269-9dc3-8dadf7b713cb","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>

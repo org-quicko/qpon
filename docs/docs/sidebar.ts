@@ -16,7 +16,11 @@ const sidebar: SidebarsConfig = {
       type: "category",
       label: "API",
       items: [
-
+        {
+          type: "doc",
+          id: "api-introduction",
+          label: "Introduction",
+        },
         {
           type: "category",
           label: "Organization",
@@ -299,12 +303,6 @@ const sidebar: SidebarsConfig = {
             },
             {
               type: "doc",
-              id: "fetch-organizations-for-a-user",
-              label: "Fetch organizations for a User",
-              className: "api-method get",
-            },
-            {
-              type: "doc",
               id: "fetch-user",
               label: "Fetch user",
               className: "api-method get",
@@ -455,7 +453,7 @@ const sidebar: SidebarsConfig = {
             },
             {
               type: "doc",
-              id: "fetch-customers",
+              id: "fetch-customers-for-coupon-code",
               label: "Fetch customers",
               className: "api-method get",
             },
@@ -493,12 +491,6 @@ const sidebar: SidebarsConfig = {
               type: "doc",
               id: "fetch-redemptions-for-coupon-code",
               label: "Fetch redemptions for coupon code",
-              className: "api-method get",
-            },
-            {
-              type: "doc",
-              id: "generate-redemption-report",
-              label: "Generate Redemption Report",
               className: "api-method get",
             },
           ],

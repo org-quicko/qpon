@@ -5,7 +5,7 @@ description: "Fetch item"
 sidebar_label: "Fetch item"
 hide_title: true
 hide_table_of_contents: true
-api: eJy9VEuP0zAQ/ivWnEBy27Rp+sgNJEDcWASnVYXG9qSxNrGztrNsifLfkftuWWCXA7dkPDPfN988Ogi49pDfwsdANaw4NOiwpkAuWjswWBPk8DjARg/uaAMctIEcSkJFDjg4um+1IwV5gZUnDoq8dLoJ2ka/N58+sl0YPWLdVDGZmgnKEpTJWGbZIplN1Cybz+QEs0ykYp4CBy9LqhHyDsKmiTE+OG3W0Pf8ipMn6Sj8C61j5IlZIZbjiRRFSuM0XYwpWxCp6XyWilSqWVYosUhpIdRyKgqBCUmaTeU0nSaoFkmRzZ/J3Lo1Gv0DI5lvWh3INxjKC+rBtXROT6RqviQ5H1CxwMF0uZwMxGwyH6CSYlwIOV4k42dS0IHql0B33T6i7/+IsIpJfGONJw95118L/56CLFnMBRxqCqVVkMN624ctiRxG5/L4UXelVj+K0X50JLStobBbNjps2d401sA1dDQy7Rkyadv4XcRJ/27dHROtrgITG3bTanlnh+zt1qANQ+YlVigq4qxuq6AHgQyawEJp23UZWOOsJO85CyWxm8u0ZGKgZ6L12pD35FmwTFkmsW5Qr41naBRzrWG2KMh5Fh3Xp1RxTKOHQl8Ki04NgcMDOb+raDxMhgn0HBrrQ40mSrDv74XOFzocexboMYyaCrWJKVpXxbddD24vRtQDh/yJmY1tiE+HWVpxKK0PMbzrBHr66qq+j+b7ltwG8tsVhwd0OqqyvS5K+/j9my3tQFoTyATI4dXn/Wi+ZsCfrmBvRBOvzQNWbfwDDvH8/LpzcRf+I/xBo37V88OVepkCp0v6JPwO5vxOHzm8rNSL0/hXqKPnCW11ttgf3n2Bvv8J6LIltA==
+api: eJy9U01v2zAM/SsCTxugJE03rK1vHbANxS7rPk6BMdAybQuxJVeku2aG//tAN82arhiwy24SJfLxPT6OEHtKKD6GqxIyqEhcs/BCHVgQrBmyDVzpNbfQY8KOhJJGRwjYEWQQU43B/5xrfPclWPABMuhRGrCQ6GbwiUrIJA1kge6w61vNK16VZxfkzhZUnePi9cXF6aJ4c3q2wNIV66pw6/OTNVhg11CHkI0gu17zWJIPNUyTPbSg/f4L9DjuM6bprwi5BSY3JC+7mbHELYXLQRrINrniY+8/0u4LuURyiOcKzX0MTAzZOFkoiV3yvSoEGbxXjc1e446kiap8TQL2vvUMVtj71WNheTU+0XlaaQVeHajM7Ks48/Ay87zuY4Cn8Bo0ng0aFwc9VzrVHzFtTTH4VkyxM9eDd9u4NG/ngA8GDTtssWjJmm5oxS+EAgYx0sShbsT0KTpitkYaMtfHZSloIptiYB+ImdhINGU0DrsefR3YYChNGoKJVUWJjX6sf5e6/HQ1/yiRmyJiKpdg4ZYS3zNaL0+WJzBZ6CNLh0El2DvjSOsjHQ7TFrqTVd+iD1piSK2+3c9howMGe2RxBgvZM57XYejTgxdzC01k0SLjWCDTt9ROk4ZvBkrqp9zCLSav2szuKj3ruYSswpbpj35dDEJBIIMXn/fWfml0TZ/jsQ9i2KlU2A56Awtb2j2zs+rl/wj/oNGUT4824MO7rzBNvwDvi5DM
 sidebar_class_name: "get api-method"
 info_path: qpon
 custom_edit_url: null
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"get"}
-  path={"/organizations/{organization_id}/items/{item_id}"}
+  path={"/api/organizations/{organization_id}/items/{item_id}"}
   context={"endpoint"}
 >
   
@@ -47,7 +47,7 @@ Fetch item
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"d6be50ac01c558062d6576c2a55b3b73","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"item_id","in":"path","required":true,"example":"{{item_id}}","schema":{"type":"string"}}]}
+  parameters={[{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"item_id","in":"path","required":true,"example":"{{item_id}}","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>

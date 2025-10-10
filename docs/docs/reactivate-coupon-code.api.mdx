@@ -5,7 +5,7 @@ description: "Reactivate coupon code"
 sidebar_label: "Reactivate coupon code"
 hide_title: true
 hide_table_of_contents: true
-api: eJyllk1v2zAMhv+KwNMGOI0Tx/nwbetlu63DdiqCgZLoWKgjeZLctTP83wc5ie10Ldplt0QSyYcvKcoNeNw5yG7h2tSV0ezaSIJtBBVa3JMnGzYb0LgnyOBhgpWa3NEjRKA0ZFAQSrIQgaWftbIkIcuxdBSBJCesqrwy4dyHL5/ZwYwecF+VwZlcckpjFPFMpOk6Xs7lMl0txRzTlCd8lUAEThS0R8ga8I9VsHHeKr2Dto2eMDkSlvwlWL3lQJbzzWwueJ7QLEnWM0rXRHKxWiY8EXKZ5pKvE1pzuVnwnGNMgpYLsUgWMcp1nKerN5Ibu0OtfmOA+SxP7BX64ozc25rGdDyRqw2J1YTyNU4Wm818wpfz1QSl4LOci9k6nr2RQHRF/6FeC36u2rFVOqsBq2l6b2371vi4r1DtLiVw5J+hGHy+neNALoykC1GC6YuKHP2+grMNoVxltCMHWdM+jfSVUHh1j56YGIJCBHvyhZEHYBGIO/AMpuMGc9PmvN/a6cGLm44KNz2pF1ZHQh7PTkLEweCU19T2aJ12uenyU76T4aYyGp4mc9N1kGN4yiUP8+aXsXeM16r0jD+ym1qJO3PFPnYLSjNkTmCJvKSI7evSq4knjdozX5h6V3hWWSPIuYj5gtjNuVvSwdAxXjulyTlyzBsmDetTZqgls7VmJs/JOhYO7gZXYViEExJdwQ1aeQUR3JN1h4xmV/FVDG0ElXF+jzpIcGyvFyt3pknfEZ4e/LQqUengrrZl2DvU9PZsaDiIIPtrihzLGvbG97tPs9s4u3jj4o7Mhuswqu82gsI4H1CahqOj77Zs27D8syb7CNntNoJ7tCqo3b0dUrnw+4UZ3IAw2pP2kMG7r8er9p5B9Lwax0XU4S25x7IO/yCC8Lj8NVHDDb8o+njCXYAxyP6/BP2Eu4RiVOP/5RjG2+VynNqp3bbR6YX+t/4YviKepThEG3+j9Cj/lv/ZZ8GrofqTQ7TtaCh/+fDt+hO07R/U6DTR
+api: eJylVE2P4zYM/SsCTy0gTZzEE8e+TefSRS872/Y0CApaomNhHMkrydNNDf/3Qs6Hk2w/szebEqnH9x7Zg23JYdDWfFBQgCOUQb9jICFt11ojpFUEHAJuPRSv8DxG2XOMbji06HBHgVw87MHgjqAA67Zo9B+nshy0gQJaDDVwcPS5044UFMF1xIG+4K5tYlq5VFlOMhNUrVGkeb4Q5WqRCVSynFelnK+TOXDwsqYdQtFD2LcxzwenzRaGgZ8RHMD/pv/tcUVeOt1GoFCcmhuzJljJep49rhMSKpcLkZYlCUwlivIxSbIsScoqzf8rLNy1qLf3AvMUbsGpFaGkNBe4VpVIF6tc5EouxVqhqrIymy9l+f84i4LfiS+m3gLMqpSqKlmLvFxVIl0tU5Ev07VQi5yyJHtc5Ev5jwA3HDzJzumwHz0W7BuZpy7UULxuInxs9U+0/5mko3CObyJk31rjyUPRD7eIP52NzuQEHjjsKNRWHRqXsfORgAJm2OrZpbH9rL/2+TA7VPKz/my/YXaSPEYn9U93x/GaEo7cD7NpDkcdKjsyo8NI6UtrDdw29DI61zM89VPFyfzdujdWdroJrNyzl07LN/vAfhgD2jBkXmKDZUOc7bomaBHIoAks1Lbb1oG1zkrynrNQE3u5LksmJnpWdl4b8p48C5Ypy84tMzSKuc4wW1XkPIsXt1Opp48fxhsKfV1adOoBOLyT84eO5g/JQwIDh9b6sEMTKTha9W/Vu+Lk7KVAX8KsbVCbWK5zTTw76Poa7QP8amV54FB8tcOO4sazy+1ybnY8uJrvS4kv0qYBu1B5w6G2PkRAfV+ip19dMwwx/LkjF52/4fCOTkfOxzlQ2sdvBUWFjb8dyR6kNYFMgAK++3Qc3u9Z3OR/xckxiGYfJcCmi3/A4Y32X+/zOHR3vX65X++AMdH+rQjOi/QeFBcafyuOaWHeT8fJTsNmuNheH59+ef4RhuFPdJmt4A==
 sidebar_class_name: "patch api-method"
 info_path: qpon
 custom_edit_url: null
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"patch"}
-  path={"/organizations/{organizationId}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/reactivate"}
+  path={"/api/organizations/{organizationId}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/reactivate"}
   context={"endpoint"}
 >
   
@@ -47,7 +47,7 @@ Reactivate coupon code
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"d6be50ac01c558062d6576c2a55b3b73","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57","schema":{"type":"string"}},{"name":"organizationId","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"description":"Coupon id","example":"{{coupon_id}}","schema":{"type":"string"}},{"name":"campaign_id","in":"path","required":true,"description":"Coupon set id","example":"{{campaign_id}}","schema":{"type":"string"}},{"name":"coupon_code_id","in":"path","required":true,"description":"Coupon code id","example":"{{coupon_code_id}}","schema":{"type":"string"}}]}
+  parameters={[{"name":"organizationId","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"description":"Coupon id","example":"0817580e-d9c2-4bbe-a4ca-b5007700bf49","schema":{"type":"string"}},{"name":"campaign_id","in":"path","required":true,"description":"Coupon set id","example":"d6eace49-a8df-4269-9dc3-8dadf7b713cb","schema":{"type":"string"}},{"name":"coupon_code_id","in":"path","required":true,"description":"Coupon code id","example":"7f4eff08-9b6f-4634-9348-d29e7075293c","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>

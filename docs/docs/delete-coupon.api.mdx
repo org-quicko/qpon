@@ -5,7 +5,7 @@ description: "Delete coupon"
 sidebar_label: "Delete coupon"
 hide_title: true
 hide_table_of_contents: true
-api: eJy9lE1v2zAMhv+KwNMGKI0Tx/nwbVt7GLDDOmynIhgoiY6FOpIryV0zw/99UJzmq93W7rCbTYnkw5cUWwi48pDfwAfb1NbAkkONDtcUyEV7CwbXBDk8DLDWg1vaAAdtIIeSUJEDDo7uGu1IQV5g5YmDIi+droO28d67zx9Z70YPuK6rGExNBWUJymQks2yeTMdqms2mcoxZJlIxS4GDlyWtEfIWwqaOPj44bVbQdfyMyZN0FP4Fa+95ICvEYjSWokhplKbzEWVzIjWZTVORSjXNCiXmKc2FWkxEITAhSdOJnKSTBNU8KbLZC8mtW6HRPzHCfNfqEb7GUJ6gB9fQMZ5I1WxBcjagYo6DyWIxHojpeDZAJcWoEHI0T0YvRJDbhr8medvufbruj1mWMYyvrfHkIW+7c/EvqaJArA8HHNYUSqviYGwPgPcwOQyPhfLD9ky3btiH8MMjtG09hd1y6bAlv+7TnEJEI9Oe4Y6DFXHuf1h3y0Sjq8DEhl03Wt7aC/Z+a9CGIfMSKxQVcbZuqqAHgQyawEJpm1UZWO2sJO85CyWx69OwZKKjZ6Lx2pD35FmwTFkmcV2jXhnP0CjmGsNsUZDzLF5cHULFoY03FPpSWHTqAjjck/N9RaOL5CKBjkNtfVijiRLsun2u+IkU+wYGegjDukJtYpTGVfGsb8XNycx64JA/HeJdN+LhYbyWHErrQwzRtgI9fXNV10XzXUNuA/nNksM9Oh3F2a4cpX38/s3TbUFaE8gEyOHNl920vmXAn69iZ0QTV9A9Vk38Aw5xJz19iPGB/Mf0B5W6Zccfl9frNDgs2GcB+kTH63tP8bpiTzbmX1Ptbx6yLY8e+uXVp6uvV9B1vwAudjF+
+api: eJzFVE2P2zYQ/SvEnBqAWsuOUq912yZ7CNpDt2lOC6MYkSOLWYlkyOE2rqH/XlB2bG9sNOilPVkech7fm4+3A8ZNhPoR3rrknYW1BI8BB2IKOb4DiwNBDS5s0Jq/kI2zfxgNEoyFGjxyBxICfU4mkIaaQyIJ9AUH3+e85rVerkgtC2pvsahWq0XR/LhYFqhVM28bNb8t5yAhqo4GhHoHvPU5L3IwdgPjKI8U1ETx3zxe3s6Xb25LKvRKLYqqaajASmHRvCnL5bIsm7Za/ePjawmRVAqGt1Mx2D2RvUvcQf24ztTQm59p+4FUID7G15lT9M5Gihl1UZb5R1NUwfhcQahzUHxISlGMber7rdCEis0zMmmxlwoSlLNMlnM6et8bNTVg9ilmjN0lc9d8IsUgwQfnKbDZM1BO09ktY5k2FGCUMFCMuKFr4sezUn6FWJTlWQ58T8A4oVRldam/KiuxHzphHYvWJav/b8HXFFdlda74gvI+Lb89MX2voQZNPTEVxy6+VP5uOj31eCDu3Ckta8mDXcMMvZmdL16c7b7Zw3G2h4mz3XE9xmk/WjdJNDxtwsM1IjkoTBR44CLavPl/uvAkmmR6Fs1WPCSjntyN+GkKGCtQRIU9Nj1JMaSeTcFk0bLgzqVNx8IHl2dCCu5IPLyEJZsTo2hSNJZipCjYCe2EwsGj2dgo0GoRkhWubSlEkS9uTlB3v76fbmiMXeMw6BuQ8Ewh7hXNb8qbMnfZu8gDTiNzcI9vq/6iFMdZYPrCM9+jsRklhT6f7dvxmJcd5AsnjCChvrTGQ0/y4cm01hI6FzkD7XYNRvoY+nHM4c+JQvaXtYRnDCaXaHIbbWL+1lC32Ee64HzcFfjht4MHvhIgr2s5BNFuc8WwT/kfSHii7RV7z972Hz5/qtK4HiV0hJrCVIP9+Z1S5Pks88IbsukeF+nd/S/3v9/DOP4NlIBa4w==
 sidebar_class_name: "delete api-method"
 info_path: qpon
 custom_edit_url: null
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"delete"}
-  path={"/organizations/{organization_id}/coupons/{coupon_id}"}
+  path={"/api/organizations/{organization_id}/coupons/{coupon_id}"}
   context={"endpoint"}
 >
   
@@ -47,7 +47,7 @@ Delete coupon
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"d6be50ac01c558062d6576c2a55b3b73","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"example":"{{coupon_id}}","schema":{"type":"string"}}]}
+  parameters={[{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"example":"0817580e-d9c2-4bbe-a4ca-b5007700bf49","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>
@@ -62,7 +62,7 @@ Delete coupon
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{}}
+  responses={{"200":{"description":"200 Successfully deactivated coupon","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"}}},"example":{"code":200,"message":"Successfully deactivated coupon"}}}},"404":{"description":"404 Coupon not found","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"}}}},"example":{"code":404,"message":"Coupon not found"}}}}}
 >
   
 </StatusCodes>

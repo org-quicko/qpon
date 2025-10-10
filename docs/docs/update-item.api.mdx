@@ -5,7 +5,7 @@ description: "Update item"
 sidebar_label: "Update item"
 hide_title: true
 hide_table_of_contents: true
-api: eJy9VUtz2zYQ/iuYPbUzlEWKevKW5NLc4k5y8mgyC2ApoiYBBgBtqxz+986Ksh6O28Q5VCdqufvtt6+PPUTcBSju4GOkBrYJtOixoUierT1YbAgKeJpgayb3tIcEjIUCKkJNHhLw9K0znjQUJdaBEtAUlDdtNI793n36KMYwesKmrRlMLyUtUlRpphaLdbqc6eVitVQzXCxkLlc5JBBURQ1C0UPctxwTojd2B8OQvOAUSHmKv0LrFHlmVspNNlOyzCnL83VGizWRnq+WucyVXi5KLdc5raXezGUpMSVFy7ma5/MU9TotF6ufZO78Dq35G5nMV6OfybcYqyvq0Xd0SU/merUhtZpQucbJfLOZTeRytpqgVjIrpcrWafaTFEyk5i2p+/4YMQz/mWHLIKF1NlCAoh9GTArxvdN7DlDORrKRH7Fta6MOXZj+FXgu/Rl5uMjeAz1F8hZrplxApBAzGIZheDnXL63GSIK5QgINxcrpsTzF9R3KLGB6OYAw7V/MY5hyfJieSj50qXSHek089OO2dRZeZmejMEGgUK7j55Jv6dH5eyE7U0ch9+K2M+re3Yj3B4OxAkVQWKOsKRFNV0cziWTRRhEr1+2qKFrvFIWQiFiRuL2GJcuBQcguGEshUBDRCe2EwqZFs7NBoNXCd1a4siQfBDvuzlB8COyhMVTSodc3kMAD+TBWlN2kNykMCbQuxAYPIzpu0HWrrxpxWotIT3Ha1mgsY3S+5nfjEO6uriBAAsUrZ8Fz4FfP67pNoHIhcnjfSwz0xdfDwOZvHfk9FHfbBB7QG27LQcC0Cfz8L0JwsY/w25/H7f9dQPJ6BUcjWha0B6w7/gcJsMJ9f9Z8bv9j+uceDdsheRbCt3XgLNavph/TXH4KThzeVuqV+v4w1cnzKtvo8WHEnHxmkLPHd8rCunRSg0/vPn/4AxKQR0lqnOYgj48sgfg4NtW142IW/WjroUa763DHviMo//4BiytyIg==
+api: eJy9VMFO3DAQ/RVrTq3k3WVpVSA34FLUC7RwQqtqEs9u3E1sY4+BbZR/ryZZFhZQpV6akzP2vBm/ec8d+EAR2Xp3YaCAHAwyTSxTCxoYVwmKW7iQ34WGgBFbYooS7cBhS1CAjyt09vcA8tMa0GAdFBCQa9AQ6S7bSAYKjpk00CO2oZG88pM5OqHqaELLY5x8Pjk5nJRfDo8maKpyviyr+fHBHDSkqqYWoeiAN0HyEkfrVtD3eteC9Psvpbtum9H3f62w0JCoytHyZrgx+zW508w1FLcLqY/BfqPND6oi8S6+kNIpeJcoQdH1YyeU+MybjZSpvGNyLEsMobHVwN3sV/JOYrt++hc9d0CPTNFhIxctgCnxHPq+7zUYSlW0QUCggJthhmo7w5a49mYkpRJWBnIKmGGws5ejS7Pu1ST7mWCk2Y6sgd+lH5iyPDB5FbyD1x1IUNmkUFU+y3opunnwca3KbBtW5UZdZVut/VSdDQHrFKpUYYNlQ1q1uWE7YXLoWHHt86pmFaKvKCWtuCZ1tQ9LThKTKnOyjlKipNgr41WFbUC7ckmhMypmp/xySTEpObh6hjq9vBhOGEx16TGaKWi4p5jGG82nB9MD6DUEn7jFYUxb7e3TvUfETlBMjzwLDVonGDk2sjcO4lY0BHrPRQk0FO/YSqYhW09yX2iofWIB6boSE93Epu8lfJcpimQXGu4xWiFnELCxSdYGiiU2id70u1MmfPi+dc9HJS/Be/fYBtFthCtssvyBhjVt3nkWxC7/sfwTR/2i11ATGooDA+Pu+Vhoci0Yz9lv3Che3jno8vT6/CtoKLc2br2RpIgP8tjgw1jeh3GERTfGOmjQrTKu5OwIKt8fT37hUg==
 sidebar_class_name: "patch api-method"
 info_path: qpon
 custom_edit_url: null
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"patch"}
-  path={"/organizations/{organization_id}/items/{item_id}"}
+  path={"/api/organizations/{organization_id}/items/{item_id}"}
   context={"endpoint"}
 >
   
@@ -47,7 +47,7 @@ Update item
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"d6be50ac01c558062d6576c2a55b3b73","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"item_id","in":"path","required":true,"example":"{{item_id}}","schema":{"type":"string"}}]}
+  parameters={[{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"item_id","in":"path","required":true,"example":"{{item_id}}","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>

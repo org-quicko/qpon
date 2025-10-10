@@ -5,7 +5,7 @@ description: "Create campaign"
 sidebar_label: "Create campaign"
 hide_title: true
 hide_table_of_contents: true
-api: eJydVU1z4zYM/SscnNoZOf6QP3XrZvbQSzfeTU+ZTAckIZsbmdSSVBJXo//egeTYcpy22fgkk8DDwyPxWEPETYDsDq5xV6LZWLhPoESPO4rkeacGizuCDJ4HWJrBA+0hAWMhgy2hJg8JePpRGU8ashyLQAloCsqbMhrHcb/d/C66NHrGXVkwmJ5Lmo1QjcZqNluO5hM9ny3maoKzmUzlIoUEgtrSDiGrIe5LzgnRG7uBpklecQqkPMWP0DpmnpjlcjWeKJmnNE7T5ZhmSyI9XcxTmSo9n+VaLlNaSr2aylziiBTNp2qaTkeol6N8tngnc+c3aM3fyGT+MvqFfIlxe0Y9+or69GSqFytSiwHlSxxMV6vJQM4niwFqJce5VOPlaPxOCspV5XuKn8t23WaJNutEq66PaE3zn/XvuUAonQ0UIKubrh6F+MnpPScoZyPZyJ9YloVRrUbD74HL15fITn4nxWdYeleSj6bFPTR5UZ9JR/IWC278DX5Nr62jVLcUoljffPlDfPt8C68wIFKInNlcaOUJIwn1MlsJ7ChuHeeULrScWfIMhv3rEIb1q9vRDDt1w7An87AHy+J8Pcn4+aKBQ3uvmZ9UMTZ3rRwmtge6Lh0Dn/ezbk8+CBQdDZGzUTw5/yBkZYoo5F6sK6Me3JX41C4YK1AEhQXKghKxq4poBpEs2iji1lWbbRSld4pCSETcklifw5LlxCBkFYylECiI6IR2R02DQKuFr6xweU4+CA7cnKB4yjlCY9hKh15fQQKP5EPX0fhqdDXi/vk8dmh7kl0e3pkYx5sT6TkOywKNZZzKF7zXnevd2ZgHSCC7nPvD0fJmfyJVz5C3fFmyO6hriYH+9EXT8PKPivwesrv7BB7RG1aqNWxtAn//i/H1Jgx++XqY9V8FJG83dFhEywb+iEXF/yABdvRLG2N7+VD5vq18gMdJuea+SV7egJ8T4/ROvUmgK9R/BY8sfq7rs4fnf0sdI8+qdRHXHebglkFOERe2yaZ7dJ6bL9/YwuTBbndOc47HJ7Z+fOpUdWV3Y7O6W6uhQLupcMOxHSb//gHOl8x2
+api: eJydVMFu2zAM/RWBpw2QG6frlsa3tuihGLA1a3cqgoGWmVitLamSvC4z/O8D7Sxxm2IYmpNDiU+Pj+RrwTryGLU1VwVkoDxhpERh7VCvDUiIuA6Q3cHF39BSgkOPNUXyfNKCwZogA+vXaPTvHuyHLkCCNpCBw1iCBE+PjfZUQBZ9QxLoF9au4rz8QzGbk5oltDrF5GQ+P07yT8ezBAuVT1e5mp6mU5AQVEk1QtZC3DjOC9Frs4aukzsKyjbufx4vKCivHTOFDC76LNFn7Wmlp9PZx9OUkmKujpOTPKcETxQm+cc0nc3SNF+dzP9JaykhkGq8jptepmgfyJw1sYTsbsmk0enPtLkh5Snu4ktmG5w1gQJkbTeQpxDPbbHhZ5Q1kUzkT3Su0qoXfHIfuJb2kI/N70lFkOA89zrqHner2AFrViCSN1ixiq9U1Y002ul+SyGKxfXXL+Lm8hZeYECkEDmzOxC+nzYxmraaYmk5x9nQc+b+ZTBBpyfj+QqT9sW4dZOh+WHS7qagm4ygWaBveykvD4rYlviS/V4ZbVa2l0THfkIWzjLw85oW/SgFgWKgIVa8K0/WP4i80VUU+UYsGq0e7JE47wPaCBRBYYV5RVLUTRV1EsmgiSKWtlmXUThvFYUgRSxJLJ7DkuHEIPImaEMhUBDRisLudA0CTSF8Y4RdrcgHwRfXe6iz66v+RoGhzC364ggk/CQfhoqmR+lRyvVzT2o0I8kOG/hMjN30RPoVJ65CbRin8RWfDb294zUA+cw9AkjIDu1k22A+HC+6GjlTyWOT3UHb5hjou6+6jsOPDXlewqWEn+g169WvZKEDfxeQrbAKL41htGvw7tvWQt4LNsXXytoG0WxYPqwa/gcSHmjzijuyAbzp+bFbvYHHXrlu2UkoCQvyvRjD+cXwZnLLKPv8A6tho9pt6/XXG177fGtRtS04x+MTey8+De9bN/Q2a4dYCxWadYNrvjtg8u8P9gBA7w==
 sidebar_class_name: "post api-method"
 info_path: qpon
 custom_edit_url: null
@@ -28,7 +28,7 @@ import Heading from "@theme/Heading";
 
 <MethodEndpoint
   method={"post"}
-  path={"/organizations/{organization_id}/coupons/{coupon_id}/campaign"}
+  path={"/api/organizations/{organization_id}/coupons/{coupon_id}/campaign"}
   context={"endpoint"}
 >
   
@@ -47,7 +47,7 @@ Create campaign
 </Heading>
 
 <ParamsDetails
-  parameters={[{"name":"x-api-key","in":"header","required":false,"description":"API key","example":"d6be50ac01c558062d6576c2a55b3b73","schema":{"type":"string"}},{"name":"x-api-secret","in":"header","required":false,"description":"API secret","example":"fb912cbf3e13381e58eed4763b3cd65fdb83e8bd94bfba0ece64c4340ad80f57","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"description":"Coupon id","example":"{{coupon_id}}","schema":{"type":"string"}}]}
+  parameters={[{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"description":"Coupon id","example":"0817580e-d9c2-4bbe-a4ca-b5007700bf49","schema":{"type":"string"}}]}
 >
   
 </ParamsDetails>
