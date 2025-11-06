@@ -3,6 +3,10 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 export class CouponSummaryAndDaily1756800000002 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
 
+    await queryRunner.query(`
+      DROP MATERIALIZED VIEW IF EXISTS coupon_summary_mv CASCADE;
+    `);
+
     // 2️⃣ Create main cumulative summary table
     await queryRunner.query(`
       CREATE TABLE coupon_summary_mv (
@@ -45,10 +49,21 @@ export class CouponSummaryAndDaily1756800000002 implements MigrationInterface {
     await queryRunner.query(`
       CREATE INDEX IF NOT EXISTS idx_coupon_summary_org_id ON coupon_summary_mv (organization_id);
       CREATE INDEX IF NOT EXISTS idx_coupon_summary_status ON coupon_summary_mv (status);
+      CREATE INDEX IF NOT EXISTS idx_coupon_summary_created_at ON coupon_summary_mv (created_at);
+      CREATE INDEX IF NOT EXISTS idx_coupon_summary_updated_at ON coupon_summary_mv (updated_at);
 
       CREATE INDEX IF NOT EXISTS idx_coupon_day_summary_org_id ON coupon_summary_day_wise_mv (organization_id);
       CREATE INDEX IF NOT EXISTS idx_coupon_day_summary_status ON coupon_summary_day_wise_mv (status);
       CREATE INDEX IF NOT EXISTS idx_coupon_day_summary_date ON coupon_summary_day_wise_mv (date);
+      CREATE INDEX IF NOT EXISTS idx_coupon_day_summary_created_at ON coupon_summary_day_wise_mv (created_at);
+      CREATE INDEX IF NOT EXISTS idx_coupon_day_summary_updated_at ON coupon_summary_day_wise_mv (updated_at);
+    `);
+
+    // 5️⃣ Add indexes on source tables for efficient filtering
+    await queryRunner.query(`
+      CREATE INDEX IF NOT EXISTS idx_redemption_created_at ON redemption (created_at);
+      CREATE INDEX IF NOT EXISTS idx_coupon_code_updated_at ON coupon_code (updated_at);
+      CREATE INDEX IF NOT EXISTS idx_campaign_updated_at ON campaign (updated_at);
     `);
 
     // 5️⃣ Update function for day-wise table
@@ -92,7 +107,8 @@ export class CouponSummaryAndDaily1756800000002 implements MigrationInterface {
                 COUNT(redemption_id) AS total_redemption_count,
                 SUM(discount) AS total_redemption_amount
             FROM redemption
-            WHERE created_at::date = CURRENT_DATE
+            WHERE created_at >= CURRENT_DATE
+              AND created_at < CURRENT_DATE + INTERVAL '1 day'
             GROUP BY coupon_id
         ) r ON c.coupon_id = r.coupon_id
         LEFT JOIN (
@@ -101,7 +117,8 @@ export class CouponSummaryAndDaily1756800000002 implements MigrationInterface {
                 SUM(CASE WHEN status = 'active' THEN 1 ELSE 0 END) AS active_coupon_code_count,
                 SUM(CASE WHEN status = 'redeemed' THEN 1 ELSE 0 END) AS redeemed_coupon_code_count
             FROM coupon_code
-            WHERE updated_at::date = CURRENT_DATE
+            WHERE updated_at >= CURRENT_DATE
+              AND updated_at < CURRENT_DATE + INTERVAL '1 day'
             GROUP BY coupon_id
         ) cc ON c.coupon_id = cc.coupon_id
         LEFT JOIN (
@@ -111,7 +128,8 @@ export class CouponSummaryAndDaily1756800000002 implements MigrationInterface {
                 COUNT(campaign_id) AS total_campaign_count,
                 SUM(budget) AS budget
             FROM campaign
-            WHERE updated_at::date = CURRENT_DATE
+            WHERE updated_at >= CURRENT_DATE
+              AND updated_at < CURRENT_DATE + INTERVAL '1 day'
             GROUP BY coupon_id
         ) camp ON c.coupon_id = camp.coupon_id
         ON CONFLICT (coupon_id, date)
@@ -248,12 +266,22 @@ export class CouponSummaryAndDaily1756800000002 implements MigrationInterface {
     await queryRunner.query(`DROP FUNCTION IF EXISTS update_coupon_summary_mv();`);
     await queryRunner.query(`DROP FUNCTION IF EXISTS update_coupon_day_summary_mv();`);
 
-    // Drop indexes
-    await queryRunner.query(`DROP INDEX IF EXISTS idx_coupon_summary_org_id;`);
-    await queryRunner.query(`DROP INDEX IF EXISTS idx_coupon_summary_status;`);
-    await queryRunner.query(`DROP INDEX IF EXISTS idx_coupon_day_summary_org_id;`);
-    await queryRunner.query(`DROP INDEX IF EXISTS idx_coupon_day_summary_status;`);
-    await queryRunner.query(`DROP INDEX IF EXISTS idx_coupon_day_summary_date;`);
+    await queryRunner.query(`
+      DROP INDEX IF EXISTS idx_coupon_summary_org_id;
+      DROP INDEX IF EXISTS idx_coupon_summary_status;
+      DROP INDEX IF EXISTS idx_coupon_summary_created_at;
+      DROP INDEX IF EXISTS idx_coupon_summary_updated_at;
+
+      DROP INDEX IF EXISTS idx_coupon_day_summary_org_id;
+      DROP INDEX IF EXISTS idx_coupon_day_summary_status;
+      DROP INDEX IF EXISTS idx_coupon_day_summary_date;
+      DROP INDEX IF EXISTS idx_coupon_day_summary_created_at;
+      DROP INDEX IF EXISTS idx_coupon_day_summary_updated_at;
+
+      DROP INDEX IF EXISTS idx_redemption_created_at;
+      DROP INDEX IF EXISTS idx_coupon_code_updated_at;
+      DROP INDEX IF EXISTS idx_campaign_updated_at;
+    `);
 
     // Drop tables
     await queryRunner.query(`DROP TABLE IF EXISTS coupon_summary_day_wise_mv;`);

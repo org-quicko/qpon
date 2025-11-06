@@ -23,6 +23,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { typeOrmConfig } from './config/typeorm.config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { OrganizationSubscriber } from './subscribers/organization.subscriber';
 
 @Module({
   imports: [
@@ -31,6 +32,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         ...typeOrmConfig(configService),
+        subscribers: [
+          OrganizationSubscriber,
+        ],
       }),
     }),
     LoggerModule,

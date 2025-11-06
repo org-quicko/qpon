@@ -3,6 +3,10 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 export class Organizations1756810000000 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
 
+    await queryRunner.query(`
+      DROP MATERIALIZED VIEW IF EXISTS organizations_mv CASCADE;
+    `);
+
     // 1️⃣ Create the organizations_mv table
     await queryRunner.query(`
       CREATE TABLE organizations_mv (
