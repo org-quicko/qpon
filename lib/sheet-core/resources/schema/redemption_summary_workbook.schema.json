@@ -1,0 +1,192 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "enum": [
+        "redemption_summary_workbook"
+      ]
+    },
+    "@entity": {
+      "type": "string",
+      "enum": [
+        "workbook"
+      ]
+    },
+    "sheets": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "enum": [
+                  "redemption_summary_sheet"
+                ]
+              },
+              "@entity": {
+                "type": "string",
+                "enum": [
+                  "sheet"
+                ]
+              },
+              "blocks": {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "enum": [
+                            "redemption_summary_table"
+                          ]
+                        },
+                        "@entity": {
+                          "type": "string",
+                          "enum": [
+                            "table"
+                          ]
+                        },
+                        "header": {
+                          "type": "array",
+                          "items": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "organization_id"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "date"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "total_redemptions"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "gross_sales_amount"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "discount_amount"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "discount_percentage"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "net_sales_amount"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "created_at"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "updated_at"
+                              ]
+                            }
+                          ],
+                          "additionalItems": false,
+                          "minItems": 9,
+                          "maxItems": 9
+                        },
+                        "rows": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": [
+                              {
+                                "type": "string",
+                                "description": "UUID",
+                                "examples": [
+                                  "8ea2366a-391f-4a2a-99ea-f49d639bdcd1"
+                                ]
+                              },
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "string",
+                                "examples": [
+                                  "2025-03-12 20:24:03.653247+05:30"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "examples": [
+                                  "2025-03-12 20:24:03.653247+05:30"
+                                ]
+                              }
+                            ],
+                            "additionalItems": false,
+                            "minItems": 9,
+                            "maxItems": 9
+                          }
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "@entity",
+                        "header",
+                        "rows"
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "required": [
+              "name",
+              "@entity",
+              "blocks"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "name",
+    "@entity",
+    "sheets"
+  ]
+}

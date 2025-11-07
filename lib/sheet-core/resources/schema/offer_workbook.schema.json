@@ -1,0 +1,302 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "enum": [
+        "offer_workbook"
+      ]
+    },
+    "@entity": {
+      "type": "string",
+      "enum": [
+        "workbook"
+      ]
+    },
+    "sheets": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "enum": [
+                  "offer_sheet"
+                ]
+              },
+              "@entity": {
+                "type": "string",
+                "enum": [
+                  "sheet"
+                ]
+              },
+              "blocks": {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "enum": [
+                            "offer_table"
+                          ]
+                        },
+                        "@entity": {
+                          "type": "string",
+                          "enum": [
+                            "table"
+                          ]
+                        },
+                        "header": {
+                          "type": "array",
+                          "items": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "title"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "description"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "coupon_code"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "discount_type"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "discount_value"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "discount_upto"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "item_constraint"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "minimum_amount"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "customer_id"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "campaign_external_id"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "visibility"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "coupon_id"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "campaign_id"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "expires_at"
+                              ]
+                            }
+                          ],
+                          "additionalItems": false,
+                          "minItems": 14,
+                          "maxItems": 14
+                        },
+                        "rows": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": [
+                              {
+                                "type": "string",
+                                "examples": [
+                                  "₹100 discount"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "examples": [
+                                  "₹100 off on all plans"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "examples": [
+                                  "GOLD10"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "fixed",
+                                  "percentage"
+                                ],
+                                "examples": [
+                                  "fixed"
+                                ]
+                              },
+                              {
+                                "type": "number",
+                                "examples": [
+                                  "100"
+                                ]
+                              },
+                              {
+                                "type": [
+                                  "number",
+                                  "null"
+                                ],
+                                "examples": [
+                                  "100"
+                                ]
+                              },
+                              {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "enum": [
+                                  "all",
+                                  "specific"
+                                ],
+                                "examples": [
+                                  "all"
+                                ]
+                              },
+                              {
+                                "type": [
+                                  "number",
+                                  "null"
+                                ],
+                                "examples": [
+                                  "50"
+                                ]
+                              },
+                              {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "description": "UUID",
+                                "examples": [
+                                  "f602900a-4d93-4c44-a4a0-82e03a93d769"
+                                ]
+                              },
+                              {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "examples": [
+                                  "f602900a-4d93-4c44-a4a0-82e03a93d769"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "public",
+                                  "private"
+                                ],
+                                "examples": [
+                                  "public"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "description": "UUID",
+                                "examples": [
+                                  "f602900a-4d93-4c44-a4a0-82e03a93d769"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "description": "UUID",
+                                "examples": [
+                                  "f602900a-4d93-4c44-a4a0-82e03a93d769"
+                                ]
+                              },
+                              {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "examples": [
+                                  "2025-05-08T09:28:52.682Z"
+                                ]
+                              }
+                            ],
+                            "additionalItems": false,
+                            "minItems": 14,
+                            "maxItems": 14
+                          }
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "@entity",
+                        "header",
+                        "rows"
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "required": [
+              "name",
+              "@entity",
+              "blocks"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "name",
+    "@entity",
+    "sheets"
+  ]
+}

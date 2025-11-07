@@ -1,0 +1,215 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "enum": [
+        "redemption_workbook"
+      ]
+    },
+    "@entity": {
+      "type": "string",
+      "enum": [
+        "workbook"
+      ]
+    },
+    "sheets": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "enum": [
+                  "redemption_sheet"
+                ]
+              },
+              "@entity": {
+                "type": "string",
+                "enum": [
+                  "sheet"
+                ]
+              },
+              "blocks": {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "enum": [
+                            "redemption_table"
+                          ]
+                        },
+                        "@entity": {
+                          "type": "string",
+                          "enum": [
+                            "table"
+                          ]
+                        },
+                        "header": {
+                          "type": "array",
+                          "items": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "redemption_id"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "coupon_code"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "base_order_value"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "discount"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "redeemed_at"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "coupon_code_id"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "external_id"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "customer_name"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "customer_email"
+                              ]
+                            }
+                          ],
+                          "additionalItems": false,
+                          "minItems": 9,
+                          "maxItems": 9
+                        },
+                        "rows": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": [
+                              {
+                                "type": "string",
+                                "examples": [
+                                  "afee5153-310e-42e8-a8c8-ae56afbb7928"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "examples": [
+                                  "CUSTOMEr5678"
+                                ]
+                              },
+                              {
+                                "type": "number",
+                                "examples": [
+                                  "200"
+                                ]
+                              },
+                              {
+                                "type": "number",
+                                "examples": [
+                                  "100"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "examples": [
+                                  "18:19:09.766563+05:30"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "examples": [
+                                  "a765dd9a-1a01-4f7d-9e1b-a1dbaf71b788"
+                                ]
+                              },
+                              {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "examples": [
+                                  "a765dd9a-1a01-4f7d-9e1b-a1dbaf71b788"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "examples": [
+                                  "Test User"
+                                ]
+                              },
+                              {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "examples": [
+                                  "test@test.com"
+                                ]
+                              }
+                            ],
+                            "additionalItems": false,
+                            "minItems": 9,
+                            "maxItems": 9
+                          }
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "@entity",
+                        "header",
+                        "rows"
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "required": [
+              "name",
+              "@entity",
+              "blocks"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "name",
+    "@entity",
+    "sheets"
+  ]
+}
