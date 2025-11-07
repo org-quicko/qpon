@@ -6,6 +6,7 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
+  Index,
 } from 'typeorm';
 import { CouponCode } from './coupon-code.entity';
 import { Campaign } from './campaign.entity';
@@ -27,6 +28,15 @@ export class Redemption {
 
   @Column({ name: 'external_id', nullable: true })
   externalId: string;
+
+  @Index('IDX_redemption_date')
+  @Column({
+    name: 'redemption_date',
+    type: 'date',
+    nullable: true,
+    default: () => 'CURRENT_DATE',
+  })
+  redemptionDate: string;
 
   @CreateDateColumn({
     type: 'timestamp with time zone',
