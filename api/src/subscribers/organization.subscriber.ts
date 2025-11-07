@@ -20,6 +20,11 @@ export class OrganizationSubscriber
   async afterInsert(event: InsertEvent<Organization>) {
     await event.queryRunner.connect();
 
+    await event.queryRunner.query(`    
+            REFRESH MATERIALIZED VIEW organization_summary_mv WITH DATA; 
+            REFRESH MATERIALIZED VIEW organizations_mv WITH DATA;   
+    `);
+
     await event.manager.transaction(async (manager) => {
       const superAdmin = await manager.findOne(User, {
         where: {
@@ -41,6 +46,11 @@ export class OrganizationSubscriber
 
   async afterRemove(event: RemoveEvent<Organization>) {
     await event.queryRunner.connect();
+
+    await event.queryRunner.query(`
+            REFRESH MATERIALIZED VIEW organization_summary_mv WITH DATA;
+            REFRESH MATERIALIZED VIEW organizations_mv WITH DATA;
+    `);
 
     await event.manager.transaction(async (manager) => {
       await manager.delete(OrganizationUser, {

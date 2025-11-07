@@ -1,110 +1,128 @@
 import { statusEnum } from 'src/enums';
-import { Entity, Column, PrimaryColumn, Index } from 'typeorm';
+import { Index, ViewColumn, ViewEntity } from 'typeorm';
 
-@Entity({ name: 'coupon_summary_mv' })
+@ViewEntity({
+  name: 'coupon_summary_mv',
+  expression: `
+   SELECT
+      c.organization_id,
+      c.coupon_id,
+      COALESCE(r.total_redemption_count, 0) AS total_redemption_count,
+      COALESCE(r.total_redemption_amount, 0) AS total_redemption_amount,
+      COALESCE(cc.active_coupon_code_count, 0) AS active_coupon_code_count,
+      COALESCE(cc.redeemed_coupon_code_count, 0) AS redeemed_coupon_code_count,
+      COALESCE(camp.active_campaign_count, 0) AS active_campaign_count,
+      COALESCE(camp.total_campaign_count, 0) AS total_campaign_count,
+      COALESCE(camp.budget, 0) AS budget,
+      c.status,
+      now() AS created_at,
+      clock_timestamp() AS updated_at
+    FROM coupon c
+    LEFT JOIN (
+        SELECT 
+            coupon_id,
+            COUNT(redemption_id) AS total_redemption_count,
+            SUM(discount) AS total_redemption_amount
+        FROM redemption
+        GROUP BY coupon_id
+    ) r ON c.coupon_id = r.coupon_id
+    LEFT JOIN (
+        SELECT 
+            coupon_id,
+            SUM(CASE WHEN status = 'active' THEN 1 ELSE 0 END) AS active_coupon_code_count,
+            SUM(CASE WHEN status = 'redeemed' THEN 1 ELSE 0 END) AS redeemed_coupon_code_count
+        FROM coupon_code
+        GROUP BY coupon_id
+    ) cc ON c.coupon_id = cc.coupon_id
+    LEFT JOIN (
+        SELECT 
+            coupon_id,
+            SUM(CASE WHEN status = 'active' THEN 1 ELSE 0 END) AS active_campaign_count,
+            COUNT(campaign_id) AS total_campaign_count,
+            SUM(budget) AS budget
+        FROM campaign
+        GROUP BY coupon_id
+    ) camp ON c.coupon_id = camp.coupon_id;
+    `,
+  materialized: true,
+})
 export class CouponSummaryMv {
-  @PrimaryColumn({ name: 'coupon_id', type: 'uuid' })
-  couponId: string;
+  @Index()
+  @ViewColumn({ name: 'organization_id' })
+  organizationId: string;
 
   @Index()
-  @Column({ name: 'organization_id', type: 'uuid', nullable: true })
-  organizationId: string | null;
+  @ViewColumn({ name: 'coupon_id' })
+  couponId: string;
 
-  @Column({
+  @ViewColumn({
     name: 'total_redemption_count',
-    type: 'numeric',
-    default: 0,
     transformer: {
-      from: (value: any) => Number(value),
-      to: (value: any) => value,
+      from: (value) => Number(value),
+      to: (value) => value,
     },
   })
   totalRedemptionCount: number;
 
-  @Column({
+  @ViewColumn({
     name: 'total_redemption_amount',
-    type: 'numeric',
-    default: 0,
     transformer: {
-      from: (value: any) => Number(value),
-      to: (value: any) => value,
+      from: (value) => Number(value),
+      to: (value) => value,
     },
   })
   totalRedemptionAmount: number;
 
-  @Column({
+  @ViewColumn({
     name: 'active_coupon_code_count',
-    type: 'numeric',
-    default: 0,
     transformer: {
-      from: (value: any) => Number(value),
-      to: (value: any) => value,
+      from: (value) => Number(value),
+      to: (value) => value,
     },
   })
   activeCouponCodeCount: number;
 
-  @Column({
+  @ViewColumn({
     name: 'redeemed_coupon_code_count',
-    type: 'numeric',
-    default: 0,
     transformer: {
-      from: (value: any) => Number(value),
-      to: (value: any) => value,
+      from: (value) => Number(value),
+      to: (value) => value,
     },
   })
   redeemedCouponCodeCount: number;
 
-  @Column({
+  @ViewColumn({
     name: 'active_campaign_count',
-    type: 'numeric',
-    default: 0,
     transformer: {
-      from: (value: any) => Number(value),
-      to: (value: any) => value,
+      from: (value) => Number(value),
+      to: (value) => value,
     },
   })
   activeCampaignCount: number;
 
-  @Column({
+  @ViewColumn({
     name: 'total_campaign_count',
-    type: 'numeric',
-    default: 0,
     transformer: {
-      from: (value: any) => Number(value),
-      to: (value: any) => value,
+      from: (value) => Number(value),
+      to: (value) => value,
     },
   })
   totalCampaignCount: number;
 
-  @Column({
-    name: 'budget',
-    type: 'numeric',
-    nullable: true,
+  @ViewColumn({
     transformer: {
-      from: (value: any) => (value !== null ? Number(value) : null),
-      to: (value: any) => value,
+      from: (value) => Number(value),
+      to: (value) => value,
     },
   })
-  budget: number | null;
+  budget: number;
 
-  @Column({
-    name: 'status',
-    type: 'varchar',
-    nullable: true,
-  })
-  status: statusEnum | null;
+  @ViewColumn()
+  status: statusEnum;
 
-  @Column({
-    name: 'created_at',
-    type: 'timestamptz',
-    default: () => 'now()',
-  })
+  @ViewColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @Column({
-    name: 'updated_at',
-    type: 'timestamptz',
-    default: () => 'now()',
-  })
+  @ViewColumn({ name: 'updated_at' })
   updatedAt: Date;
 }

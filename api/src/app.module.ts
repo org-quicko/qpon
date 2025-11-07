@@ -24,6 +24,10 @@ import { join } from 'path';
 import { typeOrmConfig } from './config/typeorm.config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { OrganizationSubscriber } from './subscribers/organization.subscriber';
+import { RedemptionSubscriber } from './subscribers/redemption.subscriber';
+import { CampaignSubscriber } from './subscribers/campaign.subscriber';
+import { CouponSubscriber } from './subscribers/coupon.subscriber';
+import { CouponCodeSubscriber } from './subscribers/coupon-code.subscriber';
 
 @Module({
   imports: [
@@ -33,7 +37,11 @@ import { OrganizationSubscriber } from './subscribers/organization.subscriber';
       useFactory: (configService: ConfigService) => ({
         ...typeOrmConfig(configService),
         subscribers: [
+          RedemptionSubscriber,
+          CampaignSubscriber,
+          CouponSubscriber,
           OrganizationSubscriber,
+          CouponCodeSubscriber,
         ],
       }),
     }),
@@ -69,4 +77,4 @@ import { OrganizationSubscriber } from './subscribers/organization.subscriber';
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }
