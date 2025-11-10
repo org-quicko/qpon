@@ -216,6 +216,7 @@ export class RedemptionsService {
           relations: {
             couponCode: true,
             customer: true,
+            item: true,
           },
           where: {
             organization: {

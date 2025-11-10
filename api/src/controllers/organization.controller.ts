@@ -16,6 +16,9 @@ import { Permissions } from 'src/decorators/permission.decorator';
 import { Organization } from 'src/entities/organization.entity';
 import { OrganizationSummaryMv } from 'src/entities/organization-summary.view';
 import { sortOrderEnum } from 'src/enums';
+import { ItemWiseDayWiseRedemptionSummaryMv } from 'src/entities/item-wise-day-wise-redemption-summary-mv';
+import { CouponCodesWiseDayWiseRedemptionSummaryMv } from 'src/entities/coupon-codes-wise-day-wise-redemption-summary-mv';
+import { DayWiseRedemptionSummaryMv } from 'src/entities/day-wise-redemption-summary-mv';
 
 @ApiTags('Organization')
 @Controller('/organizations')
@@ -23,7 +26,7 @@ export class OrganizationController {
   constructor(
     private readonly organizationService: OrganizationService,
     private logger: LoggerService,
-  ) {}
+  ) { }
 
   /**
    * Create organization
@@ -87,6 +90,90 @@ export class OrganizationController {
 
     this.logger.info('END: fetchOrganizationSummary controller');
     return { message: 'Successfully fetched organization summary', result };
+  }
+
+  /**
+   * Fetch top 5 items summary by total redemptions
+   */
+  @ApiResponse({ status: 200, description: 'Successfully fetched item-wise redemption summary' })
+  @Permissions('read', ItemWiseDayWiseRedemptionSummaryMv)
+  @Get(':organization_id/items/summary')
+  async fetchItemWiseRedemptionSummary(
+    @Param('organization_id') organizationId: string,
+    @Query('start_date') startDate?: string,
+    @Query('end_date') endDate?: string,
+  ) {
+    this.logger.info('START: fetchItemWiseRedemptionSummary controller');
+
+    const result = await this.organizationService.getItemWiseSummary(
+      organizationId,
+      startDate,
+      endDate,
+    );
+
+    this.logger.info('END: fetchItemWiseRedemptionSummary controller');
+
+    return {
+      message: 'Successfully fetched item-wise redemption summary',
+      result,
+    };
+  }
+
+  /**
+ * Fetch top 5 coupon code summary by total redemptions
+ */
+  @ApiResponse({ status: 200, description: 'Successfully fetched coupon-code-wise redemption summary' })
+  @Permissions('read', CouponCodesWiseDayWiseRedemptionSummaryMv)
+  @Get(':organization_id/coupon_codes/summary')
+  async fetchCouponCodeWiseRedemptionSummary(
+    @Param('organization_id') organizationId: string,
+    @Query('start_date') startDate?: string,
+    @Query('end_date') endDate?: string,
+  ) {
+    this.logger.info('START: fetchCouponCodeWiseRedemptionSummary controller');
+
+    const result = await this.organizationService.getCouponCodeWiseSummary(
+      organizationId,
+      startDate,
+      endDate,
+    );
+
+    this.logger.info('END: fetchCouponCodeWiseRedemptionSummary controller');
+
+    return {
+      message: 'Successfully fetched coupon-code-wise redemption summary',
+      result,
+    };
+  }
+
+  /**
+ * Fetch day-wise redemption (sales) summary
+ */
+  @ApiResponse({
+    status: 200,
+    description: 'Successfully fetched day-wise redemption (sales) summary',
+  })
+  @Permissions('read', DayWiseRedemptionSummaryMv)
+  @Get(':organization_id/sales/summary')
+  async fetchDayWiseRedemptionSummary(
+    @Param('organization_id') organizationId: string,
+    @Query('start_date') startDate?: string,
+    @Query('end_date') endDate?: string,
+  ) {
+    this.logger.info('START: fetchDayWiseRedemptionSummary controller');
+
+    const result = await this.organizationService.getDayWiseRedemptionSummary(
+      organizationId,
+      startDate,
+      endDate,
+    );
+
+    this.logger.info('END: fetchDayWiseRedemptionSummary controller');
+
+    return {
+      message: 'Successfully fetched day-wise redemption (sales) summary',
+      result: JSON.parse(JSON.stringify(result)),
+    };
   }
 
   /**

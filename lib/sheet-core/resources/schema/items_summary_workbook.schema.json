@@ -88,12 +88,6 @@
                             {
                               "type": "string",
                               "enum": [
-                                "gross_sales_amount"
-                              ]
-                            },
-                            {
-                              "type": "string",
-                              "enum": [
                                 "created_at"
                               ]
                             },
@@ -105,8 +99,8 @@
                             }
                           ],
                           "additionalItems": false,
-                          "minItems": 8,
-                          "maxItems": 8
+                          "minItems": 7,
+                          "maxItems": 7
                         },
                         "rows": {
                           "type": "array",
@@ -140,9 +134,6 @@
                                 "type": "number"
                               },
                               {
-                                "type": "number"
-                              },
-                              {
                                 "type": "string",
                                 "examples": [
                                   "2025-03-12 20:24:03.653247+05:30"
@@ -156,8 +147,8 @@
                               }
                             ],
                             "additionalItems": false,
-                            "minItems": 8,
-                            "maxItems": 8
+                            "minItems": 7,
+                            "maxItems": 7
                           }
                         }
                       },

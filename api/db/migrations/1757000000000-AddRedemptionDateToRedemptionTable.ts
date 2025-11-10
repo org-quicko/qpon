@@ -7,6 +7,12 @@ export class AddRedemptionDateToRedemption1750000000000 implements MigrationInte
         ADD COLUMN "redemption_date" DATE DEFAULT CURRENT_DATE;;
     `);
 
+    // await queryRunner.query(`
+    //   UPDATE "redemption"
+    //   SET "redemption_date" = DATE("created_at")
+    //   WHERE "redemption_date" IS NULL;
+    // `);
+
         await queryRunner.query(`
         CREATE INDEX "IDX_redemption_date" ON "redemption" ("redemption_date");
     `);

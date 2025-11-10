@@ -1,11 +1,12 @@
 import {
+  BadRequestException,
   HttpException,
   HttpStatus,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ILike, Repository } from 'typeorm';
+import { Between, ILike, Repository } from 'typeorm';
 import { Organization } from '../entities/organization.entity';
 import { CreateOrganizationDto, UpdateOrganizationDto } from '../dtos';
 import { LoggerService } from './logger.service';
@@ -16,6 +17,12 @@ import { OrganizationSummaryWorkbookConverter } from '../converters/organization
 import { OrganizationsMv } from 'src/entities/organizations_mv.entity';
 import { OrganizationsListConverter } from 'src/converters/organizations-list-converter';
 import { sortOrderEnum } from 'src/enums';
+import { ItemWiseDayWiseRedemptionSummaryMv } from 'src/entities/item-wise-day-wise-redemption-summary-mv';
+import { ItemsSummaryWorkbookConverter } from 'src/converters/items-summary/items-summary-workbook.converter';
+import { CouponCodesWiseDayWiseRedemptionSummaryMv } from 'src/entities/coupon-codes-wise-day-wise-redemption-summary-mv';
+import { CouponCodeSummaryWorkbookConverter } from 'src/converters/coupon-codes-summary';
+import { DayWiseRedemptionSummaryMv } from 'src/entities/day-wise-redemption-summary-mv';
+import { RedemptionSummaryWorkbookConverter } from 'src/converters/day-wise-redemption-summary';
 
 @Injectable()
 export class OrganizationService {
@@ -28,9 +35,18 @@ export class OrganizationService {
     private readonly organizationsMvRepository: Repository<OrganizationsMv>,
     private organizationConverter: OrganizationConverter,
     private organizationSummaryWorkbookConverter: OrganizationSummaryWorkbookConverter,
+    private ItemsSummaryWorkbookConverter: ItemsSummaryWorkbookConverter,
+    private CouponCodeSummaryWorkbookConverter: CouponCodeSummaryWorkbookConverter,
     private organizationsListConverter: OrganizationsListConverter,
+    private RedemptionSummaryWorkbookConverter: RedemptionSummaryWorkbookConverter,
     private logger: LoggerService,
-  ) {}
+    @InjectRepository(ItemWiseDayWiseRedemptionSummaryMv)
+    private readonly itemSummaryRepo: Repository<ItemWiseDayWiseRedemptionSummaryMv>,
+    @InjectRepository(CouponCodesWiseDayWiseRedemptionSummaryMv)
+    private readonly couponCodeSummaryRepo: Repository<CouponCodesWiseDayWiseRedemptionSummaryMv>,
+    @InjectRepository(DayWiseRedemptionSummaryMv)
+    private readonly daywiseRedemptionSummaryRepo: Repository<DayWiseRedemptionSummaryMv>,
+  ) { }
 
   /**
    * Create organization
@@ -285,4 +301,201 @@ export class OrganizationService {
       );
     }
   }
+
+  /**
+   * Fetch top 5 items summary by total redemptions
+   */
+  async getItemWiseSummary(
+    organizationId: string,
+    startDate?: string,
+    endDate?: string,
+  ) {
+    this.logger.info('START: getItemWiseSummary service');
+
+    try {
+      if (!organizationId) {
+        this.logger.warn('organization_id is missing');
+        throw new BadRequestException('organization_id is required');
+      }
+
+      let dateFilter: any = {};
+
+      const fromDate = startDate ? new Date(startDate) : null;
+      const toDate = endDate ? new Date(endDate) : null;
+
+      if (fromDate && toDate) {
+        dateFilter = { date: Between(fromDate, toDate) };
+        this.logger.info(
+          `Date filter applied: BETWEEN ${fromDate.toISOString()} AND ${toDate.toISOString()}`,
+        );
+      } else {
+        this.logger.info('No date filter applied (showing all data)');
+      }
+
+      this.logger.info(
+        `Fetching top 5 items for organizationId=${organizationId} ordered by total_redemptions DESC`,
+      );
+
+      const results = await this.itemSummaryRepo.find({
+        where: {
+          organizationId,
+          ...dateFilter,
+        },
+        order: {
+          totalRedemptions: 'DESC',
+        },
+        take: 5,
+      });
+
+      this.logger.info(`Fetched ${results.length} records from itemSummaryRepo`);
+
+      const convertedResults =
+        this.ItemsSummaryWorkbookConverter.convert(results);
+
+      this.logger.info('END: getItemWiseSummary service');
+      return convertedResults;
+    } catch (error) {
+      this.logger.error('Error in getItemWiseSummary:', error);
+
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+
+      throw new HttpException(
+        'Failed to fetch item-wise summary',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  /**
+ * Fetch top 5 coupon codes summary by total redemptions
+ */
+  async getCouponCodeWiseSummary(
+    organizationId: string,
+    startDate?: string,
+    endDate?: string,
+  ) {
+    this.logger.info('START: getCouponCodeWiseSummary service');
+
+    try {
+      if (!organizationId) {
+        this.logger.warn('organization_id is missing');
+        throw new BadRequestException('organization_id is required');
+      }
+
+      let dateFilter: any = {};
+
+      const fromDate = startDate ? new Date(startDate) : null;
+      const toDate = endDate ? new Date(endDate) : null;
+
+      if (fromDate && toDate) {
+        dateFilter = { date: Between(fromDate, toDate) };
+        this.logger.info(
+          `Date filter applied: BETWEEN ${fromDate.toISOString()} AND ${toDate.toISOString()}`,
+        );
+      } else {
+        this.logger.info('No date filter applied (showing all data)');
+      }
+
+      this.logger.info(
+        `Fetching top 5 coupon codes for organizationId=${organizationId} ordered by total_redemptions DESC`,
+      );
+
+      const results = await this.couponCodeSummaryRepo.find({
+        where: {
+          organizationId,
+          ...dateFilter,
+        },
+        order: {
+          totalRedemptions: 'DESC',
+        },
+        take: 5,
+      });
+
+      this.logger.info(`Fetched ${results.length} records from couponCodeSummaryRepo`);
+
+      const convertedResults =
+        this.CouponCodeSummaryWorkbookConverter.convert(results);
+
+      this.logger.info('END: getCouponCodeWiseSummary service');
+      return convertedResults;
+    } catch (error) {
+      this.logger.error('Error in getCouponCodeWiseSummary:', error);
+
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+
+      throw new HttpException(
+        'Failed to fetch coupon-code-wise summary',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  /**
+   * Fetch day-wise redemption summary (optionally filtered by date range)
+   */
+  async getDayWiseRedemptionSummary(
+    organizationId: string,
+    startDate?: string,
+    endDate?: string,
+  ) {
+    this.logger.info('START: getDayWiseRedemptionSummary service');
+
+    try {
+      if (!organizationId) {
+        this.logger.warn('organization_id is missing');
+        throw new BadRequestException('organization_id is required');
+      }
+
+      let dateFilter: any = {};
+      const fromDate = startDate ? new Date(startDate) : null;
+      const toDate = endDate ? new Date(endDate) : null;
+
+      if (fromDate && toDate) {
+        dateFilter = { date: Between(fromDate, toDate) };
+        this.logger.info(
+          `Date filter applied: BETWEEN ${fromDate.toISOString()} AND ${toDate.toISOString()}`,
+        );
+      } else {
+        this.logger.info('No date filter applied (showing all data)');
+      }
+
+      this.logger.info(
+        `Fetching day-wise redemption summary for organizationId=${organizationId}`,
+      );
+
+      const results = await this.daywiseRedemptionSummaryRepo.find({
+        where: {
+          organizationId,
+          ...dateFilter,
+        },
+        order: { date: 'ASC' },
+      });
+
+      this.logger.info(
+        `Fetched ${results.length} records from dayWiseRedemptionSummaryRepo`,
+      );
+
+      const workbook =
+        this.RedemptionSummaryWorkbookConverter.convert(results);
+
+      this.logger.info('END: getDayWiseRedemptionSummary service');
+      return workbook;
+    } catch (error) {
+      this.logger.error('Error in getDayWiseRedemptionSummary:', error);
+
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+
+      throw new HttpException(
+        'Failed to fetch day-wise redemption summary',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
 }

@@ -35,6 +35,9 @@ import { CouponService } from './coupon.service';
 import { ApiKeyService } from './api-key.service';
 import { CustomerCouponCodeService } from './customer-coupon-code.service';
 import { CouponItemService } from './coupon-item.service';
+import { ItemWiseDayWiseRedemptionSummaryMv } from 'src/entities/item-wise-day-wise-redemption-summary-mv';
+import { CouponCodesWiseDayWiseRedemptionSummaryMv } from 'src/entities/coupon-codes-wise-day-wise-redemption-summary-mv';
+import { DayWiseRedemptionSummaryMv } from 'src/entities/day-wise-redemption-summary-mv';
 
 export const actions = [
   'manage',
@@ -52,23 +55,26 @@ export type actionsType = (typeof actions)[number];
 
 export type subjectsType =
   | InferSubjects<
-      | typeof ApiKey
-      | typeof CampaignSummaryMv
-      | typeof Campaign
-      | typeof CouponCode
-      | typeof CouponItem
-      | typeof CouponSummaryMv
-      | typeof Coupon
-      | typeof CustomerCouponCode
-      | typeof Customer
-      | typeof Item
-      | typeof OrganizationSummaryMv
-      | typeof OrganizationUser
-      | typeof Organization
-      | typeof Offer
-      | typeof Redemption
-      | typeof User
-    >
+    | typeof ApiKey
+    | typeof CampaignSummaryMv
+    | typeof Campaign
+    | typeof CouponCode
+    | typeof CouponItem
+    | typeof CouponSummaryMv
+    | typeof Coupon
+    | typeof CustomerCouponCode
+    | typeof Customer
+    | typeof Item
+    | typeof OrganizationSummaryMv
+    | typeof ItemWiseDayWiseRedemptionSummaryMv
+    | typeof CouponCodesWiseDayWiseRedemptionSummaryMv
+    | typeof DayWiseRedemptionSummaryMv
+    | typeof OrganizationUser
+    | typeof Organization
+    | typeof Offer
+    | typeof Redemption
+    | typeof User
+  >
   | 'all';
 
 export type AppAbility = Ability<[actionsType, subjectsType]>;
@@ -88,7 +94,7 @@ export class AuthorizationService {
     private customerService: CustomersService,
     private itemService: ItemsService,
     private apiKeyService: ApiKeyService,
-  ) {}
+  ) { }
 
   getOrganizationUserPermissions(user: User) {
     const organizationUserPermissions = {};
@@ -134,7 +140,7 @@ export class AuthorizationService {
 
           allow(
             'read',
-            [CouponSummaryMv, CampaignSummaryMv, OrganizationSummaryMv, Offer],
+            [CouponSummaryMv, CampaignSummaryMv, OrganizationSummaryMv, Offer, ItemWiseDayWiseRedemptionSummaryMv, CouponCodesWiseDayWiseRedemptionSummaryMv, DayWiseRedemptionSummaryMv],
             {
               organizationId,
             },
@@ -168,7 +174,7 @@ export class AuthorizationService {
 
           allow(
             'read',
-            [CouponSummaryMv, CampaignSummaryMv, OrganizationSummaryMv, Offer],
+            [CouponSummaryMv, CampaignSummaryMv, OrganizationSummaryMv, Offer, ItemWiseDayWiseRedemptionSummaryMv, CouponCodesWiseDayWiseRedemptionSummaryMv, DayWiseRedemptionSummaryMv],
             {
               organizationId,
             },
@@ -200,7 +206,7 @@ export class AuthorizationService {
 
           allow(
             'read',
-            [CouponSummaryMv, CampaignSummaryMv, OrganizationSummaryMv, Offer],
+            [CouponSummaryMv, CampaignSummaryMv, OrganizationSummaryMv, Offer, ItemWiseDayWiseRedemptionSummaryMv, CouponCodesWiseDayWiseRedemptionSummaryMv, DayWiseRedemptionSummaryMv],
             {
               organizationId,
             },
@@ -248,7 +254,7 @@ export class AuthorizationService {
 
     allow(
       'read',
-      [CouponSummaryMv, CampaignSummaryMv, OrganizationSummaryMv, Offer],
+      [CouponSummaryMv, CampaignSummaryMv, OrganizationSummaryMv, Offer, ItemWiseDayWiseRedemptionSummaryMv, CouponCodesWiseDayWiseRedemptionSummaryMv, DayWiseRedemptionSummaryMv],
       {
         organizationId,
       },
