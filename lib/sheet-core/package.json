@@ -25,84 +25,84 @@
 			"types": "./dist/types/src/index.d.ts"
 		},
 		"./campaign_summary_workbook/beans": {
-			"import": "./dist/esm/generated/index.js",
-			"require": "./dist/cjs/generated/index.cjs",
-			"types": "./dist/types/generated/index.d.ts"
+			"import": "./dist/esm/generated/campaign_summary_workbook/index.js",
+			"require": "./dist/cjs/generated/campaign_summary_workbook/index.cjs",
+			"types": "./dist/types/generated/campaign_summary_workbook/index.d.ts"
 		},
 		"./coupon_code_workbook/beans": {
-			"import": "./dist/esm/generated/index.js",
-			"require": "./dist/cjs/generated/index.cjs",
-			"types": "./dist/types/generated/index.d.ts"
+			"import": "./dist/esm/generated/coupon_code_workbook/index.js",
+			"require": "./dist/cjs/generated/coupon_code_workbook/index.cjs",
+			"types": "./dist/types/generated/coupon_code_workbook/index.d.ts"
 		},
 		"./coupon_summary_workbook/beans": {
-			"import": "./dist/esm/generated/index.js",
-			"require": "./dist/cjs/generated/index.cjs",
-			"types": "./dist/types/generated/index.d.ts"
+			"import": "./dist/esm/generated/coupon_summary_workbook/index.js",
+			"require": "./dist/cjs/generated/coupon_summary_workbook/index.cjs",
+			"types": "./dist/types/generated/coupon_summary_workbook/index.d.ts"
 		},
 		"./offer_workbook/beans": {
-			"import": "./dist/esm/generated/index.js",
-			"require": "./dist/cjs/generated/index.cjs",
-			"types": "./dist/types/generated/index.d.ts"
+			"import": "./dist/esm/generated/offer_workbook/index.js",
+			"require": "./dist/cjs/generated/offer_workbook/index.cjs",
+			"types": "./dist/types/generated/offer_workbook/index.d.ts"
 		},
 		"./organization_summary_workbook/beans": {
-			"import": "./dist/esm/generated/index.js",
-			"require": "./dist/cjs/generated/index.cjs",
-			"types": "./dist/types/generated/index.d.ts"
+			"import": "./dist/esm/generated/organization_summary_workbook/index.js",
+			"require": "./dist/cjs/generated/organization_summary_workbook/index.cjs",
+			"types": "./dist/types/generated/organization_summary_workbook/index.d.ts"
 		},
 		"./redemption_report_workbook/beans": {
-			"import": "./dist/esm/generated/index.js",
-			"require": "./dist/cjs/generated/index.cjs",
-			"types": "./dist/types/generated/index.d.ts"
+			"import": "./dist/esm/generated/redemption_report_workbook/index.js",
+			"require": "./dist/cjs/generated/redemption_report_workbook/index.cjs",
+			"types": "./dist/types/generated/redemption_report_workbook/index.d.ts"
 		},
 		"./redemption_workbook/beans": {
-			"import": "./dist/esm/generated/index.js",
-			"require": "./dist/cjs/generated/index.cjs",
-			"types": "./dist/types/generated/index.d.ts"
+			"import": "./dist/esm/generated/redemption_workbook/index.js",
+			"require": "./dist/cjs/generated/redemption_workbook/index.cjs",
+			"types": "./dist/types/generated/redemption_workbook/index.d.ts"
 		},
 		"./items_summary_workbook/beans": {
-			"import": "./dist/esm/generated/index.js",
-			"require": "./dist/cjs/generated/index.cjs",
-			"types": "./dist/types/generated/index.d.ts"
+			"import": "./dist/esm/generated/items_summary_workbook/index.js",
+			"require": "./dist/cjs/generated/items_summary_workbook/index.cjs",
+			"types": "./dist/types/generated/items_summary_workbook/index.d.ts"
 		},
 		"./coupon_code_summary_workbook/beans": {
-			"import": "./dist/esm/generated/index.js",
-			"require": "./dist/cjs/generated/index.cjs",
-			"types": "./dist/types/generated/index.d.ts"
+			"import": "./dist/esm/generated/coupon_code_summary_workbook/index.js",
+			"require": "./dist/cjs/generated/coupon_code_summary_workbook/index.cjs",
+			"types": "./dist/types/generated/coupon_code_summary_workbook/index.d.ts"
 		},
-		"./redemption_summary_workbook": {
-			"import": "./dist/esm/generated/index.js",
-			"require": "./dist/cjs/generated/index.cjs",
-			"types": "./dist/types/generated/index.d.ts"
+		"./redemption_summary_workbook/beans": {
+			"import": "./dist/esm/generated/redemption_summary_workbook/index.js",
+			"require": "./dist/cjs/generated/redemption_summary_workbook/index.cjs",
+			"types": "./dist/types/generated/redemption_summary_workbook/index.d.ts"
 		}
 	},
 	"typesVersions": {
 		"*": {
 			"campaign_summary_workbook/beans": [
-				"dist/types/generated/index.d.ts"
+				"dist/types/generated/campaign_summary_workbook/index.d.ts"
 			],
 			"coupon_code_workbook/beans": [
-				"dist/types/generated/index.d.ts"
+				"dist/types/generated/coupon_code_workbook/index.d.ts"
 			],
 			"offer_workbook/beans": [
-				"dist/types/generated/index.d.ts"
+				"dist/types/generated/offer_workbook/index.d.ts"
 			],
 			"organization_summary_workbook/beans": [
-				"dist/types/generated/index.d.ts"
+				"dist/types/generated/organization_summary_workbook/index.d.ts"
 			],
 			"redemption_report_workbook/beans": [
-				"dist/types/generated/index.d.ts"
+				"dist/types/generated/redemption_report_workbook/index.d.ts"
 			],
 			"redemption_workbook/beans": [
-				"dist/types/generated/index.d.ts"
+				"dist/types/generated/redemption_workbook/index.d.ts"
 			],
 			"items_summary_workbook/beans": [
-				"dist/types/generated/index.d.ts"
+				"dist/types/generated/items_summary_workbook/index.d.ts"
 			],
-			"coupon_code_summary_workbook": [
-				"dist/types/generated/index.d.ts"
+			"coupon_code_summary_workbook/beans": [
+				"dist/types/generated/coupon_code_summary_workbook/index.d.ts"
 			],
-			"redemption_summary_workbook": [
-				"dist/types/generated/index.d.ts"
+			"redemption_summary_workbook/beans": [
+				"dist/types/generated/redemption_summary_workbook/index.d.ts"
 			]
 		}
 	},

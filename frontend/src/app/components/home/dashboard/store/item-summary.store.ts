@@ -11,7 +11,7 @@ import { DashboardService } from '../../../../services/dashboard.service';
 import {
   ItemsSummaryWorkbook,
   ItemsSummaryRow,
-} from '@org-quicko/qpon-sheet-core/campaign_summary_workbook/beans';
+} from '@org-quicko/qpon-sheet-core/items_summary_workbook/beans';
 
 type ItemSummaryState = {
   data: ItemsSummaryWorkbook | null;

@@ -1,19 +1,11 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, OnModuleInit } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { DataSource } from 'typeorm';
-import { Logger } from '@nestjs/common';
+import { LoggerService } from './logger.service';
 
 @Injectable()
-export class MaterializedViewRefreshService {
-  private readonly logger = new Logger(MaterializedViewRefreshService.name);
+export class MaterializedViewRefreshService implements OnModuleInit {
   private readonly cronExpression: string;
-
-  constructor(private readonly dataSource: DataSource) {
-    this.cronExpression = process.env.REFRESH_MV_CRON || '*/30 * * * * *';
-    this.logger.log(
-      `MaterializedViewRefreshService initialized (Cron: ${this.cronExpression})`,
-    );
-  }
 
   // List of materialized views to refresh
   private readonly materializedViews = [
@@ -26,6 +18,22 @@ export class MaterializedViewRefreshService {
     'item_wise_day_wise_redemption_summary_mv',
   ];
 
+  constructor(
+    private readonly dataSource: DataSource,
+    private readonly logger: LoggerService,
+  ) {
+    this.cronExpression = process.env.REFRESH_MV_CRON || '*/30 * * * * *';
+  }
+
+  /**
+   * Lifecycle hook — called once all dependencies are ready
+   */
+  onModuleInit() {
+    this.logger.info(
+      `MaterializedViewRefreshService initialized (Cron: ${this.cronExpression})`,
+    );
+  }
+
   /**
    * Cron job to refresh materialized views
    */
@@ -33,22 +41,22 @@ export class MaterializedViewRefreshService {
     name: 'refreshMaterializedViewsJob',
   })
   async refreshMaterializedViews() {
-    this.logger.log('START: refreshMaterializedViews job');
+    this.logger.info('START: refreshMaterializedViews job');
 
     try {
       for (const view of this.materializedViews) {
         try {
           this.logger.verbose(`Refreshing materialized view: ${view}...`);
           await this.dataSource.query(`REFRESH MATERIALIZED VIEW ${view} WITH DATA;`);
-          this.logger.log(`Successfully refreshed: ${view}`);
+          this.logger.info(`Successfully refreshed: ${view}`);
         } catch (error) {
-          this.logger.error(`Failed to refresh ${view}`, error.stack);
+          this.logger.error(`Failed to refresh ${view}`, error);
         }
       }
 
-      this.logger.log('END: refreshMaterializedViews job completed');
+      this.logger.info('END: refreshMaterializedViews job completed');
     } catch (error) {
-      this.logger.error(`Error in refreshMaterializedViews job`, error.stack);
+      this.logger.error('Error in refreshMaterializedViews job', error);
 
       throw new HttpException(
         'Failed to refresh materialized views',

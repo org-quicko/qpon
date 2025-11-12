@@ -1,5 +1,5 @@
 import { JSONArray } from '@org-quicko/core';
-import { DayWiseSalesRow, DayWiseSalesTable } from '@org-quicko/qpon-sheet-core/campaign_summary_workbook/beans';
+import { DayWiseSalesRow, DayWiseSalesTable } from '@org-quicko/qpon-sheet-core/redemption_summary_workbook/beans';
 import { DayWiseRedemptionSummaryMv } from 'src/entities/day-wise-redemption-summary-mv';
 
 export class RedemptionSummaryTableConverter {

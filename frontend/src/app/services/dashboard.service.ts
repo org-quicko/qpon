@@ -4,12 +4,11 @@ import { environment } from '../../environments/environment';
 import { ApiResponse } from '../../dtos/api-response.dto';
 import { Observable, of } from 'rxjs';
 
-import {
-  RedemptionSummaryWorkbook,
-  ItemsSummaryWorkbook,
-  CouponCodeSummaryWorkbook,
-  RedemptionWorkbook,
-} from '@org-quicko/qpon-sheet-core/redemption_workbook/beans';
+import { RedemptionWorkbook } from '@org-quicko/qpon-sheet-core/redemption_workbook/beans';
+import { RedemptionSummaryWorkbook } from '@org-quicko/qpon-sheet-core/redemption_summary_workbook/beans';
+import { ItemsSummaryWorkbook } from '@org-quicko/qpon-sheet-core/items_summary_workbook/beans';
+import { CouponCodeSummaryWorkbook } from '@org-quicko/qpon-sheet-core/coupon_code_summary_workbook/beans';
+
 import { sortOrderEnum } from '../../enums';
 
 @Injectable({

@@ -10,7 +10,7 @@ import { SnackbarService } from '../../../../services/snackbar.service';
 import { DashboardService } from '../../../../services/dashboard.service';
 import {
   CouponCodeSummaryWorkbook,
-} from '@org-quicko/qpon-sheet-core/campaign_summary_workbook/beans';
+} from '@org-quicko/qpon-sheet-core/coupon_code_summary_workbook/beans';
 
 type CouponCodeSummaryState = {
   data: CouponCodeSummaryWorkbook | null;
