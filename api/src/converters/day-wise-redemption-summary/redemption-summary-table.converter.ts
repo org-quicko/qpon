@@ -8,7 +8,7 @@ export class RedemptionSummaryTableConverter {
 
         for (const mv of dayWiseSummaries) {
             const row = new DayWiseSalesRow(new JSONArray());
-            row.setDate(mv.date.toISOString());
+            row.setDate(mv.date);
             row.setGrossSalesAmount(mv.grossSalesAmount);
             row.setDiscountAmount(mv.discountAmount);
             row.setNetSalesAmount(mv.netSalesAmount);

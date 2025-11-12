@@ -1,0 +1,149 @@
+<div class="flex flex-col gap-4 mt-26">
+  <div class="text-base text-on-surface">
+    Recent redemptions
+  </div>
+
+  <div class="border-[1px] rounded-[5px] border-outline-variant overflow-hidden">
+    <table mat-table [dataSource]="datasource" matSort [matSortActive]="sortOptions().active"
+      [matSortDirection]="sortOptions().direction" matSortDisableClear="true" (matSortChange)="onSortChange($event)"
+      class="table-fixed w-full">
+
+      <!-- Applied At -->
+      <ng-container matColumnDef="appliedAt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="px-6 py-4">
+          Applied at
+        </th>
+        <td mat-cell *matCellDef="let redemption" class="p-6">
+          @if (isLoading()) {
+          <ngx-skeleton-loader
+            [theme]="{ height: '24px', width: '120px', margin: '0', padding: '0' }"></ngx-skeleton-loader>
+          } @else {
+          <div class="flex flex-col leading-tight">
+            <span>{{ redemption.getRedeemedAt() | date:'hh:mm a' }}</span>
+            <span class="text-sm text-on-surface-variant">
+              {{ redemption.getRedeemedAt() | date:'d MMM, y' }}
+            </span>
+          </div>
+          }
+        </td>
+      </ng-container>
+
+      <!-- Customer -->
+      <ng-container matColumnDef="customer">
+        <th mat-header-cell *matHeaderCellDef class="px-6 py-4">Customer</th>
+        <td mat-cell *matCellDef="let redemption" class="p-6">
+          @if (isLoading()) {
+          <ngx-skeleton-loader
+            [theme]="{ height: '24px', width: '160px', margin: '0', padding: '0' }"></ngx-skeleton-loader>
+          } @else {
+          <div class="flex flex-col">
+            <div class="font-medium text-on-surface">{{ redemption.getCustomerName() }}</div>
+            <div class="text-sm text-on-surface-variant">{{ redemption.getCustomerEmail() }}</div>
+          </div>
+          }
+        </td>
+      </ng-container>
+
+      <!-- Coupon Code -->
+      <ng-container matColumnDef="coupon">
+        <th mat-header-cell *matHeaderCellDef class="px-6 py-4">Coupon code</th>
+        <td mat-cell *matCellDef="let redemption" class="p-6">
+          @if (isLoading()) {
+          <ngx-skeleton-loader
+            [theme]="{ height: '24px', width: '100px', margin: '0', padding: '0' }"></ngx-skeleton-loader>
+          } @else {
+          <div class="flex items-center gap-2">
+            <span class="font-medium">{{ redemption.getCouponCode() }}</span>
+            <button
+              class="text-on-surface-variant hover:text-primary group-hover:block transition-opacity h-[16px] cursor-pointer"
+              (click)="
+                  $event.stopPropagation();
+                  copyToClipboard(redemption.getCouponCode(), 'coupon code')
+                ">
+              <mat-icon class="material-symbols-outlined text-[16px] h-[16px] w-[16px]">content_copy</mat-icon>
+            </button>
+          </div>
+          }
+        </td>
+      </ng-container>
+
+      <!-- Item -->
+      <ng-container matColumnDef="item">
+        <th mat-header-cell *matHeaderCellDef class="px-6 py-4">Item</th>
+        <td mat-cell *matCellDef="let redemption" class="p-6">
+          @if (isLoading()) {
+          <ngx-skeleton-loader
+            [theme]="{ height: '24px', width: '80px', margin: '0', padding: '0' }"></ngx-skeleton-loader>
+          } @else {
+          {{ redemption.getItemName() }}
+          }
+        </td>
+      </ng-container>
+
+      <!-- Sales -->
+      <ng-container matColumnDef="sales">
+        <th mat-header-cell *matHeaderCellDef class="px-6 py-4">Sales</th>
+        <td mat-cell *matCellDef="let redemption" class="p-6">
+          @if (isLoading()) {
+          <ngx-skeleton-loader
+            [theme]="{ height: '24px', width: '80px', margin: '0', padding: '0' }"></ngx-skeleton-loader>
+          } @else {
+          ₹{{ redemption.getBaseOrderValue() }}
+          }
+        </td>
+      </ng-container>
+
+      <!-- Discount -->
+      <ng-container matColumnDef="discount">
+        <th mat-header-cell *matHeaderCellDef class="px-6 py-4">Discount</th>
+        <td mat-cell *matCellDef="let redemption" class="p-6">
+          @if (isLoading()) {
+          <ngx-skeleton-loader
+            [theme]="{ height: '24px', width: '80px', margin: '0', padding: '0' }"></ngx-skeleton-loader>
+          } @else {
+          ₹{{ redemption.getDiscount() }}
+          }
+        </td>
+      </ng-container>
+
+      <!-- Table Header -->
+      <tr mat-header-row *matHeaderRowDef="columns"></tr>
+
+      <!-- Data Rows -->
+      <tr mat-row *matRowDef="let row; columns: columns"></tr>
+
+      <!-- Empty State -->
+      <tr class="empty-row" *matNoDataRow>
+        <td [attr.colspan]="columns.length">
+          <div class="flex flex-col justify-center items-center py-24 h-[500px]">
+            <div class="flex flex-col items-center text-center space-y-4">
+              <div class="flex justify-center items-center bg-surface-variant rounded-full p-4 shadow-sm">
+                <mat-icon class="text-on-surface-variant text-2xl">payments</mat-icon>
+              </div>
+
+              <div>
+                <p class="text-on-surface text-lg font-medium">No redemptions to show</p>
+                <p class="text-on-surface-variant text-sm">
+                  There aren’t any recent redemptions by your customers
+                </p>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+
+      <!-- ✅ Footer Row -->
+      <ng-container matColumnDef="footer">
+        <td mat-footer-cell *matFooterCellDef [attr.colspan]="columns.length" class="p-4 text-left">
+          <div
+            class="text-sm text-primary font-medium cursor-pointer hover:underline inline-flex items-center justify-left gap-1">
+            View all redemptions
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-footer-row *matFooterRowDef="['footer']" class="border-t border-outline-variant"></tr>
+    </table>
+  </div>
+</div>

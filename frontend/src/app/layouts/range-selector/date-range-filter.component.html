@@ -1,0 +1,110 @@
+<!-- Trigger button -->
+<button
+  #triggerBtn
+  (click)="togglePopup()"
+  class="range-btn inline-flex items-center gap-x-2 ap-1.5 border border-outline-variant bg-surface-container-lowest rounded-lg px-5 py-1 text-sm text-on-surface transition-colors duration-150 hover:border-outline hover:bg-surface-container-low focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+>
+  <mat-icon class="text-on-surface-variant text-[18px] mt-1">
+    calendar_today
+  </mat-icon>
+  <span>{{ label() }}</span>
+  <mat-icon class="text-on-surface-variant text-[18px] mt-1">
+    arrow_drop_down
+  </mat-icon>
+</button>
+
+<!-- Popup -->
+<ng-template cdkPortal>
+  <div
+    class="popup mt-1 bg-surface-container-lowest border border-outline-variant rounded-md shadow-[0_6px_24px_rgba(0,0,0,0.15)] text-on-surface z-[1000] animate-[fadeIn_0.15s_ease-out]"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="flex flex-col w-[520px] min-h-[260px] overflow-hidden">
+      <div class="flex flex-1 border-b border-outline-variant">
+        <!-- Sidebar -->
+        <div class="w-40 border-r border-outline-variant flex flex-col">
+          <button
+            *ngFor="let range of sidebarRanges"
+            class="px-4 py-3.5 text-left text-sm text-on-surface-variant transition-colors duration-150 hover:bg-surface-container hover:text-on-surface"
+            [class.bg-surface-container-high]="tempActiveRange() === range.value"
+            [class.text-on-surface]="tempActiveRange() === range.value"
+            (click)="selectRange(range.value)"
+          >
+            {{ range.label }}
+          </button>
+        </div>
+
+        <!-- Content -->
+        <div class="content flex-1 flex flex-col px-6 py-5">
+          <p class="text-sm font-medium text-on-surface-variant mb-3">
+            Selected date range
+          </p>
+
+          <!-- Date range picker -->
+          <mat-form-field
+            *ngIf="tempActiveRange() !== 'all'"
+            appearance="outline"
+            class="w-full"
+          >
+            <mat-date-range-input
+              [formGroup]="dateForm"
+              [rangePicker]="picker"
+              [disabled]="tempActiveRange() !== 'custom'"
+            >
+              <input
+                matStartDate
+                formControlName="start"
+                placeholder="Start date"
+                (dateChange)="onDateChange()"
+              />
+              <input
+                matEndDate
+                formControlName="end"
+                placeholder="End date"
+                (dateChange)="onDateChange()"
+              />
+            </mat-date-range-input>
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-date-range-picker
+              #picker
+              (closed)="onDateChange()"
+            ></mat-date-range-picker>
+          </mat-form-field>
+
+          <!-- All time message -->
+          <div
+            *ngIf="tempActiveRange() === 'all'"
+            class="text-sm text-on-surface-variant mt-2"
+          >
+            Showing all data
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Bar -->
+      <div
+        class="flex justify-end items-center gap-3 px-6 py-2 bg-surface-container-lowest"
+      >
+        <button
+          mat-stroked-button
+          color="primary"
+          class="text-primary border-none font-small rounded-3xl px-4 py-1.5 hover:bg-surface-container"
+          (click)="closePopup()"
+        >
+          Cancel
+        </button>
+        <button
+          mat-flat-button
+          color="primary"
+          class="bg-primary text-on-primary font-small rounded-3xl px-5 py-1.5 hover:bg-primary-container hover:text-on-primary-container"
+          (click)="apply()"
+        >
+          Apply
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>

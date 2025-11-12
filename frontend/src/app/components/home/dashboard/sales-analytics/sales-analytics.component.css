@@ -1,0 +1,19 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.mat-card {
+  border-radius: 12px;
+}
+
+.mat-title-large {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.gross-sales-label {
+  display: inline-block;
+  border-bottom: 1px dotted var(--md-sys-color-outline, #aaa);
+  padding-bottom: 2px;
+}

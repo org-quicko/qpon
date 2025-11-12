@@ -1,0 +1,51 @@
+<h3 class="text-base text-on-surface mb-4">
+  {{ title }}
+</h3>
+
+<mat-card
+  class="p-4 rounded-lg shadow-sm border border-gray-200 dark:border-outline-variant flex flex-col"
+>
+  <!-- Fixed height container -->
+  <div class="flex-1 overflow-y-auto min-h-[16rem] max-h-[18rem]">
+    <!-- Always show headers -->
+    <div
+      class="grid grid-cols-[1fr_auto] text-sm font-medium mb-2 mt-2 text-outline"
+    >
+      <div>{{ labelColumn }}</div>
+      <div>{{ valueColumn }}</div>
+    </div>
+
+    <div *ngIf="data && data.length > 0; else noData" class="space-y-2">
+      <!-- Each row -->
+      <div
+        *ngFor="let item of data"
+        class="grid grid-cols-1 items-center relative mt-3"
+      >
+        <div class="relative w-full h-8 rounded-md flex items-center">
+          <!-- Filled bar -->
+          <div
+            class="absolute left-0 top-0 h-full rounded-md bg-inverse-primary/20 transition-all duration-300"
+            [style.width.%]="(item.value / maxValue) * 100"
+          ></div>
+
+          <!-- Label and value on top of the bar -->
+          <div
+            class="relative z-10 flex justify-between items-center w-full px-3 text-sm font-medium text-on-surface"
+          >
+            <span>{{ item.label }}</span>
+            <span>{{ item.value }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Data Template -->
+    <ng-template #noData>
+      <div
+        class="flex items-center justify-center h-[8rem] font-medium text-on-surface mt-15 pt-3"
+      >
+        No data available
+      </div>
+    </ng-template>
+  </div>
+</mat-card>

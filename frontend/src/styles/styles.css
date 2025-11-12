@@ -19,7 +19,7 @@ body {
 }
 
 .mdc-list-item.mdc-list-item--with-one-line {
-  --mdc-list-list-item-one-line-container-height: 56px;
+  --mat-list-list-item-one-line-container-height: 56px;
 }
 
 .mdc-list-item--with-leading-icon .mdc-list-item__start {

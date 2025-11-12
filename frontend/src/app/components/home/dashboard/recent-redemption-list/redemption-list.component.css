@@ -1,0 +1,6 @@
+.footer-row {
+  background: var(--md-sys-color-surface);
+  td {
+    border-top: 1px solid var(--md-sys-color-outline-variant);
+  }
+}
