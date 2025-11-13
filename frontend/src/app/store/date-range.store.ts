@@ -30,6 +30,13 @@ export class DateRangeStore {
         return `${format(start, 'do MMM, yyyy')} - ${format(end, 'do MMM, yyyy')}`;
     });
 
+    private setToEndOfDay(date: Date): Date {
+        const d = new Date(date);
+        d.setHours(23, 59, 59, 999);
+        return d;
+    }
+
+
     // 🔹 This method updates the store when Apply is clicked
     applyRange(range: {
         type: DateRangeType;
@@ -47,8 +54,11 @@ export class DateRangeStore {
         }
 
         if (range.type === 'custom' && range.start && range.end) {
+            const start = new Date(range.start);
+            start.setDate(start.getDate() - 1);
+            const normalizedStart = this.setToEndOfDay(start);
             this._label.set('Custom');
-            this._start.set(range.start);
+            this._start.set(normalizedStart);
             this._end.set(range.end);
             return;
         }
@@ -76,10 +86,11 @@ export class DateRangeStore {
         if (range.type in daysBackMap) {
             const daysBack = daysBackMap[range.type as '7' | '30' | '90' | '365'];
             const start = new Date(today);
-            start.setDate(today.getDate() - daysBack);
+            start.setDate(today.getDate() - daysBack - 1);
+            const normalizedStart = this.setToEndOfDay(start);
 
             this._label.set(labelMap[range.type]);
-            this._start.set(start);
+            this._start.set(normalizedStart);
             this._end.set(today);
         }
     }

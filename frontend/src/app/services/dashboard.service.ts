@@ -115,7 +115,7 @@ export class DashboardService {
     filter?: { email: string },
     sortOptions?: { sortBy: string; sortOrder: sortOrderEnum },
     skip: number = 0,
-    take: number = 10
+    take: number = 5
   ) {
     const url = `${this.endpoint}/organizations/${organizationId}/redemptions`;
 

@@ -39,7 +39,7 @@
     "@nestjs/swagger": "^11.0.6",
     "@nestjs/typeorm": "^11.0.0",
     "@org-quicko/core": "^1.1.0",
-    "@org-quicko/qpon-sheet-core": "^1.0.0",
+    "@org-quicko/qpon-sheet-core": "^1.1.0",
     "@org-quicko/sheet": "^1.0.1",
     "bcryptjs": "^3.0.2",
     "class-transformer": "^0.5.1",

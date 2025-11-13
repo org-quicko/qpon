@@ -40,6 +40,7 @@ function getColorConfig() {
     colorConfig[`${color}-container-high`] = `var(--sys-${color}-container-high)`;
     colorConfig[`${color}-container-highest`] = `var(--sys-${color}-container-highest)`;
     colorConfig[`inverse-${color}`] = `var(--sys-inverse-${color})`;
+    colorConfig[`inverse-on-${color}`] = `var(--sys-inverse-on-${color})`;
     colorConfig[`on-${color}`] = `var(--sys-on-${color})`;
     colorConfig[`on-${color}-variant`] = `var(--sys-on-${color}-variant)`;
     colorConfig[`on-${color}-container`] = `var(--sys-on-${color}-container)`;

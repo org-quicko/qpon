@@ -20,6 +20,9 @@ body {
   @include overrides.mat-overrides();
   @include overrides.typography-overrides();
 
+  @include overrides.inverse-on-surface-overrides();
+
+
   .light-theme {
    @include overrides.typography-overrides();
   }
