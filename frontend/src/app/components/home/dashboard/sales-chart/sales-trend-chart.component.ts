@@ -104,7 +104,7 @@ export class SalesTrendChartComponent implements OnChanges, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     animation: false,
-    interaction: { mode: 'nearest', intersect: true },
+    interaction: { mode: 'index', intersect: true },
     scales: {
       x: {
         ticks: {
