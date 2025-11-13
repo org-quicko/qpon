@@ -1,0 +1,291 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "enum": [
+        "redemption_report_workbook"
+      ]
+    },
+    "@entity": {
+      "type": "string",
+      "enum": [
+        "workbook"
+      ]
+    },
+    "sheets": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "enum": [
+                  "redemption_report_sheet"
+                ]
+              },
+              "@entity": {
+                "type": "string",
+                "enum": [
+                  "sheet"
+                ]
+              },
+              "blocks": {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "enum": [
+                            "redemption_report_table"
+                          ]
+                        },
+                        "@entity": {
+                          "type": "string",
+                          "enum": [
+                            "table"
+                          ]
+                        },
+                        "header": {
+                          "type": "array",
+                          "items": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "redemption_id"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "coupon_code"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "campaign_name"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "coupon_name"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "discount_amount"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "item_name"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "customer_name"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "customer_email"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "customer_phone"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "coupon_code_id"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "campaign_id"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "coupon_id"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "external_customer_id"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "external_item_id"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "redeemed_at"
+                              ]
+                            }
+                          ],
+                          "additionalItems": false,
+                          "minItems": 15,
+                          "maxItems": 15
+                        },
+                        "rows": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": [
+                              {
+                                "type": "string",
+                                "description": "UUID",
+                                "examples": [
+                                  "9d9c53b9-bfaa-450b-85ed-68f86756b9c5"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "examples": [
+                                  "TEST1234"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "examples": [
+                                  "Test Campaign"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "examples": [
+                                  "Test Coupon"
+                                ]
+                              },
+                              {
+                                "type": "number",
+                                "examples": [
+                                  "100"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "examples": [
+                                  "Test Item"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "examples": [
+                                  "Test User"
+                                ]
+                              },
+                              {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "examples": [
+                                  "test@test.com"
+                                ]
+                              },
+                              {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "examples": [
+                                  "918659743652"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "description": "UUID",
+                                "examples": [
+                                  "9d9c53b9-bfaa-450b-85ed-68f86756b9c5"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "description": "UUID",
+                                "examples": [
+                                  "9d9c53b9-bfaa-450b-85ed-68f86756b9c5"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "description": "UUID",
+                                "examples": [
+                                  "9d9c53b9-bfaa-450b-85ed-68f86756b9c5"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "examples": [
+                                  "9d9c53b9-bfaa-450b-85ed-68f86756b9c5"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "examples": [
+                                  "9d9c53b9-bfaa-450b-85ed-68f86756b9c5"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "examples": [
+                                  "45660"
+                                ]
+                              }
+                            ],
+                            "additionalItems": false,
+                            "minItems": 15,
+                            "maxItems": 15
+                          }
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "@entity",
+                        "header",
+                        "rows"
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "required": [
+              "name",
+              "@entity",
+              "blocks"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "name",
+    "@entity",
+    "sheets"
+  ]
+}
