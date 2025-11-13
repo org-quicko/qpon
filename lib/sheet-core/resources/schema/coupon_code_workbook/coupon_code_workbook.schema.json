@@ -1,0 +1,329 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "enum": [
+        "coupon_code_workbook"
+      ]
+    },
+    "@entity": {
+      "type": "string",
+      "enum": [
+        "workbook"
+      ]
+    },
+    "sheets": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "enum": [
+                  "coupon_code_sheet"
+                ]
+              },
+              "@entity": {
+                "type": "string",
+                "enum": [
+                  "sheet"
+                ]
+              },
+              "blocks": {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "enum": [
+                            "coupon_code_table"
+                          ]
+                        },
+                        "@entity": {
+                          "type": "string",
+                          "enum": [
+                            "table"
+                          ]
+                        },
+                        "header": {
+                          "type": "array",
+                          "items": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "coupon_id"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "campaign_id"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "coupon_code_id"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "code"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "status"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "description"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "max_redemptions"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "redemption_count"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "max_redemption_per_customer"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "minimum_amount"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "customer_constraint"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "visibility"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "duration_type"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "expires_at"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "created_at"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "updated_at"
+                              ]
+                            }
+                          ],
+                          "additionalItems": false,
+                          "minItems": 16,
+                          "maxItems": 16
+                        },
+                        "rows": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": [
+                              {
+                                "type": "string",
+                                "description": "UUID",
+                                "examples": [
+                                  "7e08dff4-ff0e-4517-b41c-2a61e22572e3"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "description": "UUID",
+                                "examples": [
+                                  "7e08dff4-ff0e-4517-b41c-2a61e22572e3"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "description": "UUID",
+                                "examples": [
+                                  "7e08dff4-ff0e-4517-b41c-2a61e22572e3"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "examples": [
+                                  "EARLYBIRD"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "active",
+                                  "inactive",
+                                  "expired",
+                                  "redeemed"
+                                ],
+                                "examples": [
+                                  "active"
+                                ]
+                              },
+                              {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "examples": [
+                                  "test description"
+                                ]
+                              },
+                              {
+                                "type": [
+                                  "number",
+                                  "null"
+                                ],
+                                "examples": [
+                                  "100"
+                                ]
+                              },
+                              {
+                                "type": "number",
+                                "examples": [
+                                  "30"
+                                ]
+                              },
+                              {
+                                "type": [
+                                  "number",
+                                  "null"
+                                ],
+                                "examples": [
+                                  "1"
+                                ]
+                              },
+                              {
+                                "type": [
+                                  "number",
+                                  "null"
+                                ],
+                                "examples": [
+                                  "200"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "all",
+                                  "specific"
+                                ],
+                                "examples": [
+                                  "all"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "public",
+                                  "private"
+                                ],
+                                "examples": [
+                                  "public"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "limited",
+                                  "forever"
+                                ],
+                                "examples": [
+                                  "limited"
+                                ]
+                              },
+                              {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "examples": [
+                                  "12:19:16.124213+05:30"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "examples": [
+                                  "12:19:16.124213+05:30"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "examples": [
+                                  "12:19:16.124213+05:30"
+                                ]
+                              }
+                            ],
+                            "additionalItems": false,
+                            "minItems": 16,
+                            "maxItems": 16
+                          }
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "@entity",
+                        "header",
+                        "rows"
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "required": [
+              "name",
+              "@entity",
+              "blocks"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "name",
+    "@entity",
+    "sheets"
+  ]
+}

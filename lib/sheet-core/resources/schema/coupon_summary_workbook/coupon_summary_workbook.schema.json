@@ -1,0 +1,198 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "enum": [
+        "coupon_summary_workbook"
+      ]
+    },
+    "@entity": {
+      "type": "string",
+      "enum": [
+        "workbook"
+      ]
+    },
+    "sheets": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "enum": [
+                  "coupon_summary_sheet"
+                ]
+              },
+              "@entity": {
+                "type": "string",
+                "enum": [
+                  "sheet"
+                ]
+              },
+              "blocks": {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "enum": [
+                            "coupon_summary_table"
+                          ]
+                        },
+                        "@entity": {
+                          "type": "string",
+                          "enum": [
+                            "table"
+                          ]
+                        },
+                        "header": {
+                          "type": "array",
+                          "items": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "coupon_id"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "total_redemption_count"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "total_redemption_amount"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "active_campaign_count"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "active_coupon_code_count"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "redeemed_coupon_code_count"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "created_at"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "updated_at"
+                              ]
+                            }
+                          ],
+                          "additionalItems": false,
+                          "minItems": 8,
+                          "maxItems": 8
+                        },
+                        "rows": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": [
+                              {
+                                "type": "string",
+                                "description": "UUID",
+                                "examples": [
+                                  "8ea2366a-391f-4a2a-99ea-f49d639bdcd1"
+                                ]
+                              },
+                              {
+                                "type": "number",
+                                "examples": [
+                                  "90"
+                                ]
+                              },
+                              {
+                                "type": "number",
+                                "examples": [
+                                  "900"
+                                ]
+                              },
+                              {
+                                "type": "number",
+                                "examples": [
+                                  "2"
+                                ]
+                              },
+                              {
+                                "type": "number",
+                                "examples": [
+                                  "13"
+                                ]
+                              },
+                              {
+                                "type": "number",
+                                "examples": [
+                                  "3"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "examples": [
+                                  "2025-03-12 20:24:03.653247+05:30"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "examples": [
+                                  "2025-03-12 20:24:03.653247+05:30"
+                                ]
+                              }
+                            ],
+                            "additionalItems": false,
+                            "minItems": 8,
+                            "maxItems": 8
+                          }
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "@entity",
+                        "header",
+                        "rows"
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            "required": [
+              "name",
+              "@entity",
+              "blocks"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "name",
+    "@entity",
+    "sheets"
+  ]
+}
