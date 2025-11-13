@@ -115,7 +115,9 @@ export class DashboardService {
     filter?: { email: string },
     sortOptions?: { sortBy: string; sortOrder: sortOrderEnum },
     skip: number = 0,
-    take: number = 5
+    take: number = 10,
+    from?: string,
+    to?: string
   ) {
     const url = `${this.endpoint}/organizations/${organizationId}/redemptions`;
 
@@ -129,6 +131,11 @@ export class DashboardService {
       params = params
         .set('sort_by', sortOptions.sortBy)
         .set('sort_order', sortOptions.sortOrder);
+    }
+
+    const hasBothDates = from && to;
+    if (hasBothDates) {
+      params = params.set('from', from).set('to', to);
     }
 
     return this.httpClient.get<ApiResponse<RedemptionWorkbook>>(url, {

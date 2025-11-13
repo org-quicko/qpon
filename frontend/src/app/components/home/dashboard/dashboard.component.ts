@@ -1,7 +1,7 @@
 import { Component, OnInit, computed, effect, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { TitleCasePipe, NgIf } from '@angular/common';
+import { TitleCasePipe, NgIf, CommonModule } from '@angular/common';
 import { DashboardSalesAnalyticsComponent } from './sales-analytics/sales-analytics.component';
 import { PopularityChartComponent } from '../../common/popularity-chart/popularity-chart.component';
 import { SalesTrendChartComponent } from './sales-chart/sales-trend-chart.component';
@@ -13,7 +13,8 @@ import { ItemSummaryStore } from './store/item-summary.store';
 import { CouponCodeSummaryStore } from './store/coupon-code-summary.store';
 import { DateRangeStore } from '../../../store/date-range.store';
 import { RedemptionListComponent } from "./recent-redemption-list/redemption-list.component";
-import { NgxSkeletonLoaderModule, NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
+import { NgxSkeletonLoaderComponent } from 'ngx-skeleton-loader';
+import { RedemptionsStore } from './recent-redemption-list/store/redemptions.store';
 
 @Component({
   selector: 'app-dashboard',
@@ -27,11 +28,17 @@ import { NgxSkeletonLoaderModule, NgxSkeletonLoaderComponent } from 'ngx-skeleto
     PopularityChartComponent,
     SalesTrendChartComponent,
     RedemptionListComponent,
+    CommonModule,
     NgxSkeletonLoaderComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  providers: [SalesSummaryStore, ItemSummaryStore, CouponCodeSummaryStore],
+  providers: [
+    SalesSummaryStore,
+    ItemSummaryStore,
+    CouponCodeSummaryStore,
+    RedemptionsStore
+  ],
 })
 export class DashboardComponent implements OnInit {
   // 🧩 Inject stores
@@ -41,7 +48,12 @@ export class DashboardComponent implements OnInit {
   private itemSummaryStore = inject(ItemSummaryStore);
   private couponCodeSummaryStore = inject(CouponCodeSummaryStore);
   public dateRangeStore = inject(DateRangeStore);
+  private redemptionsStore = inject(RedemptionsStore);
 
+  // For infinite-loop prevention
+  private lastOrgId: string | null = null;
+  private lastStart: string | null = null;
+  private lastEnd: string | null = null;
 
   // 🧠 Derived signals
   user = this.userStore.user;
@@ -53,7 +65,7 @@ export class DashboardComponent implements OnInit {
   couponLoading = this.couponCodeSummaryStore.isLoading;
   error = this.salesSummaryStore.error;
 
-  // ✅ Aggregated sales totals
+  // aggregated totals
   summaryTotals = computed(() => {
     const items = this.salesSummaryStore.summaryItems();
     if (!items?.length) return null;
@@ -81,14 +93,11 @@ export class DashboardComponent implements OnInit {
     };
   });
 
-  // 📈 Chart Data
-  // graphData = computed(() => this.salesSummaryStore.graphData());
   graphData = computed(() => this.salesSummaryStore.graphData());
   itemPopularityData = this.itemSummaryStore.popularityData;
   couponPopularityData = this.couponCodeSummaryStore.popularityData;
 
   constructor() {
-    // ♻️ Auto-fetch data whenever date range or organization changes
     effect(() => {
       const org = this.organization();
       const orgId = org?.organizationId;
@@ -97,36 +106,62 @@ export class DashboardComponent implements OnInit {
       const start = this.dateRangeStore.start();
       const end = this.dateRangeStore.end();
 
+      const startStr = start ? start.toISOString().split('T')[0] : null;
+      const endStr = end ? end.toISOString().split('T')[0] : null;
+
+      // 🚫 Prevent infinite loops
+      if (
+        this.lastOrgId === orgId &&
+        this.lastStart === startStr &&
+        this.lastEnd === endStr
+      ) {
+        return;
+      }
+
+      // update reference
+      this.lastOrgId = orgId;
+      this.lastStart = startStr;
+      this.lastEnd = endStr;
+
+      // run fetch
       this.fetchAllData(orgId, start, end);
     });
   }
 
   ngOnInit() {
-    // Initial fetch happens automatically via effect()
+    this.dateRangeStore.reset();
   }
-
   /** 🔄 Fetch all dashboard data */
   private fetchAllData(orgId: string, start: Date | null, end: Date | null) {
     const startStr = start ? start.toISOString().split('T')[0] : undefined;
     const endStr = end ? end.toISOString().split('T')[0] : undefined;
 
-    // 🧾 Sales Summary
+    // sales
     this.salesSummaryStore.setOrganizationId(orgId);
     this.salesSummaryStore.setDateRange(startStr ?? null, endStr ?? null);
     this.salesSummaryStore.fetchSalesSummary();
 
-    // 📦 Item Summary
+    // item
     this.itemSummaryStore.fetchItemSummary({
       organizationId: orgId,
       startDate: startStr,
       endDate: endStr,
     });
 
-    // 🎟️ Coupon Summary
+    // coupon
     this.couponCodeSummaryStore.fetchCouponCodeSummary({
       organizationId: orgId,
       startDate: startStr,
       endDate: endStr,
+    });
+
+    this.redemptionsStore.resetRedemptionsState();
+    this.redemptionsStore.fetchRedemptions({
+      organizationId: orgId,
+      skip: 0,
+      take: 5,
+      from: startStr,
+      to: endStr,
     });
   }
 }

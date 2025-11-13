@@ -33,8 +33,7 @@ import { DatePipe } from '@angular/common';
     ReactiveFormsModule,
     DatePipe,
     NgxSkeletonLoaderModule,
-],
-  providers: [RedemptionsStore],
+  ],
   templateUrl: './redemption-list.component.html',
   styleUrls: ['./redemption-list.component.css'],
 })
@@ -77,39 +76,28 @@ export class RedemptionListComponent implements OnInit {
 
     effect(() => {
       if (this.isLoading()) {
-        this.datasource.data = this.tempDatasource;
+        this.datasource.data = [...this.tempDatasource];
+        this.datasource._updateChangeSubscription();
         return;
       }
 
-      const redemptions = this.redemptions() ?? [];
+      const rows = this.redemptions();
 
-      const { pageIndex, pageSize } = this.paginationOptions();
-      const start = pageIndex * pageSize;
-      const end = Math.min(start + pageSize, redemptions.length);
+      if (!rows || rows.length === 0) {
+        this.datasource.data = [];
+        this.datasource._updateChangeSubscription();
+        return;
+      }
 
-      this.datasource.data = redemptions.slice(start, end);
+      this.datasource.data = [...rows];
+      this.datasource._updateChangeSubscription();
     });
+
+
   }
 
   ngOnInit(): void {
     this.redemptionsStore.resetLoadedPages();
-
-    this.route.params.subscribe((params: Params) => {
-      this.couponId = params['coupon_id'];
-      this.campaignId = params['campaign_id'];
-      this.couponCodeId = params['coupon_code_id'];
-    });
-
-    this.searchControl.valueChanges
-      .pipe(debounceTime(500), distinctUntilChanged())
-      .subscribe((value) => {
-        this.isFilterApplied = true;
-
-        this.redemptionsStore.fetchRedemptions({
-          organizationId: this.organization()?.organizationId!,
-          filter: { email: value.trim() },
-        });
-      });
 
     this.redemptionsStore.fetchRedemptions({
       organizationId: this.organization()?.organizationId!,
@@ -120,19 +108,6 @@ export class RedemptionListComponent implements OnInit {
             ? sortOrderEnum.ASC
             : sortOrderEnum.DESC,
       },
-    });
-  }
-
-  onPageChange(event: PageEvent) {
-    this.paginationOptions.set({
-      pageIndex: event.pageIndex,
-      pageSize: event.pageSize,
-    });
-
-    this.redemptionsStore.fetchRedemptions({
-      organizationId: this.organization()?.organizationId!,
-      skip: event.pageIndex * event.pageSize,
-      take: this.paginationOptions().pageSize,
     });
   }
 

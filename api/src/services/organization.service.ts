@@ -303,7 +303,7 @@ export class OrganizationService {
   }
 
   /**
-   * Fetch top 5 items summary by total redemptions
+   * Fetch top 5 items summary by total redemptions (org-wise)
    */
   async getItemWiseSummary(
     organizationId: string,
@@ -318,48 +318,52 @@ export class OrganizationService {
         throw new BadRequestException('organization_id is required');
       }
 
-      let dateFilter: any = {};
-
-      const fromDate = startDate ? new Date(startDate) : null;
-      const toDate = endDate ? new Date(endDate) : null;
-
-      if (fromDate && toDate) {
-        dateFilter = { date: Between(fromDate, toDate) };
-        this.logger.info(
-          `Date filter applied: BETWEEN ${fromDate.toISOString()} AND ${toDate.toISOString()}`,
-        );
-      } else {
-        this.logger.info('No date filter applied (showing all data)');
-      }
-
       this.logger.info(
-        `Fetching top 5 items for organizationId=${organizationId} ordered by total_redemptions DESC`,
+        `Fetching top 5 items for organizationId=${organizationId}`,
       );
 
-      const results = await this.itemSummaryRepo.find({
-        where: {
-          organizationId,
-          ...dateFilter,
-        },
-        order: {
-          totalRedemptions: 'DESC',
-        },
-        take: 5,
-      });
+      const qb = this.itemSummaryRepo
+        .createQueryBuilder('mv')
+        .select('mv.organization_id', 'organizationId')
+        .addSelect('mv.item_id', 'itemId')
+        .addSelect('mv.item_name', 'itemName')
+        .addSelect('SUM(mv.total_redemptions)', 'totalRedemptions')
+        .addSelect('MAX(mv.created_at)', 'createdAt')
+        .addSelect('MAX(mv.updated_at)', 'updatedAt')
+        .addSelect('MAX(mv.date)', 'date')
+        .where('mv.organization_id = :orgId', { orgId: organizationId })
+        .groupBy('mv.organization_id')
+        .addGroupBy('mv.item_id')
+        .addGroupBy('mv.item_name')
+        .orderBy('SUM(mv.total_redemptions)', 'DESC')
+        .limit(5);
 
-      this.logger.info(`Fetched ${results.length} records from itemSummaryRepo`);
+      // optional date filter
+      if (startDate && endDate) {
+        qb.andWhere('mv.date BETWEEN :start AND :end', {
+          start: startDate,
+          end: endDate,
+        });
 
-      const convertedResults =
-        this.ItemsSummaryWorkbookConverter.convert(results);
+        this.logger.info(
+          `Date filter applied: BETWEEN ${startDate} AND ${endDate}`,
+        );
+      } else {
+        this.logger.info('No date filter applied');
+      }
+
+      const rows = await qb.getRawMany();
+
+      this.logger.info(`Fetched ${rows.length} item summary records`);
+
+      const converted = this.ItemsSummaryWorkbookConverter.convert(rows);
 
       this.logger.info('END: getItemWiseSummary service');
-      return convertedResults;
+      return converted;
     } catch (error) {
       this.logger.error('Error in getItemWiseSummary:', error);
 
-      if (error instanceof BadRequestException) {
-        throw error;
-      }
+      if (error instanceof BadRequestException) throw error;
 
       throw new HttpException(
         'Failed to fetch item-wise summary',
@@ -368,9 +372,11 @@ export class OrganizationService {
     }
   }
 
+
+
   /**
- * Fetch top 5 coupon codes summary by total redemptions
- */
+   * Fetch top 5 coupon codes summary by total redemptions (org-wise)
+   */
   async getCouponCodeWiseSummary(
     organizationId: string,
     startDate?: string,
@@ -384,48 +390,51 @@ export class OrganizationService {
         throw new BadRequestException('organization_id is required');
       }
 
-      let dateFilter: any = {};
-
-      const fromDate = startDate ? new Date(startDate) : null;
-      const toDate = endDate ? new Date(endDate) : null;
-
-      if (fromDate && toDate) {
-        dateFilter = { date: Between(fromDate, toDate) };
-        this.logger.info(
-          `Date filter applied: BETWEEN ${fromDate.toISOString()} AND ${toDate.toISOString()}`,
-        );
-      } else {
-        this.logger.info('No date filter applied (showing all data)');
-      }
-
       this.logger.info(
-        `Fetching top 5 coupon codes for organizationId=${organizationId} ordered by total_redemptions DESC`,
+        `Fetching top 5 coupon codes for organizationId=${organizationId}`,
       );
 
-      const results = await this.couponCodeSummaryRepo.find({
-        where: {
-          organizationId,
-          ...dateFilter,
-        },
-        order: {
-          totalRedemptions: 'DESC',
-        },
-        take: 5,
-      });
+      const qb = this.couponCodeSummaryRepo
+        .createQueryBuilder('mv')
+        .select('mv.organization_id', 'organizationId')
+        .addSelect('mv.coupon_code', 'couponCode')
+        .addSelect('SUM(mv.total_redemptions)', 'totalRedemptions')
+        .addSelect('MAX(mv.created_at)', 'createdAt')
+        .addSelect('MAX(mv.updated_at)', 'updatedAt')
+        .addSelect('MAX(mv.date)', 'date')
+        .where('mv.organization_id = :orgId', { orgId: organizationId })
+        .groupBy('mv.organization_id')
+        .addGroupBy('mv.coupon_code')
+        .orderBy('SUM(mv.total_redemptions)', 'DESC')
+        .limit(5);
 
-      this.logger.info(`Fetched ${results.length} records from couponCodeSummaryRepo`);
+      // Optional date filter
+      if (startDate && endDate) {
+        qb.andWhere('mv.date BETWEEN :start AND :end', {
+          start: startDate,
+          end: endDate,
+        });
 
-      const convertedResults =
-        this.CouponCodeSummaryWorkbookConverter.convert(results);
+        this.logger.info(
+          `Date filter applied: BETWEEN ${startDate} AND ${endDate}`,
+        );
+      } else {
+        this.logger.info('No date filter applied');
+      }
+
+      const rows = await qb.getRawMany();
+
+      this.logger.info(`Fetched ${rows.length} coupon code summary records`);
+
+      const converted =
+        this.CouponCodeSummaryWorkbookConverter.convert(rows);
 
       this.logger.info('END: getCouponCodeWiseSummary service');
-      return convertedResults;
+      return converted;
     } catch (error) {
       this.logger.error('Error in getCouponCodeWiseSummary:', error);
 
-      if (error instanceof BadRequestException) {
-        throw error;
-      }
+      if (error instanceof BadRequestException) throw error;
 
       throw new HttpException(
         'Failed to fetch coupon-code-wise summary',
@@ -433,6 +442,7 @@ export class OrganizationService {
       );
     }
   }
+
 
   /**
    * Fetch day-wise redemption summary (optionally filtered by date range)

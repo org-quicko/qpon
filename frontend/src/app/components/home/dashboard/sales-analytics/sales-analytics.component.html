@@ -1,21 +1,21 @@
 <div class="flex flex-col gap-6 w-full">
   <!-- Header text + date + filter -->
-<div class="flex items-center justify-between w-full">
-  <!-- Left: Welcome text -->
-  <div class="flex flex-col">
-    <h2 class="text-2xl text-on-surface">
-      Welcome to your dashboard, {{ userName ? userName.split(' ')[0] : '' }}!
-    </h2>
-    <p class="text-sm text-on-surface-variant">
-      Today is {{ currentDate | date: 'fullDate' }}
-    </p>
-  </div>
+  <div class="flex items-center justify-between w-full">
+    <!-- Left: Welcome text -->
+    <div class="flex flex-col">
+      <h2 class="text-2xl text-on-surface">
+        Welcome to your dashboard, {{ userName ? userName.split(' ')[0] : '' }}!
+      </h2>
+      <p class="text-sm text-on-surface-variant">
+        Today is {{ currentDate | date: 'fullDate' }}
+      </p>
+    </div>
 
-  <!-- Right: Date range filter -->
-  <div class="flex items-center gap-2">
-    <app-date-range-filter></app-date-range-filter>
+    <!-- Right: Date range filter -->
+    <div class="flex items-center gap-2">
+      <app-date-range-filter></app-date-range-filter>
+    </div>
   </div>
-</div>
 
   <!-- Stats cards -->
   <div class="grid grid-cols-4 gap-3">
@@ -29,7 +29,9 @@
     <mat-card appearance="outlined" class="p-6 bg-surface-container-lowest">
       <mat-card-content>
         <p class="mat-body-large text-on-surface-variant gross-sales-label">Gross sales</p>
-        <p class="mat-title-large text-on-surface">₹{{ stats.grossSales | number }}</p>
+        <p class="mat-title-large text-on-surface">
+          {{ stats.grossSales | currency: organization()?.currency : 'symbol' }}
+        </p>
       </mat-card-content>
     </mat-card>
 
@@ -37,18 +39,22 @@
       <mat-card-content>
         <p class="mat-body-large text-on-surface-variant gross-sales-label">Discount</p>
         <p class="mat-title-large text-on-surface">
-          ₹{{ stats.discount | number }}
+          {{ stats.discount | currency: organization()?.currency : 'symbol' }}
           <span class="text-sm text-on-surface-variant">
             ({{ stats.discountPercent | number:'1.0-2' }}%)
           </span>
         </p>
+
       </mat-card-content>
     </mat-card>
 
     <mat-card appearance="outlined" class="p-6 bg-surface-container-lowest">
       <mat-card-content>
         <p class="mat-body-large text-on-surface-variant gross-sales-label">Net sales</p>
-        <p class="mat-title-large text-on-surface">₹{{ stats.netSales | number }}</p>
+        <p class="mat-title-large text-on-surface">
+          {{ stats.netSales | currency: organization()?.currency : 'symbol' }}
+        </p>
+
       </mat-card-content>
     </mat-card>
   </div>

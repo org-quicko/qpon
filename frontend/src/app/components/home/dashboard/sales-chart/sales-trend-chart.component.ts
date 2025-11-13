@@ -80,9 +80,11 @@ export class SalesTrendChartComponent implements OnChanges, OnDestroy {
         tension: 0,
         pointRadius: 0,
         pointHoverRadius: 7,
+        pointHitRadius: 12,
         pointBackgroundColor: '#B1C6FF',
         pointBorderWidth: 1,
         pointBorderColor: '#ffffff',
+        clip: false,
       },
       {
         label: 'Net Revenue',
@@ -93,9 +95,11 @@ export class SalesTrendChartComponent implements OnChanges, OnDestroy {
         tension: 0,
         pointRadius: 0,
         pointHoverRadius: 7,
+        pointHitRadius: 12,
         pointBackgroundColor: '#4D5C92',
         pointBorderWidth: 1,
         pointBorderColor: '#ffffff',
+        clip: false,
       },
     ],
   };
@@ -104,7 +108,7 @@ export class SalesTrendChartComponent implements OnChanges, OnDestroy {
     responsive: true,
     maintainAspectRatio: false,
     animation: false,
-    interaction: { mode: 'index', intersect: true },
+    interaction: { mode: 'index', intersect: false },
     scales: {
       x: {
         ticks: {
@@ -256,37 +260,42 @@ export class SalesTrendChartComponent implements OnChanges, OnDestroy {
 
 
   private updateChart() {
-    // ✅ Handle "all" range where start/end may not be provided
+
     if (this.dateRangeType === 'all') {
       if (!this.graphData?.length) {
         this.chartData.labels = this.getEmptyLabels();
-        this.chartData.datasets.forEach(d => (d.data = []));
+        this.chartData.datasets.forEach(d => d.data = []);
         this.hasData = false;
         this.chart?.update();
         return;
       }
 
-      // Use actual data from graphData directly
+      // Build points from full dataset
       this.chartPoints = this.graphData.map(d => ({
         date: new Date(d.date),
         dateString: d.date,
-        grossAmount: d.grossSalesAmount,
-        netAmount: d.netSalesAmount,
-        xLabel: new Date(d.date).toLocaleString('en-US', { month: 'short' }),
+        grossAmount: d.grossSalesAmount || 0,
+        netAmount: d.netSalesAmount || 0,
+        xLabel: ''
       }));
 
+      // Apply auto-label system
+      this.chartPoints = this.assignXLabels(this.chartPoints);
+
       this.hasData = this.chartPoints.some(p => p.grossAmount > 0 || p.netAmount > 0);
+
       this.chartData.labels = this.chartPoints.map(p => p.xLabel);
       this.chartData.datasets[0].data = this.chartPoints.map(p => p.grossAmount);
       this.chartData.datasets[1].data = this.chartPoints.map(p => p.netAmount);
+
       this.chart?.update();
       return;
     }
 
-    // ✅ Normal handling for other ranges
+    // --- OTHER RANGES ---------------------------
     if (!this.startDate || !this.endDate) {
       this.chartData.labels = this.getEmptyLabels();
-      this.chartData.datasets.forEach(d => (d.data = []));
+      this.chartData.datasets.forEach(d => d.data = []);
       this.hasData = false;
       this.chart?.update();
       return;
@@ -302,43 +311,38 @@ export class SalesTrendChartComponent implements OnChanges, OnDestroy {
     this.chart?.update();
   }
 
+  private normalizeDate(d: Date): Date {
+    return new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  }
+
+
 
   private generateChartPoints(): ChartPoint[] {
-    // ✅ Special case: "all" range → use full dataset directly
-    if (this.dateRangeType === 'all') {
-      if (!this.graphData?.length) return [];
 
-      return this.graphData.map((d) => ({
-        date: new Date(d.date),
-        dateString: d.date,
-        grossAmount: d.grossSalesAmount || 0,
-        netAmount: d.netSalesAmount || 0,
-        xLabel: new Date(d.date).toLocaleString('en-US', { month: 'short', year: '2-digit' }),
-      }));
+    // Safety: never use start/end for "all"
+    if (this.dateRangeType === 'all') {
+      return [];
     }
 
-    // ✅ Regular case: ensure start & end exist
-    if (!this.startDate || !this.endDate) return [];
-
     const dataMap = new Map<string, DailyData>();
-    this.graphData.forEach((d) => {
-      const dateKey = new Date(d.date).toISOString().split('T')[0];
-      dataMap.set(dateKey, d);
+    this.graphData.forEach(d => {
+      const key = this.normalizeDate(new Date(d.date)).toISOString().split('T')[0];
+      dataMap.set(key, d);
     });
 
     const points: ChartPoint[] = [];
-    const current = new Date(this.startDate);
-    const end = new Date(this.endDate);
+    const current = this.normalizeDate(new Date(this.startDate!));
+    const end = this.normalizeDate(new Date(this.endDate!));
 
     while (current <= end) {
-      const dateKey = current.toISOString().split('T')[0];
-      const apiData = dataMap.get(dateKey);
+      const key = current.toISOString().split('T')[0];
+      const d = dataMap.get(key);
 
       points.push({
         date: new Date(current),
-        dateString: dateKey,
-        grossAmount: apiData?.grossSalesAmount || 0,
-        netAmount: apiData?.netSalesAmount || 0,
+        dateString: key,
+        grossAmount: d?.grossSalesAmount || 0,
+        netAmount: d?.netSalesAmount || 0,
         xLabel: '',
       });
 
@@ -349,32 +353,64 @@ export class SalesTrendChartComponent implements OnChanges, OnDestroy {
   }
 
 
-  private assignXLabels(points: ChartPoint[]): ChartPoint[] {
-    const type = this.dateRangeType || 'all';
+  private assignAutoLabels(points: ChartPoint[]): ChartPoint[] {
+    if (!points.length) return points;
 
+    const first = points[0].date;
+    const last = points[points.length - 1].date;
+    const diffDays = Math.ceil(
+      (last.getTime() - first.getTime()) / (1000 * 60 * 60 * 24)
+    ) + 1;
+
+    if (diffDays <= 7) {
+      return this.assignDailyLabels(points);
+    }
+
+    if (diffDays <= 35) {
+      return this.assignWeeklyLabels(points);
+    }
+
+    return this.assignMonthlyLabels(points);
+  }
+
+
+
+  private assignXLabels(points: ChartPoint[]): ChartPoint[] {
+    const type = this.dateRangeType;
+
+    // AUTO LABELS for "custom" and "all"
+    if (type === 'custom' || type === 'all') {
+      return this.assignAutoLabels(points);
+    }
+
+    // Predefined date ranges
     switch (type) {
-      case '7':
-        return this.assignDailyLabels(points);
-      case '30':
-        return this.assignWeeklyLabels(points);
-      case '90':
-        return this.assignMonthlyLabels(points);
-      case '365':
-        return this.assignMonthlyLabels(points);
-      case 'custom':
-        return this.assignCustomLabels(points);
-      case 'all':
-      default:
-        return this.assignCustomLabels(points);
+      case '7': return this.assignDailyLabels(points);
+      case '30': return this.assignWeeklyLabels(points);
+      case '90': return this.assignMonthlyLabels(points);
+      case '365': return this.assignMonthlyLabels(points);
+      default: return this.assignAutoLabels(points);
     }
   }
 
+
+
   private assignDailyLabels(points: ChartPoint[]): ChartPoint[] {
-    return points.map((p, i) => ({
-      ...p,
-      xLabel: i % Math.ceil(points.length / 7) === 0 ? this.formatShortDate(p.date) : '',
-    }));
+    const skip = Math.ceil(points.length / 7);
+
+    return points.map((p, i) => {
+      const isPeriodicLabel = (i % skip === 0);
+      const isLastPoint = (i === points.length - 1);
+
+      return {
+        ...p,
+        xLabel: (isPeriodicLabel || isLastPoint)
+          ? this.formatShortDate(p.date)
+          : '',
+      };
+    });
   }
+
 
   private assignWeeklyLabels(points: ChartPoint[]): ChartPoint[] {
     const weekSize = Math.ceil(points.length / 4);
@@ -395,13 +431,6 @@ export class SalesTrendChartComponent implements OnChanges, OnDestroy {
       }
       return { ...p, xLabel: '' };
     });
-  }
-
-  private assignCustomLabels(points: ChartPoint[]): ChartPoint[] {
-    const daysDiff = points.length;
-    if (daysDiff <= 7) return this.assignDailyLabels(points);
-    if (daysDiff <= 30) return this.assignWeeklyLabels(points);
-    return this.assignMonthlyLabels(points);
   }
 
   private formatShortDate(date: Date): string {

@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { DateRangeFilterComponent } from '../../../../layouts/range-selector/date-range-filter.component';
+import { OrganizationStore } from '../../../../store/organization.store';
 
 @Component({
   selector: 'app-dashboard-sales-analytics',
@@ -20,6 +21,7 @@ import { DateRangeFilterComponent } from '../../../../layouts/range-selector/dat
 })
 export class DashboardSalesAnalyticsComponent implements OnInit {
   @Input() userName: string | null = null;
+
   @Input() stats = {
     totalRedemptions: 0,
     grossSales: 0,
@@ -28,8 +30,11 @@ export class DashboardSalesAnalyticsComponent implements OnInit {
     netSales: 0,
   };
 
+  private organizationStore = inject(OrganizationStore);
+
+  organization = this.organizationStore.organizaiton;
+
   currentDate = new Date();
 
-  ngOnInit() { }
-
+  ngOnInit() {}
 }

@@ -1,12 +1,10 @@
 import { Controller, Get, Post, Body, Query, Param, Res } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
-import { Between } from 'typeorm';
 import { Response } from 'express';
 import { RedemptionsService } from '../services/redemption.service';
 import { } from '../dtos';
 import { LoggerService } from '../services/logger.service';
 import { CreateRedemptionDto } from '../dtos/redemption.dto';
-import { getStartEndDate } from '../utils/date.utils';
 import { sortOrderEnum, timePeriodEnum } from '../enums';
 import { getReportFileName } from '../utils/reportFileName.util';
 import { SkipTransform } from '../decorators/skipTransform.decorator';
@@ -142,13 +140,6 @@ export class RedemptionsController {
     @Query('sort_order') sortOrder?: sortOrderEnum,
   ) {
     this.logger.info('START: fetchRedemptions controller');
-
-    let dateFilter = {};
-    if (from && to) {
-      const { parsedStartDate, parsedEndDate } = getStartEndDate(from, to);
-      dateFilter = { createdAt: Between(parsedStartDate, parsedEndDate) };
-    }
-
     const result = await this.redemptionsService.fetchRedemptions(
       organizationId,
       {
@@ -164,12 +155,13 @@ export class RedemptionsController {
         customer: {
           email: customerEmail,
         },
-        ...dateFilter,
       },
       skip,
       take,
       sortBy,
       sortOrder,
+      from,
+      to,
     );
 
     this.logger.info('END: fetchRedemptions controller');
