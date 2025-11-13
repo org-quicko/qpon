@@ -110,6 +110,9 @@ export class SalesTrendChartComponent implements OnChanges, OnDestroy {
         ticks: {
           color: '#888',
           font: { size: 12 },
+          autoSkip: false,
+          maxRotation: 0,
+          minRotation: 0,
           callback: (value, index) => this.chartPoints[index]?.xLabel || '',
         },
         grid: {
