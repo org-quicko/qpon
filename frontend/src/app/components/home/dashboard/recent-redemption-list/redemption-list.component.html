@@ -38,7 +38,7 @@
           } @else {
           <div class="flex flex-col">
             <div class="font-medium text-on-surface">{{ redemption.getCustomerName() }}</div>
-            <div class="text-sm text-on-surface-variant">{{ redemption.getCustomerEmail() }}</div>
+            <div class="text-sm text-on-surface-variant truncate">{{ redemption.getCustomerEmail() }}</div>
           </div>
           }
         </td>
@@ -135,12 +135,15 @@
 
       <!-- ✅ Footer Row -->
       <ng-container matColumnDef="footer">
-        <td mat-footer-cell *matFooterCellDef [attr.colspan]="columns.length" class="p-4 text-left">
-          <div
-            class="text-sm text-primary font-medium cursor-pointer hover:underline inline-flex items-center justify-left gap-1">
+        <td mat-footer-cell *matFooterCellDef [attr.colspan]="columns.length" class="p-4 text-left cursor-pointer 
+         hover:bg-surface-container-high transition-colors">
+
+          <div class="text-sm text-primary font-medium inline-flex items-center gap-1">
             View all redemptions
           </div>
+
         </td>
+
       </ng-container>
 
       <tr mat-footer-row *matFooterRowDef="['footer']" class="border-t border-outline-variant"></tr>

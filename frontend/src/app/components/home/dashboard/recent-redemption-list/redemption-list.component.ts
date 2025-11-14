@@ -103,6 +103,12 @@ export class RedemptionListComponent implements OnInit {
   ngOnInit(): void {
     this.redemptionsStore.resetLoadedPages();
 
+    const from = this.dateRangeStore.start();
+    const to = this.dateRangeStore.end();
+
+    const fromStr = from ? from.toISOString().slice(0, 10) : undefined;
+    const toStr = to ? to.toISOString().slice(0, 10) : undefined;
+
     this.redemptionsStore.fetchRedemptions({
       organizationId: this.organization()?.organizationId!,
       sortOptions: {
@@ -112,6 +118,8 @@ export class RedemptionListComponent implements OnInit {
             ? sortOrderEnum.ASC
             : sortOrderEnum.DESC,
       },
+      from: fromStr,
+      to: toStr,
     });
   }
 
