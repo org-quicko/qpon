@@ -2,13 +2,13 @@
 <button
   #triggerBtn
   (click)="togglePopup()"
-  class="range-btn inline-flex items-center gap-x-2 ap-1.5 border border-outline-variant bg-surface-container-lowest rounded-lg px-5 py-1 text-sm text-on-surface transition-colors duration-150 hover:border-outline hover:bg-surface-container-low focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+  class="range-btn inline-flex items-center gap-x-2 ap-1.5 border border-outline-variant bg-surface-container-lowest rounded-lg px-4 py-2 text-sm text-on-surface transition-colors duration-150 hover:border-outline hover:bg-surface-container-low focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
 >
-  <mat-icon class="text-on-surface-variant text-[18px] mt-1">
-    calendar_today
+  <mat-icon class="material-icons-outlined text-outline">
+    calendar_month
   </mat-icon>
-  <span>{{ label() }}</span>
-  <mat-icon class="text-on-surface-variant text-[18px] mt-1">
+  <span class="text-on-surface text-sm">{{ label() }}</span>
+  <mat-icon class="text-on-surface-variant">
     arrow_drop_down
   </mat-icon>
 </button>
