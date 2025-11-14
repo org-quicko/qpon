@@ -14,6 +14,12 @@
 
 .gross-sales-label {
   display: inline-block;
-  border-bottom: 1px dotted var(--md-sys-color-outline, #aaa);
-  padding-bottom: 2px;
+  padding-bottom: 3px;
+  background-image: radial-gradient(currentColor 1px, transparent 1.5px);
+  background-size: 4px 3px;
+  background-repeat: repeat-x;
+  background-position: left bottom;
+  color: var(--sys-on-surface-variant);
 }
+
+

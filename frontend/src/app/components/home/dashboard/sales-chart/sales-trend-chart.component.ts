@@ -34,7 +34,7 @@ interface ChartPoint {
   imports: [CommonModule, BaseChartDirective],
   template: `
     <div class="bg-surface-container-lowest relative">
-      <h3 class="text-base text-on-surface mb-4 font-medium">Sales</h3>
+      <h3 class="text-base text-on-surface-variant font-medium">Sales</h3>
 
       <div class="h-[336px] relative mb-4">
         <!-- Always render chart -->

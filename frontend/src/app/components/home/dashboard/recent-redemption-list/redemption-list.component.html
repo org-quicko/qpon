@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-4 mt-26">
-  <div class="text-base text-on-surface">
+  <div class="text-base text-on-surface-variant">
     Redemptions
   </div>
 
@@ -10,7 +10,7 @@
 
       <!-- Applied At -->
       <ng-container matColumnDef="appliedAt">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="px-6 py-4">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="px-6 py-4 text-on-surface-variant">
           Applied at
         </th>
         <td mat-cell *matCellDef="let redemption" class="p-6">
@@ -30,7 +30,7 @@
 
       <!-- Customer -->
       <ng-container matColumnDef="customer">
-        <th mat-header-cell *matHeaderCellDef class="px-6 py-4">Customer</th>
+        <th mat-header-cell *matHeaderCellDef class="px-6 py-4 text-on-surface-variant">Customer</th>
         <td mat-cell *matCellDef="let redemption" class="p-6">
           @if (isLoading()) {
           <ngx-skeleton-loader
@@ -46,7 +46,7 @@
 
       <!-- Coupon Code -->
       <ng-container matColumnDef="coupon">
-        <th mat-header-cell *matHeaderCellDef class="px-6 py-4">Coupon code</th>
+        <th mat-header-cell *matHeaderCellDef class="px-6 py-4 text-on-surface-variant">Coupon code</th>
         <td mat-cell *matCellDef="let redemption" class="p-6">
           @if (isLoading()) {
           <ngx-skeleton-loader
@@ -69,7 +69,7 @@
 
       <!-- Item -->
       <ng-container matColumnDef="item">
-        <th mat-header-cell *matHeaderCellDef class="px-6 py-4">Item</th>
+        <th mat-header-cell *matHeaderCellDef class="px-6 py-4 text-on-surface-variant">Item</th>
         <td mat-cell *matCellDef="let redemption" class="p-6">
           @if (isLoading()) {
           <ngx-skeleton-loader
@@ -82,26 +82,26 @@
 
       <!-- Sales -->
       <ng-container matColumnDef="sales">
-        <th mat-header-cell *matHeaderCellDef class="px-6 py-4">Sales</th>
+        <th mat-header-cell *matHeaderCellDef class="px-6 py-4 text-on-surface-variant">Sales</th>
         <td mat-cell *matCellDef="let redemption" class="p-6">
           @if (isLoading()) {
           <ngx-skeleton-loader
             [theme]="{ height: '24px', width: '80px', margin: '0', padding: '0' }"></ngx-skeleton-loader>
           } @else {
-          ₹{{ redemption.getBaseOrderValue() }}
+          {{ redemption.getBaseOrderValue() | currency: organization()?.currency : 'symbol' }}
           }
         </td>
       </ng-container>
 
       <!-- Discount -->
       <ng-container matColumnDef="discount">
-        <th mat-header-cell *matHeaderCellDef class="px-6 py-4">Discount</th>
+        <th mat-header-cell *matHeaderCellDef class="px-6 py-4 text-on-surface-variant">Discount</th>
         <td mat-cell *matCellDef="let redemption" class="p-6">
           @if (isLoading()) {
           <ngx-skeleton-loader
             [theme]="{ height: '24px', width: '80px', margin: '0', padding: '0' }"></ngx-skeleton-loader>
           } @else {
-          ₹{{ redemption.getDiscount() }}
+          {{ redemption.getDiscount() | currency: organization()?.currency : 'symbol' }}
           }
         </td>
       </ng-container>

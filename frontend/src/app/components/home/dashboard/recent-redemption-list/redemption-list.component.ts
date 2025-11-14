@@ -20,7 +20,8 @@ import { MatSortModule, Sort } from '@angular/material/sort';
 import { PaginationOptions } from '../../../../types/PaginatedOptions';
 import { sortOrderEnum } from '../../../../../enums';
 import { SnackbarService } from '../../../../services/snackbar.service';
-import { DatePipe } from '@angular/common';
+import { CurrencyPipe, DatePipe } from '@angular/common';
+import { DateRangeStore } from '../../../../store/date-range.store';
 
 @Component({
   selector: 'app-recent-redemption-list',
@@ -33,6 +34,7 @@ import { DatePipe } from '@angular/common';
     ReactiveFormsModule,
     DatePipe,
     NgxSkeletonLoaderModule,
+    CurrencyPipe,
   ],
   templateUrl: './redemption-list.component.html',
   styleUrls: ['./redemption-list.component.css'],
@@ -58,6 +60,8 @@ export class RedemptionListComponent implements OnInit {
   redemptionsStore = inject(RedemptionsStore);
   organizationsStore = inject(OrganizationStore);
   snackbarService = inject(SnackbarService);
+  dateRangeStore = inject(DateRangeStore);
+
 
   redemptions = this.redemptionsStore.redemptions;
   isLoading = this.redemptionsStore.isLoading;
@@ -134,6 +138,12 @@ export class RedemptionListComponent implements OnInit {
 
     this.redemptionsStore.resetLoadedPages();
 
+    const from = this.dateRangeStore.start();
+    const to = this.dateRangeStore.end();
+
+    const fromStr = from ? from.toISOString().slice(0, 10) : undefined;
+    const toStr = to ? to.toISOString().slice(0, 10) : undefined;
+
     this.redemptionsStore.fetchRedemptions({
       organizationId: this.organization()?.organizationId!,
       sortOptions: {
@@ -144,6 +154,8 @@ export class RedemptionListComponent implements OnInit {
             : sortOrderEnum.DESC,
       },
       isSortOperation: true,
+      from: fromStr,
+      to: toStr,
     });
   }
 }

@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { DateRangeFilterComponent } from '../../../../layouts/range-selector/date-range-filter.component';
 import { OrganizationStore } from '../../../../store/organization.store';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-dashboard-sales-analytics',
@@ -15,6 +16,7 @@ import { OrganizationStore } from '../../../../store/organization.store';
     MatCardModule,
     MatButtonModule,
     DateRangeFilterComponent,
+    MatTooltipModule,
   ],
   templateUrl: './sales-analytics.component.html',
   styleUrls: ['./sales-analytics.component.css'],

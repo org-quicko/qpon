@@ -2,7 +2,6 @@ import { Controller, Get, Post, Body, Query, Param, Res } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { Response } from 'express';
 import { RedemptionsService } from '../services/redemption.service';
-import { } from '../dtos';
 import { LoggerService } from '../services/logger.service';
 import { CreateRedemptionDto } from '../dtos/redemption.dto';
 import { sortOrderEnum, timePeriodEnum } from '../enums';
