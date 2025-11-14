@@ -258,6 +258,46 @@ export class SalesTrendChartComponent implements OnChanges, OnDestroy {
     this.chart?.chart?.destroy();
   }
 
+
+  ngAfterViewInit(): void {
+    const chart = this.chart?.chart;
+    if (!chart) return;
+
+    const ctx = chart.ctx;
+    const gradientGross = ctx.createLinearGradient(0, 0, 0, chart.chartArea.bottom);
+    gradientGross.addColorStop(0, 'rgba(177, 198, 255, 0.45)');
+    gradientGross.addColorStop(1, 'rgba(177, 198, 255, 0)');
+
+    const gradientNet = ctx.createLinearGradient(0, 0, 0, chart.chartArea.bottom);
+    gradientNet.addColorStop(0, 'rgba(77, 92, 146, 0.30)');
+    gradientNet.addColorStop(1, 'rgba(77, 92, 146, 0)');
+
+    this.chartData.datasets[0].backgroundColor = gradientGross;
+    this.chartData.datasets[1].backgroundColor = gradientNet;
+
+    chart.update();
+  }
+
+  private applyGradient() {
+    const chart = this.chart?.chart;
+    if (!chart) return;
+
+    const ctx = chart.ctx;
+
+    const gradientGross = ctx.createLinearGradient(0, 0, 0, chart.chartArea.bottom);
+    gradientGross.addColorStop(0, 'rgba(177, 198, 255, 1)');
+    gradientGross.addColorStop(1, 'rgba(177, 198, 255, 0.1)');
+
+    const gradientNet = ctx.createLinearGradient(0, 0, 0, chart.chartArea.bottom);
+    gradientNet.addColorStop(0, 'rgba(77, 92, 146, 1)');
+    gradientNet.addColorStop(1, 'rgba(77, 92, 146, 0.1)');
+
+    this.chartData.datasets[0].backgroundColor = gradientGross;
+    this.chartData.datasets[1].backgroundColor = gradientNet;
+  }
+
+
+
   // ------------------ Chart update pipeline (unified) ------------------
   private updateChart(): void {
     // emergency fallback: no graphData
@@ -291,7 +331,7 @@ export class SalesTrendChartComponent implements OnChanges, OnDestroy {
     this.chartData.datasets[1].data = this.chartPoints.map(p => p.netAmount);
 
     this.hasData = this.chartPoints.some(p => p.grossAmount > 0 || p.netAmount > 0);
-
+    this.applyGradient();
     this.chart?.update();
   }
 
