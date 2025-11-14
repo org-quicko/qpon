@@ -77,7 +77,7 @@ export class SalesTrendChartComponent implements OnChanges, OnDestroy {
         borderColor: '#B1C6FF',
         backgroundColor: 'rgba(177, 198, 255, 0.3)',
         fill: true,
-        tension: 0,
+        tension: 0.1,
         pointRadius: 0,
         pointHoverRadius: 7,
         pointHitRadius: 12,
@@ -92,7 +92,7 @@ export class SalesTrendChartComponent implements OnChanges, OnDestroy {
         borderColor: '#4D5C92',
         backgroundColor: 'rgba(77, 92, 146, 0.1)',
         fill: true,
-        tension: 0,
+        tension: 0.1,
         pointRadius: 0,
         pointHoverRadius: 7,
         pointHitRadius: 12,
@@ -149,83 +149,87 @@ export class SalesTrendChartComponent implements OnChanges, OnDestroy {
   };
 
   /** ✅ Custom external tooltip renderer */
-  private renderCustomTooltip(context: any): void {
-    const { chart, tooltip } = context;
-    const canvasParent = chart.canvas?.parentNode as HTMLElement | null;
-    if (!canvasParent) return;
+private renderCustomTooltip(context: any): void {
+  const { chart, tooltip } = context;
+  const canvasParent = chart.canvas?.parentNode as HTMLElement | null;
+  if (!canvasParent) return;
 
-    let tooltipEl = canvasParent.querySelector(
-      'div.chartjs-tooltip'
-    ) as HTMLElement | null;
+  let tooltipEl = canvasParent.querySelector('div.chartjs-tooltip') as HTMLElement | null;
 
-    if (!tooltipEl) {
-      tooltipEl = document.createElement('div');
-      tooltipEl.classList.add('chartjs-tooltip');
-      tooltipEl.style.cssText = `
-        position: absolute;
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-        pointer-events: none;
-        transition: all 0.1s ease;
-        border: 1px solid rgba(0,0,0,0.1);
-        padding: 12px 16px;
-        font-family: Inter, sans-serif;
-        z-index: 10;
-      `;
-      canvasParent.appendChild(tooltipEl);
-    }
-
-    if (tooltip.opacity === 0) {
-      tooltipEl.style.opacity = '0';
-      return;
-    }
-
-    const dataIndex = tooltip.dataPoints?.[0]?.dataIndex ?? 0;
-    const point = this.chartPoints[dataIndex];
-    if (!point) return;
-
-    const grossValue = point.grossAmount;
-    const netValue = point.netAmount;
-    const discount = grossValue - netValue;
-    const dateLabel = this.formatDateLabel(point.dateString);
-
-    tooltipEl.innerHTML = `
-      <div style="font-size: 14px; font-weight: 500; color: #444; margin-bottom: 8px;">
-        ${dateLabel}
-      </div>
-      <div style="display:flex; justify-content:space-between; font-size:13px; color:#111; margin-bottom:4px; gap:10px;">
-        <div style="display:flex; align-items:center; gap:6px;">
-          <span style="width:8px;height:8px;border-radius:50%;background:#B1C6FF;"></span>
-          <span>Gross revenue</span>
-        </div>
-        <span>${grossValue.toLocaleString()}</span>
-      </div>
-      <div style="display:flex; justify-content:space-between; font-size:13px; color:#111; margin-bottom:8px;">
-        <div style="display:flex; align-items:center; gap:6px;">
-          <span style="width:8px;height:8px;border-radius:50%;background:#4D5C92;"></span>
-          <span>Net revenue</span>
-        </div>
-        <span>${netValue.toLocaleString()}</span>
-      </div>
-      <div style="height:1px;background:#E0E0E0;margin:6px 0;"></div>
-      <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:600;">
-        <span>Discount</span>
-        <span>${discount.toLocaleString()}</span>
-      </div>
+  if (!tooltipEl) {
+    tooltipEl = document.createElement('div');
+    tooltipEl.classList.add('chartjs-tooltip');
+    tooltipEl.style.cssText = `
+      position: absolute;
+      background: var(--sys-surface-container-lowest);
+      color: var(--sys-on-surface);
+      border-radius: 5px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      pointer-events: none;
+      transition: all 0.1s ease;
+      border: 1px solid var(--sys-outline-variant);
+      padding: 12px 16px;
+      font-family: Inter, sans-serif;
+      z-index: 10;
     `;
-
-    const { offsetLeft: positionX, offsetTop: positionY } = chart.canvas;
-    const tooltipWidth = tooltipEl.offsetWidth || 160;
-    const tooltipHeight = tooltipEl.offsetHeight || 80;
-    const leftPosition = positionX + tooltip.caretX - tooltipWidth - 12;
-    const topPosition = positionY + tooltip.caretY - tooltipHeight / 2;
-    const finalLeft = Math.max(8, leftPosition);
-
-    tooltipEl.style.opacity = '1';
-    tooltipEl.style.left = `${finalLeft}px`;
-    tooltipEl.style.top = `${topPosition}px`;
+    canvasParent.appendChild(tooltipEl);
   }
+
+  if (tooltip.opacity === 0) {
+    tooltipEl.style.opacity = '0';
+    return;
+  }
+
+  const dataIndex = tooltip.dataPoints?.[0]?.dataIndex ?? 0;
+  const point = this.chartPoints[dataIndex];
+  if (!point) return;
+
+  const grossValue = point.grossAmount;
+  const netValue = point.netAmount;
+  const discount = grossValue - netValue;
+  const dateLabel = this.formatDateLabel(point.dateString);
+
+  tooltipEl.innerHTML = `
+    <div style="font-size: 14px; font-weight: 500; color: var(--sys-on-surface-variant); margin-bottom: 8px;">
+      ${dateLabel}
+    </div>
+
+    <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:4px; gap:6px;">
+      <div style="display:flex; align-items:center; gap:6px;">
+        <span style="width:8px;height:8px;border-radius:50%;background:var(--sys-primary);"></span>
+        <span>Gross revenue</span>
+      </div>
+      <span>${grossValue.toLocaleString()}</span>
+    </div>
+
+    <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:8px;">
+      <div style="display:flex; align-items:center; gap:6px;">
+        <span style="width:8px;height:8px;border-radius:50%;background:var(--sys-secondary);"></span>
+        <span>Net revenue</span>
+      </div>
+      <span>${netValue.toLocaleString()}</span>
+    </div>
+
+    <div style="height:1px;background:var(--sys-outline);margin:6px 0;"></div>
+
+    <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:600;">
+      <span>Discount</span>
+      <span>${discount.toLocaleString()}</span>
+    </div>
+  `;
+
+  const { offsetLeft: positionX, offsetTop: positionY } = chart.canvas;
+  const tooltipWidth = tooltipEl.offsetWidth || 160;
+  const tooltipHeight = tooltipEl.offsetHeight || 80;
+  const leftPosition = positionX + tooltip.caretX - tooltipWidth - 12;
+  const topPosition = positionY + tooltip.caretY - tooltipHeight / 2;
+  const finalLeft = Math.max(8, leftPosition);
+
+  tooltipEl.style.opacity = '1';
+  tooltipEl.style.left = `${finalLeft}px`;
+  tooltipEl.style.top = `${topPosition}px`;
+}
+
 
   /** ✅ Dynamic dataset handling */
   get displayChartData() {
