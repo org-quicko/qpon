@@ -136,7 +136,7 @@
       <!--Footer Row -->
       <ng-container matColumnDef="footer">
         <td mat-footer-cell *matFooterCellDef [attr.colspan]="columns.length" class="p-4 text-left cursor-pointer 
-         hover:bg-surface-container-high transition-colors">
+         hover:bg-surface-container-high transition-colors" (click)="goToRedemptions()">
 
           <div class="text-sm text-primary font-medium inline-flex items-center gap-1">
             View all redemptions
