@@ -37,7 +37,7 @@ export class DateRangeStore {
     }
 
 
-    // 🔹 This method updates the store when Apply is clicked
+    // This method updates the store when Apply is clicked
     applyRange(range: {
         type: DateRangeType;
         start: Date | null;
@@ -45,7 +45,7 @@ export class DateRangeStore {
     }) {
         this._activeRange.set(range.type);
 
-        // ✅ Handle special cases first
+        // Handle special cases first
         if (range.type === 'all') {
             this._label.set('All time');
             this._start.set(null);
@@ -63,7 +63,7 @@ export class DateRangeStore {
             return;
         }
 
-        // ✅ Handle predefined numeric ranges safely
+        // Handle predefined numeric ranges safely
         const today = new Date();
         const labelMap: Record<DateRangeType, string> = {
             '7': 'Last 7 days',
@@ -74,7 +74,7 @@ export class DateRangeStore {
             custom: 'Custom',
         };
 
-        // 🔹 Restrict keys to only valid numeric ones
+        // Restrict keys to only valid numeric ones
         const daysBackMap: Record<'7' | '30' | '90' | '365', number> = {
             '7': 6,
             '30': 29,
@@ -82,7 +82,7 @@ export class DateRangeStore {
             '365': 364,
         };
 
-        // ✅ TypeScript now knows range.type is one of these four
+        // TypeScript now knows range.type is one of these four
         if (range.type in daysBackMap) {
             const daysBack = daysBackMap[range.type as '7' | '30' | '90' | '365'];
             const start = new Date(today);

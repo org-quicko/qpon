@@ -1,6 +1,6 @@
 <div class="p-6 space-y-8">
 
-  <!-- 🧾 Sales Analytics -->
+  <!-- Sales Analytics -->
   <ng-container *ngIf="salesLoading(); else salesAnalyticsContent">
     <!-- Skeleton for Sales Summary header + cards -->
     <div class="space-y-2">
@@ -24,7 +24,7 @@
     </app-dashboard-sales-analytics>
   </ng-template>
 
-  <!-- 🛒 Item Popularity -->
+  <!-- Item Popularity -->
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
 
     <!-- Left: Product popularity -->
@@ -65,7 +65,7 @@
 
   </div>
 
-  <!-- 📈 Sales Trend Chart -->
+  <!-- Sales Trend Chart -->
   <div class="mt-6 h-[300px] mb-8">
     <ng-container *ngIf="salesLoading(); else salesChartContent">
       <ngx-skeleton-loader count="1" [theme]="{ height: '320px', borderRadius: '10px', background: 'var(--skeleton-bg)' }"></ngx-skeleton-loader>

@@ -25,7 +25,7 @@ export class RedemptionSummaryListConverter {
         const discountPercentage =
             grossSalesAmount > 0 ? (discountAmount / grossSalesAmount) * 100 : 0;
 
-        // ✅ Use the built-in methods to populate the list
+        // Use the built-in methods to populate the list
         list.addTotalRedemptions(totalRedemptions);
         list.addGrossSalesAmount(grossSalesAmount);
         list.addDiscountAmount(discountAmount);

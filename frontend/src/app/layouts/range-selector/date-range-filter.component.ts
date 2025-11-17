@@ -141,8 +141,8 @@ export class DateRangeFilterComponent implements OnInit, OnDestroy {
   onDateChange() {
     const { start, end } = this.dateForm.value;
     this.tempRangeType = 'custom';
-    this.tempStart = start ?? null; // ✅ normalize undefined to null
-    this.tempEnd = end ?? null;     // ✅ normalize undefined to null
+    this.tempStart = start ?? null; // normalize undefined to null
+    this.tempEnd = end ?? null;     // normalize undefined to null
   }
 
 

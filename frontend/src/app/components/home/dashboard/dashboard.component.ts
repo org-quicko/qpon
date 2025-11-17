@@ -41,7 +41,7 @@ import { RedemptionsStore } from './recent-redemption-list/store/redemptions.sto
   ],
 })
 export class DashboardComponent implements OnInit {
-  // 🧩 Inject stores
+  // Inject stores
   private userStore = inject(UserStore);
   private organizationStore = inject(OrganizationStore);
   private salesSummaryStore = inject(SalesSummaryStore);
@@ -55,7 +55,7 @@ export class DashboardComponent implements OnInit {
   private lastStart: string | null = null;
   private lastEnd: string | null = null;
 
-  // 🧠 Derived signals
+  // Derived signals
   user = this.userStore.user;
   organization = this.organizationStore.organizaiton;
   dateLabel = this.dateRangeStore.label;
@@ -109,7 +109,7 @@ export class DashboardComponent implements OnInit {
       const startStr = start ? start.toISOString().split('T')[0] : null;
       const endStr = end ? end.toISOString().split('T')[0] : null;
 
-      // 🚫 Prevent infinite loops
+      // Prevent infinite loops
       if (
         this.lastOrgId === orgId &&
         this.lastStart === startStr &&
@@ -131,7 +131,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.dateRangeStore.reset();
   }
-  /** 🔄 Fetch all dashboard data */
+  /** Fetch all dashboard data */
   private fetchAllData(orgId: string, start: Date | null, end: Date | null) {
     const startStr = start ? start.toISOString().split('T')[0] : undefined;
     const endStr = end ? end.toISOString().split('T')[0] : undefined;

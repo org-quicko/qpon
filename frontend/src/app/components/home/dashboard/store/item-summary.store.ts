@@ -67,7 +67,7 @@ export const ItemSummaryStore = signalStore(
     hasData: computed(() => !!store.data()),
     isEmpty: computed(() => !store.isLoading() && !store.data()),
 
-    /** 🧠 Normalized chart data (label/value pairs) */
+    /** Normalized chart data (label/value pairs) */
     popularityData: computed(() => {
       const workbook = store.data();
       if (!workbook) return [];
