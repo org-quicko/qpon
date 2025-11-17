@@ -34,9 +34,9 @@ interface ChartPoint {
   imports: [CommonModule, BaseChartDirective],
   template: `
     <div class="bg-surface-container-lowest relative">
-      <h3 class="text-base text-on-surface-variant font-medium">Sales</h3>
+      <h3 class="text-base text-on-surface-variant font-medium mb-3">Sales</h3>
 
-      <div class="h-[336px] relative mb-4">
+      <div class="h-[410px] relative mb-4 border border-outline-variant rounded-lg p-6">
         <!-- Always render chart -->
         <canvas
           baseChart
@@ -129,9 +129,7 @@ export class SalesTrendChartComponent implements OnChanges, OnDestroy {
     },
     plugins: {
       legend: {
-        display: true,
-        position: 'top',
-        labels: { usePointStyle: true, boxWidth: 8 },
+        display: false,
       },
       tooltip: {
         enabled: false,
@@ -163,6 +161,7 @@ export class SalesTrendChartComponent implements OnChanges, OnDestroy {
         padding: 12px 16px;
         font-family: Inter, sans-serif;
         z-index: 10;
+        min-width: 200px;
       `;
       canvasParent.appendChild(tooltipEl);
     }
@@ -224,18 +223,48 @@ export class SalesTrendChartComponent implements OnChanges, OnDestroy {
 
   // ------------------ Display data wrapper ------------------
   get displayChartData() {
-    if (this.hasData) return this.chartData;
+    if (this.hasData) {
+      return this.chartData;
+    }
+
+    // Build safe, non-undefined no-data options
+    const noDataOptions: ChartConfiguration<'line'>['options'] = {
+      ...this.chartOptions,
+      scales: {
+        x: {
+          ...(this.chartOptions?.scales?.['x'] ?? {}),
+          ticks: {
+            ...((this.chartOptions?.scales?.['x'] as any)?.ticks ?? {}),
+            callback: (_, index) => this.getEmptyLabels()[index] ?? '',
+          },
+        },
+        y: {
+          beginAtZero: true,
+          ticks: {
+            color: '#666',
+            font: { size: 12 },
+            stepSize: 20,
+            callback: (value) => value,
+          },
+          suggestedMax: 100,
+          grid: { color: 'rgba(230,230,230,0.4)', lineWidth: 1 },
+        },
+      },
+    };
+
+    // Assign safely
+    this.chartOptions = noDataOptions;
+
     return {
-      labels:
-        this.chartData.labels && this.chartData.labels.length > 0
-          ? this.chartData.labels
-          : this.getEmptyLabels(),
+      labels: this.getEmptyLabels(),
       datasets: [],
     };
   }
 
+
+
   private getEmptyLabels(): string[] {
-    return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'];
   }
 
   // ------------------ Lifecycle ------------------
@@ -423,6 +452,10 @@ export class SalesTrendChartComponent implements OnChanges, OnDestroy {
       cursor = this.addDays(cursor, 1);
     }
     return points;
+  }
+
+  private getEmptyYAxisTicks(): number[] {
+    return [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
   }
 
   // ------------------ Label assignment entry (keeps same behavior) ------------------

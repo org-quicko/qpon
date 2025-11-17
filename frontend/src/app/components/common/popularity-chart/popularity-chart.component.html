@@ -1,37 +1,27 @@
-<h3 class="text-base text-on-surface-variant mb-4">
+<h3 class="mat-body-large text-on-surface-variant mb-4">
   {{ title }}
 </h3>
 
-<mat-card
-  class="p-4 rounded-lg border border-gray-200 dark:border-outline-variant flex flex-col"
->
+<mat-card class="p-4 rounded-lg border border-outline-variant flex flex-col">
   <!-- Fixed height container -->
-  <div class="flex-1 overflow-y-auto min-h-[16rem] max-h-[18rem]">
+  <div class="flex-1 overflow-y-auto min-h-[16rem] max-h-[19rem] p-2">
     <!-- Always show headers -->
-    <div
-      class="grid grid-cols-[1fr_auto] text-sm font-medium mb-2 mt-2 text-outline"
-    >
+    <div class="grid grid-cols-[1fr_auto] text-sm font-medium mb-2 mt-1 text-outline">
       <div>{{ labelColumn }}</div>
       <div>{{ valueColumn }}</div>
     </div>
 
     <div *ngIf="data && data.length > 0; else noData" class="space-y-2">
       <!-- Each row -->
-      <div
-        *ngFor="let item of data"
-        class="grid grid-cols-1 items-center relative mt-3"
-      >
+      <div *ngFor="let item of data" class="grid grid-cols-1 items-center relative mt-3 group">
         <div class="relative w-full h-8 rounded-md flex items-center">
           <!-- Filled bar -->
-          <div
-            class="absolute left-0 top-0 h-full rounded-md bg-inverse-on-surface transition-all duration-300"
-            [style.width.%]="(item.value / maxValue) * 100"
-          ></div>
+          <div  class="absolute left-0 top-0 h-full rounded-md bg-inverse-on-surface 
+         transition-all duration-300 group-hover:bg-surface-variant"
+            [style.width.%]="(item.value / maxValue) * 100"></div>
 
           <!-- Label and value on top of the bar -->
-          <div
-            class="relative z-10 flex justify-between items-center w-full px-3 text-sm font-medium text-on-surface"
-          >
+          <div class="relative z-10 flex justify-between items-center w-full px-3 text-sm font-medium text-on-surface">
             <span>{{ item.label }}</span>
             <span>{{ item.value }}</span>
           </div>
@@ -41,11 +31,11 @@
 
     <!-- No Data Template -->
     <ng-template #noData>
-      <div
-        class="flex items-center justify-center h-[5rem] font-medium text-on-surface mt-15 pt-3"
-      >
+      <div class="flex items-center justify-center h-[15rem] font-body-medium text-on-surface-variant
+           mt-3 border border-dashed border-outline-variant rounded-md">
         No data available
       </div>
     </ng-template>
+
   </div>
 </mat-card>

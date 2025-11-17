@@ -3,13 +3,14 @@
   <div class="flex items-center justify-between w-full">
     <!-- Left: Welcome text -->
     <div class="flex flex-col">
-      <h2 class="text-2xl text-on-surface">
+      <h2 class="text-2xl text-on-surface mb-2">
         Welcome to your dashboard, {{ userName ? userName.split(' ')[0] : '' }}!
       </h2>
       <p class="text-sm text-on-surface-variant">
         Today is {{ currentDate | date: 'fullDate' }}
       </p>
     </div>
+
 
     <!-- Right: Date range filter -->
     <div class="flex items-center gap-2">
@@ -18,29 +19,29 @@
   </div>
 
   <!-- Stats cards -->
-  <div class="grid grid-cols-4 gap-3">
-    <mat-card appearance="outlined" class="p-6 bg-surface-container-lowest">
+  <div class="grid grid-cols-4 gap-4">
+    <mat-card appearance="outlined" class="p-5 bg-surface-container-lowest">
       <mat-card-content>
         <p class="mat-body-large text-on-surface-variant">Total redemptions</p>
-        <p class="mat-title-large text-on-surface">{{ stats.totalRedemptions | number }}</p>
+        <p class="mat-headline-small text-on-surface">{{ stats.totalRedemptions | number }}</p>
       </mat-card-content>
     </mat-card>
 
-    <mat-card appearance="outlined" class="p-6 bg-surface-container-lowest">
+    <mat-card appearance="outlined" class="p-5 bg-surface-container-lowest">
       <mat-card-content>
         <p class="mat-body-large text-on-surface-variant gross-sales-label"
           matTooltip="Total revenue generated from sales" matTooltipPosition="above">Gross sales</p>
-        <p class="mat-title-large text-on-surface">
+        <p class="mat-headline-small text-on-surface">
           {{ stats.grossSales | currency: organization()?.currency : 'symbol' }}
         </p>
       </mat-card-content>
     </mat-card>
 
-    <mat-card appearance="outlined" class="p-6 bg-surface-container-lowest">
+    <mat-card appearance="outlined" class="p-5 bg-surface-container-lowest">
       <mat-card-content>
         <p class="mat-body-large text-on-surface-variant gross-sales-label"
           matTooltip="The price reductions from coupons" matTooltipPosition="above">Discount</p>
-        <p class="mat-title-large text-on-surface">
+        <p class="mat-headline-small text-on-surface">
           {{ stats.discount | currency: organization()?.currency : 'symbol' }}
           <span class="text-sm text-on-surface-variant">
             ({{ stats.discountPercent | number:'1.0-2' }}%)
@@ -50,11 +51,11 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card appearance="outlined" class="p-6 bg-surface-container-lowest">
+    <mat-card appearance="outlined" class="p-5 bg-surface-container-lowest">
       <mat-card-content>
         <p class="mat-body-large text-on-surface-variant gross-sales-label"
           matTooltip="Gross sales after deducting discounts" matTooltipPosition="above">Net sales</p>
-        <p class="mat-title-large text-on-surface">
+        <p class="mat-headline-small text-on-surface">
           {{ stats.netSales | currency: organization()?.currency : 'symbol' }}
         </p>
 

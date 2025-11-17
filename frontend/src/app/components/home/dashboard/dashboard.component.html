@@ -1,4 +1,4 @@
-<div class="p-6 space-y-8">
+<div class="p-2 space-y-8">
 
   <!-- Sales Analytics -->
   <ng-container *ngIf="salesLoading(); else salesAnalyticsContent">
@@ -25,7 +25,7 @@
   </ng-template>
 
   <!-- Item Popularity -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
 
     <!-- Left: Product popularity -->
     <ng-container *ngIf="itemLoading(); else itemPopularityContent">
@@ -82,7 +82,7 @@
   </div>
 
   <!-- 💳 Redemption List -->
-  <div class="mt-6 mb-8">
+  <div class="mt-6 mb-8 pt-11">
     <app-recent-redemption-list></app-recent-redemption-list>
   </div>
 </div>
