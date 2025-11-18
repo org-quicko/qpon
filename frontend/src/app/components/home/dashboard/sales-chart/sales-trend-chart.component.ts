@@ -138,6 +138,35 @@ export class SalesTrendChartComponent implements OnChanges, OnDestroy {
     },
   };
 
+  private verticalLinePlugin = {
+    id: 'verticalLine',
+    afterDraw: (chart: { tooltip: { _active: string | any[]; }; ctx: any; scales: { y: { top: any; bottom: any; }; }; }) => {
+      if (!chart.tooltip || !chart.tooltip._active || chart.tooltip._active.length === 0) {
+        return;
+      }
+
+      const ctx = chart.ctx;
+      const activePoint = chart.tooltip._active[0];
+
+      const x = activePoint.element.x;
+      const topY = chart.scales.y.top;
+      const bottomY = chart.scales.y.bottom;
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(x, topY);
+      ctx.lineTo(x, bottomY);
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = 'var(--sys-surface-outline-variant);'; // light line
+      ctx.stroke();
+      ctx.restore();
+    },
+  };
+
+  ngOnInit() {
+    Chart.register(this.verticalLinePlugin);
+  }
+
   // ------------------ Tooltip (unchanged, formatted) ------------------
   private renderCustomTooltip(context: any): void {
     const { chart, tooltip } = context;
@@ -152,7 +181,7 @@ export class SalesTrendChartComponent implements OnChanges, OnDestroy {
       tooltipEl.style.cssText = `
         position: absolute;
         background: var(--sys-surface-container-lowest);
-        color: var(--sys-on-surface);
+        color: var(--sys-on-surface-variant);
         border-radius: 5px;
         box-shadow: 0 4px 16px rgba(0,0,0,0.15);
         pointer-events: none;
