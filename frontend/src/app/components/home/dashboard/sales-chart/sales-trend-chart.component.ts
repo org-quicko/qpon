@@ -123,6 +123,9 @@ export class SalesTrendChartComponent implements OnChanges, OnDestroy {
       },
       y: {
         beginAtZero: true,
+        border: {
+          display: false
+        },
         ticks: { color: '#666', font: { size: 12 } },
         grid: { color: 'rgba(230,230,230,0.4)', lineWidth: 1 },
       },
