@@ -22,12 +22,19 @@ import { CustomerConverter } from 'src/converters/customer.converter';
 import { statusEnum } from '../enums';
 import { CustomerCouponCode } from 'src/entities/customer-coupon-code.entity';
 import { CustomerListConverter } from 'src/converters/customer-list.converter';
+import { PassThrough } from 'stream';
+import { format as csvFormat } from '@fast-csv/format';
+import { CustomerWiseDayWiseRedemptionSummaryMv } from 'src/entities/customer_wise_day_wise_redemption_summary_mv';
 
 @Injectable()
 export class CustomersService {
   constructor(
     @InjectRepository(Customer)
     private readonly customersRepository: Repository<Customer>,
+
+    @InjectRepository(CustomerWiseDayWiseRedemptionSummaryMv)
+    private readonly customerWiseMvRepository: Repository<CustomerWiseDayWiseRedemptionSummaryMv>,
+
     private customerConverter: CustomerConverter,
     private customerListConverter: CustomerListConverter,
     private logger: LoggerService,
@@ -427,4 +434,63 @@ export class CustomersService {
       );
     }
   }
+
+  async streamSalesByCustomerReport(
+    organizationId: string,
+    from?: string,
+    to?: string,
+  ): Promise<PassThrough> {
+    if (!from || !to) {
+      throw new BadRequestException('Time period not configured for report');
+    }
+
+    const passThrough = new PassThrough();
+
+    const csvStream = csvFormat({
+      headers: true,
+      quoteColumns: true,
+    });
+
+    csvStream.pipe(passThrough);
+
+    const dbStream = await this.customerWiseMvRepository
+      .createQueryBuilder('mv')
+      .where('mv.organization_id = :organizationId', { organizationId })
+      .andWhere('mv.date BETWEEN :start AND :end', {
+        start: from,
+        end: to,
+      })
+      .select([
+        'mv.customer_external_id AS customer_external_id',
+        'mv.customer_name AS customer_name',
+        'SUM(mv.gross_sale) AS gross_sales',
+        'SUM(mv.total_discount) AS total_discount',
+        'SUM(mv.net_sale) AS net_sales',
+        'SUM(mv.total_redemptions) AS total_redemptions',
+      ])
+      .groupBy('mv.customer_external_id')
+      .addGroupBy('mv.customer_name')
+      .orderBy('mv.customer_name', 'ASC')
+      .stream();
+
+    dbStream.on('data', (row: any) => {
+      csvStream.write({
+        CustomerName: row.customer_name,
+        GrossSales: row.gross_sales,
+        Discount: row.total_discount,
+        NetSales: row.net_sales,
+        TotalRedemptions: row.total_redemptions,
+        CustomerExternalID: row.customer_external_id,
+      });
+    });
+
+    dbStream.on('end', () => csvStream.end());
+    dbStream.on('error', (err) => {
+      csvStream.end();
+      passThrough.destroy(err);
+    });
+
+    return passThrough;
+  }
+
 }

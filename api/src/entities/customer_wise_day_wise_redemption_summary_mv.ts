@@ -1,16 +1,17 @@
 import { ViewEntity, ViewColumn, Index } from 'typeorm';
 
 @ViewEntity({
-  name: 'item_wise_day_wise_redemption_summary_mv',
+  name: 'customer_wise_day_wise_redemption_summary_mv',
   expression: `
     SELECT
       r.organization_id,
-      r.item_id,
-      i.name AS item_name,
-      i.external_id AS external_item_id,
+      r.customer_id,
+      c.name AS customer_name,
+      c.external_id AS customer_external_id,
       r.redemption_date AS date,
 
       COUNT(r.redemption_id)::numeric AS total_redemptions,
+
       SUM(r.base_order_value)::numeric AS gross_sale,
       SUM(r.discount)::numeric AS total_discount,
       SUM(r.base_order_value - r.discount)::numeric AS net_sale,
@@ -18,32 +19,32 @@ import { ViewEntity, ViewColumn, Index } from 'typeorm';
       NOW() AS created_at,
       NOW() AS updated_at
     FROM redemption r
-    JOIN item i ON i.item_id = r.item_id
+    JOIN customer c ON c.customer_id = r.customer_id
     WHERE r.organization_id IS NOT NULL
-      AND r.item_id IS NOT NULL
+      AND r.customer_id IS NOT NULL
     GROUP BY
       r.organization_id,
-      r.item_id,
-      i.name,
-      i.external_id,
+      r.customer_id,
+      c.name,
+      c.external_id,
       r.redemption_date
   `,
   materialized: true,
 })
-export class ItemWiseDayWiseRedemptionSummaryMv {
+export class CustomerWiseDayWiseRedemptionSummaryMv {
   @Index()
   @ViewColumn({ name: 'organization_id' })
   organizationId: string;
 
   @Index()
-  @ViewColumn({ name: 'item_id' })
-  itemId: string;
+  @ViewColumn({ name: 'customer_id' })
+  customerId: string;
 
-  @ViewColumn({ name: 'item_name' })
-  itemName: string;
+  @ViewColumn({ name: 'customer_name' })
+  customerName: string;
 
-  @ViewColumn({ name: 'external_item_id' })
-  externalItemId: string;
+  @ViewColumn({ name: 'customer_external_id' })
+  customerExternalId: string;
 
   @Index()
   @ViewColumn({ name: 'date' })

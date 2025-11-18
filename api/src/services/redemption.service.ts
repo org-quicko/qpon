@@ -17,7 +17,7 @@ import {
   Not,
   Repository,
 } from 'typeorm';
-import * as XLSX from 'xlsx';
+import { format as csvFormat } from '@fast-csv/format';
 import { Redemption } from '../entities/redemption.entity';
 import { LoggerService } from './logger.service';
 import { CreateRedemptionDto } from '../dtos/redemption.dto';
@@ -29,7 +29,6 @@ import {
   durationTypeEnum,
   itemConstraintEnum,
   sortOrderEnum,
-  timePeriodEnum,
 } from '../enums';
 import { Customer } from '../entities/customer.entity';
 import { CustomerCouponCode } from '../entities/customer-coupon-code.entity';
@@ -39,9 +38,7 @@ import { CouponItem } from '../entities/coupon-item.entity';
 import { Campaign } from '../entities/campaign.entity';
 import { CampaignSummaryMv } from '../entities/campaign-summary.view';
 import { RedemptionWorkbookConverter } from '../converters/redemption';
-import { getStartEndDate } from '../utils/date.utils';
-import { RedemptionReportWorkbookConverter } from '../converters/redemption-report';
-import { RedemptionReportWorkbook } from '@org-quicko/qpon-sheet-core/redemption_report_workbook/beans';
+import { PassThrough } from 'stream';
 
 @Injectable()
 export class RedemptionsService {
@@ -55,7 +52,6 @@ export class RedemptionsService {
     @InjectRepository(Campaign)
     private readonly campaignRepository: Repository<Campaign>,
     private redemptionWorkbookConverter: RedemptionWorkbookConverter,
-    private redemptionReportWorkbookConverter: RedemptionReportWorkbookConverter,
     private logger: LoggerService,
     private datasource: DataSource,
   ) { }
@@ -480,86 +476,82 @@ export class RedemptionsService {
     return manager.save(Redemption, redemptionEntity);
   }
 
-  async generateRedemptionsReport(
+  async streamRedemptionReport(
     organizationId: string,
     from?: string,
     to?: string,
-    timePeriod?: timePeriodEnum,
-  ) {
-    this.logger.info('START: generateRedemptionsReport service');
-    try {
-      if (!from && !to && !timePeriod) {
-        this.logger.warn('Time period not configured for report');
-        throw new BadRequestException('Time period not configured for report');
-      }
-      const { parsedStartDate, parsedEndDate } = getStartEndDate(
-        from,
-        to,
-        timePeriod,
-      );
-
-      const redemptions = await this.redemptionsRepository.find({
-        relations: {
-          couponCode: true,
-          item: true,
-          customer: true,
-          campaign: true,
-          coupon: true,
-        },
-        where: {
-          organization: {
-            organizationId,
-          },
-          createdAt: Between(parsedStartDate, parsedEndDate),
-        },
-      });
-
-      const redemptionReportWorkbook =
-        this.redemptionReportWorkbookConverter.convert(redemptions);
-
-      const redemptionReportTable = redemptionReportWorkbook
-        .getRedemptionReportSheet()
-        .getRedemptionReportTable();
-
-      const workbook = RedemptionReportWorkbook.toXlsx(redemptionReportWorkbook);
-
-      const redemptionReportSheet: any[] = [redemptionReportTable.getHeader()];
-
-      redemptionReportTable.getRows().map((row) => {
-        redemptionReportSheet.push(row);
-      });
-
-      const redemptionReportSummarySheet = XLSX.utils.aoa_to_sheet(
-        redemptionReportSheet,
-      );
-
-      XLSX.utils.book_append_sheet(
-        workbook,
-        redemptionReportSummarySheet,
-        'Redemptions',
-      );
-
-      const fileBuffer = await XLSX.write(workbook, {
-        type: 'buffer',
-        bookType: 'xlsx',
-      });
-
-      this.logger.info('END: generateRedemptionsReport service');
-      return fileBuffer;
-    } catch (error) {
-      this.logger.error(
-        `Error in fetchRedemptionsForReport:`,
-        error,
-      );
-
-      if (error instanceof BadRequestException) {
-        throw error;
-      }
-
-      throw new HttpException(
-        'Failed to fetch redemptions for report',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+  ): Promise<PassThrough> {
+    if (!from || !to) {
+      throw new BadRequestException('Time period not configured for report');
     }
+    const passThrough = new PassThrough();
+
+    const csvStream = csvFormat({
+      headers: true,
+      quoteColumns: true,
+    });
+
+    csvStream.pipe(passThrough);
+
+    const dbStream = await this.redemptionsRepository
+      .createQueryBuilder('r')
+      .leftJoin('r.couponCode', 'cc')
+      .leftJoin('r.item', 'i')
+      .leftJoin('r.customer', 'c')
+      .leftJoin('r.campaign', 'ca')
+      .leftJoin('r.coupon', 'co')
+      .where('r.organization_id = :organizationId', { organizationId })
+      .andWhere('r.redemption_date BETWEEN :start AND :end', {
+        start: from,
+        end: to,
+      })
+      .select([
+        'r.redemption_id AS redemption_id',
+        'r.redemption_date AS redemption_date',
+        'c.name AS customer_name',
+        'c.email AS customer_email',
+        'c.customer_id AS customer_id',
+        'i.name AS item_name',
+        'i.item_id AS item_id',
+        'cc.code AS coupon_code',
+        'co.name AS coupon_name',
+        'ca.name AS campaign_name',
+        'r.base_order_value AS gross_sales',
+        'r.discount AS discount',
+        '(r.base_order_value - r.discount) AS net_sales',
+        'r.external_id AS redemption_external_id',
+      ])
+      .orderBy('r.redemption_date', 'ASC')
+      .stream();
+
+    dbStream.on('data', (row: any) => {
+      csvStream.write({
+        Date: row.redemption_date,
+        CustomerName: row.customer_name,
+        CustomerEmail: row.customer_email,
+        Item: row.item_name,
+        Coupon: row.coupon_name,
+        Campaign: row.campaign_name,
+        CouponCode: row.coupon_code,
+        GrossSales: row.gross_sales,
+        Discount: row.discount,
+        NetSales: row.net_sales,
+        CustomerID: row.customer_id,
+        ItemID: row.item_id,
+        RedemptionExternalID: row.redemption_external_id,
+      });
+    });
+
+    dbStream.on('end', () => {
+      csvStream.end();
+    });
+
+    dbStream.on('error', (err) => {
+      csvStream.end();
+      passThrough.destroy(err);
+    });
+
+    return passThrough;
   }
+
 }

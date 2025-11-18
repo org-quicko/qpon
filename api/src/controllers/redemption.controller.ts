@@ -1,11 +1,9 @@
-import { Controller, Get, Post, Body, Query, Param, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, Param, StreamableFile } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
-import { Response } from 'express';
 import { RedemptionsService } from '../services/redemption.service';
 import { LoggerService } from '../services/logger.service';
 import { CreateRedemptionDto } from '../dtos/redemption.dto';
-import { sortOrderEnum, timePeriodEnum } from '../enums';
-import { getReportFileName } from '../utils/reportFileName.util';
+import { sortOrderEnum } from '../enums';
 import { SkipTransform } from '../decorators/skipTransform.decorator';
 import { Permissions } from 'src/decorators/permission.decorator';
 import { Redemption } from 'src/entities/redemption.entity';
@@ -43,33 +41,23 @@ export class RedemptionsController {
   @Permissions('read', Redemption)
   @Get('redemptions/reports')
   async generateRedemptionReport(
-    @Res({ passthrough: true }) res: Response,
     @Param('organization_id') organizationId: string,
-    @Query('coupon_id') couponId?: string,
-    @Query('campaign_id') campaignId?: string,
-    @Query('coupon_code_id') couponCodeId?: string,
     @Query('from') from?: string,
     @Query('to') to?: string,
-    @Query('time_period') timePeriod?: timePeriodEnum,
-  ) {
+  ): Promise<StreamableFile> {
     this.logger.info('START: generateRedemptionReport controller');
 
-    const buffer = await this.redemptionsService.generateRedemptionsReport(
+    const stream = await this.redemptionsService.streamRedemptionReport(
       organizationId,
       from,
       to,
-      timePeriod,
     );
-
-    const fileName = getReportFileName('Redemption');
-
     this.logger.info('END: generateRedemptionReport controller');
-    res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
-    res.setHeader(
-      'Content-Type',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    );
-    res.send(buffer);
+
+    return new StreamableFile(stream, {
+      type: 'text/csv',
+      disposition: 'attachment; filename=redemption_report.csv',
+    });
   }
 
   /**

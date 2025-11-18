@@ -8,6 +8,7 @@ import {
   Param,
   Query,
   Put,
+  StreamableFile,
 } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { ItemsService } from '../services/item.service';
@@ -15,6 +16,8 @@ import { CreateItemDto, UpdateItemDto } from '../dtos';
 import { LoggerService } from '../services/logger.service';
 import { Permissions } from '../decorators/permission.decorator';
 import { Item } from '../entities/item.entity';
+import { SkipTransform } from 'src/decorators/skipTransform.decorator';
+import { ItemWiseDayWiseRedemptionSummaryMv } from 'src/entities/item-wise-day-wise-redemption-summary-mv';
 
 @ApiTags('Items')
 @Controller('/organizations/:organization_id/items')
@@ -23,6 +26,34 @@ export class ItemsController {
     private readonly itemsService: ItemsService,
     private logger: LoggerService,
   ) {}
+
+  /**
+ * REPORT
+ */
+  @ApiResponse({ status: 200, description: 'Successful response' })
+  @SkipTransform()
+  @Permissions('read', ItemWiseDayWiseRedemptionSummaryMv)
+  @Get('reports')
+  async generateSalesByItemsReport(
+    @Param('organization_id') organizationId: string,
+    @Query('from') from?: string,
+    @Query('to') to?: string,
+  ): Promise<StreamableFile> {
+    this.logger.info('START: generateSalesByItemsReport controller');
+
+    const stream = await this.itemsService.streamSalesByItemsReport(
+      organizationId,
+      from,
+      to,
+    );
+
+    this.logger.info('END: generateSalesByItemsReport controller');
+
+    return new StreamableFile(stream, {
+      type: 'text/csv',
+      disposition: 'attachment; filename=item_sales_report.csv',
+    });
+  }
 
   /**
    * Create item
