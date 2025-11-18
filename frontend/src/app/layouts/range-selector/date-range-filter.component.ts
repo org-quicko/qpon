@@ -17,7 +17,21 @@ import { MatIconModule } from '@angular/material/icon';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { CdkPortal, PortalModule } from '@angular/cdk/portal';
 import { DateRangeStore, DateRangeType } from '../../store/date-range.store';
-import { signal, effect } from '@angular/core';
+import { signal } from '@angular/core';
+
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'DD/MM/YYYY',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 
 @Component({
@@ -36,6 +50,9 @@ import { signal, effect } from '@angular/core';
   ],
   templateUrl: './date-range-filter.component.html',
   styleUrls: ['./date-range-filter.component.css'],
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }
+  ]
 })
 export class DateRangeFilterComponent implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);

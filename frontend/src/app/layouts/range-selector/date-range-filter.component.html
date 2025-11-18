@@ -2,7 +2,7 @@
 <button
   #triggerBtn
   (click)="togglePopup()"
-  class="range-btn inline-flex items-center gap-x-2 ap-1.5 border border-outline-variant bg-surface-container-lowest rounded-lg px-4 py-2 text-sm text-on-surface transition-colors duration-150 hover:border-outline hover:bg-surface-container-low focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+  class="range-btn inline-flex items-center gap-x-2 ap-1.5 border border-outline-variant bg-surface-container-lowest rounded-[5px] px-4 py-2 text-sm text-on-surface transition-colors duration-150 hover:border-outline hover:bg-surface-container-low focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
 >
   <mat-icon class="material-icons-outlined text-outline">
     calendar_month
@@ -25,7 +25,7 @@
         <div class="w-40 border-r border-outline-variant flex flex-col">
           <button
             *ngFor="let range of sidebarRanges"
-            class="px-4 py-3.5 text-left text-sm text-on-surface-variant transition-colors duration-150 hover:bg-surface-container hover:text-on-surface"
+            class="px-4 py-3.5 text-left text-sm text-on-surface transition-colors duration-150 hover:bg-surface-container hover:text-on-surface"
             [class.bg-surface-container-high]="tempActiveRange() === range.value"
             [class.text-on-surface]="tempActiveRange() === range.value"
             (click)="selectRange(range.value)"
@@ -36,7 +36,7 @@
 
         <!-- Content -->
         <div class="content flex-1 flex flex-col px-6 py-5">
-          <p class="text-sm font-medium text-on-surface-variant mb-3">
+          <p class="text-sm font-medium text-on-surface mb-3">
             Selected date range
           </p>
 
@@ -50,6 +50,7 @@
               [formGroup]="dateForm"
               [rangePicker]="picker"
               [disabled]="tempActiveRange() !== 'custom'"
+              class="mt-1"
             >
               <input
                 matStartDate
@@ -77,7 +78,7 @@
           <!-- All time message -->
           <div
             *ngIf="tempActiveRange() === 'all'"
-            class="text-sm text-on-surface-variant mt-2"
+            class="text-sm text-on-surface mt-2"
           >
             Showing all data
           </div>
