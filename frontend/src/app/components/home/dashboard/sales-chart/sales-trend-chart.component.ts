@@ -140,7 +140,7 @@ export class SalesTrendChartComponent implements OnChanges, OnDestroy {
 
   private verticalLinePlugin = {
     id: 'verticalLine',
-    afterDraw: (chart: { tooltip: { _active: string | any[]; }; ctx: any; scales: { y: { top: any; bottom: any; }; }; }) => {
+    beforeDatasetsDraw: (chart: { tooltip: { _active: string | any[]; }; ctx: any; scales: { y: { top: any; bottom: any; }; }; }) => {
       if (!chart.tooltip || !chart.tooltip._active || chart.tooltip._active.length === 0) {
         return;
       }
@@ -157,7 +157,7 @@ export class SalesTrendChartComponent implements OnChanges, OnDestroy {
       ctx.moveTo(x, topY);
       ctx.lineTo(x, bottomY);
       ctx.lineWidth = 1;
-      ctx.strokeStyle = 'var(--sys-surface-outline-variant);'; // light line
+      ctx.strokeStyle = 'var(--sys-surface-outline-variant)'; // light line
       ctx.stroke();
       ctx.restore();
     },
