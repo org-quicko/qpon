@@ -18,21 +18,19 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { CdkPortal, PortalModule } from '@angular/cdk/portal';
 import { DateRangeStore, DateRangeType } from '../../store/date-range.store';
 import { signal } from '@angular/core';
+import * as _moment from 'moment';
+import { default as _rollupMoment } from 'moment';
+import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 
-import { MAT_DATE_FORMATS } from '@angular/material/core';
-
-export const MY_DATE_FORMATS = {
-  parse: {
-    dateInput: 'DD/MM/YYYY',
-  },
+export const MY_FORMATS = {
+  parse: { dateInput: 'Do MMM, YYYY' },
   display: {
-    dateInput: 'DD/MM/YYYY',
+    dateInput: 'Do MMM, YYYY',
     monthYearLabel: 'MMM YYYY',
-    dateA11yLabel: 'DD/MM/YYYY',
+    dateA11yLabel: 'Do MMM, YYYY',
     monthYearA11yLabel: 'MMMM YYYY',
   },
 };
-
 
 @Component({
   selector: 'app-date-range-filter',
@@ -51,7 +49,7 @@ export const MY_DATE_FORMATS = {
   templateUrl: './date-range-filter.component.html',
   styleUrls: ['./date-range-filter.component.css'],
   providers: [
-    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }
+    provideMomentDateAdapter(MY_FORMATS),
   ]
 })
 export class DateRangeFilterComponent implements OnInit, OnDestroy {
