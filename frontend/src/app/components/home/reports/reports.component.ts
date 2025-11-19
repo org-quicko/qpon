@@ -33,18 +33,21 @@ export class ReportsComponent {
     ['sales by customers', 'Analyze customer-specific sales'],
   ]);
 
-onClickReport(reportName: string) {
-  this.dialog.open(GenerateReportDialogComponent, {
-    width: '516px',
-    data: { reportName }
-  }).afterClosed().subscribe((formData) => {
-    if (!formData) return;
-    const formatDate = (date: Date) => date.toISOString().split('T')[0];
+  onClickReport(reportName: string) {
+    this.dialog.open(GenerateReportDialogComponent, {
+      width: '516px',
+      data: {
+        reportName,
+        loading: this.reportsStore.loading
+      }
+    }).afterClosed().subscribe((formData) => {
+      if (!formData) return;
+      const formatDate = (date: Date) => date.toISOString().split('T')[0];
 
-    this.reportsStore.downloadReport(reportName as ReportName, {
-      from: formatDate(formData.start),
-      to: formatDate(formData.end)
+      this.reportsStore.downloadReport(reportName as ReportName, {
+        from: formatDate(formData.start),
+        to: formatDate(formData.end)
+      });
     });
-  });
-}
+  }
 }

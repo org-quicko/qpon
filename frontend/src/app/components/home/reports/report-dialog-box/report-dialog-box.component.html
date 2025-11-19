@@ -1,6 +1,6 @@
 <app-form-dialog-box [formGroup]="reportForm" [onSubmit]="onSubmit" icon="assignment_add"
   [headerText]="'Generate ' + data.reportName + ' report'" submitBtnText="Generate" height="max-h-[356px]"
-  [dialogRefParent]="dialogRef">
+  [dialogRefParent]="dialogRef" [isLoading]="data.loading()">
 
   <div class="flex flex-col gap-2">
 

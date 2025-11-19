@@ -11,6 +11,7 @@ import { TransformInterceptor } from './interceptors/response.interceptor';
 import { HttpExceptionFilter } from './exceptionFilters/globalExceptionFilter';
 import { UserService } from './services/user.service';
 import { LoggerFactory } from '@org-quicko/core';
+import { classToPlain, plainToInstance } from 'class-transformer';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -24,7 +25,7 @@ async function bootstrap() {
       transform: true,
       transformOptions: { enableImplicitConversion: true },
       exceptionFactory: (errors) => {
-        console.error('Validation Errors:', JSON.stringify(errors, null, 2)); // 🔥 Logs errors in detail
+        console.error('Validation Errors:', JSON.stringify(errors, null, 2));
         return new BadRequestException(errors);
       },
     }),
@@ -33,7 +34,12 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
 
   app.useGlobalInterceptors(
-    new ClassSerializerInterceptor(app.get(Reflector)),
+    new ClassSerializerInterceptor(app.get(Reflector), {
+      transformerPackage: {
+        plainToInstance: plainToInstance,
+        classToPlain: classToPlain,
+      },
+    }),
     new TransformInterceptor(app.get(Reflector)),
   );
 

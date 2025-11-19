@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, Signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -68,7 +68,7 @@ export class GenerateReportDialogComponent {
 	constructor(
 		private fb: FormBuilder,
 		public dialogRef: MatDialogRef<GenerateReportDialogComponent>,
-		@Inject(MAT_DIALOG_DATA) public data: { reportName: string }
+		@Inject(MAT_DIALOG_DATA) public data: { reportName: string; loading: Signal<boolean>; }
 	) {
 		this.initForm();
 		this.onPeriodSelection();
