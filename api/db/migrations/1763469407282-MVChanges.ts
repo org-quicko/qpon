@@ -8,7 +8,9 @@ export class MVChanges1763469407282 implements MigrationInterface {
         await queryRunner.query(`DROP MATERIALIZED VIEW IF EXISTS "item_wise_day_wise_redemption_summary_mv"`);
         await queryRunner.query(`DROP MATERIALIZED VIEW IF EXISTS "customer_wise_day_wise_redemption_summary_mv"`);
 
-        // Recreate the "customer_wise_day_wise_redemption_summary_mv" materialized view
+        // -------------------------------------------
+        // CUSTOMER WISE MV
+        // -------------------------------------------
         await queryRunner.query(`
             CREATE MATERIALIZED VIEW "customer_wise_day_wise_redemption_summary_mv" AS 
             SELECT
@@ -32,15 +34,17 @@ export class MVChanges1763469407282 implements MigrationInterface {
                 r.customer_id,
                 c.name,
                 c.external_id,
-                r.redemption_date
+                r.redemption_date;
         `);
 
-        // Create indexes for "customer_wise_day_wise_redemption_summary_mv"
+        // Create indexes for customer MV
         await queryRunner.query(`CREATE INDEX "IDX_customer_wise_org" ON "customer_wise_day_wise_redemption_summary_mv" ("organization_id")`);
         await queryRunner.query(`CREATE INDEX "IDX_customer_wise_customer" ON "customer_wise_day_wise_redemption_summary_mv" ("customer_id")`);
         await queryRunner.query(`CREATE INDEX "IDX_customer_wise_date" ON "customer_wise_day_wise_redemption_summary_mv" ("date")`);
 
-        // Recreate the "item_wise_day_wise_redemption_summary_mv" materialized view with updates
+        // -------------------------------------------
+        // ITEM WISE MV
+        // -------------------------------------------
         await queryRunner.query(`
             CREATE MATERIALIZED VIEW "item_wise_day_wise_redemption_summary_mv" AS 
             SELECT
@@ -64,17 +68,17 @@ export class MVChanges1763469407282 implements MigrationInterface {
                 r.item_id,
                 i.name,
                 i.external_id,
-                r.redemption_date
+                r.redemption_date;
         `);
 
-        // Create indexes for "item_wise_day_wise_redemption_summary_mv"
+        // Create indexes for item MV
         await queryRunner.query(`CREATE INDEX "IDX_item_wise_org" ON "item_wise_day_wise_redemption_summary_mv" ("organization_id")`);
         await queryRunner.query(`CREATE INDEX "IDX_item_wise_item" ON "item_wise_day_wise_redemption_summary_mv" ("item_id")`);
         await queryRunner.query(`CREATE INDEX "IDX_item_wise_date" ON "item_wise_day_wise_redemption_summary_mv" ("date")`);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        // Drop created views and indexes
+        // Drop new indexes + views
         await queryRunner.query(`DROP INDEX IF EXISTS "IDX_item_wise_date"`);
         await queryRunner.query(`DROP INDEX IF EXISTS "IDX_item_wise_item"`);
         await queryRunner.query(`DROP INDEX IF EXISTS "IDX_item_wise_org"`);
@@ -85,8 +89,7 @@ export class MVChanges1763469407282 implements MigrationInterface {
         await queryRunner.query(`DROP INDEX IF EXISTS "IDX_customer_wise_org"`);
         await queryRunner.query(`DROP MATERIALIZED VIEW IF EXISTS "customer_wise_day_wise_redemption_summary_mv"`);
 
-        // Optionally, you can restore the original item_wise_day_wise_redemption_summary_mv if needed
-        // Recreate the original "item_wise_day_wise_redemption_summary_mv"
+        // Restore original item_wise view (older structure)
         await queryRunner.query(`
             CREATE MATERIALIZED VIEW "item_wise_day_wise_redemption_summary_mv" AS 
             SELECT
@@ -105,10 +108,10 @@ export class MVChanges1763469407282 implements MigrationInterface {
                 r.organization_id,
                 r.item_id,
                 i.name,
-                r.redemption_date
+                r.redemption_date;
         `);
 
-        // Add indexes back to "item_wise_day_wise_redemption_summary_mv"
+        // Restore indexes for original view
         await queryRunner.query(`CREATE INDEX "IDX_item_wise_org" ON "item_wise_day_wise_redemption_summary_mv" ("organization_id")`);
         await queryRunner.query(`CREATE INDEX "IDX_item_wise_item" ON "item_wise_day_wise_redemption_summary_mv" ("item_id")`);
         await queryRunner.query(`CREATE INDEX "IDX_item_wise_date" ON "item_wise_day_wise_redemption_summary_mv" ("date")`);
