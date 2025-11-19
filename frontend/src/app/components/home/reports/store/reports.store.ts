@@ -1,6 +1,7 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
 import { ReportService } from '../../../../services/reports.service';
 import { OrganizationStore } from '../../../../store/organization.store';
+import { SnackbarService } from '../../../../services/snackbar.service';
 
 export type ReportName =
 	| 'redemptions'
@@ -18,17 +19,15 @@ export interface ReportPayload {
 export class ReportsStore {
 
 	private organizationStore = inject(OrganizationStore);
+	private snackbar = inject(SnackbarService);
 
-	// signal from organization store
 	organization = computed(() => this.organizationStore.organizaiton());
 	organizationId = computed(() => this.organization()?.organizationId ?? null);
 
 	loading = signal(false);
 	error = signal<string | null>(null);
 
-	constructor(
-		private reportService: ReportService
-	) { }
+	constructor(private reportService: ReportService) { }
 
 	/**
 	 * Map reportName → API function
@@ -69,11 +68,33 @@ export class ReportsStore {
 
 		handler(orgId, payload.from, payload.to).subscribe({
 			next: (blob: Blob) => {
-				this.saveFile(blob, `${reportName}.csv`);
+
+				// CHECK IF FILE IS EMPTY
+				if (!blob || blob.size === 0) {
+					this.snackbar.openSnackBar(
+						'No data available in this time period',
+						'Close'
+					);
+					this.loading.set(false);
+					return;
+				}
+
+				const safeFrom = payload.from?.replace(/:/g, '-') ?? 'unknown_from';
+				const safeTo = payload.to?.replace(/:/g, '-') ?? 'unknown_to';
+
+				// CREATE FINAL FILENAME
+				const fileName = `${reportName.replace(/ /g, '_')}_${safeFrom}_to_${safeTo}.csv`
+
+				// download
+				this.saveFile(blob, fileName);
 				this.loading.set(false);
 			},
 			error: (err: any) => {
 				this.error.set(err?.message || 'Failed to download report');
+				this.snackbar.openSnackBar(
+					'Failed to download report',
+					'Close'
+				);
 				this.loading.set(false);
 			},
 		});

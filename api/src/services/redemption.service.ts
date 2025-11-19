@@ -39,6 +39,7 @@ import { Campaign } from '../entities/campaign.entity';
 import { CampaignSummaryMv } from '../entities/campaign-summary.view';
 import { RedemptionWorkbookConverter } from '../converters/redemption';
 import { PassThrough } from 'stream';
+import { formatDateReport } from 'src/utils/date.utils';
 
 @Injectable()
 export class RedemptionsService {
@@ -526,7 +527,7 @@ export class RedemptionsService {
 
     dbStream.on('data', (row: any) => {
       csvStream.write({
-        Date: row.redemption_date,
+        Date: formatDateReport(row.redemption_date),
         CustomerName: row.customer_name,
         CustomerEmail: row.customer_email,
         Item: row.item_name,

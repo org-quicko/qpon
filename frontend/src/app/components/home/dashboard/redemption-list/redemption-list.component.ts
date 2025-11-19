@@ -115,7 +115,6 @@ export class RedemptionListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dateRangeStore.reset();
   }
 
   onPageChange(event: PageEvent) {
