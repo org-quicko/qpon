@@ -1,0 +1,48 @@
+<app-form-dialog-box [formGroup]="reportForm" [onSubmit]="onSubmit" icon="assignment_add"
+  [headerText]="'Generate ' + data.reportName + ' report'" submitBtnText="Generate" height="max-h-[356px]"
+  [dialogRefParent]="dialogRef">
+
+  <div class="flex flex-col gap-2">
+
+    <!-- Period selection -->
+    <mat-form-field appearance="outline" class="w-full big-select good-select">
+      <mat-label>Select Period</mat-label>
+
+      <mat-select formControlName="reportPeriod" panelClass="custom-select-panel">
+
+        @for (period of reportPeriod; track period.key) {
+
+        <mat-option [value]="period.key" class="custom-option">
+          <div class="flex items-center justify-between">
+            <span class="text-[14px] font-medium">{{ period.label }}</span>
+          </div>
+        </mat-option>
+
+        @if (period.key === 'this_month' || period.key === 'last_90_days') {
+        <mat-divider class="my-1 opacity-60"></mat-divider>
+        }
+        }
+
+      </mat-select>
+    </mat-form-field>
+
+
+    <!-- Custom date range -->
+    <mat-form-field appearance="outline" class="w-full" (click)="reportStartEndPicker.open()">
+      <mat-label>Select date range</mat-label>
+
+      <mat-date-range-input [rangePicker]="reportStartEndPicker" [min]="minDate" [max]="maxDate">
+        <input matStartDate placeholder="Start date" formControlName="start" readonly>
+        <input matEndDate placeholder="End date" formControlName="end" readonly>
+      </mat-date-range-input>
+
+      <mat-datepicker-toggle matSuffix [for]="reportStartEndPicker">
+        <mat-icon class="material-symbols-outlined">today</mat-icon>
+      </mat-datepicker-toggle>
+
+      <mat-date-range-picker #reportStartEndPicker></mat-date-range-picker>
+    </mat-form-field>
+
+  </div>
+
+</app-form-dialog-box>

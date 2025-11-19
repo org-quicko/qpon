@@ -1,12 +1,50 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { MatIcon } from '@angular/material/icon';
-import { HeaderComponent } from '../common/header/header.component';
-import { SidenavComponent } from '../common/sidenav/sidenav.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatRippleModule } from '@angular/material/core';
+import { MatDialog } from '@angular/material/dialog';
+import { GenerateReportDialogComponent } from './report-dialog-box/report-dialog-box.component';
+import { ReportName, ReportsStore } from './store/reports.store';
 
 @Component({
   selector: 'app-reports',
-  imports: [MatIcon],
+  standalone: true,
+  imports: [CommonModule, MatCardModule, MatIconModule, MatRippleModule],
   templateUrl: './reports.component.html',
-  styleUrl: './reports.component.css',
+  styleUrls: ['./reports.component.css'],
 })
-export class ReportsComponent {}
+export class ReportsComponent {
+
+  constructor(
+    private dialog: MatDialog,
+    private reportsStore: ReportsStore
+  ) { }
+
+  reportsMap = [
+    ['redemptions', 'local_activity'],
+    ['sales by items', 'deployed_code_account'],
+    ['sales by customers', 'group_add'],
+  ];
+
+  reportsDesc = new Map<string, string>([
+    ['redemptions', 'View redemption logs & summary'],
+    ['sales by items', 'See item-wise sales insights'],
+    ['sales by customers', 'Analyze customer-specific sales'],
+  ]);
+
+onClickReport(reportName: string) {
+  this.dialog.open(GenerateReportDialogComponent, {
+    width: '516px',
+    data: { reportName }
+  }).afterClosed().subscribe((formData) => {
+    if (!formData) return;
+    const formatDate = (date: Date) => date.toISOString().split('T')[0];
+
+    this.reportsStore.downloadReport(reportName as ReportName, {
+      from: formatDate(formData.start),
+      to: formatDate(formData.end)
+    });
+  });
+}
+}

@@ -1,0 +1,48 @@
+.good-select .mat-mdc-form-field-outline {
+  border-radius: 10px !important;
+}
+
+.good-select .mat-mdc-form-field-infix {
+  padding-top: 14px !important;
+  padding-bottom: 14px !important;
+}
+
+.custom-select-panel .mdc-list-item {
+  min-height: 44px !important;
+  padding: 10px 16px !important;
+}
+
+.custom-option:hover {
+  background: rgba(0, 0, 0, 0.04) !important;
+}
+
+.custom-select-panel {
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+  border-radius: 12px !important;
+}
+
+.custom-select-panel .mat-divider {
+  margin-top: 4px !important;
+  margin-bottom: 4px !important;
+}
+
+/* Increase the height of the visible mat-select box */
+.big-select .mat-mdc-select-trigger {
+  height: 56px !important;       /* Increase height */
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Increase touch area inside the field */
+.big-select .mat-mdc-form-field-infix {
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+/* Make the outline taller */
+.big-select .mat-mdc-form-field-flex {
+  height: 64px !important;
+  align-items: center !important;
+}
+
