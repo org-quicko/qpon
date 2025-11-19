@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { ApiResponse } from '../../dtos/api-response.dto';
 import { environment } from '../../environments/environment';
 import { OrganizationUserDto } from '../../dtos/organization-user.dto';
-import { CreateUserDto, UserDto } from '../../dtos/user.dto';
+import { CreateUserDto, UpdateUserDto, UserDto } from '../../dtos/user.dto';
 import { PaginatedList } from '../../dtos/paginated-list.dto';
 
 @Injectable({
@@ -12,7 +12,7 @@ import { PaginatedList } from '../../dtos/paginated-list.dto';
 export class UserService {
   private endpoint = environment.base_url;
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   login(email: string, password: string) {
     let url = this.endpoint + '/users/login';
@@ -57,5 +57,14 @@ export class UserService {
   createSuperAdmin(body: CreateUserDto) {
     const url = this.endpoint + '/users';
     return this.httpClient.post<ApiResponse<UserDto>>(url, body);
+  }
+
+  updateUser(
+    organizationId: string,
+    userId: string,
+    body: UpdateUserDto
+  ) {
+    const url = `${this.endpoint}/organizations/${organizationId}/users/${userId}`;
+    return this.httpClient.patch<ApiResponse<UserDto>>(url, body);
   }
 }

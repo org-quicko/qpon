@@ -16,6 +16,8 @@ import { QueryOptionsInterface } from '../interfaces/queryOptions.interface';
 import { roleEnum } from '../enums';
 import { OrganizationUserConverter } from '../converters/organization-user.converter';
 import { UserListConverter } from 'src/converters/user-list.converter';
+import * as bcrypt from 'bcryptjs';
+import { SALT_ROUNDS } from 'src/constants';
 
 @Injectable()
 export class UserService {
@@ -29,7 +31,7 @@ export class UserService {
     private userListConverter: UserListConverter,
     private datasource: DataSource,
     private logger: LoggerService,
-  ) {}
+  ) { }
 
   /**
    * Create user
@@ -245,6 +247,31 @@ export class UserService {
       if (!user) {
         this.logger.warn('User not found');
         throw new NotFoundException('User not found');
+      }
+
+      /**
+      * If user wants to change password
+      */
+      if (body.currentPassword && body.newPassword) {
+        const isValid = await bcrypt.compare(body.currentPassword, user.password);
+
+        if (!isValid) {
+          throw new HttpException(
+            'Current password is incorrect',
+            HttpStatus.BAD_REQUEST,
+          );
+        }
+
+        // Hash new password
+        const salt = await bcrypt.genSalt(SALT_ROUNDS);
+        const hashedPassword = await bcrypt.hash(body.newPassword, salt);
+
+        // Assign hashed password for update
+        (body as any).password = hashedPassword;
+
+        // Remove raw fields so they never touch DB
+        delete (body as any).currentPassword;
+        delete (body as any).newPassword;
       }
 
       await this.userRepository.update({ userId }, body);
@@ -544,6 +571,6 @@ export class UserService {
     const count = await this.userRepository.count({
       where: { role: roleEnum.SUPER_ADMIN },
     });
-    return {exists: count > 0 ? true : false};
+    return { exists: count > 0 ? true : false };
   }
 }

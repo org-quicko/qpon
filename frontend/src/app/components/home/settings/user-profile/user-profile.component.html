@@ -1,0 +1,82 @@
+<!-- Header -->
+<div class="mb-7">
+  <div class="mat-title-large text-on-surface">Profile</div>
+</div>
+
+<mat-card appearance="outlined" class="bg-surface-container-lowest w-3/6">
+  <mat-card-content>
+    <div class="flex flex-col">
+
+      <!-- Body -->
+      <div class="flex flex-col p-6 gap-6">
+
+        @if (!userStore.isLoading()) {
+
+        <!-- Email -->
+        <div class="flex flex-col gap-1">
+          <div class="mat-body-large text-on-surface-variant">Email</div>
+          <div class="mat-body-large text-on-surface break-all">
+            {{ userStore.user()?.email }}
+          </div>
+        </div>
+
+        <!-- Name -->
+        <div class="flex flex-col gap-1">
+          <div class="mat-body-large text-on-surface-variant">Name</div>
+          <div class="mat-body-large text-on-surface">
+            {{ userStore.user()?.name }}
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="flex flex-col gap-1">
+          <div class="mat-body-large text-on-surface-variant">Password</div>
+          <div class="mat-body-large text-on-surface tracking-widest">
+            ••••••••
+          </div>
+        </div>
+
+        } @else {
+
+        <!-- Email Skeleton -->
+        <div class="flex flex-col gap-1">
+          <div class="mat-body-medium text-on-surface-variant">Email</div>
+          <ngx-skeleton-loader
+            [theme]="{ height: '24px', width: '250px', margin: '0', padding: '0' }">
+          </ngx-skeleton-loader>
+        </div>
+
+        <!-- Name Skeleton -->
+        <div class="flex flex-col gap-1">
+          <div class="mat-body-medium text-on-surface-variant">Name</div>
+          <ngx-skeleton-loader
+            [theme]="{ height: '24px', width: '200px', margin: '0', padding: '0' }">
+          </ngx-skeleton-loader>
+        </div>
+
+        <!-- Password Skeleton -->
+        <div class="flex flex-col gap-1">
+          <div class="mat-body-medium text-on-surface-variant">Password</div>
+          <ngx-skeleton-loader
+            [theme]="{ height: '24px', width: '150px', margin: '0', padding: '0' }">
+          </ngx-skeleton-loader>
+        </div>
+
+        }
+
+      </div>
+
+      <!-- Footer -->
+      <div>
+        <mat-divider class="border-outline-variant"></mat-divider>
+
+        <button mat-button
+          class="flex h-[56px] w-full justify-start rounded-none"
+          (click)="onEditProfile()">
+          Edit details
+        </button>
+      </div>
+
+    </div>
+  </mat-card-content>
+</mat-card>

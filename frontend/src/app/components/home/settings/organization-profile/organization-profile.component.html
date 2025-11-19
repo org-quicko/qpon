@@ -1,0 +1,73 @@
+<!-- Header -->
+<div class="mb-7">
+    <div class="mat-title-large text-on-surface">Profile</div>
+</div>
+
+<!-- Organisation Section -->
+<mat-card appearance="outlined" class="bg-surface-container-lowest w-3/6 mb-7">
+    <mat-card-content>
+        <div class="flex flex-col">
+
+            <div class="flex flex-col p-6 gap-6">
+
+                @if (!organizationStore.organizaiton()) {
+
+                <!-- Skeleton while loading -->
+                <div class="flex flex-col gap-1">
+                    <div class="mat-body-large text-on-surface-variant">Organisation name</div>
+                    <ngx-skeleton-loader [theme]="{ height: '24px', width: '250px', margin: '0', padding: '0' }">
+                    </ngx-skeleton-loader>
+                </div>
+
+                } @else {
+
+                <!-- Organisation Name -->
+                <div class="flex flex-col gap-1">
+                    <div class="mat-body-large text-on-surface-variant">Organisation name</div>
+                    <div class="mat-body-large text-on-surface">
+                        {{ organizationStore.organizaiton()?.name }}
+                    </div>
+                </div>
+
+                }
+            </div>
+
+            <!-- Footer -->
+            <div>
+                <mat-divider class="border-outline-variant"></mat-divider>
+
+                <button mat-button class="flex h-[56px] w-full justify-start rounded-none" (click)="onEditName()">
+                    Edit name
+                </button>
+            </div>
+
+        </div>
+    </mat-card-content>
+</mat-card>
+
+<!-- Danger Zone Section -->
+<div class="mat-body-large text-on-surface-variant mb-3">Danger Zone</div>
+
+<mat-card appearance="outlined" class="bg-surface-container-lowest w-3/6">
+    <mat-card-content>
+        <div class="flex flex-col">
+
+            <div class="flex flex-col gap-1 p-6">
+                <div class="mat-body-large text-on-surface">Delete Organisation</div>
+                <div class="mat-body-large text-on-surface-variant">
+                    Remove all associated coupons, campaigns and members.
+                </div>
+            </div>
+
+            <div>
+                <mat-divider class="border-outline-variant"></mat-divider>
+
+                <button mat-button class="text-error flex h-[56px] w-full justify-start rounded-none"
+                    (click)="onDeleteOrganisation()">
+                    Delete organisation
+                </button>
+            </div>
+
+        </div>
+    </mat-card-content>
+</mat-card>
