@@ -70,7 +70,7 @@ export class CouponCodeDto {
   @IsNumber()
   redemptionCount: number;
 
-  @Expose({ name: 'coupon_code_status' })
+  @Expose({ name: 'status' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsEnum(couponCodeStatusEnum)
   status: couponCodeStatusEnum;
