@@ -31,14 +31,18 @@ export class EditProfileDialogComponent {
     visibility = {
         current: false,
         new: false,
+        confirm: false
     };
 
     form = this.fb.group({
         email: ['', Validators.required],
         name: ['', Validators.required],
         currentPassword: [''],
-        newPassword: ['']
-    });
+        newPassword: [''],
+        confirmPassword: ['']
+    },
+        { validators: this.passwordMatchValidator }
+    );
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
@@ -50,8 +54,25 @@ export class EditProfileDialogComponent {
         });
     }
 
+    passwordMatchValidator(form: any) {
+        const newPassword = form.get('newPassword')?.value;
+        const confirmPassword = form.get('confirmPassword')?.value;
 
-    toggleVisibility(field: 'current' | 'new') {
+        // clear old errors
+        form.get('confirmPassword')?.setErrors(null);
+
+        // no passwords → no error
+        if (!newPassword && !confirmPassword) return null;
+
+        if (newPassword !== confirmPassword) {
+            form.get('confirmPassword')?.setErrors({ passwordMismatch: true });
+            return { passwordMismatch: true };
+        }
+
+        return null;
+    }
+
+    toggleVisibility(field: 'current' | 'new' | 'confirm') {
         this.visibility[field] = !this.visibility[field];
     }
 
@@ -69,6 +90,11 @@ export class EditProfileDialogComponent {
         if (!currentPassword && newPassword) {
             this.snack.openSnackBar("Please enter current password.", "Close");
             return; // DO NOT close dialog
+        }
+
+        if (this.form.hasError('passwordMismatch')) {
+            this.snack.openSnackBar("Passwords do not match.", "Close");
+            return;
         }
 
         // Build body

@@ -1,6 +1,6 @@
 <app-form-dialog-box [formGroup]="form" [onSubmit]="save" [dialogRefParent]="dialogRef" [icon]="'edit'"
   [headerText]="'Edit Profile'" [cancelBtnText]="'Cancel'" [submitBtnText]="'Save'" [isLoading]="userStore.isLoading()"
-  width="w-[516px]" height="h-auto max-h-[564px]">
+  width="w-[516px]" height="h-auto max-h-[640px]">
 
   <!-- Email -->
   <mat-form-field appearance="outline" class="w-full mt-3">
@@ -33,8 +33,8 @@
 
     <input matInput [type]="visibility.current ? 'text' : 'password'" formControlName="currentPassword" />
 
-    <button type="button" mat-icon-button matSuffix class="!text-on-surface !cursor-pointer" (click)="toggleVisibility('current')"
-      tabindex="-1">
+    <button type="button" mat-icon-button matSuffix class="!text-on-surface !cursor-pointer"
+      (click)="toggleVisibility('current')" tabindex="-1">
       <mat-icon class="material-symbols-outlined mr-3">
         {{ visibility.current ? 'visibility' : 'visibility_off' }}
       </mat-icon>
@@ -47,11 +47,31 @@
 
     <input matInput [type]="visibility.new ? 'text' : 'password'" formControlName="newPassword" />
 
-    <button type="button" mat-icon-button matSuffix class="!text-on-surface !cursor-pointer" (click)="toggleVisibility('new')"
-      tabindex="-1">
+    <button type="button" mat-icon-button matSuffix class="!text-on-surface !cursor-pointer"
+      (click)="toggleVisibility('new')" tabindex="-1">
       <mat-icon class="material-symbols-outlined mr-3">
         {{ visibility.new ? 'visibility' : 'visibility_off' }}
       </mat-icon>
     </button>
   </mat-form-field>
+
+  <!-- Confirm Password -->
+  <mat-form-field appearance="outline" class="w-full -mt-3">
+    <mat-label>Confirm password</mat-label>
+
+    <input matInput [type]="visibility.confirm ? 'text' : 'password'" formControlName="confirmPassword" />
+
+    <button type="button" mat-icon-button matSuffix class="!text-on-surface !cursor-pointer"
+      (click)="toggleVisibility('confirm')" tabindex="-1">
+      <mat-icon class="material-symbols-outlined mr-3">
+        {{ visibility.confirm ? "visibility" : "visibility_off" }}
+      </mat-icon>
+    </button>
+
+    <!-- MISMATCH ERROR -->
+    <mat-error *ngIf="form.get('confirmPassword')?.hasError('passwordMismatch')">
+      Passwords do not match
+    </mat-error>
+  </mat-form-field>
+
 </app-form-dialog-box>

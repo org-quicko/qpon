@@ -9,18 +9,20 @@ import { SnackbarService } from '../../../../../services/snackbar.service';
 import { OrganizationUsersStore } from '../store/organization-users.store';
 import { FormDialogBoxComponent } from '../../../common/form-dialog-box/form-dialog-box.component';
 import { roleEnum } from '../../../../../../enums';
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
     selector: 'app-add-edit-user-dialog',
     standalone: true,
     imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatSelectModule,
-        FormDialogBoxComponent
-    ],
+    CommonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    FormDialogBoxComponent,
+    MatIcon
+],
     templateUrl: './add-edit-user-dialog.component.html'
 })
 export class AddEditUserDialogComponent {
@@ -38,6 +40,10 @@ export class AddEditUserDialogComponent {
         name: ['', Validators.required],
         password: ['']
     });
+
+    visibility = {
+        password: false
+    };
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
@@ -60,6 +66,10 @@ export class AddEditUserDialogComponent {
             this.form.get('password')?.setValidators([Validators.required]);
             this.form.get('password')?.updateValueAndValidity();
         }
+    }
+
+    toggleVisibility(field: 'password') {
+        this.visibility[field] = !this.visibility[field];
     }
 
     save = () => {

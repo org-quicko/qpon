@@ -45,12 +45,21 @@
     <ng-container *ngIf="!isEditMode">
         <mat-form-field appearance="outline" class="w-full">
             <mat-label>Set Password</mat-label>
-            <input matInput formControlName="password" type="password" />
+
+            <input matInput [type]="visibility.password ? 'text' : 'password'" formControlName="password" />
+
+            <button type="button" mat-icon-button matSuffix class="!text-on-surface !cursor-pointer"
+                (click)="toggleVisibility('password')" tabindex="-1">
+                <mat-icon class="material-symbols-outlined mr-3">
+                    {{ visibility.password ? 'visibility' : 'visibility_off' }}
+                </mat-icon>
+            </button>
 
             <mat-error *ngIf="form.get('password')?.hasError('required')">
                 Password is required
             </mat-error>
         </mat-form-field>
     </ng-container>
+
 
 </app-form-dialog-box>
