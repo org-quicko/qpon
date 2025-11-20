@@ -73,7 +73,7 @@ export class ReportsStore {
 				if (!blob || blob.size === 0) {
 					this.snackbar.openSnackBar(
 						'No data available in this time period',
-						'Close'
+						undefined
 					);
 					this.loading.set(false);
 					return;

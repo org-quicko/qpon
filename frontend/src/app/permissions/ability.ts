@@ -47,7 +47,7 @@ import {
 import { RedemptionRow } from '@org-quicko/qpon-sheet-core/redemption_workbook/beans';
 import { actionsType } from '../types/actions';
 import { roleEnum } from '../../enums';
-import { CreateUserDto, UserDto } from '../../dtos/user.dto';
+import { CreateUserDto, UpdateUserRoleDto, UserDto } from '../../dtos/user.dto';
 
 export type subjectsType =
   | InferSubjects<
@@ -193,7 +193,8 @@ export function defineUserAbilities(role: roleEnum): UserAbility {
         CreateUserDto,
         UserDto,
         OrganizationDto,
-        OrganizationUserDto
+        OrganizationUserDto,
+        UpdateUserRoleDto,
       ])
     } else if(role === roleEnum.EDITOR) {
       allow('manage', [

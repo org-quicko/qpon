@@ -3,10 +3,7 @@
     <div class="flex mat-body-medium gap-[4px] text-on-surface">
       <div class="cursor-pointer" (click)="onNavigateParent()">Coupons</div>
       <mat-icon>
-        <div
-          class="material-symbols-outlined"
-          class="w-[21px] h-[21px] text-[21px]"
-        >
+        <div class="material-symbols-outlined" class="w-[21px] h-[21px] text-[21px]">
           navigate_next
         </div>
       </mat-icon>
@@ -14,21 +11,16 @@
         @if(!isLoading()) {
         {{ coupon()?.name }}
         } @else {
-        <ngx-skeleton-loader
-          [theme]="{
+        <ngx-skeleton-loader [theme]="{
             height: '20px',
             width: '100px',
             margin: '0px',
             padding: '0px'
-          }"
-        ></ngx-skeleton-loader>
+          }"></ngx-skeleton-loader>
         }
       </div>
       <mat-icon>
-        <div
-          class="material-symbols-outlined"
-          class="w-[21px] h-[21px] text-[21px]"
-        >
+        <div class="material-symbols-outlined" class="w-[21px] h-[21px] text-[21px]">
           navigate_next
         </div>
       </mat-icon>
@@ -36,21 +28,16 @@
         @if(!isLoading()) {
         {{ campaign()?.getName() }}
         } @else {
-        <ngx-skeleton-loader
-          [theme]="{
+        <ngx-skeleton-loader [theme]="{
             height: '20px',
             width: '100px',
             margin: '0px',
             padding: '0px'
-          }"
-        ></ngx-skeleton-loader>
+          }"></ngx-skeleton-loader>
         }
       </div>
       <mat-icon>
-        <div
-          class="material-symbols-outlined"
-          class="w-[21px] h-[21px] text-[21px]"
-        >
+        <div class="material-symbols-outlined" class="w-[21px] h-[21px] text-[21px]">
           navigate_next
         </div>
       </mat-icon>
@@ -58,14 +45,12 @@
         @if(!loading()) {
         {{ couponCode()?.code }}
         } @else {
-        <ngx-skeleton-loader
-          [theme]="{
+        <ngx-skeleton-loader [theme]="{
             height: '20px',
             width: '100px',
             margin: '0px',
             padding: '0px'
-          }"
-        ></ngx-skeleton-loader>
+          }"></ngx-skeleton-loader>
         }
       </div>
     </div>
@@ -73,38 +58,37 @@
       <div class="flex flex-col gap-2">
         <div class="flex gap-1">
           @if(!loading()) {
-          <div class="mat-headline-small m-0 text-on-surface">
-            {{ couponCode()?.code }}
+          <div class="group flex items-center gap-2 cursor-pointer"
+            (click)="copyToClipboard(couponCode()?.code!, 'coupon code')">
+            <!-- CODE TEXT -->
+            <div class="mat-headline-small m-0 text-on-surface">
+              {{ couponCode()?.code }}
+            </div>
+
+            <!-- COPY BUTTON (visible only on hover) -->
+            <button class="opacity-0 group-hover:opacity-100 transition-opacity text-on-surface hover:text-primary"
+              (click)="
+      $event.stopPropagation();
+      copyToClipboard(couponCode()?.code!, 'coupon code')
+    ">
+              <mat-icon class="material-symbols-outlined text-[16px] w-[16px] flex items-center">
+                content_copy
+              </mat-icon>
+            </button>
           </div>
-          <button
-            class="text-on-surface hover:text-primary group-hover:block transition-opacity cursor-pointer"
-            (click)="
-              $event.stopPropagation();
-              copyToClipboard(couponCode()?.code!, 'coupon code')
-            "
-          >
-            <mat-icon class="material-symbols-outlined text-[16px] w-[16px] flex flex-col justify-center">
-              content_copy
-            </mat-icon>
-          </button>
+
           } @else {
-          <ngx-skeleton-loader
-            [theme]="{
+          <ngx-skeleton-loader [theme]="{
               height: '24px',
               width: '150px',
               margin: '0px',
               padding: '0px'
-            }"
-          ></ngx-skeleton-loader>
+            }"></ngx-skeleton-loader>
           }
         </div>
       </div>
       <div class="flex items-center gap-0.5">
-        <button
-          mat-stroked-button
-          class="rounded-full text-primary mat-label-large"
-          (click)="onEdit()"
-        >
+        <button mat-stroked-button class="rounded-full text-primary mat-label-large" (click)="onEdit()">
           <mat-icon class="material-symbols-outlined">edit</mat-icon>
           <span>Edit</span>
         </button>
@@ -116,30 +100,22 @@
     <div class="inline-flex justify-start items-start gap-8">
       <div class="flex justify-start items-center gap-2">
         @if(loading()) {
-        <ngx-skeleton-loader
-          [theme]="{
+        <ngx-skeleton-loader [theme]="{
             height: '20px',
             width: '500px',
             margin: '0px',
             padding: '0px'
-          }"
-        ></ngx-skeleton-loader>
+          }"></ngx-skeleton-loader>
         } @else {
         <div class="relative flex justify-start items-center gap-2.5">
-          <div
-            class="w-6 h-6 rounded-[12px] flex items-center justify-center"
-            [ngClass]="{
+          <div class="w-6 h-6 rounded-[12px] flex items-center justify-center" [ngClass]="{
               'bg-success-container': couponCode()?.status == 'active',
               'bg-surface-container-highest': couponCode()?.status == 'inactive' || couponCode()?.status == 'redeemed'
-            }"
-          >
-            <div
-              class="w-3 h-3 rounded-[6px]"
-              [ngClass]="{
+            }">
+            <div class="w-3 h-3 rounded-[6px]" [ngClass]="{
                 'bg-success': couponCode()?.status == 'active',
                 'bg-outline': couponCode()?.status == 'inactive' || couponCode()?.status == 'redeemed'
-              }"
-            ></div>
+              }"></div>
           </div>
         </div>
         <div class="justify-start mat-body-large text-on-surface-variant">
@@ -147,47 +123,32 @@
         </div>
         }
       </div>
-      <div
-        class="flex justify-start items-center gap-2 text-on-surface-variant"
-      >
+      <div class="flex justify-start items-center gap-2 text-on-surface-variant">
         @if(loading()) {
-        <ngx-skeleton-loader
-          [theme]="{
+        <ngx-skeleton-loader [theme]="{
             height: '20px',
             width: '150px',
             margin: '0px',
             padding: '0px'
-          }"
-        ></ngx-skeleton-loader>
+          }"></ngx-skeleton-loader>
         } @else {
-        <div
-          data-size="20 px"
-          class="flex justify-start items-start gap-1.5 text-on-surface-variant"
-        >
-          <mat-icon class="material-symbols-outlined w-5 h-5 text-[20px]"
-            >barcode_scanner</mat-icon
-          >
+        <div data-size="20 px" class="flex justify-start items-start gap-1.5 text-on-surface-variant">
+          <mat-icon class="material-symbols-outlined w-5 h-5 text-[20px]">barcode_scanner</mat-icon>
         </div>
         <div class="justify-start mat-body-large">Coupon code</div>
         }
       </div>
-      <div
-        class="flex justify-start items-center gap-2 text-on-surface-variant"
-      >
+      <div class="flex justify-start items-center gap-2 text-on-surface-variant">
         @if(loading()) {
-        <ngx-skeleton-loader
-          [theme]="{
+        <ngx-skeleton-loader [theme]="{
             height: '20px',
             width: '150px',
             margin: '0px',
             padding: '0px'
-          }"
-        ></ngx-skeleton-loader>
+          }"></ngx-skeleton-loader>
         } @else {
         <div data-size="20 px" class="flex justify-start items-start gap-1.5">
-          <mat-icon class="material-symbols-outlined w-5 h-5 text-[20px]"
-            >edit_square</mat-icon
-          >
+          <mat-icon class="material-symbols-outlined w-5 h-5 text-[20px]">edit_square</mat-icon>
         </div>
         <div class="justify-start mat-body-large">
           Created on
@@ -197,21 +158,17 @@
       </div>
     </div>
   </div>
-  <app-coupon-code-details
-    [couponCode]="couponCode"
-    [isLoading]="isLoading"
-  ></app-coupon-code-details>
+  <app-coupon-code-details [couponCode]="couponCode" [isLoading]="isLoading"></app-coupon-code-details>
   <app-redemption-list></app-redemption-list>
 </div>
-<mat-menu
-  #menu="matMenu"
-  class="w-[200px] min-w-[112px] max-w-[280px] rounded-[4px] bg-surface-container-lowest top-[208px] left-[3155px]"
->
+<mat-menu #menu="matMenu"
+  class="w-[200px] min-w-[112px] max-w-[280px] rounded-[4px] bg-surface-container-lowest top-[208px] left-[3155px]">
   <button mat-menu-item class="h-[56px] py-8 flex gap-[12px]" (click)="openDeleteDialog()">
     <mat-icon class="material-symbols-outlined">delete</mat-icon>
     <span class="mat-body-large text-on-surface">Delete</span>
   </button>
-  <button mat-menu-item class="h-[56px] py-8 flex gap-[12px]" (click)="campaign()?.getStatus() == 'inactive' ? openInvactiveMessageDialogForChangeStatus() : openChangeStatusDialog(couponCode()!)">
+  <button mat-menu-item class="h-[56px] py-8 flex gap-[12px]"
+    (click)="campaign()?.getStatus() == 'inactive' ? openInvactiveMessageDialogForChangeStatus() : openChangeStatusDialog(couponCode()!)">
     <mat-icon class="material-symbols-outlined" svgIcon="regime_preference"></mat-icon>
     <span class="mat-body-large text-on-surface">Change status</span>
   </button>

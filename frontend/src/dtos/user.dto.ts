@@ -81,4 +81,12 @@ export class UpdateUserDto {
 export class UpdateUserRoleDto {
   @IsEnum(roleEnum)
   role?: roleEnum;
+
+  @IsOptional()
+  @IsString()
+  name?: string;
+
+  @IsOptional()
+  @IsString()
+  email?: string;
 }

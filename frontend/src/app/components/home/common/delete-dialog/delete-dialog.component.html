@@ -4,7 +4,7 @@
       <div class="mat-title-medium text-on-surface break-all">
         {{ data.title }}
       </div>
-      <div class="mat-body-medium text-on-surface-variant break-all">
+      <div class="mat-body-medium text-on-surface-variant">
         {{ data.description }}
       </div>
     </div>
@@ -12,7 +12,7 @@
       <button mat-button mat-dialog-close>Cancel</button>
       <button
         mat-flat-button
-        class="rounded-full bg-primary"
+        class="rounded-full bg-error"
         (click)="
           data.onDelete()
         "

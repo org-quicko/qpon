@@ -117,7 +117,7 @@ export class UserService {
   }
 
   /**
-   * Fetch users
+   * Fetch users of an organization
    */
   async fetchUsersOfAnOrganization(
     organizationId: string,
@@ -125,34 +125,35 @@ export class UserService {
   ) {
     this.logger.info('START: fetchUsersOfAnOrganization service');
     try {
-      const whereOptions = {};
+      const { skip = 0, take = 10, externalId, ...rest } = queryOptions;
 
-      if (queryOptions['externalId']) {
-        whereOptions['externalId'] = queryOptions.externalId;
-        delete queryOptions['externalId'];
+      const whereOptions: any = {
+        ...rest,
+        organizationUser: {
+          organization: { organizationId },
+          role: Not(roleEnum.SUPER_ADMIN),
+        },
+      };
+
+      if (externalId) {
+        whereOptions.externalId = externalId;
       }
 
-      const users = await this.userRepository.find({
+      const [users, count] = await this.userRepository.findAndCount({
         relations: {
           organizationUser: true,
         },
-        where: {
-          organizationUser: {
-            organization: {
-              organizationId,
-            },
-            role: Not(roleEnum.SUPER_ADMIN),
-          },
-          ...whereOptions,
-        },
-        ...queryOptions,
+        where: whereOptions,
+        skip,
+        take,
+        order: { createdAt: 'DESC' },
       });
 
-      if (!users || users.length == 0) {
+      if (!users || users.length === 0) {
         this.logger.warn('Users not found');
       }
 
-      return users.map((user) =>
+      const allUsers = users.map((user) =>
         this.userConverter.convert(
           user,
           user.organizationUser.filter(
@@ -160,6 +161,8 @@ export class UserService {
           )[0],
         ),
       );
+
+      return this.userListConverter.convert(allUsers as any, count, skip, take);
     } catch (error) {
       this.logger.error(
         `Error in fetchUsersOfAnOrganization:`,
@@ -329,17 +332,24 @@ export class UserService {
         throw new NotFoundException('User not found');
       }
 
-      await this.organizationUserRepository.update(
-        {
-          organization: {
-            organizationId,
+      if (body.role) {
+        await this.organizationUserRepository.update(
+          {
+            organization: { organizationId },
+            user: { userId },
           },
-          user: {
-            userId,
-          },
-        },
-        body,
-      );
+          { role: body.role },
+        );
+      }
+
+      const updateUserPayload: Partial<User> = {};
+
+      if (body.name) updateUserPayload.name = body.name;
+      if (body.email) updateUserPayload.email = body.email;
+
+      if (Object.keys(updateUserPayload).length > 0) {
+        await this.userRepository.update({ userId }, updateUserPayload);
+      }
 
       const updatedOrgUser = await this.organizationUserRepository.findOne({
         relations: {
