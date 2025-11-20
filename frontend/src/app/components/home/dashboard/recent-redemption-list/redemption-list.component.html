@@ -36,31 +36,34 @@
           <ngx-skeleton-loader
             [theme]="{ height: '24px', width: '160px', margin: '0', padding: '0' }"></ngx-skeleton-loader>
           } @else {
-          <div class="flex items-center gap-2 cursor-pointer group"
+          <div class="flex items-start cursor-pointer group"
             (click)="copyToClipboard(redemption.getCustomerEmail(), 'email address')">
-            <div class="flex flex-col">
+
+            <div class="flex flex-col min-w-0">
+              <!-- Customer Name -->
               <div class="font-body-large text-on-surface">
                 {{ redemption.getCustomerName() }}
               </div>
 
-              <div class="text-sm font-body-small text-on-surface-variant truncate">
-                {{ redemption.getCustomerEmail() }}
+              <!-- Email + Copy Icon Row -->
+              <div class="flex items-center min-w-0">
+                <div class="text-sm font-body-small text-on-surface-variant truncate max-w-[180px]">
+                  {{ redemption.getCustomerEmail() }}
+                </div>
+
+                <!-- Copy Icon -->
+                <button class="opacity-0 group-hover:opacity-100 transition-opacity duration-150 
+               text-on-surface-variant hover:text-primary flex-shrink-0 ml-1"
+                  (click)="$event.stopPropagation(); copyToClipboard(redemption.getCustomerEmail(), 'email address')">
+
+                  <mat-icon class="material-symbols-outlined text-[16px] h-[16px]">
+                    content_copy
+                  </mat-icon>
+                </button>
               </div>
             </div>
 
-            <!-- Copy Icon (shows on hover) -->
-            <button
-              class="opacity-0 group-hover:opacity-100 transition-opacity duration-150 text-on-surface-variant hover:text-primary"
-              (click)="
-      $event.stopPropagation();
-      copyToClipboard(redemption.getCustomerEmail(), 'email address')
-    ">
-              <mat-icon class="material-symbols-outlined text-[16px] h-[14px] w-[16px] mt-5">
-                content_copy
-              </mat-icon>
-            </button>
           </div>
-
           }
         </td>
       </ng-container>

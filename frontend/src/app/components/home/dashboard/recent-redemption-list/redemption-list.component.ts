@@ -22,6 +22,7 @@ import { sortOrderEnum } from '../../../../../enums';
 import { SnackbarService } from '../../../../services/snackbar.service';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { DateRangeStore } from '../../../../store/date-range.store';
+import { TruncatePipe } from "../../../../pipe/truncate.pipe";
 
 @Component({
   selector: 'app-recent-redemption-list',
@@ -35,7 +36,8 @@ import { DateRangeStore } from '../../../../store/date-range.store';
     DatePipe,
     NgxSkeletonLoaderModule,
     CurrencyPipe,
-  ],
+    TruncatePipe
+],
   templateUrl: './redemption-list.component.html',
   styleUrls: ['./redemption-list.component.css'],
 })
