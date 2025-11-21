@@ -19,13 +19,7 @@ This method uses JWT tokens obtained through the login endpoint. Include the tok
 
 **Usage:**
 ```http
-Authorization: Bearer <your-jwt-token>
-```
-
-**Example:**
-```http
-GET /api/coupons
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MTQxMjgwZS0yODE0LTQxZGEtOTg1NS1iZTk3MWY4ZDk3NGUiLCJpYXQiOjE3NTk5OTM4NDAsImV4cCI6MTc2MDA4MDI0MH0.0aNHQLZVz6i_uY9ruh1Qm6dDgzxX_zUqHFp0HupvT64
+Authorization: Bearer <token>
 ```
 
 **How to get a token:**
@@ -41,13 +35,6 @@ This method uses API keys for programmatic access. Include both the API key and 
 ```http
 x-api-key: <your-api-key>
 x-api-secret: <your-api-secret>
-```
-
-**Example:**
-```http
-GET /api/coupons
-x-api-key: 1234567890abcdef
-x-api-secret: abcdef1234567890
 ```
 
 **How to get API keys:**
