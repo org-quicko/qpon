@@ -1,0 +1,71 @@
+---
+id: create-campaign
+title: "Create campaign"
+description: "Create campaign"
+sidebar_label: "Create campaign"
+hide_title: true
+hide_table_of_contents: true
+api: eJydVMFu2zAM/RWBpw2QG6frlsa3tuihGLA1a3cqgoGWmVitLamSvC4z/O8D7Sxxm2IYmpNDiU+Pj+RrwTryGLU1VwVkoDxhpERh7VCvDUiIuA6Q3cHF39BSgkOPNUXyfNKCwZogA+vXaPTvHuyHLkCCNpCBw1iCBE+PjfZUQBZ9QxLoF9au4rz8QzGbk5oltDrF5GQ+P07yT8ezBAuVT1e5mp6mU5AQVEk1QtZC3DjOC9Frs4aukzsKyjbufx4vKCivHTOFDC76LNFn7Wmlp9PZx9OUkmKujpOTPKcETxQm+cc0nc3SNF+dzP9JaykhkGq8jptepmgfyJw1sYTsbsmk0enPtLkh5Snu4ktmG5w1gQJkbTeQpxDPbbHhZ5Q1kUzkT3Su0qoXfHIfuJb2kI/N70lFkOA89zrqHner2AFrViCSN1ixiq9U1Y002ul+SyGKxfXXL+Lm8hZeYECkEDmzOxC+nzYxmraaYmk5x9nQc+b+ZTBBpyfj+QqT9sW4dZOh+WHS7qagm4ygWaBveykvD4rYlviS/V4ZbVa2l0THfkIWzjLw85oW/SgFgWKgIVa8K0/WP4i80VUU+UYsGq0e7JE47wPaCBRBYYV5RVLUTRV1EsmgiSKWtlmXUThvFYUgRSxJLJ7DkuHEIPImaEMhUBDRisLudA0CTSF8Y4RdrcgHwRfXe6iz66v+RoGhzC364ggk/CQfhoqmR+lRyvVzT2o0I8kOG/hMjN30RPoVJ65CbRin8RWfDb294zUA+cw9AkjIDu1k22A+HC+6GjlTyWOT3UHb5hjou6+6jsOPDXlewqWEn+g169WvZKEDfxeQrbAKL41htGvw7tvWQt4LNsXXytoG0WxYPqwa/gcSHmjzijuyAbzp+bFbvYHHXrlu2UkoCQvyvRjD+cXwZnLLKPv8A6tho9pt6/XXG177fGtRtS04x+MTey8+De9bN/Q2a4dYCxWadYNrvjtg8u8P9gBA7w==
+sidebar_class_name: "post api-method"
+info_path: qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Create campaign"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/api/organizations/{organization_id}/coupons/{coupon_id}/campaign"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Create campaign
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"description":"Coupon id","example":"0817580e-d9c2-4bbe-a4ca-b5007700bf49","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"name":{"type":"string"},"external_id":{"type":"string"}}},"example":{"name":"Test QPON SET","external_id":"test"}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{}}
+>
+  
+</StatusCodes>
+
+
+      

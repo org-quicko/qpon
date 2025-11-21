@@ -1,0 +1,71 @@
+---
+id: update-user
+title: "Update user"
+description: "Update user"
+sidebar_label: "Update user"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVlFv2zYQ/ivEPW0YZcu24th6aloMWLGXpm2eAqM4kWebjUSqJNXUM/Tfh5Nsx469IMOGTS+Wj8fjfd8dv9MWIq4C5PdwF8jDQkKNHiuK5Nm6BYsVQQ7Or9CaPzAaZ78YDRKMhRxqjGuQ4OlbYzxpyKNvSAL9wKoueV8x0ddzUtcJLWeYZPP5OCmm4+sEtSpGy0KNZukIJAS1pgoh30Lc1LwvRG/sCtpWHlJoAvm/c3Smp9MsU6NEFaNpkmU4TmZ6nCVTPZro2Ww+0dPJi0cvJARSjTdx01ER3QPZmyauIb9fcGJYm99p84mUp3iwLzinUDsbKHDUcZryj6agvKmZP8jZKD41SlEIy6YsQYJyNpKN7Ip1XRrVUT38Gth/e56lK76SiiCh9q4mH01/mnKajryMjbQiD62EikLAFV0AKkFjfEXsfQEuRehrdGGBKjTl+YqEpfMVRsh3Hq0E5Qkj6S8YX/QPcVMS+ze1/kv/lp+jbtgzM07TIyrgqAYbsYsnGCc8kXKA/dqO2vWrRisK7x4tHFhg25tIIQ6Uq+AUMYxmeTrOs3SQjibZbP5LepVPUjiFyU5X03w0GVxNx+PR1c5phzZLs/NWy9JM8N0W1kWxdI3V/2+3XSxLlmbHZXmW7w4eX3UK8a3Tm37nv4Lhn3fuM0SvLX8PilPpEn/PHdbXOtl34Ekh77q1fXdWFNdO9zqoWAg7PcxhiLUZHqt1GG6fiXc75BhhuN11dgsSmLWPT/z+egbngH6PhTe/2cHu8bAwL13HmImdBN/Wzp7hYKMwQaBQruH3JQ+cR+cfRNGYMopiI24box7cQLztDMYKFEFhiUVJUlRNGU0SyaKNIq5ds1pHUXvHN1mKuCZxexqWLG8MomiCsRQCBRGd0E4orGo0KxsEWi18Y4VbLskHwY6rp1A3H953HhrDunDo9QAkfCcfekSjQTpIGX/tQqzQHtF2WrQTIg6NFelHHNYlGtupmu+ari/nPc8YkCfjN4CE/HwedzXlpb1eLSSsXYgcZLstMNCdL9uWzd8a8jzSFhK+ozdMTjfgtAn8riFfYhnoLN/DjYOfPu7G7s8C5GUcOyPaDXOFZcP/QMIDbS58T/A4/Q+P33PULloJa0JNvmOgX33XH5R85hhPu89UhpPud9woRXV80XdxdGc/3Hx+9xtIKHZSVnUiCB4f+YsGH/tUXd2XO9/2ti2UaFdNL5F9UH7+BBV4SdI=
+sidebar_class_name: "patch api-method"
+info_path: qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Update user"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"patch"}
+  path={"/api/organizations/{organization_id}/users/{user_id}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Update user
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"user_id","in":"path","required":true,"example":"4d6644c1-cb16-44a2-8d24-6d13d8893d63","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"name":{"type":"string"},"email":{"type":"string","format":"email"}}},"example":{"name":"dan brown","email":"dan@test.com"}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"200 Successfull","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"},"data":{"type":"object","properties":{"user_id":{"type":"string"},"name":{"type":"string"},"email":{"type":"string","format":"email"},"created_at":{"type":"string","format":"style"},"updated_at":{"type":"string"}}}}},"example":{"code":200,"message":"Successfully updated user","data":{"user_id":"4d6644c1-cb16-44a2-8d24-6d13d8893d63","name":"dan brown","email":"dan@test.com","created_at":"18:02:40.013489+05:30","updated_at":"18:56:13.562215+05:30"}}}}},"404":{"description":"404 User not found","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"}}},"example":{"code":404,"message":"User not found"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

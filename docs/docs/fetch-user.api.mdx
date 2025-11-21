@@ -1,0 +1,71 @@
+---
+id: fetch-user
+title: "Fetch user"
+description: "Fetch user"
+sidebar_label: "Fetch user"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVU2P2zYQ/SvEnFqAsiVZ9u7q1C2QFEEv3Sa5dGEEI3JkMSuRCjlK4xr67wHlj9q1WzSn+GJp+GY0897McAeMmwDlM7wP5GEtoUePHTH5aN2BxY6ghCGQ/2A0SDAWSuiRG5Dg6dNgPGko2Q8kgb5g17cRX+jVqihUlqgqWyVFgXlyr/MiWelsoe/vHxZ6tQAJQTXUIZQ74G0f/QJ7YzcwjmsJgdTgDW+nPNi9kH0cuIHyeT3KHWBvfqXtW1Ke+GRfx5xC72ygEKPmaRr/NAXlTc/GxeTzNBWviVVDWsS6QIJylslyxGLft0ZhxM4/huiwu07TVR9JMUjovevJs9l/TjlNZyhjmTbkYZTQUQi4oRuVStDI/yP2UYFbEfYi3TigDk17fSKhdr5DhvKAGCUoT8ikPyD/J14jU8Kmo+gz9PobfeLvrE+OlOVpesYRvB2UohDqoW23oj5I5fwGrflrUkbUzh+1O9J3IgjqWi+zYlklD4s8T4q7+0VSZWmaVA+rjO5WVaYeEI6sQRh68gJ1ZyycGNtbZ5P1J6bAM+U6uGQJ8jRfJukiye7eZVmZL8tlMVvkyz/gkpl/xx3oKNLiukuLtBBxJoV1LGo3WP19+/SmbkVanOv2j3wP5cUvT3m+mcSJciZH7S5KnobyKGtH3LjosKGpgLhxSphjb+YREea7g+DjtJRqN+VseFo/T72zV+GjUZggUCg3xOc6bro/nX8R1WBaFtVWPA1GvbiZ+HkyGCtQBIUtVi1J0Q0tm4TJomXBjRs2DYveu9irUnBD4ukyLNnoGEQ1BGMpBAqCndBOKOx6NBsbBFot/GCFq2vyQUTg5u9Qj7+9mRAaQ1M59HoGEj6TD/uKslk6S6NsvQvc4dQDh66+4PKCh5OyTF943rdo7DTLfloUe56f43qNbRyZBgnlcbjWEhoXOCJ2uwoDvfftOEbzp4F8XNVrCZ/Rm1j4tLi1CfFZQ1ljG+gqmVNLww+/H66THwXI20kejGi3kQdsh/gGEl5oe3ZJjetRQkOoyU8p7E8flaKez/yuJiheH6e2++XVOxjHrzwTYiE=
+sidebar_class_name: "get api-method"
+info_path: qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Fetch user"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/api/users/{user_id}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Fetch user
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"user_id","in":"path","required":true,"example":"4d6644c1-cb16-44a2-8d24-6d13d8893d63","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"200 Fetched user","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"},"data":{"type":"object","properties":{"user_id":{"type":"string"},"name":{"type":"string"},"email":{"type":"string","format":"email"},"created_at":{"type":"string","format":"date-time"},"updated_at":{"type":"string","format":"date-time"}}}}},"example":{"code":200,"message":"Successfully fetched organization for user","data":{"user_id":"ffd5145b-9322-4783-b100-b961e76b1c9a","name":"super admin","email":"super.admin@test.com","created_at":"2025-03-17T11:25:54.325Z","updated_at":"2025-03-17T11:25:54.325Z"}}}}},"404":{"description":"404 User not found","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"}}},"example":{"code":404,"message":"User not found"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

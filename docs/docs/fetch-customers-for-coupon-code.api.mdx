@@ -1,0 +1,71 @@
+---
+id: fetch-customers-for-coupon-code
+title: "Fetch customers"
+description: "Fetch customers"
+sidebar_label: "Fetch customers"
+hide_title: true
+hide_table_of_contents: true
+api: eJy9VkuP2zYQ/ivEnFpUtGlbtiydui3aIOilm7SnhRGMyJHFrEQqJLWNYei/F5S9fuwj2Fziy3rJeX7fxxnvwXbkMGhr3isooKIgay57H2xLzvPKOi5t31nDpVUECQTceiju4PejDTtcs/F6k0CHDlsK5KLVHgy2BAUcjD5pBQloAwV0GGpIwNGXXjtSUATXUwL0FduuiR5iPcuWa0Fc5XLO07IkjqlEXi6FyDIhyirNIQEva2oRij2EXRf9fHDabGEYknNybDvU2+9Kr1aEktKc41pVPJ2vcp4rueBrharKymy2kOVb0x96jwB9TwVZlVJViTXPy1XF09Ui5fkiXXM1zykT2XKeL+Q3K9gk4En2TofdSEWw92Ru+lBDcbeJ9WGn/6LdR5KOwul8E2vynTWefIw6FyL+UeSl010UChTxkH3spSTvq75pdmzUDcXmpDWBTIg+2HWNlqO4pp99dNw/L9eWn0kGSKBzUYpBH9KOcjpbaRNoSw6GBFryHrf0QscJKAxvin1FyEuBTi/g4hadw12kL1Dr35DlGOK1FAd1vHBBLerm+U0ClXUtBiiOFkMCXW3NGMT0TYNl1E2UUWzAEQZSnzB8M5IPu4ZipL5Tr9oPx8+FOh8JmgtxwQi8pAl2wpJV9npcnAl7SgksljlWWCqulivJ0/W64uWciKeERFUpZstyBlc83T2BHGYrzESZzfgqnRFP5Qr5WpQZn8/FfJZRVUpawCMP8K7fsQ86yFrHuo4cwLbf/RrIh4m0LZzwjmhfQwxzUYi0SPOJWOdCLH8Ry2Ih4BrXV4yGzSO814/sz4jfGT2IQIfaxta2NOotjpACptjp6QFAP92fJu0wfZx78fQ8AofpxUA/OxyhH6aXCbWp7KgHHcaZdNtZA0/rjIdMe4aP3FZxA/xn3T0re90EVu7Yba/lvZ2w38YDbRgyL3GUbMLavgmaBzJoAgu17bd1YJ2zUUoJCzWx2+uwZKKjZ2XvtSHvybNgmbLs1DFDo5jrDbNVFZUXDbfnUDd/vx8tFPq6tOjUBBJ4IOcPHc0mYiLG92V9aHEcXEeZPCflCozT0wn0NUy7BrUZX5cbH/SBsLs4eMdJOVIGCRSX6/HUw3hxtbouibtwO2+Wc12bBGrrQ8y235fo6V/XDEM8/tKTiwthk8ADOn2YGnd7UNrH7wqKChtPzxo7DXb46cNxaf3M4g+Clxp+HJkmDswHbPr4HyRwT7urXwNxDf3IxBdw/ujU11wNmyGBmlCRG9E/GN1ISV24cH+2QuN+Po2Bd3/8A8PwP7P4SyA=
+sidebar_class_name: "get api-method"
+info_path: qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Fetch customers"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/api/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/customers"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Fetch customers
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"coupon_id","in":"path","required":true,"example":"0817580e-d9c2-4bbe-a4ca-b5007700bf49","schema":{"type":"string"}},{"name":"campaign_id","in":"path","required":true,"example":"d6eace49-a8df-4269-9dc3-8dadf7b713cb","schema":{"type":"string"}},{"name":"coupon_code_id","in":"path","required":true,"example":"7f4eff08-9b6f-4634-9348-d29e7075293c","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"200 Successfully fetched","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"},"data":{"type":"object","properties":{"coupon_code_id":{"type":"string"},"customers":{"type":"array","items":{"type":"object","properties":{"customer_id":{"type":"string"},"name":{"type":"string"},"email":{"type":"string","format":"email"},"phone":{"nullable":true},"created_at":{"type":"string","format":"style"},"updated_at":{"type":"string"}}}}}}}},"example":{"code":200,"message":"Successfully fetched customers for coupon code","data":{"coupon_code_id":"359afabd-d56c-488f-b2ee-4eaeefb015b1","customers":[{"customer_id":"16a70b71-641e-4c6a-80b7-220217efbce3","name":"Guy Ritchie","email":"guy@test.com","phone":null,"created_at":"20:04:49.089005+05:30","updated_at":"20:04:49.089005+05:30"}]}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

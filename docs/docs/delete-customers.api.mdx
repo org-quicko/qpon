@@ -1,0 +1,71 @@
+---
+id: delete-customers
+title: "Delete customers"
+description: "Delete customers"
+sidebar_label: "Delete customers"
+hide_title: true
+hide_table_of_contents: true
+api: eJy9VU1v2zgQ/SvEnLaAGCu2bFm6Zbc5FO1hs21PgbEYkSOLjUSyJJWtYei/F5QdW94ERXPJyfJoZt58vDfag7HkMCijP0goQVJLgbjofTAdOQ8JBNx6KO/hr6ONCdNbo5kwkmCTgEWHHYXoXN7vQWNHUMLB6V8lIQGloQSLoYEEHH3vlSMJZXA9JUA/sLNtjEjX1/lynRKXhZjzrKqIYyaQV8s0zfM0reqsgAS8aKhDKPcQdjbG+eCU3sIwJGdw7Cyq7avg5YpQUFZwXMuaZ/NVwQspFnwtUdZ5lV8vRPW78Ife44BeU0FeZ1TX6ZoX1arm2WqR8WKRrbmcF5Sn+XJeLMTvVnDc1avgF7i6rpYZr1cV8iyrVxzzueSrnGRez2W9Wspfwm8S8CR6p8JuZEIwD6Rv+tBAeb+JxaFVH2n3mYSjcLJvYk3eGu3Jx6zzNI0/krxwykZiQhmN7HMvBHlf9227YweexnqE0YF0iDFobavESObZNx8D98/LNdU3EgESsC5SP6gD7Mjms5fSgbbkYEigI+9xSy91PEzm95RinqaTGLio2lFnHkmyp/Ww2pnuQk/DMGa97P792CybirKj0JizYGM7cb8lzNCq2SGjn+1PKhxmT5qI1rM8hqMvj+jngCN1h9kJc7afcGoYSVWbcSYqjPS5s0bD/yuPRqY8w6cm63gr/jPugVW9agOrduyuV+LBXLE/R4PSDJkX2GLVUsK6vg2KB9KoAwuN6bdNYNaZONOEhYbY3WVa0jHQs6r3SpP35FkwTBp26p+hlsz1mpm6JudZdNyeU938/WH0kOibyqCTV5DAIzl/6Oj6Kr1KIy2s8aHDkWNH0b2wpotpnPgT6EeY2RaVjol618Z3h/3dR5GMrB43CAmU00t6amJ8cXHlpnuchJ2P0LSucnogNgk0xocIvt9X6Omra4chmr/35KKWNwk8olNxsqOypfLxWUJZY+vpWZ8nTcIf/xzvzTsWPyUv9X80ot7FQWPbx3+QwAPtLr4j8YK8JfBkum8Nfbm6t0afUGPYDAk0hJLcuPiDx40QZMMk9tnhjVf9dKLe3366/XILw/ATGqvc1g==
+sidebar_class_name: "delete api-method"
+info_path: qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Delete customers"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"delete"}
+  path={"/api/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/customers/{customer_id}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Delete customers
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"coupon_id","in":"path","required":true,"example":"0817580e-d9c2-4bbe-a4ca-b5007700bf49","schema":{"type":"string"}},{"name":"campaign_id","in":"path","required":true,"example":"d6eace49-a8df-4269-9dc3-8dadf7b713cb","schema":{"type":"string"}},{"name":"coupon_code_id","in":"path","required":true,"example":"7f4eff08-9b6f-4634-9348-d29e7075293c","schema":{"type":"string"}},{"name":"customer_id","in":"path","required":true,"example":"73a61b54-f6ba-44f6-a72d-67ed7f2df65d","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"200 Successfully deleted","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"}}},"example":{"code":200,"message":"Successfully removed customer from coupon code"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

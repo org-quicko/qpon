@@ -1,0 +1,71 @@
+---
+id: update-customer
+title: "Update customer"
+description: "Update customer"
+sidebar_label: "Update customer"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVsFy2zYQ/RXMntopKZESRUk8xXYPzfRiN/bJo8ksgaUImwRoAIytaPTvGZCSTEVqml5a6kLtLhaL9xZvuQXdkEEntfooIIO2Eego5K11uiYDAThcW8ge4eZgWgXQoMGaHBnv2YLCmiADbdao5Ncu2WcpIACpIIMGXQkBGHpppSEBmTMtBUBvWDeVX5dPxXxJfB5SscAwWS4nYZ5O5iEKnsdFzuNFFEMAlpdUI2RbENQY4uh8sgIrS7tdcKziUPq/qWA+xTTOZ0lYpDmGSVKkIc4nIkznJObFRBTpTPxTBasALPHWSLfpQHH6mdRV60rIHle+Pmzkn7T5RNyQO9pXvizbaGXJ+sSTKOrzW25k45GEzBvZQ0eMYDfvzHCtHCnn47FpKsk75MdP1i/aDqp1m6bjJ38i7iCAxnjSney35FrQIEoqR2sysAugJmtxPXRaZ6Rae59A9zO5B2RcytJzdsFBNcrq3BNAoU2NDrJ9xC6AptSqS6LaqsLcE+r59UneHBmF1d/tzg15TD+j++FO1m0q8vH95bgcv/PPoKcOuE6iaAAkfGo5J2uLtqo2bJ+PDW7bAdYT4AAXKSacx2Gex1GYxDMKc84X4YTyaSJwVkw4hwOa8Dsqdm30q4IjjiBQjXJv++DIuhHXNRyR87h9BxZwWi6n6TQJJ8s5hUmcz8JlHkXhJBVxkdCCp9MpnCII8TKbLbNZPFpMkmm0+C2aZdMITmGDSZRF82w6H81naZrsY/bgJVF83vxJFLMHha0rtZFfSfy/jX+R4ySKhxyfVLs/mtcesu5ai02/7udOcLrbgUyHqn0aNeio+vDSSv6s94TuG+De+9mt97+zDIvl4Qd9Tac49wIz7MWaXKlFr5/cC2inoxmMsZHjodjb8fY77d+ND3nseDvo5V0nyYXukJWuE9+7RvtOPa3GG5m0DBnXrX8v/MR51eaZ5a2sHMs37K4/OrvuDFIxZJZjJwEBq9vKydCRQuWYK3W7Lh1rjPa3L2CuJHZ3mpaUX2hZ3lqpyFqyzGkmNONYNyjXyjJUgplWMV0UZCzzgev3VFe3H7sIgbbMNRoxggC+kLH9ieJRNIo6vdLW1djxvOfrHPoTMI5N6OjNjZsKperUyHQC2ZPy6McLBCcz2EIA2flQPjLj3UOdWQVQaut8su02R0sPptrtvPmlJeOn2iqAL2hkL7KPWxDS+vfDEDyr+9jm8Mtf++H7K/PfFJfOszei2njcsGr9PwjgmTYXPi78RP0Ptx/itFvtAigJBZkOhT7ipt8svPd53jOcXW9feL/iinNq3A9jV4NbeHt1f/MHBJDvNaTutAcMvvpvG3zty9VNT3227W1bqFCt216Z+qT++QZNAV9b
+sidebar_class_name: "patch api-method"
+info_path: qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Update customer"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"patch"}
+  path={"/api/organizations/{organization_id}/customers/{customer_id}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Update customer
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"deprecated":false}},{"name":"customer_id","in":"path","required":true,"example":"73a61b54-f6ba-44f6-a72d-67ed7f2df65d","schema":{"deprecated":false}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{},"example":{"email":"tanuj.patel@quicko.com","name":"Tanuj Patel","phone":"8989898989"}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"200 Updated Customer","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"},"data":{"type":"object","properties":{"customer_id":{"type":"string"},"name":{"type":"string"},"email":{"type":"string","format":"email"},"phone":{"nullable":true},"external_id":{"type":"string"},"created_at":{"type":"string","format":"style"},"updated_at":{"type":"string"}}}}},"example":{"code":200,"message":"Successfully updated customer","data":{"customer_id":"a86a4cc1-bb10-415e-bcc8-2eb34da5f2cc","name":"Dan Brown","email":"dan.brown@test.com","phone":null,"external_id":"ce993634-297e-41b5-9b00-26d1f4e8c633","created_at":"19:59:51.824308+05:30","updated_at":"20:07:37.75664+05:30"}}}}},"401":{"description":"401 Unauthorized","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"}}},"example":{"code":401,"message":"Unauthorized"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

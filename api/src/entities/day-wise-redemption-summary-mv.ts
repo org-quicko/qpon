@@ -6,10 +6,10 @@ import { ViewEntity, ViewColumn, Index } from 'typeorm';
     SELECT
       r.organization_id,
       r.redemption_date::text AS date,
-      COUNT(r.redemption_id)::numeric AS total_redemptions_count,
-      COALESCE(SUM(r.base_order_value), 0)::integer AS gross_sales_amount,
-      COALESCE(SUM(r.discount), 0)::integer AS discount_amount,
-      COALESCE(SUM(r.base_order_value - r.discount), 0)::integer AS net_sales_amount,
+      COUNT(r.redemption_id) AS total_redemptions_count,
+      COALESCE(SUM(r.base_order_value), 0) AS gross_sales_amount,
+      COALESCE(SUM(r.discount), 0) AS discount_amount,
+      COALESCE(SUM(r.base_order_value - r.discount), 0) AS net_sales_amount,
       NOW() AS created_at,
       NOW() AS updated_at
     FROM redemption r

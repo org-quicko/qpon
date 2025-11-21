@@ -36,6 +36,16 @@ export class DateRangeStore {
         return d;
     }
 
+    private ensureDate(d: any): Date | null {
+        if (!d) return null;
+        if (d._isAMomentObject && typeof d.toDate === 'function') {
+            return d.toDate();
+        }
+        if (d instanceof Date) return d;
+        return null;
+    }
+
+
 
     // This method updates the store when Apply is clicked
     applyRange(range: {
@@ -54,14 +64,23 @@ export class DateRangeStore {
         }
 
         if (range.type === 'custom' && range.start && range.end) {
-            const start = new Date(range.start);
-            start.setDate(start.getDate() - 1);
-            const normalizedStart = this.setToEndOfDay(start);
+            const startDate = this.ensureDate(range.start);
+            const endDate = this.ensureDate(range.end);
+
+            if (!startDate || !endDate) return;
+
+            const normalizedStart = new Date(startDate);
+            normalizedStart.setHours(0, 0, 0, 0);
+
+            const normalizedEnd = new Date(endDate);
+            normalizedEnd.setHours(0, 0, 0, 0);
+
             this._label.set('Custom');
             this._start.set(normalizedStart);
-            this._end.set(range.end);
+            this._end.set(normalizedEnd);
             return;
         }
+
 
         // Handle predefined numeric ranges safely
         const today = new Date();

@@ -7,18 +7,18 @@ import { RedemptionSummaryListConverter } from './redemption-summary-list.conver
 @Injectable()
 export class RedemptionSummaryWorkbookConverter {
   constructor(
-    private tableConverter: RedemptionSummaryTableConverter,
-    private listConverter: RedemptionSummaryListConverter,
-  ) {}
+    private redemptionSummaryTableConverter: RedemptionSummaryTableConverter,
+    private redemptionSummaryListConverter: RedemptionSummaryListConverter,
+  ) { }
 
   convert(dayWiseSummaries: DayWiseRedemptionSummaryMv[]): RedemptionSummaryWorkbook {
     const workbook = new RedemptionSummaryWorkbook();
     const sheet = workbook.getRedemptionSummarySheet();
 
-    const redemptionSummaryTable = this.tableConverter.convert(dayWiseSummaries);
+    const redemptionSummaryTable = this.redemptionSummaryTableConverter.convert(dayWiseSummaries);
     sheet.replaceBlock(redemptionSummaryTable);
 
-    const redemptionSummaryList = this.listConverter.convert(dayWiseSummaries);
+    const redemptionSummaryList = this.redemptionSummaryListConverter.convert(dayWiseSummaries);
     sheet.replaceBlock(redemptionSummaryList);
 
     return workbook;

@@ -1,0 +1,73 @@
+---
+id: fetch-offers
+title: "Fetch offers"
+description: "Fetch offers"
+sidebar_label: "Fetch offers"
+hide_title: true
+hide_table_of_contents: true
+api: eJy9V9uO2zYQ/RWCTy0g7Uq2fFNRoGmbBkERpMkmT4ZhjKiRxVgiFZJK1lnopX/V3+mXFCNfZTuONwn6sl5Rw5nDmTPDoweuKzTgpFbPUx7zDJ3IfZ1laCz3uIOF5fGUv1wvzDxegYESHT3F0weuoEQec7x3aBQUc+mwnMuUe1wqHvP3NZoV97jB97U0mPI4g8Kix/EeyqqgrcN0OIE+Rv5AjCI/EoO+n6RB5E9G/aAfpOMeTIbc41bkWAKPH7hbVbRPKocLNLxpvFMYorZOl2iugZKiFUZWlAIe8z9k4dAwp9kCHdv6YbZCITMpmNB1pRUTOkVK0P4c0B+Mwiya+OEAB3406qE/GY6En07Gg2Qoxuko7Z07h3VGqkXnGFYb90jYd9o45nJkBm1duC40Mr0ydCqt0LVy89bkW1K35hBLVmzrk2187oFVaAQqBwu8NjNLWT0S1cv2HyhYBQskVBbdDfsdM6gLx6RlQQdScC3XHCwfm6AuFCs/YQdI2EUSXg3l3gchsHL+YdFyhBTN5d6DqiqkaLv/9p3V6qdMmxLczzZHdD6tXFkXbRag5KfW00HPVeDyDgJn6g6ApJ+OJihGPmZj8KPJpOcnw97Ih1QkYZaIcByEFyHMPG5R1Ea6VTuPoJJ/4uoOhUH3pHY5j6czMjJoK60sWnLSCwL66RanFwTsrhYCrc3qolixdhRiynbDUGjlUDnaepw4WjsBqZN3KKiRK0ND1sl1dBod5wrq8RKtpV44PafHU3BX+C7RwXWWxxU7k9vG4y0R7MFLMAaI6TTn7ZejJIUWy2/YvyHxl/fvOcmN/nhNxC96arwNu89U4xdUrqXcmW3/+77moKO29OoFwQGf+GVibxlzyJ4TfvAsGmEA48gfjSHzo17W98dZCP44S8IkGvT6UdTjB5yZ7ss/3Vdyyp10BU2pw/aj5qJ7dd6i906uod3zByhq3FRtLrSyzoBURJxSKlnW5RxKMiSPHQ0goKxALtR8L1Vo+YO0MpEF5Xa2pc50yv/9+58wCChD3OPP0LH9AtOKrXRtWFUbkYNtZcBvb+/evHzx1AyGozH3eCbvkbyHAc1wKAruqboo1n+4Q9syvU4KKfjM++pwr8NeP3psuJm3G9pU/7mDpC3HjmJ8vdIcG7Z17RiuV04MP2qzTLRedmx3i82GskfagTi5Z2SJLtdEukUbsr1HYn4Llbw9JKa9fTjiaXO78yFVptuGafkW81dVS7RuXFqkuxe2wi4jeUtgWVLLwpF+eVVLsdQ37Nd2QSoGzAooKEseK+vCSd+hAhI4ua4XuWOV0dRuXqvIXnXdoqKNliW1lQqtRUuKKdVsy1DLQKXM1GorochwsXf15K/nrUUKNk80mPSGeIzGrk8U3gQ3AfVhpa0rob2aNuU5SnInE7vB4vDe3VYFSEVOalPQu3UBpnS9cq8zG8hRfHr9690HQ66to60PDwlYfGuKpqHltWSiyZBKSxnZ65Mlrs5/UqybP+aclMfJtqPj7G7rx0r6s3k4wtSdLV+J64xmvxB781HwXXLweW1+AcDxTP5KJFfp8Ut5WH8CfJfo5yX4heAb0b8PPqMHI9uJeZbMn0Xyw+uNKv6RfS7mVqmo1WHMLZbjpmtmjbe/Zh8D5fKZj78uOplfmzxpDQ7enehjStRuqD97+oY3zX/ZKJ8Q
+sidebar_class_name: "get api-method"
+info_path: qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Fetch offers"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/api/organizations/{organization_id}/offers"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Fetch offers
+
+View the schema on [sheet-tools](https://sheet-tools.quicko.org.in/sheet-schema-builder?schema_url=https://raw.githubusercontent.com/org-quicko/qpon/main/lib/sheet-core/resources/schema/offer_workbook/offer_workbook.schema.json)
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"external_item_id","in":"query","required":false,"example":"6d69a3e4-5c74-4c53-bd04-973030d82a96","schema":{"type":"integer"}},{"name":"external_customer_id","in":"query","required":false,"description":"Filter to get customer specific coupon codes","example":"a3571f49-15e5-472e-967c-d985b6c8d7d2","schema":{"type":"string"}},{"name":"sort","in":"query","required":false,"description":"Sort the results","example":"desc","schema":{"type":"string"}},{"name":"discount_type","in":"query","required":false,"description":"Filter to get offers by discount type","example":"percentage","schema":{"type":"string"}},{"name":"skip","in":"query","required":false,"description":"Optional page offset. Default is 0","example":"0","schema":{"type":"integer"}},{"name":"take","in":"query","required":false,"description":"Optional page size. Default is 10","example":"10","schema":{"type":"integer"}},{"name":"x-accept-type","in":"header","required":false,"example":"application/json;format=sheet-json","schema":{"type":"string"}},{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"200 Successfully fetched offers","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"},"data":{"type":"object","properties":{"metadata":{"type":"object","properties":{"organization_id":{"type":"string"}}},"sheets":{"type":"array","items":{"type":"object","properties":{"blocks":{"type":"array","items":{"type":"object","properties":{"header":{"type":"array","items":{"type":"string"}},"rows":{"type":"array","items":{"type":"array","items":{"type":"string"}}},"name":{"type":"string"},"@entity":{"type":"string"}}}},"name":{"type":"string"},"@entity":{"type":"string"}}}},"name":{"type":"string"},"@entity":{"type":"string"}}}}},"example":{"code":200,"message":"Successfully fetched offers","data":{"metadata":{"organization_id":"f47e0a84-78af-42f3-8f1a-8fb1b4523442"},"sheets":[{"blocks":[{"header":["title","description","coupon_code","discount_type","discount_value","item_constraint","minimum_amount","customer_id","campaign_external_id","visibility"],"rows":[["₹100 off","Get ₹100 off on your purchases","CUSTOMEr5678","fixed","100","all",null,null,"test","public"],["₹100 off","Get ₹100 off on your purchases","CUSTOMER1234","fixed","100","all",null,null,"test","public"]],"name":"offer_table","@entity":"table"}],"name":"offer_sheet","@entity":"sheet"}],"name":"offer_workbook","@entity":"workbook"}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

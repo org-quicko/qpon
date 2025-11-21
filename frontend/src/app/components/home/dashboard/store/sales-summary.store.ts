@@ -1,64 +1,10 @@
-import { Injectable, signal, computed, effect, inject } from '@angular/core';
+import { signal, computed, inject } from '@angular/core';
 import { DashboardService } from '../../../../services/dashboard.service';
-import { plainToInstance, Type } from 'class-transformer';
+import { transformSalesSummary, SalesSummaryWorkbook } from '../../../../utils/sales-summary.transformer';
 
-class SalesSummaryRow {
-  date!: string;
-  grossSalesAmount!: number;
-  discountAmount!: number;
-  netSalesAmount!: number;
-}
-
-class SalesSummaryItem {
-  key!: string;
-  value!: number | string;
-}
-
-class SalesSummaryWorkbook {
-  @Type(() => SalesSummaryRow)
-  graphData: SalesSummaryRow[] = [];
-
-  @Type(() => SalesSummaryItem)
-  summaryItems: SalesSummaryItem[] = [];
-
-  static fromApi(data: any): SalesSummaryWorkbook {
-    const workbook = new SalesSummaryWorkbook();
-
-    try {
-      const sheet = data?.sheets?.[0];
-      if (!sheet) return workbook;
-
-      const graphBlock = sheet.blocks?.[0];
-      if (graphBlock?.rows) {
-        workbook.graphData = graphBlock.rows.map((r: any[]) => ({
-          date: r[0],
-          grossSalesAmount: +r[1] || 0,
-          discountAmount: +r[2] || 0,
-          netSalesAmount: +r[3] || 0,
-        }));
-      }
-
-      const summaryBlock = sheet.blocks?.[1];
-      if (summaryBlock?.items) {
-        workbook.summaryItems = summaryBlock.items.map((i: any) => ({
-          key: i.key,
-          value: i.value,
-        }));
-      }
-
-      return plainToInstance(SalesSummaryWorkbook, workbook);
-    } catch (e) {
-      console.error('❌ Failed to transform workbook:', e);
-      return workbook;
-    }
-  }
-}
-
-@Injectable({ providedIn: 'root' })
 export class SalesSummaryStore {
   private readonly dashboardService = inject(DashboardService);
 
-  // --- signals ---
   private _organizationId = signal<string | null>(null);
   private _startDate = signal<string | null>(null);
   private _endDate = signal<string | null>(null);
@@ -67,15 +13,9 @@ export class SalesSummaryStore {
   error = signal<string | null>(null);
   workbook = signal<SalesSummaryWorkbook | null>(null);
 
-  // --- computed ---
-  organizationId = computed(() => this._organizationId());
-  startDate = computed(() => this._startDate());
-  endDate = computed(() => this._endDate());
-  hasData = computed(() => !!this.workbook());
   graphData = computed(() => this.workbook()?.graphData ?? []);
   summaryItems = computed(() => this.workbook()?.summaryItems ?? []);
 
-  // --- setters ---
   setOrganizationId(id: string) {
     this._organizationId.set(id);
   }
@@ -91,7 +31,6 @@ export class SalesSummaryStore {
     this.isLoading.set(false);
   }
 
-  // --- main action ---
   async fetchSalesSummary() {
     const orgId = this._organizationId();
     if (!orgId) {
@@ -108,7 +47,7 @@ export class SalesSummaryStore {
         .toPromise();
 
       if (res?.code === 200 && res.data) {
-        this.workbook.set(SalesSummaryWorkbook.fromApi(res.data));
+        this.workbook.set(transformSalesSummary(res.data));
       } else {
         this.error.set(res?.message ?? 'No data available');
         this.workbook.set(null);

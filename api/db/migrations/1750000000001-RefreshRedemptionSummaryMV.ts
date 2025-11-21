@@ -15,7 +15,7 @@ export class RefreshRedemptionSummaryMVs1750000000001 implements MigrationInterf
                 r.coupon_code_id,
                 c.code AS coupon_code,
                 r.redemption_date AS date,
-                COUNT(r.redemption_id)::numeric AS total_redemptions,
+                COUNT(r.redemption_id) AS total_redemptions,
                 NOW() AS created_at,
                 NOW() AS updated_at
             FROM redemption r
@@ -30,9 +30,18 @@ export class RefreshRedemptionSummaryMVs1750000000001 implements MigrationInterf
         `);
 
         // Indexes
-        await queryRunner.query(`CREATE INDEX IF NOT EXISTS IDX_ccdw_org ON coupon_codes_wise_day_wise_redemption_summary_mv (organization_id)`);
-        await queryRunner.query(`CREATE INDEX IF NOT EXISTS IDX_ccdw_code ON coupon_codes_wise_day_wise_redemption_summary_mv (coupon_code_id)`);
-        await queryRunner.query(`CREATE INDEX IF NOT EXISTS IDX_ccdw_date ON coupon_codes_wise_day_wise_redemption_summary_mv (date)`);
+        await queryRunner.query(`
+    CREATE INDEX IF NOT EXISTS idx_coupon_codes_day_wise_redemption_summary_organization 
+    ON coupon_codes_wise_day_wise_redemption_summary_mv (organization_id)
+`);
+        await queryRunner.query(`
+    CREATE INDEX IF NOT EXISTS idx_coupon_codes_day_wise_redemption_summary_coupon_code 
+    ON coupon_codes_wise_day_wise_redemption_summary_mv (coupon_code_id)
+`);
+        await queryRunner.query(`
+    CREATE INDEX IF NOT EXISTS idx_coupon_codes_day_wise_redemption_summary_date 
+    ON coupon_codes_wise_day_wise_redemption_summary_mv (date)
+`);
 
 
         // Recreate item_wise_day_wise_redemption_summary_mv
@@ -43,7 +52,7 @@ export class RefreshRedemptionSummaryMVs1750000000001 implements MigrationInterf
                 r.item_id,
                 i.name AS item_name,
                 r.redemption_date AS date,
-                COUNT(r.redemption_id)::numeric AS total_redemptions,
+                COUNT(r.redemption_id) AS total_redemptions,
                 NOW() AS created_at,
                 NOW() AS updated_at
             FROM redemption r
@@ -58,9 +67,18 @@ export class RefreshRedemptionSummaryMVs1750000000001 implements MigrationInterf
         `);
 
         // Indexes
-        await queryRunner.query(`CREATE INDEX IF NOT EXISTS IDX_iwdw_org ON item_wise_day_wise_redemption_summary_mv (organization_id)`);
-        await queryRunner.query(`CREATE INDEX IF NOT EXISTS IDX_iwdw_item ON item_wise_day_wise_redemption_summary_mv (item_id)`);
-        await queryRunner.query(`CREATE INDEX IF NOT EXISTS IDX_iwdw_date ON item_wise_day_wise_redemption_summary_mv (date)`);
+        await queryRunner.query(`
+    CREATE INDEX IF NOT EXISTS idx_item_day_wise_redemption_summary_organization 
+    ON item_wise_day_wise_redemption_summary_mv (organization_id)
+`);
+        await queryRunner.query(`
+    CREATE INDEX IF NOT EXISTS idx_item_day_wise_redemption_summary_item 
+    ON item_wise_day_wise_redemption_summary_mv (item_id)
+`);
+        await queryRunner.query(`
+    CREATE INDEX IF NOT EXISTS idx_item_day_wise_redemption_summary_date 
+    ON item_wise_day_wise_redemption_summary_mv (date)
+`);
 
 
         // Recreate day_wise_redemption_summary_mv
@@ -69,9 +87,9 @@ export class RefreshRedemptionSummaryMVs1750000000001 implements MigrationInterf
             SELECT
                 r.organization_id,
                 r.redemption_date::text AS date,
-                COUNT(r.redemption_id)::numeric AS total_redemptions_count,
-                COALESCE(SUM(r.base_order_value), 0)::integer AS gross_sales_amount,
-                COALESCE(SUM(r.discount), 0)::integer AS discount_amount,
+                COUNT(r.redemption_id) AS total_redemptions_count,
+                COALESCE(SUM(r.base_order_value), 0) AS gross_sales_amount,
+                COALESCE(SUM(r.discount), 0) AS discount_amount,
                 COALESCE(SUM(r.base_order_value - r.discount), 0)::integer AS net_sales_amount,
                 NOW() AS created_at,
                 NOW() AS updated_at
@@ -81,8 +99,14 @@ export class RefreshRedemptionSummaryMVs1750000000001 implements MigrationInterf
         `);
 
         // Indexes
-        await queryRunner.query(`CREATE INDEX IF NOT EXISTS IDX_dwdw_org ON day_wise_redemption_summary_mv (organization_id)`);
-        await queryRunner.query(`CREATE INDEX IF NOT EXISTS IDX_dwdw_date ON day_wise_redemption_summary_mv (date)`);
+        await queryRunner.query(`
+    CREATE INDEX IF NOT EXISTS idx_day_wise_redemption_summary_organization 
+    ON day_wise_redemption_summary_mv (organization_id)
+`);
+        await queryRunner.query(`
+    CREATE INDEX IF NOT EXISTS idx_day_wise_redemption_summary_date 
+    ON day_wise_redemption_summary_mv (date)
+`);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {

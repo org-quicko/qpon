@@ -1,0 +1,71 @@
+---
+id: create-coupon-code
+title: "Create coupon code"
+description: "Create coupon code"
+sidebar_label: "Create coupon code"
+hide_title: true
+hide_table_of_contents: true
+api: eJy1V21v4zYM/isGP22Y3cjOi2N/uyv64bAN99IOA1YEgSwxia625ZPkXnNB/vtAOy+Ok9563ZYvSSmSIvk8ItkN6AoNd0qX7ySkIAxyh4HQdaXLQGiJ4IPjSwvpPVw3Uu+apDMfKm54gQ4NHW6g5AVCCtoseam+7V36oEpIoeJuBT4Y/FIrgxJSZ2r0AZ94UeVklg1lnKCIA1xMeTBKkijIJlEccCmycJGJcMpC8MGKFRYc0g24dUV21hlVLmG79Q8RtMHP1T9dLtEKoyoKFNJ9co3VMSw2DePxlGEgExEFoyzDgI8ED7IxY3HMWLYYJS8NixcVV8sfD2xn1w9NTpALHCUBn8pFMIomSZBIMQymkstFnMXhUGTfDW3mg0VRG+XWDYBOP2D5pnYrSO9nFDiv1K+4vkVh0B3kM4rXVrq0aMlrxEL6Oo05YqG3KyhxyGtpRfELXTosHZnwqsqVaIgy+GzJbnMerc4+o3DgQ2WIqU61tzbMPGqp0uESDWx9KNBavsQLCfsguXuR74Y/dAVhdclR7/rODd0ybKCs85xnBBchS4a1dbpAMxe6tM5w1ZbizE/Bn+YGJRaNK3vRV6FKVdTFnBe6bt2cq5y4mVd08S6Ci/qPyqpM5Q0jLmVXt61i3p5c0MCnShm0c345Huu4q+3lkrYU2VmeHdeVfP6YPp2nsadHxMIOH+C2FgKtXdR5vt4z0hNHlsKRIH0KwGQixjGbjAPkWRKMRlEcJDIcByKRmRQhi8fIYc8LuLu5vRtP4in0CEH1eIYDwPMcLuDemvSh3km/h26r0gUUqjrLlYAzHGGhDT6igVP8Wg97yIALpx6pSF2kIIzSMEnDyVUYjaJw+Asbp0MGp3g9o7Td4UbtD617q+W6rf3/0SGOTPqPOX567FMtiyZpyj9wqkD4d+++3+IuUh3+vPnt+v3vN9EYXgp6rgrV9uRuQhCxaBywUTBkd+EoHbKUsb/gB0kbMtZC25tkDXF6T65At9L0xCptGxRpJqYw4JUadHcJO9icrhbbQevIDjaHib8d7KcsSY8Dd6/bbDQWfCA2fTry7uasngc8T4p5kPaLeTjo13IUsDiIkrtwnI7DNJpesTh8vp4HN2clZVvaGRa6YYRyzQbwsdJlv8U0Qk9Zj+/rvKAt7as2D15Wq9x52dr7WCvxoK+8t41AlR73rOBNq/a9os6dChyWvHSeW+l6uXJeZTT1Tt9zK/Q+nrrFkgytl9VWlWgtWs9pT2rvgIXHS+mZuvT0YoHGeqS4PLp68+FdoyG5XWWaG3lFdUdj24zCK3bF6HEQQwreDtZ2p7rIqN4M3iHk8MkNqpyrshknJqezlmz3tOmAf7K6EknSs112xzg6626Zh0Sbg5M974R3Mx9WxPL0HjabjFv8w+TbLYm/1GhoC5v58MiNaofm/QaksvRbQrrgue3vhp1mCT992m2RP3u0sl9Keifk5Zrqy/Oa/gIfHnB9vrjTAviq27uL9CvCONb19RGcbMyviaED4Xa29WGFXNJQvd/sNK7be4M78nP0cDawKIfW4o0QWLnv6s463fDD+9s78CHbDcWi7UqGf6X/F/jXNlp9nBKNbAM5L5d1u+60PunzN5W4wwQ=
+sidebar_class_name: "post api-method"
+info_path: qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Create coupon code"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/api/organizations/{organizationId}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Create coupon code
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"organizationId","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"description":"Coupon id","example":"0817580e-d9c2-4bbe-a4ca-b5007700bf49","schema":{"type":"string"}},{"name":"campaign_id","in":"path","required":true,"description":"Campaign id","example":"d6eace49-a8df-4269-9dc3-8dadf7b713cb","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"string"},"visibility":{"type":"string"},"duration_type":{"type":"string"},"expires_at":{"type":"string","format":"date-time"},"customer_constraint":{"type":"string"},"max_redemptions":{"type":"integer"}}},"example":{"code":"WELCOME25","visibility":"public","duration_type":"limited","expires_at":"2025-04-30T14:30:00Z","customer_constraint":"all","max_redemptions":100}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"201":{"description":"201 Coupon code created","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"},"data":{"type":"object","properties":{"coupon_code_id":{"type":"string"},"code":{"type":"string"},"description":{"nullable":true},"customer_constraint":{"type":"string"},"max_redemptions":{"nullable":true},"minimum_amount":{"nullable":true},"max_redemption_per_customer":{"nullable":true},"visibility":{"type":"string"},"duration_type":{"type":"string"},"expires_at":{"nullable":true},"status":{"type":"string"},"created_at":{"type":"string"},"updated_at":{"type":"string"}}}}},"example":{"code":201,"message":"Successfully created coupon code","data":{"coupon_code_id":"66c57065-eab9-4427-9d15-c9dbdc1075ea","code":"TEST5678","description":null,"customer_constraint":"all","max_redemptions":null,"minimum_amount":null,"max_redemption_per_customer":null,"visibility":"public","duration_type":"forever","expires_at":null,"status":"active","created_at":"12:19:16.124213+05:30","updated_at":"12:19:16.124213+05:30"}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

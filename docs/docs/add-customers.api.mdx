@@ -1,0 +1,71 @@
+---
+id: add-customers
+title: "Add customers"
+description: "Add customers"
+sidebar_label: "Add customers"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVlmP2zYQ/ivEPLWoaFOybB1P3aRFsehDc/XJMIIRObKZlURFpHbXMPzfA0peH3sEG6BI/WKbHM71fXPswLTUodOmuVaQAyrFZW+dqamzEIDDtYV8CW8PZ0yavjUNk0YRrAJoscOanBfOlztosCbIYRT6rBUEoBvIoUW3gQA6+trrjhTkruspALrHuq38C5GGyTwVxFUmIx4XBXGMJfJiLkSSCFGUcQYBWLmhGiHfgdu2/p11nW7WsN8HJ+NYt6jXP2ReLQglxRnHVJU8jhYZz5Sc8VShKpMiCWeyeK35MXafoB/xICljKkuR8qxYlDxezGKezeKUqyijRCTzKJvJ73qwCsCS7DvttgMUztxQc9W7DeTLlfcPW/03bT+S7Mgdz1feJ9uaxpL1WiMR+i9FVna69bSA3B+yIwFQKfJhSdM4apyXxrattBxINP1i/ZPdU0dN8YWkgwDazlPO6dHgQKSTlG4cramDfQA1WYtreibWABS6V+m+gOI5RSeun26x63DrgXNU21dYOah4ycTIi2cuqEZdPb0JoDRdjQ7yg8Q+gHZjmkFJ01cVFp4xnkBeyb2jrsHqxQA7QkfqM7rvWrJuW5GX71v1ovz+8Dnj7QOAkQjPEIOPvZRkbdlX1XZkDDtmmjlz0UVOaD7GC2bzDEssFFfzheRxmpa8iIh4TEhUFiKcFyFcgLh8hAeEC0xEkYR8EYfEY7lAnooi4VEkojChspA0gweQ4K9+yz5oJzfa+3UACNb99ndH1k2kqeEIhofiUf5BUpbNfO1GWUI8Dos5zwoheLRQYRlTKhczb+0cFIhELuI8ziYizYSY/ybm+UzAJRIvCO1XBzxiIZ6WbSwEu25usdKn7P+/hfssdWIhzqlzbDR32m3Y9R+WvQLCiCnDGuMY3WvrJnBIi2+3ZN0bo7ajvf8m8h/oGWeVcxn6GWWBpFiIYhHxWZTNeJxgyTFJJZ+XYShSUmkpBaxGHZcQX6mzwgKfRrcxnoitsYPjfuzkMMVWT8fqstPdcTrvpw+z0p+exub+IMs9QKcHh7rcT88t+uR9OKX5zxdCPORhtffzsDRDhrQbJt/71jTwODB/yLRl+NAqSr9n3JnuhhW9rhwrtux9r+WNmbA3w4FuGDIrcWiPAav7ymnuqMHGMbcx/XrjWNsZ35YC5jbE3l+qpcY/tKzorW7IWhoalTLsmCOGjWJd3zBTlr6PecH1SdXVu+tBQqHdFAY7NYEAbqmzY0ThREzE0MuNdTUOjDt0nccoXqTiSCVH927aVqiboU93w+gYAV764T6U9gAxBJCfr2DHCIaLi/XoHOizZ6ft5eTXKoCNZ1W+hN2uQEv/dtV+74+/9tT5pWMVwC12epxPyx0obf1vBXmJlaUngR3rEX75cFiMfmV+6Xwu4IdCa3yZ3WLV+38QwA1tLzZOv+r8TMNn6fzZpi+x2vvi2hAq6obsj0JvR3v8k1d1UvKk/3nfxxdXUlLrviu7Ous07/75+AkCKA49th56OnR459ddvBsdNkP8Q2McznZQYbPux44/6vSfb5/KNx4=
+sidebar_class_name: "post api-method"
+info_path: qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Add customers"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/api/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/customers"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Add customers
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"coupon_id","in":"path","required":true,"example":"0817580e-d9c2-4bbe-a4ca-b5007700bf49","schema":{"type":"string"}},{"name":"campaign_id","in":"path","required":true,"example":"d6eace49-a8df-4269-9dc3-8dadf7b713cb","schema":{"type":"string"}},{"name":"coupon_code_id","in":"path","required":true,"example":"7f4eff08-9b6f-4634-9348-d29e7075293c","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"customers":{"type":"array","items":{"type":"string"}}}},"example":{"customers":["ec060b62-3293-47af-a78c-5f1108ed8fc0"]}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"201":{"description":"201 Customer added","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"},"data":{"type":"object","properties":{"coupon_code_id":{"type":"string"},"customers":{"type":"array","items":{"type":"object","properties":{"customer_id":{"type":"string"},"name":{"type":"string"},"email":{"type":"string","format":"email"},"phone":{"nullable":true},"external_id":{"type":"string"},"created_at":{"type":"string","format":"style"},"updated_at":{"type":"string"}}}}}}}},"example":{"code":201,"message":"Successfully added customers to coupon code","data":{"coupon_code_id":"359afabd-d56c-488f-b2ee-4eaeefb015b1","customers":[{"customer_id":"16a70b71-641e-4c6a-80b7-220217efbce3","name":"Guy Ritchie","email":"guy@test.com","phone":null,"external_id":"ce993634-297e-41b5-9b00-26d1f4e8c633","created_at":"20:04:49.089005+05:30","updated_at":"20:04:49.089005+05:30"}]}}}}},"400":{"description":"400 Invalid customer","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"}}},"example":{"code":400,"message":"Customer with IDs 16a70b71-641e-4c6a-80b7-220217efbce2 do not exist."}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

@@ -1,0 +1,71 @@
+---
+id: fetch-users-of-an-organization
+title: "Fetch users of an organization"
+description: "Fetch users of an organization"
+sidebar_label: "Fetch users of an organization"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVcGO2zYQ/RViTg1K2ZIte23dtkBbBL10m+a0MIIRObKYlUiFpDZxDf17MfKuK69d5BhdJA0fh/PmzQyPEHEfoHiEj4E87CR06LGlSJ6tR7DYEhTg/B6t+QejcfaT0SDBWCigw1iDBE9feuNJQxF9TxLoG7Zdw/vKpb7bkrpLqNpgkm+3i6RcL+4S1KrMqlJlmzQDCUHV1CIUR4iHjveF6I3dwzDsJARSvTfxMMYT3RPZ+z7WUDzuBnkE7MwfdPhAylM823ccU+icDRTY6yJN+aUpKG86JgEFG8VvFFUt+sB0JShnI9nIUOy6xqiR7/xzYPzxOkpXfiYVQULnXUc+mtNpymmaoIyNtCcPg4SWQsA93SAqQWOc+kbv8cB5jtSG75/JFFiYW55PGt5YoBZNc3NFecJI+hPG62UJlfMtr0CIh4YY33f6f/HD+Eyq4jVDizSdpAQ+9EpRCFXfNAdRsTCkz9KcsvM4IQq5Xq/zXGWJKrN1kue4SDZ6kSdrnS31ZrNd6vUSXtmDRitK775aOPNmWzaLFOJMuRYuWUO2KdJFkaezNFvmm+3P6apYpnBJlUH5qljdzVbpKs3WL6Bhd2Kcp/l12eVpLrjZgrAuisr1Vv/Y0rupTZ7mU23eBvwiKR89BvqeBRk1S0bFElclaJPp2GARLxIx6T3hKoFWvIG3FGvHjvc0MuVhU8AcOzOfIsP8+GY8DfPXsjG2ciNlE8d59NDdCISNwgSBQrmevysegV+dfxJlb5ooyoN46I16cjPxy2gwVqAIChssG5Ki7ZtokkgWbRSxdv2+jqLzjstZiliTeLh0S5Y3BlH2wVgKgYKITmgnFLYdmr0NAq0WvrfCVRUniIH7/1zd//l+RGgMdenQ6xlIeCYfToyyWTpLWfXOhdjiWEIvffDdrF/k5lwskb7FedegsWO7+3FsnBR55BkM8uKO4NwX15fGSZadhNqFyDuPxxIDffTNMLD5S0+e5/xOwjN6w0kam16bwN8aigqbQFdBnrsHfvrr5S56J0DeDv51wFoer8/Y9PwHEp7ocOOmG3aDhJpQkx9DOaHulaIuTvZfNS3fQecC/v3Xv2EY/gWCr4Mn
+sidebar_class_name: "get api-method"
+info_path: qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Fetch users of an organization"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/api/organizations/{organization_id}/users"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Fetch users of an organization
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"200 Fetch users","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"},"data":{"type":"array","items":{"type":"object","properties":{"user_id":{"type":"string"},"name":{"type":"string"},"email":{"type":"string"},"created_at":{"type":"string","format":"style"},"updated_at":{"type":"string"}}}}}},"example":{"code":200,"message":"Successfully fetched users","data":[{"user_id":"4d6644c1-cb16-44a2-8d24-6d13d8893d63","name":"dan brown","email":"dan1.test.com","created_at":"18:02:40.013489+05:30","updated_at":"18:45:57.505016+05:30"}]}}}},"404":{"description":"404 Users not found","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"}}},"example":{"code":404,"message":"Users not found"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

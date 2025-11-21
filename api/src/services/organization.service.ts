@@ -35,17 +35,17 @@ export class OrganizationService {
     private readonly organizationsMvRepository: Repository<OrganizationsMv>,
     private organizationConverter: OrganizationConverter,
     private organizationSummaryWorkbookConverter: OrganizationSummaryWorkbookConverter,
-    private ItemsSummaryWorkbookConverter: ItemsSummaryWorkbookConverter,
-    private CouponCodeSummaryWorkbookConverter: CouponCodeSummaryWorkbookConverter,
+    private itemsSummaryWorkbookConverter: ItemsSummaryWorkbookConverter,
+    private couponCodeSummaryWorkbookConverter: CouponCodeSummaryWorkbookConverter,
     private organizationsListConverter: OrganizationsListConverter,
     private RedemptionSummaryWorkbookConverter: RedemptionSummaryWorkbookConverter,
     private logger: LoggerService,
     @InjectRepository(ItemWiseDayWiseRedemptionSummaryMv)
-    private readonly itemSummaryRepo: Repository<ItemWiseDayWiseRedemptionSummaryMv>,
+    private readonly itemSummaryMvRepository: Repository<ItemWiseDayWiseRedemptionSummaryMv>,
     @InjectRepository(CouponCodesWiseDayWiseRedemptionSummaryMv)
-    private readonly couponCodeSummaryRepo: Repository<CouponCodesWiseDayWiseRedemptionSummaryMv>,
+    private readonly couponCodeSummaryMvRepository: Repository<CouponCodesWiseDayWiseRedemptionSummaryMv>,
     @InjectRepository(DayWiseRedemptionSummaryMv)
-    private readonly daywiseRedemptionSummaryRepo: Repository<DayWiseRedemptionSummaryMv>,
+    private readonly daywiseRedemptionSummaryMVRepository: Repository<DayWiseRedemptionSummaryMv>,
   ) { }
 
   /**
@@ -313,39 +313,35 @@ export class OrganizationService {
     this.logger.info('START: getItemWiseSummary service');
 
     try {
-      if (!organizationId) {
-        this.logger.warn('organization_id is missing');
-        throw new BadRequestException('organization_id is required');
-      }
 
-      this.logger.info(
+      this.logger.debug(
         `Fetching top 5 items for organizationId=${organizationId}`,
       );
 
-      const qb = this.itemSummaryRepo
-        .createQueryBuilder('mv')
-        .select('mv.organization_id', 'organizationId')
-        .addSelect('mv.item_id', 'itemId')
-        .addSelect('mv.item_name', 'itemName')
-        .addSelect('SUM(mv.total_redemptions)', 'totalRedemptions')
-        .addSelect('MAX(mv.created_at)', 'createdAt')
-        .addSelect('MAX(mv.updated_at)', 'updatedAt')
-        .addSelect('MAX(mv.date)', 'date')
-        .where('mv.organization_id = :orgId', { orgId: organizationId })
-        .groupBy('mv.organization_id')
-        .addGroupBy('mv.item_id')
-        .addGroupBy('mv.item_name')
-        .orderBy('SUM(mv.total_redemptions)', 'DESC')
+      const qb = this.itemSummaryMvRepository
+        .createQueryBuilder('summary')
+        .select('summary.organization_id', 'organizationId')
+        .addSelect('summary.item_id', 'itemId')
+        .addSelect('summary.item_name', 'itemName')
+        .addSelect('SUM(summary.total_redemptions)', 'totalRedemptions')
+        .addSelect('MAX(summary.created_at)', 'createdAt')
+        .addSelect('MAX(summary.updated_at)', 'updatedAt')
+        .addSelect('MAX(summary.date)', 'date')
+        .where('summary.organization_id = :orgId', { orgId: organizationId })
+        .groupBy('summary.organization_id')
+        .addGroupBy('summary.item_id')
+        .addGroupBy('summary.item_name')
+        .orderBy('"totalRedemptions"', 'DESC')
         .limit(5);
 
       // optional date filter
       if (startDate && endDate) {
-        qb.andWhere('mv.date BETWEEN :start AND :end', {
+        qb.andWhere('summary.date BETWEEN :start AND :end', {
           start: startDate,
           end: endDate,
         });
 
-        this.logger.info(
+        this.logger.debug(
           `Date filter applied: BETWEEN ${startDate} AND ${endDate}`,
         );
       } else {
@@ -354,9 +350,9 @@ export class OrganizationService {
 
       const rows = await qb.getRawMany();
 
-      this.logger.info(`Fetched ${rows.length} item summary records`);
+      this.logger.debug(`Fetched ${rows.length} item summary records`);
 
-      const converted = this.ItemsSummaryWorkbookConverter.convert(rows);
+      const converted = this.itemsSummaryWorkbookConverter.convert(rows);
 
       this.logger.info('END: getItemWiseSummary service');
       return converted;
@@ -385,37 +381,33 @@ export class OrganizationService {
     this.logger.info('START: getCouponCodeWiseSummary service');
 
     try {
-      if (!organizationId) {
-        this.logger.warn('organization_id is missing');
-        throw new BadRequestException('organization_id is required');
-      }
 
-      this.logger.info(
+      this.logger.debug(
         `Fetching top 5 coupon codes for organizationId=${organizationId}`,
       );
 
-      const qb = this.couponCodeSummaryRepo
-        .createQueryBuilder('mv')
-        .select('mv.organization_id', 'organizationId')
-        .addSelect('mv.coupon_code', 'couponCode')
-        .addSelect('SUM(mv.total_redemptions)', 'totalRedemptions')
-        .addSelect('MAX(mv.created_at)', 'createdAt')
-        .addSelect('MAX(mv.updated_at)', 'updatedAt')
-        .addSelect('MAX(mv.date)', 'date')
-        .where('mv.organization_id = :orgId', { orgId: organizationId })
-        .groupBy('mv.organization_id')
-        .addGroupBy('mv.coupon_code')
-        .orderBy('SUM(mv.total_redemptions)', 'DESC')
+      const qb = this.couponCodeSummaryMvRepository
+        .createQueryBuilder('summary')
+        .select('summary.organization_id', 'organizationId')
+        .addSelect('summary.coupon_code', 'couponCode')
+        .addSelect('SUM(summary.total_redemptions)', 'totalRedemptions')
+        .addSelect('MAX(summary.created_at)', 'createdAt')
+        .addSelect('MAX(summary.updated_at)', 'updatedAt')
+        .addSelect('MAX(summary.date)', 'date')
+        .where('summary.organization_id = :orgId', { orgId: organizationId })
+        .groupBy('summary.organization_id')
+        .addGroupBy('summary.coupon_code')
+        .orderBy('"totalRedemptions"', 'DESC')   // <-- using alias
         .limit(5);
 
       // Optional date filter
       if (startDate && endDate) {
-        qb.andWhere('mv.date BETWEEN :start AND :end', {
+        qb.andWhere('summary.date BETWEEN :start AND :end', {
           start: startDate,
           end: endDate,
         });
 
-        this.logger.info(
+        this.logger.debug(
           `Date filter applied: BETWEEN ${startDate} AND ${endDate}`,
         );
       } else {
@@ -424,10 +416,10 @@ export class OrganizationService {
 
       const rows = await qb.getRawMany();
 
-      this.logger.info(`Fetched ${rows.length} coupon code summary records`);
+      this.logger.debug(`Fetched ${rows.length} coupon code summary records`);
 
       const converted =
-        this.CouponCodeSummaryWorkbookConverter.convert(rows);
+        this.couponCodeSummaryWorkbookConverter.convert(rows);
 
       this.logger.info('END: getCouponCodeWiseSummary service');
       return converted;
@@ -455,10 +447,6 @@ export class OrganizationService {
     this.logger.info('START: getDayWiseRedemptionSummary service');
 
     try {
-      if (!organizationId) {
-        this.logger.warn('organization_id is missing');
-        throw new BadRequestException('organization_id is required');
-      }
 
       let dateFilter: any = {};
       const fromDate = startDate ? new Date(startDate) : null;
@@ -466,18 +454,16 @@ export class OrganizationService {
 
       if (fromDate && toDate) {
         dateFilter = { date: Between(fromDate, toDate) };
-        this.logger.info(
+        this.logger.debug(
           `Date filter applied: BETWEEN ${fromDate.toISOString()} AND ${toDate.toISOString()}`,
         );
-      } else {
-        this.logger.info('No date filter applied (showing all data)');
       }
 
-      this.logger.info(
+      this.logger.debug(
         `Fetching day-wise redemption summary for organizationId=${organizationId}`,
       );
 
-      const results = await this.daywiseRedemptionSummaryRepo.find({
+      const results = await this.daywiseRedemptionSummaryMVRepository.find({
         where: {
           organizationId,
           ...dateFilter,
@@ -485,7 +471,7 @@ export class OrganizationService {
         order: { date: 'ASC' },
       });
 
-      this.logger.info(
+      this.logger.debug(
         `Fetched ${results.length} records from dayWiseRedemptionSummaryRepo`,
       );
 

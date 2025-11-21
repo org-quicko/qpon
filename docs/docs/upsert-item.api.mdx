@@ -1,0 +1,71 @@
+---
+id: upsert-item
+title: "Upsert item"
+description: "Upsert item"
+sidebar_label: "Upsert item"
+hide_title: true
+hide_table_of_contents: true
+api: eJxtVMtu3DoM/RWBq15Azjw6eYx37cVdBHfTtM0qGBS0TY/V2JIqUU2mhv+9oD2YZB5eyUfSIXlInR6cp4BsnL2vIIfkIwXODFMHGhi3EfInuJffjQaPATtiCoL2YLEjyMGFLVrzZyT5YSrQYCzk4JEb0BDoVzKBKsg5JNJAr9j5Vu4VH6vbNZW3GdV3mK3W62VW3CxvM6zKYlEX5eJuvgANsWyoQ8h74J2Xe5GDsVsYho2GSGUKhndjPuyeyX5K3ED+tBl0D+jN/7T7RmUgPuAbySl6ZyNFyPthSpEif3bVTsKUzjJZliV635pyrGz2Mzor2Fk+rvhJJYMGH0RMNiPvXp2zrDVUFMtgvJBe3KdXpmCxFS0vVD280/DQA6bISrqmlnASYdp7D52EgMXqDle3q3W2LOp1tppf1xle3yyym9X1sppjXXxczyXwae7wOE6L2k9LR9w44fNpVEP6n8MMvZm9H5E4608mZpgJQ5xNwwcaROqvb03576zcvRin+Rzg4/repDW2dqOmhscRfPCjHMcsAioTFarSJVnXMvUvLjyrIpmWVbFTD8mUz+5KfR4BYxWqWGKLRUtadallkzFZtKy4cWnbsPLBlRSjVtyQejimJSsXoypSNJZipKjYqcqpEjuPZmujQlupkKxydU0hKjm4faP69OV+PFFhbAqHoboCDb8pxKmixdX8ai71exe5Q/tOyeMWXh5Nplee+RaNFY4UWtmb2vskbwz0kQdE0JBfMAXpMei9xYidNC6yUPR9gZEeQzsMAv9KFORBbzT8xmBEmvF5VybKuoK8xjbSWbaHdwsfvu5N5x8lLnapij2IdidKYZvkDzQ80+6CpQ2bQUNDWFEYU5lO/TsFzL4L1xvLmWmI5Rwex5fH76Ch2HtN5yq5EvBFrBJfpiScn3TM+wnroUW7TbiVsxOlfH8BfLv5IA==
+sidebar_class_name: "put api-method"
+info_path: qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Upsert item"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"put"}
+  path={"/api/organizations/{organization_id}/items/upsert"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Upsert item
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"name":{"type":"string"},"description":{"type":"string"},"external_id":{"type":"string"}}},"example":{"name":"test item 2","description":"test description","external_id":"148a4749-2bf9-405f-a561-6452d0afb390"}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{}}
+>
+  
+</StatusCodes>
+
+
+      

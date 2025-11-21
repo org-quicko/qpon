@@ -51,7 +51,6 @@ export class DashboardComponent implements OnInit {
   private redemptionsStore = inject(RedemptionsStore);
 
   // For infinite-loop prevention
-  private lastOrgId: string | null = null;
   private lastStart: string | null = null;
   private lastEnd: string | null = null;
 
@@ -66,32 +65,20 @@ export class DashboardComponent implements OnInit {
   error = this.salesSummaryStore.error;
 
   // aggregated totals
-  summaryTotals = computed(() => {
+  get stats() {
     const items = this.salesSummaryStore.summaryItems();
-    if (!items?.length) return null;
 
-    const findValue = (key: string) =>
-      Number(items.find((i) => i.key === key)?.value ?? 0);
+    const get = (key: string) =>
+      Number(items.find(i => i.key === key)?.value ?? 0);
 
     return {
-      totalRedemptions: findValue('total_redemptions'),
-      grossSalesAmount: findValue('gross_sales_amount'),
-      discountAmount: findValue('discount_amount'),
-      discountPercentage: findValue('discount_percentage'),
-      netSalesAmount: findValue('net_sales_amount'),
+      totalRedemptions: get('total_redemptions'),
+      grossSales: get('gross_sales_amount'),
+      discount: get('discount_amount'),
+      discountPercent: get('discount_percentage'),
+      netSales: get('net_sales_amount'),
     };
-  });
-
-  stats = computed(() => {
-    const totals = this.summaryTotals();
-    return {
-      totalRedemptions: totals?.totalRedemptions ?? 0,
-      grossSales: totals?.grossSalesAmount ?? 0,
-      discount: totals?.discountAmount ?? 0,
-      discountPercent: totals?.discountPercentage ?? 0,
-      netSales: totals?.netSalesAmount ?? 0,
-    };
-  });
+  }
 
   graphData = computed(() => this.salesSummaryStore.graphData());
   itemPopularityData = this.itemSummaryStore.popularityData;
@@ -111,7 +98,6 @@ export class DashboardComponent implements OnInit {
 
       // Prevent infinite loops
       if (
-        this.lastOrgId === orgId &&
         this.lastStart === startStr &&
         this.lastEnd === endStr
       ) {
@@ -119,7 +105,6 @@ export class DashboardComponent implements OnInit {
       }
 
       // update reference
-      this.lastOrgId = orgId;
       this.lastStart = startStr;
       this.lastEnd = endStr;
 

@@ -29,7 +29,7 @@ export class Redemption {
   @Column({ name: 'external_id', nullable: true })
   externalId: string;
 
-  @Index('IDX_redemption_date')
+  @Index('idx_redemption_date')
   @Column({
     name: 'redemption_date',
     type: 'date',

@@ -5,7 +5,6 @@
     <!-- Skeleton for Sales Summary header + cards -->
     <div class="space-y-2">
       <ngx-skeleton-loader count="1" [theme]="{ width: '300px', height: '24px', borderRadius: '6px' }"></ngx-skeleton-loader>
-      <ngx-skeleton-loader count="1" [theme]="{ width: '200px', height: '18px', borderRadius: '6px' }"></ngx-skeleton-loader>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-4">
@@ -20,7 +19,7 @@
   </ng-container>
 
   <ng-template #salesAnalyticsContent>
-    <app-dashboard-sales-analytics [userName]="user()?.name | titlecase" [stats]="stats()">
+    <app-dashboard-sales-analytics [userName]="user()?.name | titlecase" [stats]="stats">
     </app-dashboard-sales-analytics>
   </ng-template>
 

@@ -47,7 +47,7 @@ export class MaterializedViewRefreshService implements OnModuleInit {
     try {
       for (const view of this.materializedViews) {
         try {
-          this.logger.verbose(`Refreshing materialized view: ${view}...`);
+          this.logger.info(`Refreshing materialized view: ${view}...`);
           await this.dataSource.query(`REFRESH MATERIALIZED VIEW ${view} WITH DATA;`);
           this.logger.info(`Successfully refreshed: ${view}`);
         } catch (error) {

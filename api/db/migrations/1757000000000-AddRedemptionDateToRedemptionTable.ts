@@ -22,7 +22,7 @@ export class AddRedemptionDateToRedemption1750000000000 implements MigrationInte
         `);
 
         await queryRunner.query(`
-            CREATE INDEX "IDX_redemption_date"
+            CREATE INDEX "idx_redemption_date"
             ON "redemption" ("redemption_date");
         `);
     }
