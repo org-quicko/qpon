@@ -1,0 +1,71 @@
+---
+id: create-user
+title: "Create user"
+description: "Create user"
+sidebar_label: "Create user"
+hide_title: true
+hide_table_of_contents: true
+api: eJzNVktv20YQ/iuLObUAKVGy/BBPtYMcghZoYjuXGkIw3B1JG5O7zO7StirovxfDpSTKkoMUKNryQnK483Hmm+cabE0Og7bmg4IcpCMMlDaeHCQQcOEhf4DP/DpLoEaHFQVyLF2DwYogB+sWaPSfLcgXrSABbSCHGsMSEnD0rdGOFOTBNZQAvWBVl6xXnKnLKcnLlOZXmE6m03FaXIwvU1SyGM0LObrKRpCAl0uqEPI1hFXNej44bRaw2cwS8CQbp8OqtSfYRzLXTVhC/jDbJGvAWv9KqzuSjsJOPmObfG2NJ8+o42zEN0VeOl2zE5CzULDXIhKihG+kJO/nTVmuIAFpTSATWBHrutSy9X741bP2+thmW3wlGSCB2jHhQcd/S6uod0qbQAtysEmgIu9xQSfcTkBh+AFsjiGH4xRCjNyJD1ShLo+/JDC3rsIAeXdik4Cz5WmMjrIvGL4LpDjRgq6IdZpa/U0dvnrZtOVynI165MFdL2y7WHbZvaVxRxRMJF7IolCpxGKcTqaTi/SquJynGV5OiiK7wCmdw5Y9uCcf2iSBHW8QyIcBA/7SPklbwZYpQFVpA4f8wDgbn6fZJB2f3Y/O8vOzfJwNrsYXf8AhJ2+f64iYZNlxFk+yTNygElyD5MN/m7cnwzXJsn642NjbaKx4/yIpOrL1cHrKw2msUywdoVoJetE++P+lp9O+p6eM7kLZRevGqlVU/0ccOV3y/X58awtyQfyGZqGY9R/vBn0U16IMyoiyL4MNjw/vn6070ZL6AKPx2eTt/pIAmabiobQtJ1I6WK7BJ03PcU7tweKhLatxDj1ELpKd8Tu7up/ODuPXlfsrevY1/5bHfYejV69aQQz3YUK/a5vDtkVVFJaW1Wvblm87U3MYYq2H/bHrh+tXU3gzZAguBE6U231Kvf83HOMVYG7b6OnQfvhUt9CHzrJQaC9QSNvw85z3i2frHkXR6DKIYiU+NVo+2oG4aQXaCBReYolFSYmomjLoNJBBE0RY2maxDKJ2lnt+IsKSxKdDWDKs6EXReG3Ie/IiWKGskFjVqBfGCzRKuMYIO5+T84IPLvZQ1x8/tCcU+mVh0akBZx45Hz0aDbJB1ua69aFC06P5MLIHROySPNBLGNYlRg4b1xZfDPoDbzOQHGxbHN78eP2KkZ8lsOSsyR9gvS7Q02dXbjYs/taQ441plsATOs2MtPuT0p6fFeRzLD0dGbnrRPDTbVdNPwteE08Z3wnR8Lr0hGXDb5DAI61O7IwbrrkloSLXmhJPvYs/TO8Za49y1AZ514sa15KHxnfPznpl9fH3u3tIoOhabdV2anD4zBmNz9FiW0eu83WUrYErool9PGLy9Rf849KL
+sidebar_class_name: "post api-method"
+info_path: qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Create user"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/api/organizations/{organization_id}/users"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Create user
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"name":{"type":"string","example":"Robert Langdon"},"email":{"type":"string","format":"email","example":"robert.langdon@test.com"},"password":{"type":"string","example":"1234"},"role":{"type":"string","enum":["admin","editor","viewer"],"example":"admin"}},"required":["name","email","password","role"]},"example":{"name":"Robert Langdon","email":"robert.langdon@test.com","password":"1234","role":"admin"}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"201":{"description":"201 User created successfully","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"},"data":{"type":"object","properties":{"user_id":{"type":"string"},"name":{"type":"string"},"email":{"type":"string","format":"email"},"role":{"type":"string"},"created_at":{"type":"string","format":"date-time"},"updated_at":{"type":"string","format":"date-time"}}}}},"example":{"code":201,"message":"Successfully created user","data":{"user_id":"4ca6cbbd-cab2-4946-8b7f-0a74bb06a9e5","name":"Test User","email":"test.user@test.com","role":"admin","created_at":"2025-04-23T13:53:20.826Z","updated_at":"2025-04-23T13:53:20.826Z"}}}}},"400":{"description":"400 Bad request","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"}}},"example":{"code":400,"message":"Bad Request Exception"}}}},"409":{"description":"409 User already exists","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"}}},"example":{"code":409,"message":"User already exists"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

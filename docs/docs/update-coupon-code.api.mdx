@@ -1,0 +1,71 @@
+---
+id: update-coupon-code
+title: "Update coupon code"
+description: "Update coupon code"
+sidebar_label: "Update coupon code"
+hide_title: true
+hide_table_of_contents: true
+api: eJylVUtv2zgQ/ivEnLYAFcuPRJZuaS5b7KXZbU+BUYzIkcWNRLIk1dQr6L8vKPmZFCjq+iQPZ4bfPL6PPRhLDoMy+oOEAjorMVAiTGeNToSRBBwCbj0UT/AwWtlDtG44WHTYUiAXD3vQ2BIUYNwWtfrvkJKD0lCAxVADB0dfO+VIQhFcRxzoO7a2iWHlUmY5iSyhao3JKs8XSXm3yBKUopxXpZiv0zlw8KKmFqHoQZJ1JDDEZBU2noaBH0FM+L+on90vyQunbMQKxaG+MeqELF3Ps9t1SonMxSJZlSUluBKYlLdpmmVpWlar/BeQYWtRba/F5im8xifvCAWt8gTXskpWi7s8yaVYJmuJssrKbL4U5S93Lk7+Sogx9DXGrFpRVaXrJC/vqmR1t1wl+XK1TuQipyzNbhf5UvwM44aDJ9E5FXbjvgXzTPq+CzUUT5tYAVr1F+3+IeEoHO2biNpboz15KPphKoJ8eG/kLt4kjA6kQ/xEaxslxs2d/etjTf0J0nBWTw+i88G05L4Io31wqGIG8JaEqpSAYRiG1+35PFKLiVOXgENLoTZy6rCILR47XcAMrZqdU8nP+ktmDbMpk5/1x20fZof1itbTph18R0KfAvZDHsYpVybWFVQYB/ZojYbXFTyO7PAMD0VUUQBejHtmZaeawMode+yUeDY37P1oUJoh8wIbLBvirO2aoJJAGnVgoTbdtg7MOiPIe85CTezxMi3pGOhZ2XmlyXvyLBgmDTvWyVBL5jrNTFWR8yw6bk+p7j9+GD0k+ro06OQNcPhGzk8VzW/SmxQGDtb40OI48T0Rfjiui370EHY2ugb6Hma2QaVjqs418Wwa5FPcSuAXquiBQ/FGJvfTjGfn6nUsdDy4EI/zmZ6FHai74VAbHyKGvi/R02fXDEM0f+3IRQ5tOHxDp2KLR0ZJ5eP3gXJvyj1SBf74e68E71h8H37Uhr0R9S52HJsu/gMOz7R7+0pE+l51+7lkXwHj1OnfRXAU5mtQnI31d3Gc1Pf6dhw2aNgMHGpCSW7cj8npYbo9+RRTnZK8Ec8ovUd5+3j/6eFP4FDuVbeNfCrA4Ut8VvBlQmHsxI+in2w9NKi3HW6j75Q0/v4Htmb4lQ==
+sidebar_class_name: "patch api-method"
+info_path: qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Update coupon code"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"patch"}
+  path={"/api/organizations/{organizationId}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Update coupon code
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"organizationId","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"deprecated":false}},{"name":"coupon_id","in":"path","required":true,"description":"Coupon id","example":"0817580e-d9c2-4bbe-a4ca-b5007700bf49","schema":{"deprecated":false}},{"name":"campaign_id","in":"path","required":true,"description":"Coupon set id","example":"d6eace49-a8df-4269-9dc3-8dadf7b713cb","schema":{"deprecated":false}},{"name":"coupon_code_id","in":"path","required":true,"description":"Coupon code id","example":"7f4eff08-9b6f-4634-9348-d29e7075293c","schema":{"deprecated":false}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{},"example":{"customer_constraint":"specific"}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{}}
+>
+  
+</StatusCodes>
+
+
+      

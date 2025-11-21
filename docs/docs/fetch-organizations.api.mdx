@@ -1,0 +1,71 @@
+---
+id: fetch-organizations
+title: "Fetch organizations"
+description: "Fetch organizations"
+sidebar_label: "Fetch organizations"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVktv4zYQ/ivEnCVHL1u2blv0gVyapt1eGhjBiBrZ3EiklqS26zX83wvSTiLZjpO0C1QXSeQ8vnnPFlRHGq1Q8rqCAmqyfB0qvUIpvvljAwFYXBko7uBmcA7LADrU2JIl7W63ILElKIC+WtISm3tRQQBCQgGfe9IbCEDT515oqqCosTEUQEWGa9F5gQX8LBpLmlnFVmTZCAUrN+xRMPOC6Su2XeMU8nSRptmchxnlizBLplU4TwnDspyXySJblFWSQQCGr6lFKLZgN53jM1YLuYLdLnjCbvGB3gn6xn9gwzpcETPiG03Yj1Rj31gmDIujEVb/e4JESEsr0iMo5kF0/wmKqmtDdgRmjOXNUPzre4XSRfIg8BmKJTOmuhivpVNvOiUNGXefRJF7jREkUcT+6DknY+q+aTbM5za51OFKWpLW8WDXNYJ7lVefjGPcnipW5SfiFgLotCsXK/ZquaronOcCaMkYXNEZ7AFUaIeyUWt0/hSWWvO6zqGPXIGd07CP2pkL3mtNkm/OXto1tXTPVaN6fZZgWNcn9wHUSrdoXf23KBqvThNaqu7RXqSv0FJoRUuOp++qd/L4Z5BLj3FJomgQCNinwigT2HGf24fm7oyXIZ/nGEV8EdZpnIdZNkvDMuXTcE7xNOELzNP5HIKnNnKcziyGofvh+tff4cijnsm13tDTDnwHSZRMwygN4/RjHBdpWsTxZJalf8HYXy/TuVo+tYlizDjHKsyns3mYTYnCeRnn4YymnCfZNE8W2SWbknfYlLxq0zSZRGnyuk2PdOdtyusoKiOKw5rneZjhPAtLwihcpIuIZ3mSzyi5ZFP6DpvSF23KPdZpkSWTPJm9bNMx3W65T+Ysyk4bWhZlbDiBmVSW1aqX/3NLO1t9WZQNq+9mNMufgR+K92h2uPI8Kc6W7Fo5/6/I40a7hgKusBNXx6RC1soDFdZPl9vOD5SxFnfoZiIyrnr3Xbtl5m+lH1jZi8a6OXXbC/6gJuwHfyAkQ2Y4Nlg2FLC2b6wILUmUltm16ldryzqt3MQJmF0Tux2LJekYDSt7IyQZQ8bNx0oxjm2HYiUNQ1kx3Us3u0kb5ghXz6I+/HbtKSo061KhriYQwBfSZm9RPIkmkYtVp4xt0Qf+kOjnXTpyyFNcLX21V12DQvqGrBt3t3f3HWAnIICxoGUAa2Wsu95uSzT0p252O3e8XxZcR62Ecca/sC5sn/P3fUvgWcgPtDlZQ79g0ztK3zbeDuYty90FDId18rsof2Gdu6D9sEH+S+1v2uAuaD9QPGtfuh8tnHoo7pa7ANaEFWmfH3ueD5xTZwdcJ73MSXnqBL/89BF2u38AFLpBiQ==
+sidebar_class_name: "get api-method"
+info_path: qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Fetch organizations"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/api/organizations"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Fetch organizations
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"external_id","in":"query","required":false,"description":"Filter to get organizations by external id","example":"c393348c-4e79-425d-83ea-bb8b2949bd24","schema":{"type":"string"}},{"name":"take","in":"query","required":false,"description":"Optional page size. Default is 10","example":"10","schema":{"type":"integer"}},{"name":"skip","in":"query","required":false,"description":"Optional page offset. Default is 0","example":"0","schema":{"type":"integer"}},{"name":"name","in":"query","required":false,"description":"Filter to get organization by name","example":"test organization","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"200 Successfully fetched","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"},"data":{"type":"array","items":{"type":"object","properties":{"organization_id":{"type":"string"},"name":{"type":"string"},"currency":{"type":"string"},"theme_colour":{"type":"string"},"external_id":{"type":"string","format":"email"},"created_at":{"type":"string","format":"date-time"},"updated_at":{"type":"string","format":"date-time"}}}}}},"example":{"code":200,"message":"Succesfully fetched organizations","data":[{"organization_id":"787a00c9-f317-4463-b3c5-8e152c9a7388","name":"test organization 1","currency":"INR","external_id":"test-org-1","created_at":"2025-03-13T11:33:11.643Z","updated_at":"2025-03-13T11:33:11.643Z"},{"organization_id":"e1a4ccad-7568-45ee-8b17-6e5cc2457294","name":"test organization 2","currency":"INR","external_id":"test-org-2","created_at":"2025-03-13T11:33:52.032Z","updated_at":"2025-03-13T11:33:52.032Z"},{"organization_id":"7f00b0e1-fc77-4a84-bea0-9390c47276e2","name":"test organization 3","currency":"INR","external_id":"test-org-3","created_at":"2025-03-17T11:35:42.726Z","updated_at":"2025-03-17T11:35:42.726Z"}]}}}},"404":{"description":"404 Organization not found","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"}}},"example":{"code":404,"message":"Organizations not found"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

@@ -1,0 +1,71 @@
+---
+id: login
+title: "Login"
+description: "Login"
+sidebar_label: "Login"
+hide_title: true
+hide_table_of_contents: true
+api: eJzFVNtS4zgQ/RVVP3sSBzJUjZ+GISw4RZLJ4DAQiqJkuWOL2JLQBeKk8u9bssmS7LCXh61aP9hyq7t1us9pbUAq1NRyKeIMIihlzgUEYGluILqHmUENDwEoqmmFFrW3PgSg0SgpDBqINnAUhv6ToWGaK58LIm8k144xNGbhyrImpcxzzEiTnklhUVgfRZUqOWsQdJ+MD92AYQVW1K9srRAikOkTMgsBKO3xWt4ezGSGe15cWMxRwzaACo2h+f6msZqL3O9l1P6L3LSB/mjlEsUHafwTAK5opUp8x3IUhnuHw182YIfh8BTAelikF4xP+DCerePemMcmFj8+s7P4JF6q25uz4ZcO1sN19jPmEx6Ho2S6Gj3lr/PrsJ4MzsOrZLqaX5zbSZL3xtc9Pk+Wx6Ofd/35YHk8vpjxq7Ohurud8snT+fE4WX6eJKP+eHBq4uqm7w8ZJexoNDjtjwZxOLoMOyEdX06v5jfrE/7o7r5oV/Sm1Uk2yNer28f17PnyNxVeOvWSnPR3PemHvV/V0A97ZCaos4XUfI3Z/6uBD6nrh7196rzyiZCWLKQT2a44jc8Ojf0ms7qN/E9qwIry8kOtKmrMq9TZPxfxlgOMU6g7NKu4+GrR2A6TFewngt7RcUtW8CeSrt6Gv0JbSO+ppGnAUltABF2qeNcZ1Ka7uyZ8oT/eW3L+AZwW7QGA9/K4WMimNG59GEyVbKbjAJY3Em4IJUw6v174u+hV6iVJHS8tSWsydZwtZYd8awxcEEoMoyVNSwxI5UrLP1kUVFhiC+nywhKlpR+9gNgCyfQwLQofaEjqDBdoDBpiJckkYbRSlOfCECoyop0gcrFAbYh3zN9TnX6PG4+MmiKVVGcdCOAFtWkr6nXCTtjQK42taKMVQSvc4+CgBX9wb3Flu6qkXPhopxvRtPTcA1UcAmgIguDtJn8IoPAkRvew2aTU4EyX2603PzvUdXuZv1DNfcH+bxtAgTRDDdH9BpZYQwRnrco/JR6Edy+dB/OL4rfBLuKUMVT2b30f9nT2fXKdQADp21RVzTyCpq8QNO8IIADZNKOZl8a2gZKK3LXT2ub0z+/+2VXh
+sidebar_class_name: "post api-method"
+info_path: qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Login"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/api/users/login"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Login
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"email":{"type":"string"},"password":{"type":"string"}}},"example":{"email":"super.admin@test.com","password":"1234"}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"200 Successfully logged in","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"},"data":{"type":"object","properties":{"access_token":{"type":"string"}}}}},"example":{"code":200,"message":"Successfully logged in","data":{"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MTQxMjgwZS0yODE0LTQxZGEtOTg1NS1iZTk3MWY4ZDk3NGUiLCJpYXQiOjE3NTk5OTM4NDAsImV4cCI6MTc2MDA4MDI0MH0.0aNHQLZVz6i_uY9ruh1Qm6dDgzxX_zUqHFp0HupvT64"}}}}},"401":{"description":"401 Unauthorized","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"}}},"example":{"code":401,"message":"User not found"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

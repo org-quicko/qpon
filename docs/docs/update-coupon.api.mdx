@@ -1,0 +1,71 @@
+---
+id: update-coupon
+title: "Update coupon"
+description: "Update coupon"
+sidebar_label: "Update coupon"
+hide_title: true
+hide_table_of_contents: true
+api: eJztVlFv4zYM/isCgQEbIDeK4zaJ33rFDjvsYde73suKoKBlOtHVlnSS3F4W+L8PstMkbbJuhw3by/KShBSpjx8pkhsIuPSQ38KVaa3RsOBg0WFDgVyUb0BjQ5CDcUvU6jcMyug7VQIHpSEHi2EFHBx9aZWjEvLgWuJAX7GxdbQrJuV0TnKaUDXDJJvP06S4SKcJlrIYV4Ucz8QYOHi5ogYh30BY22jng1N6CV3HdxBkD/FbLhez8fR8Jigp5zJNsqKgBDOJSXEuxHQqRFFl81cvX3DwJFunwronI5h70pdtWEF+u4jQ0Kqfaf2RpKOwky8iJm+N9uSj11SI+FWSl07ZyCDkUcg+tlKS91Vb12vW2hIDlWwIEzhIowPpEE3R2lrJnvzRZx/tN8eoTfGZZAAO1hlLLqjhdmlKOjildKAlOeg4NOQ9LulE4BxKDH/J91NKTvkY8nbKufLStDrcDZrXTrQ2mIMTum2KAbwK1NxJo31wqAaWjrz4gKH1J1XSUWT7Dk9YcqiMa6Im0kBJUA1Fm22GvsGm6w7K8SkVqRAH3MPrRfCUhwOmQcxFOpPFJJlMLsZJlk4pKWbpLEnTSlbpmFBWEp7oh7H4jv3y9i0c0Q6WnCQdIowjxmEsBJxgGbCuYc8soAzqIdofEgqpSM8TMUnG6c04y8+zXEzOLs4nv8JzEv/4XPc/dX+Huo5DJrLjppOJjA2dnmkTWGVaXf63neZkmjORHab5CPE2xNj4yYc3plwPtv9IFH/eWF5gPk60tyRVpeS2jKP3Hsu7WIJDFpN9mT7L0Kdeuy/ihsLKlMOwk3Ha9UMvhxFaNTocyn60eTGju9HgxY82uyfQAYdIyIc9dT++GsmuYSpdDY1YhX62Xp9CH4VMeYbbAFgVd4lH4+5Z0ao6sGLNrlsl780Ze9MLlGbIvMQai5o4a9o6qCSQRh1YWJl2uQrMOhOfOWdhRez6uVvS0dCzovVKk/fkWTCsNExiY1EttWeoS+ZazUxVkfMsHlzuXV2+f9efKNGvCoOuPAMOD+T8ENH4TJyJGL81PjTYV9K2O7xM1TMqdkUT6GsY2RqV7keIq6NuSOJtXB+AP9utPHDIj5etbSajct/OFhxWxofoaLMp0NMnV3ddFH9pycWNZcHhAZ2KFPX7S6l8/F1CXmHt6Qjz7gnB9x+2W9UPDPjpWLZC1OvIGNZt/Acc7ml9YmGM29K/eP2epW7RcVgRluR6Dgb91XBVchO97O2PGkeEPVhcSkk2vHp2cfBe31/eXP0EHIptd2r6zgYOH+PKio8DWGOHpOebQbaBGvWyHfre4DR+fgfIEuyn
+sidebar_class_name: "patch api-method"
+info_path: qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Update coupon"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"patch"}
+  path={"/api/organizations/{organization_id}/coupons/{coupon_id}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Update coupon
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"organization_id","in":"path","required":true,"example":"b3d79ec7-ef8a-4992-b627-adcb1fbc1801","schema":{"type":"string"}},{"name":"coupon_id","in":"path","required":true,"example":"0817580e-d9c2-4bbe-a4ca-b5007700bf49","schema":{"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"item_constraint":{"type":"string"}}},"example":{"item_constraint":"specific"}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"200 Successfully updated coupon","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"},"data":{"type":"object","properties":{"coupon_id":{"type":"string"},"name":{"type":"string"},"discount_type":{"type":"string"},"discount_upto":{"type":"number"},"item_constraint":{"type":"string"},"status":{"type":"string"},"created_at":{"type":"string","format":"date-time"},"updated_at":{"type":"string","format":"date-time"}}},"example":{"code":200,"message":"Successfully updated coupon","data":{"coupon_id":"09028cb3-3361-427e-b828-22fcf21eacfc","name":"10% OFF","discount_type":"percentage","discount_upto":"100","item_constraint":"all","status":"active","created_at":"2025-03-12T14:54:03.653Z","updated_at":"2025-03-12T14:54:03.653Z"}}}},"example":{"code":200,"message":"Successfully updated coupon","data":{"coupon_id":"09028cb3-3361-427e-b828-22fcf21eacfc","name":"10% OFF","discount_type":"percentage","discount_upto":"100","item_constraint":"all","status":"active","created_at":"2025-03-12T14:54:03.653Z","updated_at":"2025-03-12T14:54:03.653Z"}}}}},"404":{"description":"404 Coupon not found","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"}}},"example":{"code":404,"message":"Coupon not found"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      
