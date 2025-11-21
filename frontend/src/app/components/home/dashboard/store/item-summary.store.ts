@@ -72,8 +72,8 @@ export const ItemSummaryStore = signalStore(
       const workbook = store.data();
       if (!workbook) return [];
 
-      const sheet = workbook.getItemsSummarySheet?.();
-      const table = sheet?.getItemsSummaryTable?.();
+      const sheet = workbook.getItemsSummarySheet();
+      const table = sheet.getItemsSummaryTable();
       const rows = (table?.getRows?.() ?? []) as unknown[];
       const headers = (table?.getHeader?.() ?? []) as unknown[];
 

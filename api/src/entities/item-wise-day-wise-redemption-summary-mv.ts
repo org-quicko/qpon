@@ -8,7 +8,7 @@ import { ViewEntity, ViewColumn, Index } from 'typeorm';
       r.item_id,
       i.name AS item_name,
       r.redemption_date AS date,
-      COUNT(r.redemption_id)::numeric AS total_redemptions,
+      COUNT(r.redemption_id) AS total_redemptions,
       NOW() AS created_at,
       NOW() AS updated_at
     FROM redemption r

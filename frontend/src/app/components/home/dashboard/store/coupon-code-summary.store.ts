@@ -71,8 +71,8 @@ export const CouponCodeSummaryStore = signalStore(
       const workbook = store.data();
       if (!workbook) return [];
 
-      const sheet = workbook.getCouponCodeSummarySheet?.();
-      const table = sheet?.getCouponCodeSummaryTable?.();
+      const sheet = workbook.getCouponCodeSummarySheet();
+      const table = sheet.getCouponCodeSummaryTable();
       const rows = (table?.getRows?.() ?? []) as unknown[];
       const headers = (table?.getHeader?.() ?? []) as unknown[];
 
