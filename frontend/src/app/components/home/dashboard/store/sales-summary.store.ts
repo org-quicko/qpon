@@ -1,6 +1,6 @@
 import { signal, computed, inject } from '@angular/core';
 import { DashboardService } from '../../../../services/dashboard.service';
-import { transformSalesSummary, SalesSummaryWorkbook } from '../../../../utils/sales-summary.transformer';
+import { transformSalesSummary, SalesSummary } from '../../../../utils/sales-summary.util';
 
 export class SalesSummaryStore {
   private readonly dashboardService = inject(DashboardService);
@@ -11,10 +11,10 @@ export class SalesSummaryStore {
 
   isLoading = signal(false);
   error = signal<string | null>(null);
-  workbook = signal<SalesSummaryWorkbook | null>(null);
+  summaryData = signal<SalesSummary | null>(null);
 
-  graphData = computed(() => this.workbook()?.graphData ?? []);
-  summaryItems = computed(() => this.workbook()?.summaryItems ?? []);
+  graphData = computed(() => this.summaryData()?.graphData ?? []);
+  summaryItems = computed(() => this.summaryData()?.summaryItems ?? []);
 
   setOrganizationId(id: string) {
     this._organizationId.set(id);
@@ -26,7 +26,7 @@ export class SalesSummaryStore {
   }
 
   reset() {
-    this.workbook.set(null);
+    this.summaryData.set(null);
     this.error.set(null);
     this.isLoading.set(false);
   }
@@ -47,14 +47,14 @@ export class SalesSummaryStore {
         .toPromise();
 
       if (res?.code === 200 && res.data) {
-        this.workbook.set(transformSalesSummary(res.data));
+        this.summaryData.set(transformSalesSummary(res.data));
       } else {
         this.error.set(res?.message ?? 'No data available');
-        this.workbook.set(null);
+        this.summaryData.set(null);
       }
     } catch (e: any) {
       this.error.set(e?.message ?? 'Failed to fetch sales summary');
-      this.workbook.set(null);
+      this.summaryData.set(null);
     } finally {
       this.isLoading.set(false);
     }

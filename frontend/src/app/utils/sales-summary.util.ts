@@ -12,7 +12,7 @@ export class SalesSummaryItem {
   value!: number | string;
 }
 
-export class SalesSummaryWorkbook {
+export class SalesSummary {
   @Type(() => SalesSummaryRow)
   graphData: SalesSummaryRow[] = [];
 
@@ -21,17 +21,17 @@ export class SalesSummaryWorkbook {
 }
 
 /** -------- TRANSFORMER FUNCTION -------- **/
-export function transformSalesSummary(data: any): SalesSummaryWorkbook {
-  const workbook = new SalesSummaryWorkbook();
+export function transformSalesSummary(data: any): SalesSummary {
+  const salesData = new SalesSummary();
 
   try {
     const sheet = data?.sheets?.[0];
-    if (!sheet) return workbook;
+    if (!sheet) return salesData;
 
     // Parse Graph / Trend Data
     const graphBlock = sheet.blocks?.[0];
     if (graphBlock?.rows) {
-      workbook.graphData = graphBlock.rows.map((r: any[]) => ({
+      salesData.graphData = graphBlock.rows.map((r: any[]) => ({
         date: r?.[0] ?? '',
         grossSalesAmount: +r?.[1] || 0,
         discountAmount: +r?.[2] || 0,
@@ -42,15 +42,15 @@ export function transformSalesSummary(data: any): SalesSummaryWorkbook {
     // Parse Summary Items
     const summaryBlock = sheet.blocks?.[1];
     if (summaryBlock?.items) {
-      workbook.summaryItems = summaryBlock.items.map((i: any) => ({
+      salesData.summaryItems = summaryBlock.items.map((i: any) => ({
         key: i.key,
         value: i.value,
       }));
     }
 
-    return plainToInstance(SalesSummaryWorkbook, workbook);
+    return plainToInstance(SalesSummary, salesData);
   } catch (e) {
     console.error('❌ Failed to transform sales summary:', e);
-    return workbook;
+    return salesData;
   }
 }
