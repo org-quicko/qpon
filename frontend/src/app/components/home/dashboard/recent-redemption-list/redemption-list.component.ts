@@ -139,7 +139,6 @@ export class RedemptionListComponent implements OnInit {
     this.router.navigate([`/${orgId}/home/dashboard/redemptions`]);
   }
 
-
   onSortChange(event: Sort) {
     this.paginationOptions.set({
       pageIndex: 0,
