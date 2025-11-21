@@ -5,6 +5,7 @@ import { OrganizationStore } from '../../../../store/organization.store';
 import { MatDividerModule } from '@angular/material/divider';
 import { ThemeService } from '../../../../services/theme.service';
 import { Theme } from '../../../../../enums';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -15,6 +16,7 @@ import { Theme } from '../../../../../enums';
 export class HeaderComponent {
   readonly organizationStore = inject(OrganizationStore);
   readonly themeService = inject(ThemeService);
+  private router = inject(Router);
 
   logoPath: string = '/assets/logo-light.svg';
 
@@ -31,5 +33,10 @@ export class HeaderComponent {
         ? '/assets/logo-dark.svg'
         : '/assets/logo-light.svg';
     });
+  }
+
+    navigateHome() {
+    const orgId = this.organizationStore.organizaiton()?.organizationId;
+    this.router.navigate([`/${orgId}/home/dashboard`]);
   }
 }
