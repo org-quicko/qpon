@@ -40,7 +40,8 @@ export class AddEditUserDialogComponent {
         name: ['', Validators.required],
         password: [''],
         confirmPassword: ['']
-    });
+    },
+        { validators: this.passwordMatchValidator.bind(this) });
     visibility = {
         password: false,
         confirmPassword: false
@@ -62,24 +63,48 @@ export class AddEditUserDialogComponent {
             });
             this.form.get('password')?.clearValidators();
             this.form.get('confirmPassword')?.clearValidators();
-            this.form.updateValueAndValidity();
+            this.form.setValidators(null);
 
         } else {
             this.form.get('password')?.setValidators([Validators.required]);
             this.form.get('confirmPassword')?.setValidators([Validators.required]);
-            this.form.updateValueAndValidity();
+            this.form.setValidators(this.passwordMatchValidator.bind(this));
         }
+        this.form.updateValueAndValidity();
     }
 
     passwordMatchValidator(group: any) {
-        const pass = group.get('password')?.value;
-        const confirm = group.get('confirmPassword')?.value;
+        const passCtrl = group.get('password');
+        const confirmCtrl = group.get('confirmPassword');
+
+        if (!passCtrl || !confirmCtrl) return null;
+
+        const pass = passCtrl.value;
+        const confirm = confirmCtrl.value;
 
         if (pass && confirm && pass !== confirm) {
-            return { passwordMismatch: true };
+            confirmCtrl.setErrors({ passwordMismatch: true });
+        } else {
+            // clear only passwordMismatch
+            if (confirmCtrl.errors?.passwordMismatch) {
+                confirmCtrl.setErrors(null);
+            }
         }
+
         return null;
     }
+
+
+    ngOnInit() {
+        this.form.get('password')?.valueChanges.subscribe(() => {
+            this.form.updateValueAndValidity({ onlySelf: false });
+        });
+
+        this.form.get('confirmPassword')?.valueChanges.subscribe(() => {
+            this.form.updateValueAndValidity({ onlySelf: false });
+        });
+    }
+
 
 
     toggleVisibility(field: 'password' | 'confirmPassword') {

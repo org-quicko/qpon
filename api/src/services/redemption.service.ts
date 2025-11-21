@@ -17,7 +17,7 @@ import {
   Not,
   Repository,
 } from 'typeorm';
-import { format as csvFormat } from '@fast-csv/format';
+import { stringify } from 'csv-stringify';
 import { Redemption } from '../entities/redemption.entity';
 import { LoggerService } from './logger.service';
 import { CreateRedemptionDto } from '../dtos/redemption.dto';
@@ -485,46 +485,64 @@ export class RedemptionsService {
     if (!from || !to) {
       throw new BadRequestException('Time period not configured for report');
     }
+
     const passThrough = new PassThrough();
 
-    const csvStream = csvFormat({
-      headers: true,
-      quoteColumns: true,
+    // csv-stringify stream
+    const csvStream = stringify({
+      header: true,
+      columns: [
+        { key: 'Date', header: 'Date' },
+        { key: 'CustomerName', header: 'Customer Name' },
+        { key: 'CustomerEmail', header: 'Customer Email' },
+        { key: 'Item', header: 'Item' },
+        { key: 'Coupon', header: 'Coupon' },
+        { key: 'Campaign', header: 'Campaign' },
+        { key: 'CouponCode', header: 'Coupon Code' },
+        { key: 'GrossSales', header: 'Gross Sales' },
+        { key: 'Discount', header: 'Discount' },
+        { key: 'NetSales', header: 'Net Sales' },
+        { key: 'CustomerID', header: 'Customer ID' },
+        { key: 'ItemID', header: 'Item ID' },
+        { key: 'RedemptionExternalID', header: 'Redemption External ID' },
+      ],
     });
 
     csvStream.pipe(passThrough);
 
+    // USING CLEAN ALIAS "redemption"
     const dbStream = await this.redemptionsRepository
-      .createQueryBuilder('r')
-      .leftJoin('r.couponCode', 'cc')
-      .leftJoin('r.item', 'i')
-      .leftJoin('r.customer', 'c')
-      .leftJoin('r.campaign', 'ca')
-      .leftJoin('r.coupon', 'co')
-      .where('r.organization_id = :organizationId', { organizationId })
-      .andWhere('r.redemption_date BETWEEN :start AND :end', {
+      .createQueryBuilder('redemption')
+      .leftJoin('redemption.couponCode', 'couponCode')
+      .leftJoin('redemption.item', 'item')
+      .leftJoin('redemption.customer', 'customer')
+      .leftJoin('redemption.campaign', 'campaign')
+      .leftJoin('redemption.coupon', 'coupon')
+      .where('redemption.organization_id = :organizationId', { organizationId })
+      .andWhere('redemption.redemption_date BETWEEN :start AND :end', {
         start: from,
         end: to,
       })
       .select([
-        'r.redemption_id AS redemption_id',
-        'r.redemption_date AS redemption_date',
-        'c.name AS customer_name',
-        'c.email AS customer_email',
-        'c.customer_id AS customer_id',
-        'i.name AS item_name',
-        'i.item_id AS item_id',
-        'cc.code AS coupon_code',
-        'co.name AS coupon_name',
-        'ca.name AS campaign_name',
-        'r.base_order_value AS gross_sales',
-        'r.discount AS discount',
-        '(r.base_order_value - r.discount) AS net_sales',
-        'r.external_id AS redemption_external_id',
+        'redemption.redemption_id AS redemption_id',
+        'redemption.redemption_date AS redemption_date',
+        'customer.name AS customer_name',
+        'customer.email AS customer_email',
+        'customer.customer_id AS customer_id',
+        'item.name AS item_name',
+        'item.item_id AS item_id',
+        'couponCode.code AS coupon_code',
+        'coupon.name AS coupon_name',
+        'campaign.name AS campaign_name',
+        'redemption.base_order_value AS gross_sales',
+        'redemption.discount AS discount',
+        '(redemption.base_order_value - redemption.discount) AS net_sales',
+        'redemption.external_id AS redemption_external_id',
       ])
-      .orderBy('r.redemption_date', 'ASC')
+      .orderBy('redemption.redemption_date', 'ASC')
       .stream();
 
+    // Write CSV rows
     dbStream.on('data', (row: any) => {
       csvStream.write({
         Date: formatDateReport(row.redemption_date),
@@ -543,9 +561,7 @@ export class RedemptionsService {
       });
     });
 
-    dbStream.on('end', () => {
-      csvStream.end();
-    });
+    dbStream.on('end', () => csvStream.end());
 
     dbStream.on('error', (err) => {
       csvStream.end();

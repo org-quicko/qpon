@@ -78,7 +78,7 @@
                 Confirm password is required
             </mat-error>
 
-            <mat-error *ngIf="form.hasError('passwordMismatch')">
+            <mat-error *ngIf="form.get('confirmPassword')?.hasError('passwordMismatch')">
                 Passwords do not match
             </mat-error>
         </mat-form-field>

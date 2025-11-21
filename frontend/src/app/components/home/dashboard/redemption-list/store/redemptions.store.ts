@@ -144,7 +144,9 @@ export const RedemptionsStore = signalStore(
       patchState(store, {
         redemptions: [],
         loadedPages: new Set(),
-        count: 0
+        count: 0,
+        isLoading: false,
+        error: null
       });
     }
   }))

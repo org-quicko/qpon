@@ -23,7 +23,7 @@ import { statusEnum } from '../enums';
 import { CustomerCouponCode } from 'src/entities/customer-coupon-code.entity';
 import { CustomerListConverter } from 'src/converters/customer-list.converter';
 import { PassThrough } from 'stream';
-import { format as csvFormat } from '@fast-csv/format';
+import { stringify } from 'csv-stringify';
 import { CustomerWiseDayWiseRedemptionSummaryMv } from 'src/entities/customer_wise_day_wise_redemption_summary_mv';
 
 @Injectable()
@@ -39,7 +39,7 @@ export class CustomersService {
     private customerListConverter: CustomerListConverter,
     private logger: LoggerService,
     private datasource: DataSource,
-  ) {}
+  ) { }
 
   /**
    * Create customer
@@ -446,45 +446,49 @@ export class CustomersService {
 
     const passThrough = new PassThrough();
 
-    const csvStream = csvFormat({
-      headers: true,
-      quoteColumns: true,
+    // csv-stringify stream
+    const csvStream = stringify({
+      header: true,
+      columns: [
+        { key: 'customer_name', header: 'Customer Name' },
+        { key: 'gross_sales', header: 'Gross Sales' },
+        { key: 'total_discount', header: 'Discount' },
+        { key: 'net_sales', header: 'Net Sales' },
+        { key: 'total_redemptions', header: 'Total Redemptions' },
+        { key: 'customer_external_id', header: 'Customer External ID' },
+      ],
     });
 
+    // pipe CSV into PassThrough for streaming response
     csvStream.pipe(passThrough);
 
     const dbStream = await this.customerWiseMvRepository
-      .createQueryBuilder('mv')
-      .where('mv.organization_id = :organizationId', { organizationId })
-      .andWhere('mv.date BETWEEN :start AND :end', {
+      .createQueryBuilder('customerSummary')
+      .where('customerSummary.organization_id = :organizationId', { organizationId })
+      .andWhere('customerSummary.date BETWEEN :start AND :end', {
         start: from,
         end: to,
       })
       .select([
-        'mv.customer_external_id AS customer_external_id',
-        'mv.customer_name AS customer_name',
-        'SUM(mv.gross_sale) AS gross_sales',
-        'SUM(mv.total_discount) AS total_discount',
-        'SUM(mv.net_sale) AS net_sales',
-        'SUM(mv.total_redemptions) AS total_redemptions',
+        'customerSummary.customer_external_id AS customer_external_id',
+        'customerSummary.customer_name AS customer_name',
+        'SUM(customerSummary.gross_sale) AS gross_sales',
+        'SUM(customerSummary.total_discount) AS total_discount',
+        'SUM(customerSummary.net_sale) AS net_sales',
+        'SUM(customerSummary.total_redemptions) AS total_redemptions',
       ])
-      .groupBy('mv.customer_external_id')
-      .addGroupBy('mv.customer_name')
-      .orderBy('mv.customer_name', 'ASC')
+      .groupBy('customerSummary.customer_external_id')
+      .addGroupBy('customerSummary.customer_name')
+      .orderBy('customerSummary.customer_name', 'ASC')
       .stream();
 
+    // write DB rows into csv-stringify
     dbStream.on('data', (row: any) => {
-      csvStream.write({
-        CustomerName: row.customer_name,
-        GrossSales: row.gross_sales,
-        Discount: row.total_discount,
-        NetSales: row.net_sales,
-        TotalRedemptions: row.total_redemptions,
-        CustomerExternalID: row.customer_external_id,
-      });
+      csvStream.write(row);
     });
 
     dbStream.on('end', () => csvStream.end());
+
     dbStream.on('error', (err) => {
       csvStream.end();
       passThrough.destroy(err);
@@ -492,5 +496,4 @@ export class CustomersService {
 
     return passThrough;
   }
-
 }

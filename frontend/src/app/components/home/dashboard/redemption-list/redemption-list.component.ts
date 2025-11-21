@@ -125,7 +125,7 @@ export class RedemptionListComponent implements OnInit {
         this.isFilterApplied = email.length > 0;
 
         this.paginationOptions.set({ pageIndex: 0, pageSize: 10 });
-        this.redemptionsStore.resetLoadedPages();
+        this.redemptionsStore.resetStore();
 
         this.redemptionsStore.fetchRedemptions({
           organizationId: this.organizationsStore.organizaiton()?.organizationId!,

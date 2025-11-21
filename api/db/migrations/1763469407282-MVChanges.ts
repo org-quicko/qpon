@@ -55,7 +55,7 @@ export class MVChanges1763469407282 implements MigrationInterface {
                 r.redemption_date AS date,
                 COUNT(r.redemption_id) AS total_redemptions,
                 SUM(r.base_order_value) AS gross_sale,
-                SUM(r.discount)::numeric AS total_discount,
+                SUM(r.discount) AS total_discount,
                 SUM(r.base_order_value - r.discount) AS net_sale,
                 NOW() AS created_at,
                 NOW() AS updated_at
