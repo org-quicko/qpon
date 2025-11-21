@@ -214,3 +214,13 @@
   )
   )
 }
+
+@mixin inverse-on-surface-overrides {
+  .light-theme {
+    --sys-inverse-on-surface: #F1F0F7;
+  }
+
+  .dark-theme {
+    --sys-inverse-on-surface: #2F3036;
+  }
+}

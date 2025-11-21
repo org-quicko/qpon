@@ -58,7 +58,7 @@ export class RedemptionsService {
     private redemptionReportWorkbookConverter: RedemptionReportWorkbookConverter,
     private logger: LoggerService,
     private datasource: DataSource,
-  ) {}
+  ) { }
 
   /**
    * Redeem coupon code
@@ -144,7 +144,7 @@ export class RedemptionsService {
           updatedCouponCode &&
           updatedCouponCode.maxRedemptions &&
           updatedCouponCode.redemptionCount >=
-            updatedCouponCode.maxRedemptions &&
+          updatedCouponCode.maxRedemptions &&
           updatedCouponCode.status !== couponCodeStatusEnum.REDEEMED
         ) {
           await this.couponCodeRepository.update(couponCodeId, {
@@ -202,13 +202,29 @@ export class RedemptionsService {
     take: number = 10,
     sortBy?: string,
     sortOrder?: sortOrderEnum,
+    from?: string,
+    to?: string,
   ) {
     this.logger.info('START: fetchRedemptions service');
+
     try {
       let emailFilter: string = '';
+
+      /**
+       * Customer email filter
+       */
       if (whereOptions.customer) {
         emailFilter = whereOptions.customer?.valueOf()['email'] as string;
         delete whereOptions.customer;
+      }
+
+      /**
+       * DATE RANGE FILTER
+       */
+      let dateFilter: any = undefined;
+
+      if (from && to) {
+        dateFilter = Between(new Date(from), new Date(to));
       }
 
       const [redemptions, count] =
@@ -216,6 +232,7 @@ export class RedemptionsService {
           relations: {
             couponCode: true,
             customer: true,
+            item: true,
           },
           where: {
             organization: {
@@ -224,6 +241,7 @@ export class RedemptionsService {
             customer: {
               ...(emailFilter && { email: ILike(`%${emailFilter}%`) }),
             },
+            ...(dateFilter && { redemptionDate: dateFilter }),
             ...whereOptions,
           },
           ...(sortBy && { order: { [sortBy]: sortOrder } }),
@@ -237,11 +255,12 @@ export class RedemptionsService {
           take,
         });
 
-      if (!redemptions || redemptions.length == 0) {
+      if (!redemptions || redemptions.length === 0) {
         this.logger.warn('Redemptions not found');
       }
 
       this.logger.info('END: fetchRedemptions service');
+
       return this.redemptionWorkbookConverter.convert(
         redemptions,
         organizationId,
@@ -262,6 +281,7 @@ export class RedemptionsService {
       );
     }
   }
+
 
   private validateCouponCode(couponCode: CouponCode) {
     if (

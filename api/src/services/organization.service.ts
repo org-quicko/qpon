@@ -1,11 +1,12 @@
 import {
+  BadRequestException,
   HttpException,
   HttpStatus,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ILike, Repository } from 'typeorm';
+import { Between, ILike, Repository } from 'typeorm';
 import { Organization } from '../entities/organization.entity';
 import { CreateOrganizationDto, UpdateOrganizationDto } from '../dtos';
 import { LoggerService } from './logger.service';
@@ -16,6 +17,12 @@ import { OrganizationSummaryWorkbookConverter } from '../converters/organization
 import { OrganizationsMv } from 'src/entities/organizations_mv.entity';
 import { OrganizationsListConverter } from 'src/converters/organizations-list-converter';
 import { sortOrderEnum } from 'src/enums';
+import { ItemWiseDayWiseRedemptionSummaryMv } from 'src/entities/item-wise-day-wise-redemption-summary-mv';
+import { ItemsSummaryWorkbookConverter } from 'src/converters/items-summary/items-summary-workbook.converter';
+import { CouponCodesWiseDayWiseRedemptionSummaryMv } from 'src/entities/coupon-codes-wise-day-wise-redemption-summary-mv';
+import { CouponCodeSummaryWorkbookConverter } from 'src/converters/coupon-codes-summary';
+import { DayWiseRedemptionSummaryMv } from 'src/entities/day-wise-redemption-summary-mv';
+import { RedemptionSummaryWorkbookConverter } from 'src/converters/day-wise-redemption-summary';
 
 @Injectable()
 export class OrganizationService {
@@ -28,9 +35,18 @@ export class OrganizationService {
     private readonly organizationsMvRepository: Repository<OrganizationsMv>,
     private organizationConverter: OrganizationConverter,
     private organizationSummaryWorkbookConverter: OrganizationSummaryWorkbookConverter,
+    private itemsSummaryWorkbookConverter: ItemsSummaryWorkbookConverter,
+    private couponCodeSummaryWorkbookConverter: CouponCodeSummaryWorkbookConverter,
     private organizationsListConverter: OrganizationsListConverter,
+    private RedemptionSummaryWorkbookConverter: RedemptionSummaryWorkbookConverter,
     private logger: LoggerService,
-  ) {}
+    @InjectRepository(ItemWiseDayWiseRedemptionSummaryMv)
+    private readonly itemSummaryMvRepository: Repository<ItemWiseDayWiseRedemptionSummaryMv>,
+    @InjectRepository(CouponCodesWiseDayWiseRedemptionSummaryMv)
+    private readonly couponCodeSummaryMvRepository: Repository<CouponCodesWiseDayWiseRedemptionSummaryMv>,
+    @InjectRepository(DayWiseRedemptionSummaryMv)
+    private readonly daywiseRedemptionSummaryMVRepository: Repository<DayWiseRedemptionSummaryMv>,
+  ) { }
 
   /**
    * Create organization
@@ -285,4 +301,197 @@ export class OrganizationService {
       );
     }
   }
+
+  /**
+   * Fetch top 5 items summary by total redemptions (org-wise)
+   */
+  async getItemWiseSummary(
+    organizationId: string,
+    startDate?: string,
+    endDate?: string,
+  ) {
+    this.logger.info('START: getItemWiseSummary service');
+
+    try {
+
+      this.logger.debug(
+        `Fetching top 5 items for organizationId=${organizationId}`,
+      );
+
+      const qb = this.itemSummaryMvRepository
+        .createQueryBuilder('summary')
+        .select('summary.organization_id', 'organizationId')
+        .addSelect('summary.item_id', 'itemId')
+        .addSelect('summary.item_name', 'itemName')
+        .addSelect('SUM(summary.total_redemptions)', 'totalRedemptions')
+        .addSelect('MAX(summary.created_at)', 'createdAt')
+        .addSelect('MAX(summary.updated_at)', 'updatedAt')
+        .addSelect('MAX(summary.date)', 'date')
+        .where('summary.organization_id = :orgId', { orgId: organizationId })
+        .groupBy('summary.organization_id')
+        .addGroupBy('summary.item_id')
+        .addGroupBy('summary.item_name')
+        .orderBy('"totalRedemptions"', 'DESC')
+        .limit(5);
+
+      // optional date filter
+      if (startDate && endDate) {
+        qb.andWhere('summary.date BETWEEN :start AND :end', {
+          start: startDate,
+          end: endDate,
+        });
+
+        this.logger.debug(
+          `Date filter applied: BETWEEN ${startDate} AND ${endDate}`,
+        );
+      } else {
+        this.logger.info('No date filter applied');
+      }
+
+      const rows = await qb.getRawMany();
+
+      this.logger.debug(`Fetched ${rows.length} item summary records`);
+
+      const converted = this.itemsSummaryWorkbookConverter.convert(rows);
+
+      this.logger.info('END: getItemWiseSummary service');
+      return converted;
+    } catch (error) {
+      this.logger.error('Error in getItemWiseSummary:', error);
+
+      if (error instanceof BadRequestException) throw error;
+
+      throw new HttpException(
+        'Failed to fetch item-wise summary',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+
+
+  /**
+   * Fetch top 5 coupon codes summary by total redemptions (org-wise)
+   */
+  async getCouponCodeWiseSummary(
+    organizationId: string,
+    startDate?: string,
+    endDate?: string,
+  ) {
+    this.logger.info('START: getCouponCodeWiseSummary service');
+
+    try {
+
+      this.logger.debug(
+        `Fetching top 5 coupon codes for organizationId=${organizationId}`,
+      );
+
+      const qb = this.couponCodeSummaryMvRepository
+        .createQueryBuilder('summary')
+        .select('summary.organization_id', 'organizationId')
+        .addSelect('summary.coupon_code', 'couponCode')
+        .addSelect('SUM(summary.total_redemptions)', 'totalRedemptions')
+        .addSelect('MAX(summary.created_at)', 'createdAt')
+        .addSelect('MAX(summary.updated_at)', 'updatedAt')
+        .addSelect('MAX(summary.date)', 'date')
+        .where('summary.organization_id = :orgId', { orgId: organizationId })
+        .groupBy('summary.organization_id')
+        .addGroupBy('summary.coupon_code')
+        .orderBy('"totalRedemptions"', 'DESC')   // <-- using alias
+        .limit(5);
+
+      // Optional date filter
+      if (startDate && endDate) {
+        qb.andWhere('summary.date BETWEEN :start AND :end', {
+          start: startDate,
+          end: endDate,
+        });
+
+        this.logger.debug(
+          `Date filter applied: BETWEEN ${startDate} AND ${endDate}`,
+        );
+      } else {
+        this.logger.info('No date filter applied');
+      }
+
+      const rows = await qb.getRawMany();
+
+      this.logger.debug(`Fetched ${rows.length} coupon code summary records`);
+
+      const converted =
+        this.couponCodeSummaryWorkbookConverter.convert(rows);
+
+      this.logger.info('END: getCouponCodeWiseSummary service');
+      return converted;
+    } catch (error) {
+      this.logger.error('Error in getCouponCodeWiseSummary:', error);
+
+      if (error instanceof BadRequestException) throw error;
+
+      throw new HttpException(
+        'Failed to fetch coupon-code-wise summary',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+
+  /**
+   * Fetch day-wise redemption summary (optionally filtered by date range)
+   */
+  async getDayWiseRedemptionSummary(
+    organizationId: string,
+    startDate?: string,
+    endDate?: string,
+  ) {
+    this.logger.info('START: getDayWiseRedemptionSummary service');
+
+    try {
+
+      let dateFilter: any = {};
+      const fromDate = startDate ? new Date(startDate) : null;
+      const toDate = endDate ? new Date(endDate) : null;
+
+      if (fromDate && toDate) {
+        dateFilter = { date: Between(fromDate, toDate) };
+        this.logger.debug(
+          `Date filter applied: BETWEEN ${fromDate.toISOString()} AND ${toDate.toISOString()}`,
+        );
+      }
+
+      this.logger.debug(
+        `Fetching day-wise redemption summary for organizationId=${organizationId}`,
+      );
+
+      const results = await this.daywiseRedemptionSummaryMVRepository.find({
+        where: {
+          organizationId,
+          ...dateFilter,
+        },
+        order: { date: 'ASC' },
+      });
+
+      this.logger.debug(
+        `Fetched ${results.length} records from dayWiseRedemptionSummaryRepo`,
+      );
+
+      const workbook =
+        this.RedemptionSummaryWorkbookConverter.convert(results);
+
+      this.logger.info('END: getDayWiseRedemptionSummary service');
+      return workbook;
+    } catch (error) {
+      this.logger.error('Error in getDayWiseRedemptionSummary:', error);
+
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+
+      throw new HttpException(
+        'Failed to fetch day-wise redemption summary',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
 }

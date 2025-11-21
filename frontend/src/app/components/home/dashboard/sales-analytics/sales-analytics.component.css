@@ -1,0 +1,25 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.mat-card {
+  border-radius: 12px;
+}
+
+.mat-title-large {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.gross-sales-label {
+  display: inline-block;
+  padding-bottom: 3px;
+  background-image: radial-gradient(currentColor 1px, transparent 1.5px);
+  background-size: 4px 3px;
+  background-repeat: repeat-x;
+  background-position: left bottom;
+  color: var(--sys-on-surface-variant);
+}
+
+

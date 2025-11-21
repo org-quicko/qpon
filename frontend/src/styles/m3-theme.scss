@@ -172,3 +172,25 @@ $dark-theme: mat.define-theme(
     )
   )
 );
+
+.light-theme {
+  @include mat.tooltip-overrides((container-color: var(--sys-surface-container),
+      supporting-text-color: var(--sys-on-surface),
+      container-shape: 8px,
+      supporting-text-size: 12px,
+      supporting-text-weight: 500,
+      supporting-text-line-height: 16px,
+      supporting-text-tracking: 0.2px,
+    ));
+}
+
+.dark-theme {
+  @include mat.tooltip-overrides((container-color: var(--sys-surface-container),
+      supporting-text-color: var(--sys-on-surface),
+      container-shape: 8px,
+      supporting-text-size: 12px,
+      supporting-text-weight: 400,
+      supporting-text-line-height: 16px,
+      supporting-text-tracking: 0.2px,
+    ));
+}

@@ -1,0 +1,36 @@
+/* Popup container */
+.popup {
+  backdrop-filter: blur(2px);
+  border-radius: 0px;
+  overflow: hidden;
+  transition: all 0.15s ease-in-out;
+}
+
+.sidebar button:first-child {
+  border-top-left-radius: 12px;
+}
+
+.sidebar button:last-child {
+  border-bottom-left-radius: 12px;
+}
+
+/* Buttons */
+button[mat-flat-button],
+button[mat-stroked-button] {
+  border-radius: 8px !important;
+  text-transform: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Smooth popup animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -82,4 +82,9 @@ export class ThemeService {
                 break;
         }
     }
+
+    public get currentTheme(): Theme {
+        return this.theme.getValue();
+    }
+
 }

@@ -18,16 +18,13 @@ import { AuthModule } from './modules/auth.module';
 import { CouponItemModule } from './modules/coupon-item.module';
 import { CustomerCouponCodeModule } from './modules/customer-coupon-code.module';
 import { ApiKeyModule } from './modules/api-key.module';
-import { RedemptionSubscriber } from './subscribers/redemption.subscriber';
-import { CampaignSubscriber } from './subscribers/campaign.subscriber';
-import { CouponSubscriber } from './subscribers/coupon.subscriber';
-import { OrganizationSubscriber } from './subscribers/organization.subscriber';
 import { PermissionGuard } from './guards/permission.guard';
-import { CouponCodeSubscriber } from './subscribers/coupon-code.subscriber';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { typeOrmConfig } from './config/typeorm.config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { OrganizationSubscriber } from './subscribers/organization.subscriber';
+import { JobsModule } from './modules/jobs.module';
 
 @Module({
   imports: [
@@ -37,14 +34,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       useFactory: (configService: ConfigService) => ({
         ...typeOrmConfig(configService),
         subscribers: [
-          RedemptionSubscriber,
-          CampaignSubscriber,
-          CouponSubscriber,
           OrganizationSubscriber,
-          CouponCodeSubscriber,
         ],
       }),
     }),
+    JobsModule,
     LoggerModule,
     ApiKeyModule,
     AuthModule,
@@ -77,4 +71,4 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }

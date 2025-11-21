@@ -18,6 +18,7 @@ export class RedemptionTableConverter {
       redemptionRow.setCustomerEmail(redemption.customer.email);
       redemptionRow.setRedeemedAt(redemption.createdAt.toISOString());
       redemptionRow.setExternalId(redemption.externalId);
+      redemptionRow.setItemName(redemption.item.name);
       redemptionTable.addRow(redemptionRow);
     }
 
