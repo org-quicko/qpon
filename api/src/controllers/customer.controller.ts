@@ -8,6 +8,7 @@ import {
   Param,
   Query,
   Put,
+  StreamableFile,
 } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { CustomersService } from '../services/customer.service';
@@ -15,6 +16,8 @@ import { CreateCustomerDto, UpdateCustomerDto } from '../dtos';
 import { LoggerService } from 'src/services/logger.service';
 import { Permissions } from '../decorators/permission.decorator';
 import { Customer } from '../entities/customer.entity';
+import { SkipTransform } from 'src/decorators/skipTransform.decorator';
+import { CustomerWiseDayWiseRedemptionSummaryMv } from 'src/entities/customer_wise_day_wise_redemption_summary_mv';
 
 @ApiTags('Customers')
 @Controller('/organizations/:organization_id/customers')
@@ -23,6 +26,35 @@ export class CustomersController {
     private readonly customersService: CustomersService,
     private logger: LoggerService,
   ) {}
+
+  /**
+ * CUSTOMER REPORT
+ */
+  @ApiResponse({ status: 200, description: 'Successful response' })
+  @SkipTransform()
+  @Permissions('read', CustomerWiseDayWiseRedemptionSummaryMv)
+  @Get('reports')
+  async generateCustomerSalesReport(
+    @Param('organization_id') organizationId: string,
+    @Query('from') from?: string,
+    @Query('to') to?: string,
+  ): Promise<StreamableFile> {
+    this.logger.info('START: generateCustomerSalesReport controller');
+
+    const stream =
+      await this.customersService.streamSalesByCustomerReport(
+        organizationId,
+        from,
+        to,
+      );
+
+    this.logger.info('END: generateCustomerSalesReport controller');
+
+    return new StreamableFile(stream, {
+      type: 'text/csv',
+      disposition: 'attachment; filename=customer_sales_report.csv',
+    });
+  }
 
   /**
    * Create customer

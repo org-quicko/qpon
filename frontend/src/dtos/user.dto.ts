@@ -72,10 +72,21 @@ export class UpdateUserDto {
 
   @IsOptional()
   @IsString()
-  password?: string;
+  currentPassword?: string;
+
+  @IsOptional()
+  newPassword?: string;
 }
 
 export class UpdateUserRoleDto {
   @IsEnum(roleEnum)
   role?: roleEnum;
+
+  @IsOptional()
+  @IsString()
+  name?: string;
+
+  @IsOptional()
+  @IsString()
+  email?: string;
 }

@@ -16,6 +16,8 @@ import { QueryOptionsInterface } from '../interfaces/queryOptions.interface';
 import { roleEnum } from '../enums';
 import { OrganizationUserConverter } from '../converters/organization-user.converter';
 import { UserListConverter } from 'src/converters/user-list.converter';
+import * as bcrypt from 'bcryptjs';
+import { SALT_ROUNDS } from 'src/constants';
 
 @Injectable()
 export class UserService {
@@ -29,7 +31,7 @@ export class UserService {
     private userListConverter: UserListConverter,
     private datasource: DataSource,
     private logger: LoggerService,
-  ) {}
+  ) { }
 
   /**
    * Create user
@@ -115,7 +117,7 @@ export class UserService {
   }
 
   /**
-   * Fetch users
+   * Fetch users of an organization
    */
   async fetchUsersOfAnOrganization(
     organizationId: string,
@@ -123,34 +125,35 @@ export class UserService {
   ) {
     this.logger.info('START: fetchUsersOfAnOrganization service');
     try {
-      const whereOptions = {};
+      const { skip = 0, take = 10, externalId, ...rest } = queryOptions;
 
-      if (queryOptions['externalId']) {
-        whereOptions['externalId'] = queryOptions.externalId;
-        delete queryOptions['externalId'];
+      const whereOptions: any = {
+        ...rest,
+        organizationUser: {
+          organization: { organizationId },
+          role: Not(roleEnum.SUPER_ADMIN),
+        },
+      };
+
+      if (externalId) {
+        whereOptions.externalId = externalId;
       }
 
-      const users = await this.userRepository.find({
+      const [users, count] = await this.userRepository.findAndCount({
         relations: {
           organizationUser: true,
         },
-        where: {
-          organizationUser: {
-            organization: {
-              organizationId,
-            },
-            role: Not(roleEnum.SUPER_ADMIN),
-          },
-          ...whereOptions,
-        },
-        ...queryOptions,
+        where: whereOptions,
+        skip,
+        take,
+        order: { createdAt: 'DESC' },
       });
 
-      if (!users || users.length == 0) {
+      if (!users || users.length === 0) {
         this.logger.warn('Users not found');
       }
 
-      return users.map((user) =>
+      const allUsers = users.map((user) =>
         this.userConverter.convert(
           user,
           user.organizationUser.filter(
@@ -158,6 +161,8 @@ export class UserService {
           )[0],
         ),
       );
+
+      return this.userListConverter.convert(allUsers as any, count, skip, take);
     } catch (error) {
       this.logger.error(
         `Error in fetchUsersOfAnOrganization:`,
@@ -247,6 +252,31 @@ export class UserService {
         throw new NotFoundException('User not found');
       }
 
+      /**
+      * If user wants to change password
+      */
+      if (body.currentPassword && body.newPassword) {
+        const isValid = await bcrypt.compare(body.currentPassword, user.password);
+
+        if (!isValid) {
+          throw new HttpException(
+            'Current password is incorrect',
+            HttpStatus.BAD_REQUEST,
+          );
+        }
+
+        // Hash new password
+        const salt = await bcrypt.genSalt(SALT_ROUNDS);
+        const hashedPassword = await bcrypt.hash(body.newPassword, salt);
+
+        // Assign hashed password for update
+        (body as any).password = hashedPassword;
+
+        // Remove raw fields so they never touch DB
+        delete (body as any).currentPassword;
+        delete (body as any).newPassword;
+      }
+
       await this.userRepository.update({ userId }, body);
 
       const savedUser = await this.userRepository.findOne({
@@ -302,17 +332,24 @@ export class UserService {
         throw new NotFoundException('User not found');
       }
 
-      await this.organizationUserRepository.update(
-        {
-          organization: {
-            organizationId,
+      if (body.role) {
+        await this.organizationUserRepository.update(
+          {
+            organization: { organizationId },
+            user: { userId },
           },
-          user: {
-            userId,
-          },
-        },
-        body,
-      );
+          { role: body.role },
+        );
+      }
+
+      const updateUserPayload: Partial<User> = {};
+
+      if (body.name) updateUserPayload.name = body.name;
+      if (body.email) updateUserPayload.email = body.email;
+
+      if (Object.keys(updateUserPayload).length > 0) {
+        await this.userRepository.update({ userId }, updateUserPayload);
+      }
 
       const updatedOrgUser = await this.organizationUserRepository.findOne({
         relations: {
@@ -544,6 +581,6 @@ export class UserService {
     const count = await this.userRepository.count({
       where: { role: roleEnum.SUPER_ADMIN },
     });
-    return {exists: count > 0 ? true : false};
+    return { exists: count > 0 ? true : false };
   }
 }

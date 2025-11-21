@@ -15,6 +15,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import { createMongoAbility, PureAbility } from '@casl/ability';
 import { UserAbility } from './permissions/ability';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -42,6 +43,8 @@ export const appConfig: ApplicationConfig = {
       useFactory: () => createMongoAbility<UserAbility>()
     },
     provideAnimationsAsync(),
+
+    provideNativeDateAdapter(),
   ],
 };
 

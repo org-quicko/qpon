@@ -1,0 +1,22 @@
+<app-form-dialog-box
+  [formGroup]="form"
+  [onSubmit]="save"
+  [dialogRefParent]="dialogRef"
+  [icon]="'edit'"
+  [headerText]="'Edit Organisation Profile'"
+  [cancelBtnText]="'Cancel'"
+  [submitBtnText]="'Save'"
+  width="w-[516px]"
+  height="h-auto max-h-[300px']">
+
+  <!-- Name -->
+  <mat-form-field appearance="outline" class="w-full mt-3">
+    <mat-label>Organisation Name</mat-label>
+    <input matInput formControlName="name" />
+
+    <mat-error *ngIf="form.get('name')?.hasError('required')">
+      Organisation name is required
+    </mat-error>
+  </mat-form-field>
+
+</app-form-dialog-box>

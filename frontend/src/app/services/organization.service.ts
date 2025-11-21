@@ -16,14 +16,14 @@ import { sortOrderEnum } from '../../enums';
 export class OrganizationService {
   private endpoint = environment.base_url;
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   fetchOrganization(organizationId: string) {
     const url = this.endpoint + '/organizations/' + organizationId;
     return this.httpClient.get<ApiResponse<OrganizationDto>>(url);
   }
 
-  fetchOrganizations(name?: string,  sortOptions?: { sortBy: string, sortOrder: sortOrderEnum }, skip: number = 0, take: number = 10) {
+  fetchOrganizations(name?: string, sortOptions?: { sortBy: string, sortOrder: sortOrderEnum }, skip: number = 0, take: number = 10) {
     const url = this.endpoint + '/organizations';
 
     let params = new HttpParams().set('skip', skip).set('take', take);
@@ -32,7 +32,7 @@ export class OrganizationService {
       params = params.set('name', name!);
     }
 
-    if(sortOptions) {
+    if (sortOptions) {
       params = params
         .set('sort_by', sortOptions.sortBy)
         .set('sort_order', sortOptions.sortOrder);
@@ -45,4 +45,15 @@ export class OrganizationService {
     const url = this.endpoint + '/organizations';
     return this.httpClient.post<ApiResponse<OrganizationDto>>(url, body);
   }
+
+  updateOrganization(organizationId: string, body: Partial<OrganizationDto>) {
+    const url = `${this.endpoint}/organizations/${organizationId}`;
+    return this.httpClient.patch<ApiResponse<OrganizationDto>>(url, body);
+  }
+
+  deleteOrganization(organizationId: string) {
+    const url = `${this.endpoint}/organizations/${organizationId}`;
+    return this.httpClient.delete<ApiResponse<null>>(url);
+  }
+
 }

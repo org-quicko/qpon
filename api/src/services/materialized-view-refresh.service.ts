@@ -16,6 +16,7 @@ export class MaterializedViewRefreshService implements OnModuleInit {
     'coupon_codes_wise_day_wise_redemption_summary_mv',
     'day_wise_redemption_summary_mv',
     'item_wise_day_wise_redemption_summary_mv',
+    'customer_wise_day_wise_redemption_summary_mv',
   ];
 
   constructor(

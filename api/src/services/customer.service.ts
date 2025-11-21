@@ -22,17 +22,24 @@ import { CustomerConverter } from 'src/converters/customer.converter';
 import { statusEnum } from '../enums';
 import { CustomerCouponCode } from 'src/entities/customer-coupon-code.entity';
 import { CustomerListConverter } from 'src/converters/customer-list.converter';
+import { PassThrough } from 'stream';
+import { stringify } from 'csv-stringify';
+import { CustomerWiseDayWiseRedemptionSummaryMv } from 'src/entities/customer_wise_day_wise_redemption_summary_mv';
 
 @Injectable()
 export class CustomersService {
   constructor(
     @InjectRepository(Customer)
     private readonly customersRepository: Repository<Customer>,
+
+    @InjectRepository(CustomerWiseDayWiseRedemptionSummaryMv)
+    private readonly customerWiseMvRepository: Repository<CustomerWiseDayWiseRedemptionSummaryMv>,
+
     private customerConverter: CustomerConverter,
     private customerListConverter: CustomerListConverter,
     private logger: LoggerService,
     private datasource: DataSource,
-  ) {}
+  ) { }
 
   /**
    * Create customer
@@ -426,5 +433,67 @@ export class CustomersService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+  }
+
+  async streamSalesByCustomerReport(
+    organizationId: string,
+    from?: string,
+    to?: string,
+  ): Promise<PassThrough> {
+    if (!from || !to) {
+      throw new BadRequestException('Time period not configured for report');
+    }
+
+    const passThrough = new PassThrough();
+
+    // csv-stringify stream
+    const csvStream = stringify({
+      header: true,
+      columns: [
+        { key: 'customer_name', header: 'Customer Name' },
+        { key: 'gross_sales', header: 'Gross Sales' },
+        { key: 'total_discount', header: 'Discount' },
+        { key: 'net_sales', header: 'Net Sales' },
+        { key: 'total_redemptions', header: 'Total Redemptions' },
+        { key: 'customer_external_id', header: 'Customer External ID' },
+      ],
+    });
+
+    // pipe CSV into PassThrough for streaming response
+    csvStream.pipe(passThrough);
+
+    const dbStream = await this.customerWiseMvRepository
+      .createQueryBuilder('customerSummary')
+      .where('customerSummary.organization_id = :organizationId', { organizationId })
+      .andWhere('customerSummary.date BETWEEN :start AND :end', {
+        start: from,
+        end: to,
+      })
+      .select([
+        'customerSummary.customer_external_id AS customer_external_id',
+        'customerSummary.customer_name AS customer_name',
+        'SUM(customerSummary.gross_sale) AS gross_sales',
+        'SUM(customerSummary.total_discount) AS total_discount',
+        'SUM(customerSummary.net_sale) AS net_sales',
+        'SUM(customerSummary.total_redemptions) AS total_redemptions',
+      ])
+      .groupBy('customerSummary.customer_external_id')
+      .addGroupBy('customerSummary.customer_name')
+      .orderBy('customerSummary.customer_name', 'ASC')
+      .stream();
+
+    // write DB rows into csv-stringify
+    dbStream.on('data', (row: any) => {
+      csvStream.write(row);
+    });
+
+    dbStream.on('end', () => csvStream.end());
+
+    dbStream.on('error', (err) => {
+      csvStream.end();
+      passThrough.destroy(err);
+    });
+
+    return passThrough;
   }
 }

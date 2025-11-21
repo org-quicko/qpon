@@ -11,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { RedemptionRow } from '@org-quicko/qpon-sheet-core/redemption_workbook/beans';
 import { RedemptionsStore } from './store/redemptions.store';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { OrganizationStore } from '../../../../store/organization.store';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
@@ -35,7 +35,7 @@ import { DateRangeStore } from '../../../../store/date-range.store';
     DatePipe,
     NgxSkeletonLoaderModule,
     CurrencyPipe,
-  ],
+],
   templateUrl: './redemption-list.component.html',
   styleUrls: ['./redemption-list.component.css'],
 })
@@ -61,6 +61,7 @@ export class RedemptionListComponent implements OnInit {
   organizationsStore = inject(OrganizationStore);
   snackbarService = inject(SnackbarService);
   dateRangeStore = inject(DateRangeStore);
+  router = inject(Router);
 
 
   redemptions = this.redemptionsStore.redemptions;
@@ -131,6 +132,11 @@ export class RedemptionListComponent implements OnInit {
         this.copiedField = null;
       }, 2000);
     });
+  }
+
+  goToRedemptions() {
+    const orgId = this.organization()?.organizationId;
+    this.router.navigate([`/${orgId}/home/dashboard/redemptions`]);
   }
 
   onSortChange(event: Sort) {

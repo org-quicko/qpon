@@ -10,12 +10,32 @@ import { OrganizationStore } from '../store/organization.store';
   providedIn: 'root'
 })
 export class OrganizationResolver implements Resolve<any> {
-  
+
   organizationService = inject(OrganizationService);
   organizationStore = inject(OrganizationStore);
 
   async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const response = await firstValueFrom(this.organizationService.fetchOrganization(route.params['organization_id']))
-     this.organizationStore.setOrganization(plainToInstance(OrganizationDto, response.data))
+    this.organizationStore.setOrganization(plainToInstance(OrganizationDto, response.data))
   }
+
+  async update(organizationId: string, body: Partial<OrganizationDto>) {
+    const response = await firstValueFrom(
+      this.organizationService.updateOrganization(organizationId, body)
+    );
+
+    this.organizationStore.updateOrganization(
+      plainToInstance(OrganizationDto, response.data)
+    );
+  }
+
+  async delete(organizationId: string) {
+    await firstValueFrom(
+      this.organizationService.deleteOrganization(organizationId)
+    );
+
+    this.organizationStore.deleteOrganization();
+  }
+
+
 }

@@ -9,9 +9,10 @@ import { ItemsService } from '../services/item.service';
 import { ItemConverter } from 'src/converters/item.converter';
 import { ItemsListConverter } from 'src/converters/items-list.converter';
 import { Coupon } from 'src/entities/coupon.entity';
+import { ItemWiseDayWiseRedemptionSummaryMv } from 'src/entities/item-wise-day-wise-redemption-summary-mv';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CouponItem, Item, Coupon])],
+  imports: [TypeOrmModule.forFeature([CouponItem, Item, Coupon, ItemWiseDayWiseRedemptionSummaryMv])],
   controllers: [CouponItemController],
   providers: [
     CouponItemService,

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { ApiResponse } from '../../dtos/api-response.dto';
 import { environment } from '../../environments/environment';
 import { OrganizationUserDto } from '../../dtos/organization-user.dto';
-import { CreateUserDto, UserDto } from '../../dtos/user.dto';
+import { CreateUserDto, UpdateUserDto, UpdateUserRoleDto, UserDto } from '../../dtos/user.dto';
 import { PaginatedList } from '../../dtos/paginated-list.dto';
 
 @Injectable({
@@ -12,7 +12,7 @@ import { PaginatedList } from '../../dtos/paginated-list.dto';
 export class UserService {
   private endpoint = environment.base_url;
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   login(email: string, password: string) {
     let url = this.endpoint + '/users/login';
@@ -57,5 +57,43 @@ export class UserService {
   createSuperAdmin(body: CreateUserDto) {
     const url = this.endpoint + '/users';
     return this.httpClient.post<ApiResponse<UserDto>>(url, body);
+  }
+
+  updateUser(
+    organizationId: string,
+    userId: string,
+    body: UpdateUserDto
+  ) {
+    const url = `${this.endpoint}/organizations/${organizationId}/users/${userId}`;
+    return this.httpClient.patch<ApiResponse<UserDto>>(url, body);
+  }
+
+  fetchOrganizationUsers(
+    organizationId: string,
+    skip: number = 0,
+    take: number = 10
+  ) {
+    const url = `${this.endpoint}/organizations/${organizationId}/users`;
+
+    const params = new HttpParams()
+      .set('skip', skip)
+      .set('take', take);
+
+    return this.httpClient.get<ApiResponse<PaginatedList<UserDto>>>(url, { params });
+  }
+
+  /** Delete a user from organization */
+  deleteUser(organizationId: string, userId: string) {
+    const url = `${this.endpoint}/organizations/${organizationId}/users/${userId}`;
+    return this.httpClient.delete<ApiResponse<null>>(url);
+  }
+
+  updateUserRole(
+    organizationId: string,
+    userId: string,
+    body: UpdateUserRoleDto
+  ) {
+    const url = `${this.endpoint}/organizations/${organizationId}/users/${userId}/role`;
+    return this.httpClient.patch<ApiResponse<UserDto>>(url, body);
   }
 }

@@ -1,0 +1,89 @@
+<app-form-dialog-box [formGroup]="form" [onSubmit]="save" [dialogRefParent]="dialogRef"
+    [icon]="isEditMode ? 'edit' : 'group_add'" [headerText]="isEditMode ? 'Edit Member' : 'Add Member'"
+    [cancelBtnText]="'Cancel'" [submitBtnText]="isEditMode ? 'Save' : 'Add'" width="w-[516px]"
+    height="h-auto max-h-[650px]">
+
+    <!-- ROLE -->
+    <mat-form-field appearance="outline" class="w-full mt-2">
+        <mat-label>Role</mat-label>
+        <mat-select formControlName="role">
+            <mat-option *ngFor="let r of roles" [value]="r">
+                {{ r | titlecase }}
+            </mat-option>
+        </mat-select>
+
+        <mat-error *ngIf="form.get('role')?.hasError('required')">
+            Role is required
+        </mat-error>
+    </mat-form-field>
+
+    <!-- EMAIL -->
+    <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" />
+
+        <mat-error *ngIf="form.get('email')?.hasError('required')">
+            Email is required
+        </mat-error>
+
+        <mat-error *ngIf="form.get('email')?.hasError('email')">
+            Enter a valid email
+        </mat-error>
+    </mat-form-field>
+
+    <!-- NAME -->
+    <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" />
+
+        <mat-error *ngIf="form.get('name')?.hasError('required')">
+            Name is required
+        </mat-error>
+    </mat-form-field>
+
+    <!-- PASSWORD (ONLY SHOW IN ADD MODE) -->
+    <ng-container *ngIf="!isEditMode">
+        <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Set Password</mat-label>
+
+            <input matInput [type]="visibility.password ? 'text' : 'password'" formControlName="password" />
+
+            <button type="button" mat-icon-button matSuffix class="!text-on-surface !cursor-pointer"
+                (click)="toggleVisibility('password')" tabindex="-1">
+                <mat-icon class="material-symbols-outlined mr-3">
+                    {{ visibility.password ? 'visibility' : 'visibility_off' }}
+                </mat-icon>
+            </button>
+
+            <mat-error *ngIf="form.get('password')?.hasError('required')">
+                Password is required
+            </mat-error>
+        </mat-form-field>
+
+        <!-- CONFIRM PASSWORD (ONLY IN ADD MODE) -->
+        <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Confirm Password</mat-label>
+
+            <input matInput [type]="visibility.confirmPassword ? 'text' : 'password'"
+                formControlName="confirmPassword" />
+
+            <button type="button" mat-icon-button matSuffix class="!text-on-surface !cursor-pointer"
+                (click)="toggleVisibility('confirmPassword')" tabindex="-1">
+                <mat-icon class="material-symbols-outlined mr-3">
+                    {{ visibility.confirmPassword ? 'visibility' : 'visibility_off' }}
+                </mat-icon>
+            </button>
+
+            <mat-error *ngIf="form.get('confirmPassword')?.hasError('required')">
+                Confirm password is required
+            </mat-error>
+
+            <mat-error *ngIf="form.get('confirmPassword')?.hasError('passwordMismatch')">
+                Passwords do not match
+            </mat-error>
+        </mat-form-field>
+
+    </ng-container>
+
+
+</app-form-dialog-box>

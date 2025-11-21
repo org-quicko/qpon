@@ -17,7 +17,7 @@ import {
   Not,
   Repository,
 } from 'typeorm';
-import * as XLSX from 'xlsx';
+import { stringify } from 'csv-stringify';
 import { Redemption } from '../entities/redemption.entity';
 import { LoggerService } from './logger.service';
 import { CreateRedemptionDto } from '../dtos/redemption.dto';
@@ -29,7 +29,6 @@ import {
   durationTypeEnum,
   itemConstraintEnum,
   sortOrderEnum,
-  timePeriodEnum,
 } from '../enums';
 import { Customer } from '../entities/customer.entity';
 import { CustomerCouponCode } from '../entities/customer-coupon-code.entity';
@@ -39,9 +38,8 @@ import { CouponItem } from '../entities/coupon-item.entity';
 import { Campaign } from '../entities/campaign.entity';
 import { CampaignSummaryMv } from '../entities/campaign-summary.view';
 import { RedemptionWorkbookConverter } from '../converters/redemption';
-import { getStartEndDate } from '../utils/date.utils';
-import { RedemptionReportWorkbookConverter } from '../converters/redemption-report';
-import { RedemptionReportWorkbook } from '@org-quicko/qpon-sheet-core/redemption_report_workbook/beans';
+import { PassThrough } from 'stream';
+import { formatDateReport } from 'src/utils/date.utils';
 
 @Injectable()
 export class RedemptionsService {
@@ -55,7 +53,6 @@ export class RedemptionsService {
     @InjectRepository(Campaign)
     private readonly campaignRepository: Repository<Campaign>,
     private redemptionWorkbookConverter: RedemptionWorkbookConverter,
-    private redemptionReportWorkbookConverter: RedemptionReportWorkbookConverter,
     private logger: LoggerService,
     private datasource: DataSource,
   ) { }
@@ -480,86 +477,98 @@ export class RedemptionsService {
     return manager.save(Redemption, redemptionEntity);
   }
 
-  async generateRedemptionsReport(
+  async streamRedemptionReport(
     organizationId: string,
     from?: string,
     to?: string,
-    timePeriod?: timePeriodEnum,
-  ) {
-    this.logger.info('START: generateRedemptionsReport service');
-    try {
-      if (!from && !to && !timePeriod) {
-        this.logger.warn('Time period not configured for report');
-        throw new BadRequestException('Time period not configured for report');
-      }
-      const { parsedStartDate, parsedEndDate } = getStartEndDate(
-        from,
-        to,
-        timePeriod,
-      );
-
-      const redemptions = await this.redemptionsRepository.find({
-        relations: {
-          couponCode: true,
-          item: true,
-          customer: true,
-          campaign: true,
-          coupon: true,
-        },
-        where: {
-          organization: {
-            organizationId,
-          },
-          createdAt: Between(parsedStartDate, parsedEndDate),
-        },
-      });
-
-      const redemptionReportWorkbook =
-        this.redemptionReportWorkbookConverter.convert(redemptions);
-
-      const redemptionReportTable = redemptionReportWorkbook
-        .getRedemptionReportSheet()
-        .getRedemptionReportTable();
-
-      const workbook = RedemptionReportWorkbook.toXlsx(redemptionReportWorkbook);
-
-      const redemptionReportSheet: any[] = [redemptionReportTable.getHeader()];
-
-      redemptionReportTable.getRows().map((row) => {
-        redemptionReportSheet.push(row);
-      });
-
-      const redemptionReportSummarySheet = XLSX.utils.aoa_to_sheet(
-        redemptionReportSheet,
-      );
-
-      XLSX.utils.book_append_sheet(
-        workbook,
-        redemptionReportSummarySheet,
-        'Redemptions',
-      );
-
-      const fileBuffer = await XLSX.write(workbook, {
-        type: 'buffer',
-        bookType: 'xlsx',
-      });
-
-      this.logger.info('END: generateRedemptionsReport service');
-      return fileBuffer;
-    } catch (error) {
-      this.logger.error(
-        `Error in fetchRedemptionsForReport:`,
-        error,
-      );
-
-      if (error instanceof BadRequestException) {
-        throw error;
-      }
-
-      throw new HttpException(
-        'Failed to fetch redemptions for report',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+  ): Promise<PassThrough> {
+    if (!from || !to) {
+      throw new BadRequestException('Time period not configured for report');
     }
+
+    const passThrough = new PassThrough();
+
+    // csv-stringify stream
+    const csvStream = stringify({
+      header: true,
+      columns: [
+        { key: 'Date', header: 'Date' },
+        { key: 'CustomerName', header: 'Customer Name' },
+        { key: 'CustomerEmail', header: 'Customer Email' },
+        { key: 'Item', header: 'Item' },
+        { key: 'Coupon', header: 'Coupon' },
+        { key: 'Campaign', header: 'Campaign' },
+        { key: 'CouponCode', header: 'Coupon Code' },
+        { key: 'GrossSales', header: 'Gross Sales' },
+        { key: 'Discount', header: 'Discount' },
+        { key: 'NetSales', header: 'Net Sales' },
+        { key: 'CustomerID', header: 'Customer ID' },
+        { key: 'ItemID', header: 'Item ID' },
+        { key: 'RedemptionExternalID', header: 'Redemption External ID' },
+      ],
+    });
+
+    csvStream.pipe(passThrough);
+
+    // USING CLEAN ALIAS "redemption"
+    const dbStream = await this.redemptionsRepository
+      .createQueryBuilder('redemption')
+      .leftJoin('redemption.couponCode', 'couponCode')
+      .leftJoin('redemption.item', 'item')
+      .leftJoin('redemption.customer', 'customer')
+      .leftJoin('redemption.campaign', 'campaign')
+      .leftJoin('redemption.coupon', 'coupon')
+      .where('redemption.organization_id = :organizationId', { organizationId })
+      .andWhere('redemption.redemption_date BETWEEN :start AND :end', {
+        start: from,
+        end: to,
+      })
+      .select([
+        'redemption.redemption_id AS redemption_id',
+        'redemption.redemption_date AS redemption_date',
+        'customer.name AS customer_name',
+        'customer.email AS customer_email',
+        'customer.customer_id AS customer_id',
+        'item.name AS item_name',
+        'item.item_id AS item_id',
+        'couponCode.code AS coupon_code',
+        'coupon.name AS coupon_name',
+        'campaign.name AS campaign_name',
+        'redemption.base_order_value AS gross_sales',
+        'redemption.discount AS discount',
+        '(redemption.base_order_value - redemption.discount) AS net_sales',
+        'redemption.external_id AS redemption_external_id',
+      ])
+      .orderBy('redemption.redemption_date', 'ASC')
+      .stream();
+
+    // Write CSV rows
+    dbStream.on('data', (row: any) => {
+      csvStream.write({
+        Date: formatDateReport(row.redemption_date),
+        CustomerName: row.customer_name,
+        CustomerEmail: row.customer_email,
+        Item: row.item_name,
+        Coupon: row.coupon_name,
+        Campaign: row.campaign_name,
+        CouponCode: row.coupon_code,
+        GrossSales: row.gross_sales,
+        Discount: row.discount,
+        NetSales: row.net_sales,
+        CustomerID: row.customer_id,
+        ItemID: row.item_id,
+        RedemptionExternalID: row.redemption_external_id,
+      });
+    });
+
+    dbStream.on('end', () => csvStream.end());
+
+    dbStream.on('error', (err) => {
+      csvStream.end();
+      passThrough.destroy(err);
+    });
+
+    return passThrough;
   }
+
 }

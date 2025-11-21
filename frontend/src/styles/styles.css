@@ -86,3 +86,7 @@ input[type=number] {
 .header-mat-menu > .mat-mdc-menu-content {
   padding: 0;
 } 
+
+.mat-sort-header-arrow {
+  opacity: 1 !important;
+}

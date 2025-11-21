@@ -19,6 +19,19 @@ export const OrganizationStore = signalStore(
       patchState(store, {
         organizaiton: organization
       })
+    },
+
+    updateOrganization(partial: Partial<OrganizationDto>) {
+      patchState(store, {
+        organizaiton: {
+          ...store.organizaiton(),
+          ...partial,
+        }
+      });
+    },
+
+    deleteOrganization() {
+      patchState(store, { organizaiton: undefined });
     }
   }))
 );

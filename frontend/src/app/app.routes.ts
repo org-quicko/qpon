@@ -37,6 +37,8 @@ import { CreateOrganizationComponent } from './components/create-organization-co
 import { InviteTeamComponent } from './components/create-organization-container/invite-team/invite-team.component';
 import { SuccessComponent } from './components/create-organization-container/success/success.component';
 import { SuperAdminSetupComponent } from './components/super-admin-setup/super-admin-setup.component';
+import { RedemptionListComponent } from './components/home/dashboard/redemption-list/redemption-list.component';
+import { SettingsComponent } from './components/home/settings/settings.component';
 
 export const routes: Routes = [
   { path: 'setup', component: SuperAdminSetupComponent },
@@ -55,8 +57,8 @@ export const routes: Routes = [
           OrganizationsComponent: OrganizationsComponent,
         },
       },
-      { 
-        path: 'organizations/create', 
+      {
+        path: 'organizations/create',
         component: CreateOrganizationContainerComponent,
         children: [
           {
@@ -68,7 +70,7 @@ export const routes: Routes = [
           {
             path: ':organization_id/success', component: SuccessComponent
           }
-        ] 
+        ]
       },
       {
         resolve: { organization: OrganizationResolver },
@@ -79,8 +81,15 @@ export const routes: Routes = [
             component: HomeComponent,
             children: [
               { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
-              { path: 'dashboard', component: DashboardComponent },
+              {
+                path: 'dashboard',
+                children: [
+                  { path: '', component: DashboardComponent },
+                  { path: 'redemptions', component: RedemptionListComponent }
+                ]
+              },
               { path: 'customers', component: CustomersComponent },
+              { path: 'settings', component: SettingsComponent },
               {
                 path: 'items',
                 children: [{ path: '', component: ItemsComponent }],

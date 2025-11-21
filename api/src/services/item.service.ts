@@ -22,17 +22,24 @@ import { ItemConverter } from '../converters/item.converter';
 import { statusEnum } from '../enums';
 import { CouponItem } from '../entities/coupon-item.entity';
 import { ItemsListConverter } from 'src/converters/items-list.converter';
+import { PassThrough } from 'stream';
+import { stringify } from 'csv-stringify';
+import { ItemWiseDayWiseRedemptionSummaryMv } from 'src/entities/item-wise-day-wise-redemption-summary-mv';
 
 @Injectable()
 export class ItemsService {
   constructor(
     @InjectRepository(Item)
     private readonly itemsRepository: Repository<Item>,
+
+    @InjectRepository(ItemWiseDayWiseRedemptionSummaryMv)
+    private readonly itemWiseMvRepository: Repository<ItemWiseDayWiseRedemptionSummaryMv>,
+
     private itemConverter: ItemConverter,
     private itemListConverter: ItemsListConverter,
     private logger: LoggerService,
     private datasource: DataSource,
-  ) {}
+  ) { }
 
   /**
    * Create item
@@ -226,7 +233,7 @@ export class ItemsService {
         throw new NotFoundException('Item not found');
       }
 
-        if (body.name) {
+      if (body.name) {
         const existingItem = await this.itemsRepository
           .createQueryBuilder('item')
           .where(`LOWER(item.name) = LOWER(:name) AND status = 'active' AND item_id != :itemId`, {
@@ -418,4 +425,67 @@ export class ItemsService {
       );
     }
   }
+
+  async streamSalesByItemsReport(
+    organizationId: string,
+    from?: string,
+    to?: string,
+  ): Promise<PassThrough> {
+    if (!from || !to) {
+      throw new BadRequestException('Time period not configured for report');
+    }
+
+    const passThrough = new PassThrough();
+
+    // csv-stringify stream
+    const csvStream = stringify({
+      header: true,
+      columns: [
+        { key: 'item_name', header: 'Item Name' },
+        { key: 'gross_sales', header: 'Gross Sales' },
+        { key: 'total_discount', header: 'Discount' },
+        { key: 'net_sales', header: 'Net Sales' },
+        { key: 'total_redemptions', header: 'Total Redemptions' },
+        { key: 'external_item_id', header: 'External Item ID' },
+      ],
+    });
+
+    csvStream.pipe(passThrough);
+
+    // Query using clean alias "itemSummary"
+    const dbStream = await this.itemWiseMvRepository
+      .createQueryBuilder('itemSummary')
+      .where('itemSummary.organization_id = :organizationId', { organizationId })
+      .andWhere('itemSummary.date BETWEEN :start AND :end', {
+        start: from,
+        end: to,
+      })
+      .select([
+        'itemSummary.external_item_id AS external_item_id',
+        'itemSummary.item_name AS item_name',
+        'SUM(itemSummary.gross_sale) AS gross_sales',
+        'SUM(itemSummary.total_discount) AS total_discount',
+        'SUM(itemSummary.net_sale) AS net_sales',
+        'SUM(itemSummary.total_redemptions) AS total_redemptions',
+      ])
+      .groupBy('itemSummary.external_item_id')
+      .addGroupBy('itemSummary.item_name')
+      .orderBy('itemSummary.item_name', 'ASC')
+      .stream();
+
+    // Write rows to CSV stream
+    dbStream.on('data', (row: any) => {
+      csvStream.write(row);
+    });
+
+    dbStream.on('end', () => csvStream.end());
+
+    dbStream.on('error', (err) => {
+      csvStream.end();
+      passThrough.destroy(err);
+    });
+
+    return passThrough;
+  }
+
 }

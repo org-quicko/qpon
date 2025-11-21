@@ -8,9 +8,10 @@ import { CustomersService } from '../services/customer.service';
 import { CustomerConverter } from '../converters/customer.converter';
 import { Customer } from '../entities/customer.entity';
 import { CustomerListConverter } from 'src/converters/customer-list.converter';
+import { CustomerWiseDayWiseRedemptionSummaryMv } from 'src/entities/customer_wise_day_wise_redemption_summary_mv';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CustomerCouponCode, Customer])],
+  imports: [TypeOrmModule.forFeature([CustomerCouponCode, Customer, CustomerWiseDayWiseRedemptionSummaryMv])],
   controllers: [CustomerCouponCodeController],
   providers: [
     CustomerCouponCodeService,

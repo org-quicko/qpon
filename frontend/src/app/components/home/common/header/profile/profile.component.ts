@@ -80,6 +80,11 @@ export class ProfileComponent implements OnInit {
 
   logout() {
     this.authService.deleteCookie();
-    window.location.href =  window.location.origin + "/login"
+    window.location.href = window.location.origin + "/login"
+  }
+
+  goToSettings() {
+    const orgId = this.organizationStore.organizaiton()?.organizationId;
+    this.router.navigate([orgId, 'home', 'settings']);
   }
 }

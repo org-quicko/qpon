@@ -1,20 +1,9 @@
 <div class="hover:cursor-pointer">
-  <ngx-avatars
-    size="40"
-    [round]="true"
-    [name]="user()?.name"
-    bgColor="var(--sys-primary-fixed)"
-    fgColor="var(--sys-on-primary-fixed-variant)"
-    [mat-menu-trigger-for]="options"
-  >
+  <ngx-avatars size="40" [round]="true" [name]="user()?.name" bgColor="var(--sys-primary-fixed)"
+    fgColor="var(--sys-on-primary-fixed-variant)" [mat-menu-trigger-for]="options">
   </ngx-avatars>
 </div>
-<mat-menu
-  class="w-[300px] mt-[22px] rounded-[5px]"
-  #options="matMenu"
-  yPosition="below"
-  xPosition="before"
->
+<mat-menu class="w-[300px] mt-[22px] rounded-[5px]" #options="matMenu" yPosition="below" xPosition="before">
   <ng-template matMenuContent>
     <ng-container>
       <div class="flex flex-col">
@@ -23,9 +12,7 @@
             <div class="flex flex-col gap-[4px]">
               <div class="flex gap-[8px] items-center text-on-surface">
                 <div class="mat-body-large">{{ user()?.name | titlecase }}</div>
-                <div
-                  class="bg-surface-container-highest mat-label-small px-[8px] py-[4px]"
-                >
+                <div class="bg-surface-container-highest mat-label-small px-[8px] py-[4px]">
                   {{ role?.replace("_", " ") | titlecase }}
                 </div>
               </div>
@@ -33,56 +20,33 @@
             </div>
           </div>
           <div class="h-[48px] pb-[20px]">
-            <mat-button-toggle-group
-              (change)="changeTheme($event)"
-              (click)="$event.stopPropagation()"
-              [hideSingleSelectionIndicator]="true"
-              class="flex items-center rounded-full"
-              appearance="standard"
-              [value]="selectedThemePreference"
-            >
+            <mat-button-toggle-group (change)="changeTheme($event)" (click)="$event.stopPropagation()"
+              [hideSingleSelectionIndicator]="true" class="flex items-center rounded-full" appearance="standard"
+              [value]="selectedThemePreference">
               <!-- system preference toggle button -->
-              <mat-button-toggle
-                value="system"
-                class="w-full items-center justify-center"
-              >
-                <mat-icon
-                  class="material-symbols-outlined text-[20px] items-center justify-center"
-                >
+              <mat-button-toggle value="system" class="w-full items-center justify-center">
+                <mat-icon class="material-symbols-outlined text-[20px] items-center justify-center">
                   laptop_windows
                 </mat-icon>
               </mat-button-toggle>
               <!-- light toggle button -->
-              <mat-button-toggle
-                value="light"
-                class="w-full items-center justify-center"
-              >
-                <mat-icon
-                  class="material-symbols-outlined text-[20px] items-center justify-center"
-                >
-                  clear_day</mat-icon
-                >
+              <mat-button-toggle value="light" class="w-full items-center justify-center">
+                <mat-icon class="material-symbols-outlined text-[20px] items-center justify-center">
+                  clear_day</mat-icon>
               </mat-button-toggle>
               <!-- dark toggle button -->
-              <mat-button-toggle
-                value="dark"
-                class="w-full items-center justify-center"
-              >
-                <mat-icon
-                  class="material-symbols-outlined text-[20px] items-center justify-center"
-                >
+              <mat-button-toggle value="dark" class="w-full items-center justify-center">
+                <mat-icon class="material-symbols-outlined text-[20px] items-center justify-center">
                   dark_mode
                 </mat-icon>
               </mat-button-toggle>
             </mat-button-toggle-group>
           </div>
         </div>
-          
+
         <div class="flex flex-col mat-body-large text-on-surface-variant">
-          <div
-            class="flex gap-[12px] px-[16px] py-[16px] hover:bg-neutral-10 hover:bg-opacity-[8%]"
-            mat-menu-item
-          >
+          <div class="flex gap-[12px] px-[16px] py-[16px] hover:bg-neutral-10 hover:bg-opacity-[8%]" mat-menu-item
+            (click)="goToSettings()">
             <mat-icon class="material-symbols-outlined mr-0">settings</mat-icon>
             <div class="cursor-pointer">
               Settings
@@ -90,11 +54,8 @@
           </div>
         </div>
         <div class="flex flex-col">
-          <div
-            class="flex gap-[12px] px-[16px] py-[16px] hover:bg-neutral-10 hover:bg-opacity-[8%]"
-            mat-menu-item
-            (click)="logout()"
-          >
+          <div class="flex gap-[12px] px-[16px] py-[16px] hover:bg-neutral-10 hover:bg-opacity-[8%]" mat-menu-item
+            (click)="logout()">
             <mat-icon class="material-symbols-outlined mr-0">logout</mat-icon>
             <div class="cursor-pointer">
               Sign out

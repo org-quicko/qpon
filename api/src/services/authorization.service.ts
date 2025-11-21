@@ -38,6 +38,7 @@ import { CouponItemService } from './coupon-item.service';
 import { ItemWiseDayWiseRedemptionSummaryMv } from 'src/entities/item-wise-day-wise-redemption-summary-mv';
 import { CouponCodesWiseDayWiseRedemptionSummaryMv } from 'src/entities/coupon-codes-wise-day-wise-redemption-summary-mv';
 import { DayWiseRedemptionSummaryMv } from 'src/entities/day-wise-redemption-summary-mv';
+import { CustomerWiseDayWiseRedemptionSummaryMv } from 'src/entities/customer_wise_day_wise_redemption_summary_mv';
 
 export const actions = [
   'manage',
@@ -67,6 +68,7 @@ export type subjectsType =
     | typeof Item
     | typeof OrganizationSummaryMv
     | typeof ItemWiseDayWiseRedemptionSummaryMv
+    | typeof CustomerWiseDayWiseRedemptionSummaryMv
     | typeof CouponCodesWiseDayWiseRedemptionSummaryMv
     | typeof DayWiseRedemptionSummaryMv
     | typeof OrganizationUser
@@ -140,7 +142,7 @@ export class AuthorizationService {
 
           allow(
             'read',
-            [CouponSummaryMv, CampaignSummaryMv, OrganizationSummaryMv, Offer, ItemWiseDayWiseRedemptionSummaryMv, CouponCodesWiseDayWiseRedemptionSummaryMv, DayWiseRedemptionSummaryMv],
+            [CouponSummaryMv, CampaignSummaryMv, OrganizationSummaryMv, Offer, ItemWiseDayWiseRedemptionSummaryMv, CouponCodesWiseDayWiseRedemptionSummaryMv, DayWiseRedemptionSummaryMv, CustomerWiseDayWiseRedemptionSummaryMv],
             {
               organizationId,
             },
@@ -174,7 +176,7 @@ export class AuthorizationService {
 
           allow(
             'read',
-            [CouponSummaryMv, CampaignSummaryMv, OrganizationSummaryMv, Offer, ItemWiseDayWiseRedemptionSummaryMv, CouponCodesWiseDayWiseRedemptionSummaryMv, DayWiseRedemptionSummaryMv],
+            [CouponSummaryMv, CampaignSummaryMv, OrganizationSummaryMv, Offer, ItemWiseDayWiseRedemptionSummaryMv, CouponCodesWiseDayWiseRedemptionSummaryMv, DayWiseRedemptionSummaryMv, CustomerWiseDayWiseRedemptionSummaryMv],
             {
               organizationId,
             },
@@ -206,7 +208,7 @@ export class AuthorizationService {
 
           allow(
             'read',
-            [CouponSummaryMv, CampaignSummaryMv, OrganizationSummaryMv, Offer, ItemWiseDayWiseRedemptionSummaryMv, CouponCodesWiseDayWiseRedemptionSummaryMv, DayWiseRedemptionSummaryMv],
+            [CouponSummaryMv, CampaignSummaryMv, OrganizationSummaryMv, Offer, ItemWiseDayWiseRedemptionSummaryMv, CouponCodesWiseDayWiseRedemptionSummaryMv, DayWiseRedemptionSummaryMv, CustomerWiseDayWiseRedemptionSummaryMv],
             {
               organizationId,
             },
@@ -254,7 +256,7 @@ export class AuthorizationService {
 
     allow(
       'read',
-      [CouponSummaryMv, CampaignSummaryMv, OrganizationSummaryMv, Offer, ItemWiseDayWiseRedemptionSummaryMv, CouponCodesWiseDayWiseRedemptionSummaryMv, DayWiseRedemptionSummaryMv],
+      [CouponSummaryMv, CampaignSummaryMv, OrganizationSummaryMv, Offer, ItemWiseDayWiseRedemptionSummaryMv, CouponCodesWiseDayWiseRedemptionSummaryMv, DayWiseRedemptionSummaryMv, CustomerWiseDayWiseRedemptionSummaryMv],
       {
         organizationId,
       },

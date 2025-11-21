@@ -1,0 +1,29 @@
+<div>
+  <p class="mat-headline-medium text-on-surface w-full m-0">
+    Settings
+  </p>
+</div>
+
+<!-- Tabs -->
+<mat-tab-group mat-align-tabs="start" mat-stretch-tabs="false" class="overflow-hidden mt-7">
+  <!-- Profile -->
+  <mat-tab label="Profile">
+    <div class="pt-[28px]">
+    <app-user-profile></app-user-profile>
+    </div>
+  </mat-tab>
+
+  <!-- Organization -->
+  <mat-tab label="Organisation">
+    <div class="pt-[28px]">
+      <app-organization-profile></app-organization-profile>
+    </div>
+  </mat-tab>
+
+  <!-- Team -->
+  <mat-tab label="Team">
+    <div class="pt-[28px]">
+      <app-team-users></app-team-users>
+    </div>
+  </mat-tab>
+</mat-tab-group>
