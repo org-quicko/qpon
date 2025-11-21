@@ -1,6 +1,6 @@
 <!-- Header -->
-<div class="mb-7">
-  <div class="mat-title-large text-on-surface">Profile</div>
+<div class="mb-5">
+  <div class="mat-body-large text-on-surface">Profile</div>
 </div>
 
 <mat-card appearance="outlined" class="bg-surface-container-lowest w-3/6">
@@ -14,7 +14,7 @@
 
         <!-- Email -->
         <div class="flex flex-col gap-1">
-          <div class="mat-body-large text-on-surface-variant">Email</div>
+          <div class="mat-body-medium text-on-surface-variant">Email</div>
           <div class="mat-body-large text-on-surface break-all">
             {{ userStore.user()?.email }}
           </div>
@@ -22,17 +22,9 @@
 
         <!-- Name -->
         <div class="flex flex-col gap-1">
-          <div class="mat-body-large text-on-surface-variant">Name</div>
+          <div class="mat-body-medium text-on-surface-variant">Name</div>
           <div class="mat-body-large text-on-surface">
             {{ userStore.user()?.name }}
-          </div>
-        </div>
-
-        <!-- Password -->
-        <div class="flex flex-col gap-1">
-          <div class="mat-body-large text-on-surface-variant">Password</div>
-          <div class="mat-body-large text-on-surface tracking-widest">
-            ••••••••
           </div>
         </div>
 
@@ -51,14 +43,6 @@
           <div class="mat-body-medium text-on-surface-variant">Name</div>
           <ngx-skeleton-loader
             [theme]="{ height: '24px', width: '200px', margin: '0', padding: '0' }">
-          </ngx-skeleton-loader>
-        </div>
-
-        <!-- Password Skeleton -->
-        <div class="flex flex-col gap-1">
-          <div class="mat-body-medium text-on-surface-variant">Password</div>
-          <ngx-skeleton-loader
-            [theme]="{ height: '24px', width: '150px', margin: '0', padding: '0' }">
           </ngx-skeleton-loader>
         </div>
 

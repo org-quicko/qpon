@@ -15,14 +15,14 @@ import { MatIcon } from "@angular/material/icon";
     selector: 'app-add-edit-user-dialog',
     standalone: true,
     imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    FormDialogBoxComponent,
-    MatIcon
-],
+        CommonModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        FormDialogBoxComponent,
+        MatIcon
+    ],
     templateUrl: './add-edit-user-dialog.component.html'
 })
 export class AddEditUserDialogComponent {
@@ -38,12 +38,14 @@ export class AddEditUserDialogComponent {
         role: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         name: ['', Validators.required],
-        password: ['']
+        password: [''],
+        confirmPassword: ['']
     });
-
     visibility = {
-        password: false
+        password: false,
+        confirmPassword: false
     };
+
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
@@ -59,16 +61,28 @@ export class AddEditUserDialogComponent {
                 name: data.user.name,
             });
             this.form.get('password')?.clearValidators();
-            this.form.get('password')?.updateValueAndValidity();
+            this.form.get('confirmPassword')?.clearValidators();
+            this.form.updateValueAndValidity();
 
         } else {
-            // CREATE MODE → make password required
             this.form.get('password')?.setValidators([Validators.required]);
-            this.form.get('password')?.updateValueAndValidity();
+            this.form.get('confirmPassword')?.setValidators([Validators.required]);
+            this.form.updateValueAndValidity();
         }
     }
 
-    toggleVisibility(field: 'password') {
+    passwordMatchValidator(group: any) {
+        const pass = group.get('password')?.value;
+        const confirm = group.get('confirmPassword')?.value;
+
+        if (pass && confirm && pass !== confirm) {
+            return { passwordMismatch: true };
+        }
+        return null;
+    }
+
+
+    toggleVisibility(field: 'password' | 'confirmPassword') {
         this.visibility[field] = !this.visibility[field];
     }
 
@@ -92,7 +106,9 @@ export class AddEditUserDialogComponent {
         }
 
         const body = {
-            role: this.form.value.role! as roleEnum
+            role: this.form.value.role! as roleEnum,
+            email: this.form.value.email!,
+            name: this.form.value.name!,
         };
 
         this.userStore.updateUserRole({

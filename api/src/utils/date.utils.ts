@@ -112,5 +112,5 @@ export function formatDateReport(date: Date | string): string {
   const day = String(d.getDate()).padStart(2, '0');
   const month = d.toLocaleString('en-US', { month: 'short' });
   const year = d.getFullYear();
-  return `${day}/${month}/${year}`;
+  return `${day}-${month}-${year}`;
 }

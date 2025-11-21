@@ -56,6 +56,7 @@ export class GenerateReportDialogComponent {
 		{ key: 'last_7_days', label: 'Last 7 days' },
 		{ key: 'last_30_days', label: 'Last 30 days' },
 		{ key: 'last_90_days', label: 'Last 90 days' },
+		{ key: 'last_365_days', label: 'Last 365 days' },
 		{ key: 'custom', label: 'Custom' },
 	];
 
@@ -141,6 +142,11 @@ export class GenerateReportDialogComponent {
 			case 'last_90_days':
 				start = new Date(today);
 				start.setDate(today.getDate() - 90);
+				break;
+
+			case 'last_365_days':
+				start = new Date(today);
+				start.setDate(today.getDate() - 365);
 				break;
 
 			default:

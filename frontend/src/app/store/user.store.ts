@@ -68,7 +68,7 @@ export const UserStore = signalStore(
                   isLoading: false,
                 });
 
-                snack.openSnackBar('Profile updated successfully', 'Close');
+                snack.openSnackBar('Profile updated successfully', undefined);
               },
               error: (error: any) => {
                 patchState(store, {
@@ -84,7 +84,7 @@ export const UserStore = signalStore(
                 isLoading: false,
                 error: error?.message || 'Failed to update user',
               });
-              snack.openSnackBar(error.message || 'Failed to load user', 'Close');
+              snack.openSnackBar('Failed to update user', 'Close');
               return EMPTY;
             })
           )
