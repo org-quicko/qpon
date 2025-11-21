@@ -30,7 +30,7 @@ export class AddRedemptionDateToRedemption1750000000000 implements MigrationInte
     public async down(queryRunner: QueryRunner): Promise<void> {
         // Drop index first
         await queryRunner.query(`
-            DROP INDEX "public"."IDX_redemption_date";
+            DROP INDEX "public"."idx_redemption_date";
         `);
 
         // Drop column
