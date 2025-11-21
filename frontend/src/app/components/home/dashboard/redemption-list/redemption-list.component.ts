@@ -115,7 +115,31 @@ export class RedemptionListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.searchControl.valueChanges
+      .pipe(
+        debounceTime(500),
+        distinctUntilChanged()
+      )
+      .subscribe((value: string | null) => {
+        const email = (value ?? '').trim();
+        this.isFilterApplied = email.length > 0;
+
+        this.paginationOptions.set({ pageIndex: 0, pageSize: 10 });
+        this.redemptionsStore.resetLoadedPages();
+
+        this.redemptionsStore.fetchRedemptions({
+          organizationId: this.organizationsStore.organizaiton()?.organizationId!,
+          filter: email ? { email } : undefined,
+          skip: 0,
+          take: this.paginationOptions().pageSize,
+          isFilterApplied: !!email,
+          from: this.dateRangeStore.start()?.toISOString(),
+          to: this.dateRangeStore.end()?.toISOString(),
+        });
+      });
+
   }
+
 
   onPageChange(event: PageEvent) {
     this.paginationOptions.set({

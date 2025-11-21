@@ -45,13 +45,7 @@ export const RedemptionsStore = signalStore(
       to?: string;
     }>(
       pipe(
-        tap(({ isFilterApplied }) => {
-          if (!isFilterApplied) {
-            patchState(store, { isLoading: false });
-          } else {
-            patchState(store, { isLoading: true });
-          }
-        }),
+        tap(() => patchState(store, { isLoading: true })),
         concatMap(
           ({
             organizationId,
