@@ -7,12 +7,13 @@ import { CouponCodeSummaryStore } from '../store/coupon-code-summary.store';
 import { DateRangeStore } from '../../../../store/date-range.store';
 import { MatCard } from "@angular/material/card";
 import { NgIf, NgForOf } from '@angular/common';
+import { NgxSkeletonLoaderComponent } from "ngx-skeleton-loader";
 
 @Component({
   selector: 'app-coupon-codes-list',
   templateUrl: './coupon-codes-list.component.html',
   styleUrls: ['./coupon-codes-list.component.css'],
-  imports: [MatIcon, DateRangeFilterComponent, MatCard, NgIf, NgForOf],
+  imports: [MatIcon, DateRangeFilterComponent, MatCard, NgIf, NgForOf, NgxSkeletonLoaderComponent],
   providers: [CouponCodeSummaryStore]
 })
 export class CouponCodesListComponent {
@@ -51,6 +52,10 @@ export class CouponCodesListComponent {
     return this.chartData.length > 0
       ? Math.max(...this.chartData.map(d => d.value))
       : 0;
+  }
+
+  get isLoading() {
+    return this.couponCodesStore.isLoading();
   }
 
   // Navigate back

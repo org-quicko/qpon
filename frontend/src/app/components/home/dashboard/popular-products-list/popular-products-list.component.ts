@@ -7,12 +7,13 @@ import { ItemSummaryStore } from '../store/item-summary.store';
 import { DateRangeStore } from '../../../../store/date-range.store';
 import { MatCard } from "@angular/material/card";
 import { NgIf, NgForOf } from '@angular/common';
+import { NgxSkeletonLoaderComponent } from "ngx-skeleton-loader";
 
 @Component({
   selector: 'app-popular-products-list',
   templateUrl: './popular-products-list.component.html',
   styleUrls: ['./popular-products-list.component.css'],
-  imports: [MatIcon, DateRangeFilterComponent, MatCard, NgIf, NgForOf],
+  imports: [MatIcon, DateRangeFilterComponent, MatCard, NgIf, NgForOf, NgxSkeletonLoaderComponent],
   providers: [ItemSummaryStore]
 })
 export class PopularProductsListComponent {
@@ -51,6 +52,10 @@ export class PopularProductsListComponent {
     return this.chartData.length > 0
       ? Math.max(...this.chartData.map(d => d.value))
       : 0;
+  }
+
+  get isLoading() {
+    return this.itemSummaryStore.isLoading();
   }
 
   // Navigate back
