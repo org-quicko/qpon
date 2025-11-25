@@ -129,6 +129,7 @@ export class OrganizationController {
     @Param('organization_id') organizationId: string,
     @Query('start_date') startDate?: string,
     @Query('end_date') endDate?: string,
+    @Query('take') take?: number,
   ) {
     this.logger.info('START: fetchCouponCodeWiseRedemptionSummary controller');
 
@@ -136,6 +137,7 @@ export class OrganizationController {
       organizationId,
       startDate,
       endDate,
+      take,
     );
 
     this.logger.info('END: fetchCouponCodeWiseRedemptionSummary controller');

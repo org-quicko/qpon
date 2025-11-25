@@ -10,7 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { FormDialogBoxComponent } from '../../common/form-dialog-box/form-dialog-box.component';
-import * as _moment from 'moment';
+import _moment from 'moment';
 import { default as _rollupMoment } from 'moment';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 
@@ -156,7 +156,10 @@ export class GenerateReportDialogComponent {
 		// Prevent triggering custom mode during auto update
 		this.isAutoSettingDates = true;
 
-		this.reportForm.patchValue({ start, end });
+		const momentStart = _moment(start);
+		const momentEnd = _moment(end);
+
+		this.reportForm.patchValue({ start: momentStart, end: momentEnd });
 
 		this.isAutoSettingDates = false;
 	}

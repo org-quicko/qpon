@@ -10,7 +10,7 @@
 
     @for (report of reportsMap; track report[0]) {
 
-    <mat-card matRipple [appearance]="'outlined'" class="w-[800px] h-[96px] flex flex-row 
+    <mat-card matRipple [appearance]="'outlined'" class="w-[800px] h-[124px] flex flex-row 
                bg-surface-container-lowest 
                hover:bg-surface-container 
                items-center gap-2 p-7 cursor-pointer transition" (click)="onClickReport(report[0])">
@@ -25,9 +25,12 @@
 
       <!-- Title + Subtitle -->
       <mat-card-header class="!py-0 flex flex-col gap-2 justify-center h-full">
-        <mat-card-title class="text-on-surface mat-body-large">
+        <mat-card-title class="text-on-surface mat-body-large mb-1">
           {{ report[0] | titlecase }}
         </mat-card-title>
+        <mat-card-subtitle class="text-on-surface-variant mat-body-medium">
+          {{ reportsDesc.get(report[0]) }}
+        </mat-card-subtitle>
       </mat-card-header>
 
     </mat-card>

@@ -39,6 +39,8 @@ import { SuccessComponent } from './components/create-organization-container/suc
 import { SuperAdminSetupComponent } from './components/super-admin-setup/super-admin-setup.component';
 import { RedemptionListComponent } from './components/home/dashboard/redemption-list/redemption-list.component';
 import { SettingsComponent } from './components/home/settings/settings.component';
+import { PopularProductsListComponent } from './components/home/dashboard/popular-products-list/popular-products-list.component';
+import { CouponCodesListComponent } from './components/home/dashboard/coupon-codes-list/coupon-codes-list.component';
 
 export const routes: Routes = [
   { path: 'setup', component: SuperAdminSetupComponent },
@@ -85,7 +87,9 @@ export const routes: Routes = [
                 path: 'dashboard',
                 children: [
                   { path: '', component: DashboardComponent },
-                  { path: 'redemptions', component: RedemptionListComponent }
+                  { path: 'redemptions', component: RedemptionListComponent },
+                  { path: 'products', component: PopularProductsListComponent },
+                  { path: 'coupon-codes', component: CouponCodesListComponent },
                 ]
               },
               { path: 'customers', component: CustomersComponent },
