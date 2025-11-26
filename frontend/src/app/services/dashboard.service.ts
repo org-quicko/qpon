@@ -52,7 +52,8 @@ export class DashboardService {
   fetchItemsSummary(
     organizationId: string,
     startDate?: string | Date,
-    endDate?: string | Date
+    endDate?: string | Date,
+    take?: number,
   ): Observable<ApiResponse<ItemsSummaryWorkbook> | null> {
     const url = `${this.endpoint}/organizations/${organizationId}/items/summary`;
 
@@ -62,6 +63,11 @@ export class DashboardService {
     }
 
     let params = new HttpParams();
+
+    if (take !== undefined && take !== null) {
+      params = params.set('take', String(take));
+    }
+
     if (startDate && endDate) {
       params = params
         .set('start_date', typeof startDate === 'string' ? startDate : startDate.toISOString())
@@ -84,7 +90,8 @@ export class DashboardService {
   fetchCouponCodesSummary(
     organizationId: string,
     startDate?: string | Date,
-    endDate?: string | Date
+    endDate?: string | Date,
+    take?: number,
   ): Observable<ApiResponse<CouponCodeSummaryWorkbook> | null> {
     const url = `${this.endpoint}/organizations/${organizationId}/coupon_codes/summary`;
 
@@ -94,6 +101,11 @@ export class DashboardService {
     }
 
     let params = new HttpParams();
+
+    if (take !== undefined && take !== null) {
+      params = params.set('take', String(take));
+    }
+
     if (startDate && endDate) {
       params = params
         .set('start_date', typeof startDate === 'string' ? startDate : startDate.toISOString())

@@ -267,7 +267,6 @@ export class SalesTrendChartComponent implements OnChanges, OnDestroy {
           ...(this.chartOptions?.scales?.['x'] ?? {}),
           ticks: {
             ...((this.chartOptions?.scales?.['x'] as any)?.ticks ?? {}),
-            callback: (_, index) => this.getEmptyLabels()[index] ?? '',
           },
         },
         y: {
@@ -277,6 +276,9 @@ export class SalesTrendChartComponent implements OnChanges, OnDestroy {
             font: { size: 12 },
             stepSize: 20,
             callback: (value) => value,
+          },
+          border: {
+            display: false
           },
           suggestedMax: 100,
           grid: { color: 'rgba(230,230,230,0.4)', lineWidth: 1 },
@@ -288,16 +290,11 @@ export class SalesTrendChartComponent implements OnChanges, OnDestroy {
     this.chartOptions = noDataOptions;
 
     return {
-      labels: this.getEmptyLabels(),
+      labels: [],
       datasets: [],
     };
   }
 
-
-
-  private getEmptyLabels(): string[] {
-    return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'];
-  }
 
   // ------------------ Lifecycle ------------------
   ngOnChanges(changes: SimpleChanges): void {
@@ -397,7 +394,7 @@ export class SalesTrendChartComponent implements OnChanges, OnDestroy {
   }
 
   private clearChartData(): void {
-    this.chartData.labels = this.getEmptyLabels();
+    this.chartData.labels = [];
     this.chartData.datasets.forEach(d => (d.data = []));
     this.hasData = false;
     this.chartPoints = [];

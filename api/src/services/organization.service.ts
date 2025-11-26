@@ -303,19 +303,20 @@ export class OrganizationService {
   }
 
   /**
-   * Fetch top 5 items summary by total redemptions (org-wise)
+   * Fetch top items summary by total redemptions (org-wise)
    */
   async getItemWiseSummary(
     organizationId: string,
     startDate?: string,
     endDate?: string,
+    take?: number,
   ) {
     this.logger.info('START: getItemWiseSummary service');
 
     try {
 
       this.logger.debug(
-        `Fetching top 5 items for organizationId=${organizationId}`,
+        `Fetching top items for organizationId=${organizationId}`,
       );
 
       const qb = this.itemSummaryMvRepository
@@ -332,7 +333,7 @@ export class OrganizationService {
         .addGroupBy('summary.item_id')
         .addGroupBy('summary.item_name')
         .orderBy('"totalRedemptions"', 'DESC')
-        .limit(5);
+        .limit(take);
 
       // optional date filter
       if (startDate && endDate) {
@@ -371,19 +372,20 @@ export class OrganizationService {
 
 
   /**
-   * Fetch top 5 coupon codes summary by total redemptions (org-wise)
+   * Fetch top coupon codes summary by total redemptions (org-wise)
    */
   async getCouponCodeWiseSummary(
     organizationId: string,
     startDate?: string,
     endDate?: string,
+    take?: number,
   ) {
     this.logger.info('START: getCouponCodeWiseSummary service');
 
     try {
 
       this.logger.debug(
-        `Fetching top 5 coupon codes for organizationId=${organizationId}`,
+        `Fetching top coupon codes for organizationId=${organizationId}`,
       );
 
       const qb = this.couponCodeSummaryMvRepository
@@ -398,7 +400,7 @@ export class OrganizationService {
         .groupBy('summary.organization_id')
         .addGroupBy('summary.coupon_code')
         .orderBy('"totalRedemptions"', 'DESC')   // <-- using alias
-        .limit(5);
+        .limit(take);
 
       // Optional date filter
       if (startDate && endDate) {

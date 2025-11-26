@@ -30,13 +30,13 @@ export const ItemSummaryStore = signalStore(
   withDevtools('item_summary_store'),
   withMethods(
     (store, dashboardService = inject(DashboardService), snackbar = inject(SnackbarService)) => ({
-      fetchItemSummary: rxMethod<{ organizationId: string; startDate?: string | Date; endDate?: string | Date }>(
+      fetchItemSummary: rxMethod<{ organizationId: string; startDate?: string | Date; endDate?: string | Date; take?:number }>(
         pipe(
           tap(() =>
             patchState(store, { isLoading: true, error: null })
           ),
-          switchMap(({ organizationId, startDate, endDate }) =>
-            dashboardService.fetchItemsSummary(organizationId, startDate, endDate).pipe(
+          switchMap(({ organizationId, startDate, endDate, take }) =>
+            dashboardService.fetchItemsSummary(organizationId, startDate, endDate, take).pipe(
               tapResponse({
                 next: (response) => {
                   if (response?.code === 200) {

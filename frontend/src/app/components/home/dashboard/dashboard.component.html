@@ -40,7 +40,10 @@
         [title]="'Most popular products'"
         [labelColumn]="'Products'"
         [valueColumn]="'Redemptions'"
-        [data]="itemPopularityData()">
+        [data]="itemPopularityData()"
+        [navigationText]="'View all products'"
+        [navigationLink]="'products'"
+        >
       </app-popularity-chart>
     </ng-template>
 
@@ -58,7 +61,10 @@
         [title]="'Most popular coupon codes'"
         [labelColumn]="'Codes'"
         [valueColumn]="'Redemptions'"
-        [data]="couponPopularityData()">
+        [data]="couponPopularityData()"
+        [navigationText]="'View all coupon codes'"
+        [navigationLink]="'coupon-codes'"
+        >
       </app-popularity-chart>
     </ng-template>
 

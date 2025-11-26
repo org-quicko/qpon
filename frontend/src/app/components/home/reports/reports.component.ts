@@ -28,9 +28,9 @@ export class ReportsComponent {
   ];
 
   reportsDesc = new Map<string, string>([
-    ['redemptions', 'View redemption logs & summary'],
-    ['sales by items', 'See item-wise sales insights'],
-    ['sales by customers', 'Analyze customer-specific sales'],
+    ['redemptions', 'Get a report of redeemed coupon codes, including who used them, what they purchased, how much they spent, and more.'],
+    ['sales by items', 'Get an item wise report showing sales amounts and discounts given.'],
+    ['sales by customers', 'Get a customer wise report showing sales amounts and discounts given.'],
   ]);
 
   onClickReport(reportName: string) {
@@ -42,11 +42,10 @@ export class ReportsComponent {
       }
     }).afterClosed().subscribe((formData) => {
       if (!formData) return;
-      const formatDate = (date: Date) => date.toISOString().split('T')[0];
 
       this.reportsStore.downloadReport(reportName as ReportName, {
-        from: formatDate(formData.start),
-        to: formatDate(formData.end)
+        from: formData.start.format("YYYY-MM-DD"),
+        to: formData.end.format("YYYY-MM-DD"),
       });
     });
   }

@@ -1,0 +1,79 @@
+<div class="overflow-hidden mb-4">
+    <div class="flex items-center mat-body-medium gap-[4px] text-on-surface">
+        <div class="cursor-pointer" (click)="onNavigateToDashboard()">Dashboard</div>
+        <mat-icon class="!text-[20px] !leading-none mt-1">navigate_next</mat-icon>
+        <div class="cursor-pointer">
+            Code wise analytics
+        </div>
+    </div>
+</div>
+
+<div class="flex flex-col gap-3 mb-4">
+    <div class="flex items-center justify-between w-full">
+        <div class="mat-headline-medium text-on-surface">
+            Code wise analytics
+        </div>
+
+        <div>
+            <app-date-range-filter></app-date-range-filter>
+        </div>
+    </div>
+</div>
+
+<mat-card class="rounded-lg border border-outline-variant flex flex-col">
+    <div class="p-4">
+        <div class="flex-1 overflow-y-auto min-h-[16rem] max-h-auto p-2">
+
+            <ng-container *ngIf="isLoading; else loadedContent">
+                <div class="space-y-3 mt-3">
+                    <ngx-skeleton-loader
+                        count="6"
+                        appearance="line"
+                        [theme]="{
+                            height: '32px',
+                            'border-radius': '8px',
+                            'margin-bottom': '12px'
+                        }">
+                    </ngx-skeleton-loader>
+                </div>
+            </ng-container>
+
+            <ng-template #loadedContent>
+
+                <div class="grid grid-cols-[1fr_auto] text-sm font-medium mb-2 mt-1 text-outline">
+                    <div>{{ labelColumn }}</div>
+                    <div>{{ valueColumn }}</div>
+                </div>
+
+                <div *ngIf="chartData.length > 0; else noData" class="space-y-2">
+
+                    <div *ngFor="let item of chartData" class="grid grid-cols-1 items-center relative mt-3 group">
+                        <div class="relative w-full h-8 rounded-md flex items-center">
+
+                            <div class="absolute left-0 top-0 h-full rounded-md bg-inverse-on-surface 
+                                transition-all duration-300 group-hover:bg-surface-variant"
+                                [style.width.%]="maxValue > 0 ? (item.value / maxValue) * 100 : 0">
+                            </div>
+
+                            <div class="relative z-10 flex justify-between items-center w-full px-3 text-sm font-medium text-on-surface">
+                                <span>{{ item.label }}</span>
+                                <span>{{ item.value }}</span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <ng-template #noData>
+                    <div class="flex items-center justify-center h-[15rem] font-body-medium text-on-surface-variant
+                        mt-3 border border-dashed border-outline-variant rounded-md">
+                        No data available
+                    </div>
+                </ng-template>
+
+            </ng-template>
+
+        </div>
+    </div>
+</mat-card>

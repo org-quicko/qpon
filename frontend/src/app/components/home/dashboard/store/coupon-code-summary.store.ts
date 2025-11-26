@@ -29,13 +29,13 @@ export const CouponCodeSummaryStore = signalStore(
   withDevtools('coupon_code_summary_store'),
   withMethods(
     (store, dashboardService = inject(DashboardService), snackbar = inject(SnackbarService)) => ({
-      fetchCouponCodeSummary: rxMethod<{ organizationId: string; startDate?: string | Date; endDate?: string | Date }>(
+      fetchCouponCodeSummary: rxMethod<{ organizationId: string; startDate?: string | Date; endDate?: string | Date; take?:number }>(
         pipe(
           tap(() =>
             patchState(store, { isLoading: true, error: null })
           ),
-          switchMap(({ organizationId, startDate, endDate }) =>
-            dashboardService.fetchCouponCodesSummary(organizationId, startDate, endDate).pipe(
+          switchMap(({ organizationId, startDate, endDate, take }) =>
+            dashboardService.fetchCouponCodesSummary(organizationId, startDate, endDate, take).pipe(
               tapResponse({
                 next: (response) => {
                   if (response?.code === 200) {
