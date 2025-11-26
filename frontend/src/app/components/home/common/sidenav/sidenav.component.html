@@ -3,7 +3,7 @@
     <div class="pt-[30px] pr-[24px] pl-[16px] pb-[12px]">
       <mat-nav-list class="cursor-pointer flex flex-col gap-[4px]">
         <a routerLink="./dashboard" routerLinkActive #dashboard="routerLinkActive"
-          [routerLinkActiveOptions]="{ exact: true }">
+          [routerLinkActiveOptions]="{ exact: false }">
           <mat-list-item [activated]="dashboard.isActive">
             <mat-icon matListItemIcon class="material-symbols-outlined text-on-surface">
               dashboard_2

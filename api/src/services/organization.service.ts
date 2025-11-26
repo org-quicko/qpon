@@ -319,8 +319,6 @@ export class OrganizationService {
         `Fetching top items for organizationId=${organizationId}`,
       );
 
-      const limitValue = take ?? 5;
-
       const qb = this.itemSummaryMvRepository
         .createQueryBuilder('summary')
         .select('summary.organization_id', 'organizationId')
@@ -335,7 +333,7 @@ export class OrganizationService {
         .addGroupBy('summary.item_id')
         .addGroupBy('summary.item_name')
         .orderBy('"totalRedemptions"', 'DESC')
-        .limit(limitValue);
+        .limit(take);
 
       // optional date filter
       if (startDate && endDate) {
@@ -390,8 +388,6 @@ export class OrganizationService {
         `Fetching top coupon codes for organizationId=${organizationId}`,
       );
 
-      const limitValue = take ?? 5;
-
       const qb = this.couponCodeSummaryMvRepository
         .createQueryBuilder('summary')
         .select('summary.organization_id', 'organizationId')
@@ -404,7 +400,7 @@ export class OrganizationService {
         .groupBy('summary.organization_id')
         .addGroupBy('summary.coupon_code')
         .orderBy('"totalRedemptions"', 'DESC')   // <-- using alias
-        .limit(limitValue);
+        .limit(take);
 
       // Optional date filter
       if (startDate && endDate) {

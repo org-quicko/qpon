@@ -27,19 +27,13 @@ export class CouponCodesListComponent {
 
   constructor(private router: Router) {
 
-    // Auto-fetch whenever date range changes
-    effect(() => {
-      const start = this.dateRangeStore.start();
-      const end = this.dateRangeStore.end();
 
-      if (start && end) {
-        this.fetchData();
-      }
+    effect(() => {
+      this.fetchData();
     });
   }
 
   ngOnInit() {
-    this.fetchData(); // initial load
   }
 
   // Chart data accessor
@@ -79,7 +73,6 @@ export class CouponCodesListComponent {
       organizationId: orgId,
       startDate: startStr,
       endDate: endStr,
-      take: 30
     });
   }
 }
