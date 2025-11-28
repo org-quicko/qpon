@@ -131,6 +131,7 @@ export class DashboardComponent implements OnInit {
       organizationId: orgId,
       startDate: startStr,
       endDate: endStr,
+      take: 5,
     });
 
     // coupon
@@ -138,6 +139,7 @@ export class DashboardComponent implements OnInit {
       organizationId: orgId,
       startDate: startStr,
       endDate: endStr,
+      take: 5,
     });
 
     this.redemptionsStore.resetRedemptionsState();
