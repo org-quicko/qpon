@@ -74,7 +74,8 @@ export class ApiKeyService {
 
       if (!apiKey) {
         this.logger.warn('Api Key not found');
-        throw new NotFoundException('Api key not found');
+        this.logger.info('END: fetchApiKey service');
+        return null;
       }
 
       this.logger.info('END: fetchApiKey service');

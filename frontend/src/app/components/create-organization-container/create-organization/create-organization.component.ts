@@ -11,6 +11,7 @@ import { RxFormBuilder } from '@rxweb/reactive-form-validators';
 import { Router } from '@angular/router';
 import { CreateOrganizationDto } from '../../../../dtos/organization.dto';
 import { instanceToPlain } from 'class-transformer';
+import { MatAutocomplete, MatAutocompleteModule } from "@angular/material/autocomplete";
 
 @Component({
   selector: 'app-create-organization',
@@ -20,8 +21,10 @@ import { instanceToPlain } from 'class-transformer';
     MatInputModule,
     MatIconModule,
     MatSelectModule,
-    CommonModule
-  ],
+    CommonModule,
+    MatAutocomplete,
+    MatAutocompleteModule,
+],
   templateUrl: './create-organization.component.html',
   styleUrls: ['./create-organization.component.css'],
 })
@@ -31,6 +34,8 @@ export class CreateOrganizationComponent implements OnInit {
 
   createOrganizationStore = inject(CreateOrganizationStore);
   isNextClicked = this.createOrganizationStore.onNext;
+  filteredCurrencyList = this.currencyList;
+
 
   constructor(private formBuilder: RxFormBuilder, private router: Router) {
     this.createOrganizationForm = formBuilder.formGroup(new CreateOrganizationDto())
@@ -63,4 +68,35 @@ export class CreateOrganizationComponent implements OnInit {
       }
     })
   }
+
+    filterCurrency(value: string) {
+    const search = value.toLowerCase();
+
+    this.filteredCurrencyList = this.currencyList.filter(
+      (currency: any) =>
+        currency.text.toLowerCase().includes(search) ||
+        currency.code.toLowerCase().includes(search)
+    );
+  }
+
+  onCurrencySelected(code: string) {
+    this.createOrganizationForm.get('currency')?.setValue(code);
+  }
+
+  validateCurrency() {
+    const value = this.createOrganizationForm.get('currency')?.value;
+
+    if (!value) return;
+
+    const exists = this.currencyList.some(
+      (c: any) =>
+        c.code === value||
+        c.text === value
+    );
+
+    if (!exists) {
+      this.createOrganizationForm.get('currency')?.setValue('');
+    }
+  }
+
 }
