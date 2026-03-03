@@ -8,11 +8,10 @@ import { QponCredentials } from '../../beans';
 import { RestClient } from '../RestClient';
 
 export class Campaign extends RestClient {
-  private logger: winston.Logger;
+  private readonly logger: winston.Logger = LoggerFactory.getLogger(Campaign.name);
 
   constructor(config: QponCredentials, baseUrl: string) {
     super(config, baseUrl);
-    this.logger = LoggerFactory.createLogger('logger', LoggingLevel.info);
   }
 
   async createCampaign(organizationId: string, couponId: string, data: Pick<CampaignBean, 'name' | 'budget' | 'externalId'>) : Promise<CampaignBean> {

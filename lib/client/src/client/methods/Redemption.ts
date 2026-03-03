@@ -8,11 +8,10 @@ import { QponCredentials } from '../../beans';
 import { RestClient } from '../RestClient';
 
 export class Redemption extends RestClient {
-  private logger: winston.Logger;
+  private readonly logger: winston.Logger = LoggerFactory.getLogger(Redemption.name);
 
   constructor(config: QponCredentials, baseUrl: string) {
     super(config, baseUrl);
-    this.logger = LoggerFactory.createLogger('logger', LoggingLevel.info);
   }
 
   async redeemCouponCode(organizationId: string, data: CreateRedemption) {
