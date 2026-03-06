@@ -1,6 +1,6 @@
 {
   "name": "@org-quicko/qpon-client",
-  "version": "2.0.0-alpha",
+  "version": "2.0.0-beta",
   "description": "Library to access Qpon APIs",
   "author": "Quicko <developer@quicko.org.in>",
   "main": "dist/cjs/index.cjs",
