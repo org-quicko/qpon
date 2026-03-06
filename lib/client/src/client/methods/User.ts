@@ -7,11 +7,10 @@ import { QponCredentials } from '../../beans';
 import { RestClient } from '../RestClient';
 
 export class User extends RestClient {
-  private logger: winston.Logger;
+  private readonly logger: winston.Logger = LoggerFactory.getLogger(User.name);
 
   constructor(config: QponCredentials, baseUrl: string) {
     super(config, baseUrl);
-    this.logger = LoggerFactory.createLogger('logger', LoggingLevel.info);
   }
 
   async getUser(userId: string) : Promise<UserBean> {

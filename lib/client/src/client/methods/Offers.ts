@@ -7,11 +7,10 @@ import { QponCredentials } from '../../beans';
 import { RestClient } from '../RestClient';
 
 export class Offer extends RestClient {
-  private logger: winston.Logger;
+  private readonly logger: winston.Logger = LoggerFactory.getLogger(Offer.name);
 
   constructor(config: QponCredentials, baseUrl: string) {
     super(config, baseUrl);
-    this.logger = LoggerFactory.createLogger('logger', LoggingLevel.info);
   }
 
   async getOffer(

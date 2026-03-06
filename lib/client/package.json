@@ -1,6 +1,6 @@
 {
   "name": "@org-quicko/qpon-client",
-  "version": "1.0.0",
+  "version": "2.0.0-beta",
   "description": "Library to access Qpon APIs",
   "author": "Quicko <developer@quicko.org.in>",
   "main": "dist/cjs/index.cjs",
@@ -10,7 +10,7 @@
   "scripts": {
     "clean": "npm cache clean -force",
     "lint": "eslint --fix .",
-    "prebuild": "rm -rf dist && eslint .",
+    "prebuild": "rm -rf dist && eslint . && tsc --noEmit",
     "build": "rollup -c",
     "test-createCoupon": "set NODE_ENV=local && ts-node ./tests/coupon/createCoupon.test.ts",
     "test-getAllCoupons": "set NODE_ENV=local && ts-node ./tests/coupon/getAllCoupons.test.ts",
@@ -42,7 +42,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@org-quicko/core": "^1.1.0",
+    "@org-quicko/core": "^2.0.0",
     "@org-quicko/qpon-core": "^1.0.0",
     "@org-quicko/qpon-sheet-core": "^1.0.0",
     "@org-quicko/sheet": "^1.0.1",

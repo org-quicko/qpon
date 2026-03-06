@@ -6,11 +6,10 @@ import { QponCredentials } from '../../beans';
 import { RestClient } from '../RestClient';
 
 export class Organization extends RestClient {
-  private logger: winston.Logger;
+  private readonly logger: winston.Logger = LoggerFactory.getLogger(Organization.name);
 
   constructor(config: QponCredentials, baseUrl: string) {
     super(config, baseUrl);
-    this.logger = LoggerFactory.createLogger('logger', LoggingLevel.info);
   }
 
   async getOrganization(organizationId: string) : Promise<OrganizationBean> {
