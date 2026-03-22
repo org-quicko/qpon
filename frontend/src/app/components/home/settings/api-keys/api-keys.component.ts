@@ -1,4 +1,4 @@
-import { Component, OnInit, effect, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, effect, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
@@ -13,7 +13,12 @@ import { CustomDatePipe } from '../../../../pipe/date.pipe';
 import { SnackbarService } from '../../../../services/snackbar.service';
 import { DeleteDialogComponent } from '../../common/delete-dialog/delete-dialog.component';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { NotAllowedDialogBoxComponent } from '../../../common/not-allowed-dialog-box/not-allowed-dialog-box.component';
+import { AbilityServiceSignal } from '@casl/angular';
+import { UserAbility } from '../../../../permissions/ability';
 import { ApiKeyDto } from '../../../../../dtos/api-key.dto';
+import { ApiCredentialsDialogComponent } from './common/api-credentials-dialog/api-credentials-dialog.component';
+
 
 @Component({
     selector: 'app-api-keys',
@@ -36,17 +41,27 @@ export class ApiKeysComponent implements OnInit {
     dialog = inject(MatDialog);
     snack = inject(SnackbarService);
     clipboard = inject(Clipboard);
+    private readonly abilityService = inject<AbilityServiceSignal<UserAbility>>(AbilityServiceSignal);
+	protected readonly can = this.abilityService.can;
 
-    showSecret = signal(false);
+    readonly apiKey = computed(() => this.apiKeysStore.apiKey());
+    readonly isLoading = computed(() => this.apiKeysStore.isLoading());
 
     constructor() {
         // Watch for newly generated API key to show secret
         effect(() => {
-            const apiKey = this.apiKeysStore.apiKey();
-            if (apiKey?.secret) {
-                this.showSecret.set(true);
-            }
-        });
+			const apiKey = this.apiKeysStore.apiKey();
+			if (apiKey?.secret) {
+				const ref = this.dialog.open(ApiCredentialsDialogComponent, {
+					width: '516px',
+					disableClose: true,
+					data: { apiKey },
+				});
+				ref.afterClosed().subscribe(() => {
+					this.apiKeysStore.clearSecret();
+				});
+			}
+		});
     }
 
     ngOnInit(): void {
@@ -58,6 +73,12 @@ export class ApiKeysComponent implements OnInit {
     }
 
     onGenerateApiKey(): void {
+        if (!this.can('manage', ApiKeyDto)) {
+			this.dialog.open(NotAllowedDialogBoxComponent, {
+				data: { description: 'You do not have permission to Generate an API key.' }
+			});
+			return;
+		}
         const organizationId = this.organizationStore.organizaiton()?.organizationId;
 
         if (!organizationId) {
@@ -65,11 +86,16 @@ export class ApiKeysComponent implements OnInit {
             return;
         }
 
-        this.showSecret.set(false);
         this.apiKeysStore.generateApiKey({ organizationId });
     }
 
     onRegenerateApiKey(): void {
+        if (!this.can('manage', ApiKeyDto)) {
+			this.dialog.open(NotAllowedDialogBoxComponent, {
+				data: { description: 'You do not have permission to Generate an API key.' }
+			});
+			return;
+		}
         const org = this.organizationStore.organizaiton();
 
         if (!org?.organizationId) {
@@ -85,7 +111,6 @@ export class ApiKeysComponent implements OnInit {
                 buttonText: 'Regenerate',
                 onDelete: async () => {
                     try {
-                        this.showSecret.set(false);
                         await this.apiKeysStore.generateApiKey({ organizationId: org.organizationId! });
                         this.dialog.closeAll();
                     } catch (err) {
@@ -105,24 +130,4 @@ export class ApiKeysComponent implements OnInit {
             this.snack.openSnackBar('Failed to copy', undefined);
         }
     }
-
-    downloadTxt(apiKey: ApiKeyDto): void {
-        if (!apiKey) return;
-
-        const textContent =
-            `API Key: ${apiKey.key || ''}\n` +
-            `Secret: ${apiKey.secret || ''}\n` +
-            `Created At: ${apiKey.created_at || ''}\n`;
-
-        const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'api-key.txt';
-        link.click();
-
-        URL.revokeObjectURL(url);
-    }
-
 }

@@ -1,144 +1,113 @@
-<!-- Header -->
 <div class="mb-5">
-  <div class="mat-body-large text-on-surface">API Keys</div>
+	<div class="mat-body-large text-on-surface">API Keys</div>
 </div>
 
 <!-- API Key Section -->
 <mat-card appearance="outlined" class="bg-surface-container-lowest w-3/6">
-  <mat-card-content>
-    <div class="flex flex-col">
+	<mat-card-content>
+		<div class="flex flex-col">
 
-      <!-- Body -->
-      <div class="flex flex-col p-6 gap-6">
+			<!-- Body -->
+			<div class="flex flex-col p-6 gap-6">
 
-        @if (apiKeysStore.isLoading()) {
+				@if (isLoading()) {
 
-        <!-- Loading Skeleton -->
-        <div class="flex flex-col gap-1">
-          <div class="mat-body-medium text-on-surface-variant">API Key</div>
-          <ngx-skeleton-loader
-            [theme]="{ height: '24px', width: '300px', margin: '0', padding: '0' }">
-          </ngx-skeleton-loader>
-        </div>
+				<!-- Loading Skeleton -->
+				<div class="flex flex-col gap-1">
+					<div class="mat-body-medium text-on-surface-variant">API Key</div>
+					<ngx-skeleton-loader
+						[theme]="{ height: '24px', width: '300px', margin: '0', padding: '0' }">
+					</ngx-skeleton-loader>
+				</div>
 
-        <div class="flex flex-col gap-1">
-          <div class="mat-body-medium text-on-surface-variant">Created At</div>
-          <ngx-skeleton-loader
-            [theme]="{ height: '24px', width: '200px', margin: '0', padding: '0' }">
-          </ngx-skeleton-loader>
-        </div>
+				<div class="flex flex-col gap-1">
+					<div class="mat-body-medium text-on-surface-variant">Created At</div>
+					<ngx-skeleton-loader
+						[theme]="{ height: '24px', width: '200px', margin: '0', padding: '0' }">
+					</ngx-skeleton-loader>
+				</div>
 
-        } @else if (!apiKeysStore.apiKey()) {
+				} @else if (!apiKey()) {
 
-        <!-- No API Key State -->
-        <div class="flex flex-col items-center justify-center py-8 gap-4">
-          <div class="scale-150 rounded-full inline-flex justify-start items-center gap-2.5 overflow-hidden bg-surface-container p-3">
-            <mat-icon class="material-symbols-outlined">vpn_key</mat-icon>
-          </div>
-          <div class="text-center">
-            <div class="mat-title-medium text-on-surface mb-2">No API Key Generated</div>
-            <div class="mat-body-medium text-on-surface-variant">
-              Generate an API key to start integrating with our services
-            </div>
-          </div>
-        </div>
+				<!-- No API Key State -->
+				<div class="flex flex-col items-center justify-center py-8 gap-4">
+					<div class="scale-150 rounded-full inline-flex justify-start items-center gap-2.5 overflow-hidden bg-surface-container p-3">
+						<mat-icon class="material-symbols-outlined">vpn_key</mat-icon>
+					</div>
+					<div class="text-center">
+						<div class="mat-title-medium text-on-surface mb-2">No API Key Generated</div>
+						<div class="mat-body-medium text-on-surface-variant">
+							Generate an API key to start integrating with our services
+						</div>
+					</div>
+				</div>
 
-        } @else {
+				} @else {
 
-        <!-- API Key Display -->
-        <div class="flex flex-col gap-1">
-          <div class="mat-body-medium text-on-surface-variant">API Key</div>
-          <div class="flex items-center gap-2">
-            <div class="mat-body-large text-on-surface font-mono bg-surface-container px-3 py-2 rounded flex-1 break-all">
-              {{ apiKeysStore.apiKey()?.key }}
-            </div>
-            <button mat-icon-button (click)="copyToClipboard(apiKeysStore.apiKey()?.key || '')" 
-              matTooltip="Copy to clipboard">
-              <mat-icon class="material-symbols-outlined">content_copy</mat-icon>
-            </button>
-          </div>
-        </div>
+				<!-- API Key Display -->
+				<div class="flex flex-col gap-1">
+					<div class="mat-body-medium text-on-surface-variant">API Key</div>
+					<div class="flex items-center gap-2">
+						<div class="mat-body-large text-on-surface font-mono bg-surface-container px-3 py-2 rounded flex-1 break-all">
+							{{ apiKey()?.key }}
+						</div>
+						<button mat-icon-button (click)="copyToClipboard(apiKey()?.key || '')"
+							matTooltip="Copy to clipboard">
+							<mat-icon class="material-symbols-outlined">content_copy</mat-icon>
+						</button>
+					</div>
+				</div>
 
-        <!-- Secret Display (only shown after generation) -->
-        @if (showSecret() && apiKeysStore.apiKey()?.secret) {
-        <div class="flex flex-col gap-1">
-          <div class="mat-body-medium text-on-surface-variant">Secret Key</div>
-          <div class="flex items-center gap-2">
-            <div class="mat-body-large text-on-surface font-mono bg-surface-container px-3 py-2 rounded flex-1 break-all">
-              {{ apiKeysStore.apiKey()?.secret }}
-            </div>
-            <button mat-icon-button (click)="copyToClipboard(apiKeysStore.apiKey()?.secret || '')"
-              matTooltip="Copy to clipboard">
-              <mat-icon class="material-symbols-outlined">content_copy</mat-icon>
-            </button>
-          </div>
-          <div class="mat-body-small text-error mt-1 flex items-start gap-1">
-            <mat-icon class="material-symbols-outlined -mt-1 text-base">warning</mat-icon>
-            <span>Save this secret key now. You won't be able to see it again!</span>
-          </div>
-        </div>
+				<!-- Created At -->
+				<div class="flex flex-col gap-1">
+					<div class="mat-body-medium text-on-surface-variant">Generated at</div>
+					<div class="mat-body-large text-on-surface">
+						{{ apiKey()!.createdAt! | custom_date : "" : true }}
+					</div>
+				</div>
 
-        <!-- Download Button -->
-        <div class="flex justify-end">
-          <button mat-flat-button 
-            class="bg-primary text-on-primary rounded-full px-6 py-2"
-            (click)="downloadTxt(apiKeysStore.apiKey()!)">
-            <mat-icon class="material-symbols-outlined mr-2">download</mat-icon>
-            Download Credentials
-          </button>
-        </div>
-        }
+				}
 
-        <!-- Created At -->
-        <div class="flex flex-col gap-1">
-          <div class="mat-body-medium text-on-surface-variant">Generated at</div>
-          <div class="mat-body-large text-on-surface">
-            {{ (apiKeysStore.apiKey()?.created_at ?? '') | custom_date : "" : true }}
-          </div>
-        </div>
+			</div>
 
-        }
+			<!-- Footer -->
+			<div>
+				<mat-divider class="border-outline-variant"></mat-divider>
 
-      </div>
+				@if (!apiKey() && !isLoading()) {
+				<!-- Generate Button -->
+				<button mat-button
+					class="flex h-[56px] w-full justify-start rounded-none"
+					(click)="onGenerateApiKey()">
+					<mat-icon class="material-symbols-outlined mr-2">add</mat-icon>
+					Generate API Key
+				</button>
+				} @else if (apiKey()) {
+				<!-- Regenerate Button -->
+				<button mat-button
+					class="text-error flex h-[56px] w-full justify-start rounded-none"
+					(click)="onRegenerateApiKey()">
+					<mat-icon class="material-symbols-outlined mr-2">refresh</mat-icon>
+					Regenerate API Key
+				</button>
+				}
+			</div>
 
-      <!-- Footer -->
-      <div>
-        <mat-divider class="border-outline-variant"></mat-divider>
-
-        @if (!apiKeysStore.apiKey() && !apiKeysStore.isLoading()) {
-        <!-- Generate Button -->
-        <button mat-button
-          class="flex h-[56px] w-full justify-start rounded-none"
-          (click)="onGenerateApiKey()">
-          <mat-icon class="material-symbols-outlined mr-2">add</mat-icon>
-          Generate API Key
-        </button>
-        } @else if (apiKeysStore.apiKey()) {
-        <!-- Regenerate Button -->
-        <button mat-button
-          class="text-error flex h-[56px] w-full justify-start rounded-none"
-          (click)="onRegenerateApiKey()">
-          <mat-icon class="material-symbols-outlined mr-2">refresh</mat-icon>
-          Regenerate API Key
-        </button>
-        }
-      </div>
-
-    </div>
-  </mat-card-content>
+		</div>
+	</mat-card-content>
 </mat-card>
 
 <!-- Information Section -->
 <div class="mt-6 w-3/6">
-  <div class="flex items-start gap-2 p-4 bg-surface-container rounded">
-    <mat-icon class="material-symbols-outlined text-primary">info</mat-icon>
-    <div class="mat-body-medium text-on-surface-variant">
-      <div class="font-semibold mb-1">API Key Usage</div>
-      <ul class="list-disc list-inside space-y-1 text-sm">
-        <li>Use this API key to authenticate your requests</li>
-        <li>Keep your API key and secret secure</li>
-        <li>Regenerating will invalidate the previous key</li>
-      </ul>
-    </div>
-  </div>
+	<div class="flex items-start gap-2 p-4 bg-surface-container rounded">
+		<mat-icon class="material-symbols-outlined text-primary">info</mat-icon>
+		<div class="mat-body-medium text-on-surface-variant">
+			<div class="font-semibold mb-1">API Key Usage</div>
+			<ul class="list-disc list-inside space-y-1 text-sm">
+				<li>Use this API key to authenticate your requests</li>
+				<li>Keep your API key and secret secure</li>
+				<li>Regenerating will invalidate the previous key</li>
+			</ul>
+		</div>
+	</div>
 </div>
