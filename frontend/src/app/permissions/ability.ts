@@ -48,6 +48,8 @@ import { RedemptionRow } from '@org-quicko/qpon-sheet-core/redemption_workbook/b
 import { actionsType } from '../types/actions';
 import { roleEnum } from '../../enums';
 import { CreateUserDto, UpdateUserRoleDto, UserDto } from '../../dtos/user.dto';
+import { ApiKeyDto } from '../../dtos/api-key.dto';
+
 
 export type subjectsType =
   | InferSubjects<
@@ -79,6 +81,7 @@ export type subjectsType =
       | typeof UpdateCustomerCouponCodeDto
       | typeof CreateCustomerCouponCodeDto
       | typeof RedemptionRow
+      | typeof ApiKeyDto
     >
   | 'all';
 
@@ -111,6 +114,7 @@ export function defineUserAbilities(role: roleEnum): UserAbility {
         CouponCodeDto,
         RedemptionRow,
         UserDto,
+        ApiKeyDto
       ]
     );
 
@@ -195,6 +199,7 @@ export function defineUserAbilities(role: roleEnum): UserAbility {
         OrganizationDto,
         OrganizationUserDto,
         UpdateUserRoleDto,
+        ApiKeyDto
       ])
     } else if(role === roleEnum.EDITOR) {
       allow('manage', [

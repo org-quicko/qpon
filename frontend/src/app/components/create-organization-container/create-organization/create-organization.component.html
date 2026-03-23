@@ -8,12 +8,27 @@
     </mat-form-field>
     <mat-form-field appearance="outline" class="w-full">
       <mat-label>Currency</mat-label>
-      <mat-select class="bg-surface-container-lowest" formControlName="currency">
-        @for(currency of currencyList; track currency) {
-        <mat-option [value]="currency.code">{{ currency.text }}</mat-option>
+
+      <input
+        type="text"
+        matInput
+        formControlName="currency"
+        [matAutocomplete]="currencyAuto"
+        (input)="filterCurrency($event.target.value)"
+        (blur)="validateCurrency()"
+      />
+
+      <mat-autocomplete #currencyAuto="matAutocomplete" (optionSelected)="onCurrencySelected($event.option.value)">
+        @for (currency of filteredCurrencyList; track currency) {
+          <mat-option [value]="currency.code">
+            {{ currency.text }} ({{ currency.code }})
+          </mat-option>
         }
-      </mat-select>
-      <mat-error>Currency is required</mat-error>
+      </mat-autocomplete>
+
+      <mat-error *ngIf="createOrganizationForm.get('currency')?.hasError('required')">
+        Currency is required
+      </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline" class="w-full">
       <mat-label>External Id</mat-label>
