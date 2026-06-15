@@ -1,6 +1,8 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { Expose, Transform } from 'class-transformer';
 import {
+  Allow,
+  Equals,
   IsString,
   IsNumber,
   IsEnum,
@@ -15,6 +17,10 @@ import { couponCodeStatusEnum } from '../enums/couponCodeStatus.enum';
 import { customerConstraintEnum } from 'src/enums';
 
 export class CouponCodeDto {
+  @Expose({ name: '@entity' })
+  @Equals('org.quicko.qpon.coupon_code')
+  entity = 'org.quicko.qpon.coupon_code';
+
   @Expose({ name: 'coupon_code_id' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()
@@ -87,6 +93,11 @@ export class CouponCodeDto {
 }
 
 export class CreateCouponCodeDto {
+  @Expose({ name: '@entity' })
+  @Allow()
+  @IsOptional()
+  entity?: string;
+
   @IsString()
   code: string;
 

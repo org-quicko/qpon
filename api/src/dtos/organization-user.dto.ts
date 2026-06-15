@@ -1,8 +1,12 @@
 import { Expose, Transform } from 'class-transformer';
-import { IsDate, IsString } from 'class-validator';
+import { Equals, IsDate, IsString } from 'class-validator';
 import { roleEnum } from '../enums';
 
 export class OrganizationUserDto {
+  @Expose({ name: '@entity' })
+  @Equals('org.quicko.qpon.organization_user')
+  entity = 'org.quicko.qpon.organization_user';
+
   @Expose({ name: 'organization_id' })
   @Transform(({ value }) => value, { toClassOnly: true })
   organizationId: string;

@@ -4,6 +4,8 @@ import { statusEnum } from '../enums/status.enum';
 
 import { Expose, Transform } from 'class-transformer';
 import {
+  Allow,
+  Equals,
   IsString,
   IsNumber,
   IsEnum,
@@ -14,6 +16,10 @@ import {
 } from 'class-validator';
 
 export class CouponDto {
+  @Expose({ name: '@entity' })
+  @Equals('org.quicko.qpon.coupon')
+  entity = 'org.quicko.qpon.coupon';
+
   @Expose({ name: 'coupon_id' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()
@@ -61,6 +67,11 @@ export class CouponDto {
 }
 
 export class CreateCouponDto {
+  @Expose({ name: '@entity' })
+  @Allow()
+  @IsOptional()
+  entity?: string;
+
   @IsString()
   name: string;
 
@@ -87,6 +98,11 @@ export class CreateCouponDto {
 }
 
 export class UpdateCouponDto {
+  @Expose({ name: '@entity' })
+  @Allow()
+  @IsOptional()
+  entity?: string;
+
   @IsOptional()
   @IsString()
   name: string;

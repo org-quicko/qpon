@@ -1,7 +1,12 @@
 import { Expose, Transform } from 'class-transformer';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { Allow, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateRedemptionDto {
+  @Expose({ name: '@entity' })
+  @Allow()
+  @IsOptional()
+  entity?: string;
+
   @IsString()
   code: string;
 

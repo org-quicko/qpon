@@ -1,7 +1,11 @@
 import { Expose, Transform } from 'class-transformer';
-import { IsDate, IsOptional, IsString, IsUUID } from 'class-validator';
+import { Equals, IsDate, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class ApiKeyDto {
+  @Expose({ name: '@entity' })
+  @Equals('org.quicko.qpon.api_key')
+  entity = 'org.quicko.qpon.api_key';
+
   @Expose({ name: 'api_key_id' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()

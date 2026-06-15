@@ -1,6 +1,8 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { Expose, Transform } from 'class-transformer';
 import {
+  Allow,
+  Equals,
   IsString,
   IsNumber,
   IsEnum,
@@ -12,6 +14,10 @@ import {
 import { campaignStatusEnum } from '../enums/campaignStatus.enum';
 
 export class CampaignDto {
+  @Expose({ name: '@entity' })
+  @Equals('org.quicko.qpon.campaign')
+  entity = 'org.quicko.qpon.campaign';
+
   @Expose({ name: 'campaign_id' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()
@@ -45,6 +51,11 @@ export class CampaignDto {
 }
 
 export class CreateCampaignDto {
+  @Expose({ name: '@entity' })
+  @Allow()
+  @IsOptional()
+  entity?: string;
+
   @IsString()
   name: string;
 
