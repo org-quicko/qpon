@@ -1,8 +1,14 @@
+import 'reflect-metadata';
 import { Expose, Transform } from 'class-transformer';
-import { IsDate, IsString } from 'class-validator';
+import { Equals, IsDate, IsString } from 'class-validator';
 import { Role } from '../enums';
 
+@Reflect.metadata('@entity', 'org.quicko.qpon.organization_user')
 export class OrganizationUser {
+  @Expose({ name: '@entity' })
+  @Equals('org.quicko.qpon.organization_user')
+  entity = 'org.quicko.qpon.organization_user';
+
   @Expose({ name: 'organization_id' })
   @Transform(({ value }) => value, { toClassOnly: true })
   organizationId?: string;

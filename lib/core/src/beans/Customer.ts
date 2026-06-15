@@ -1,7 +1,13 @@
+import 'reflect-metadata';
 import { Expose, Transform } from 'class-transformer';
-import { IsString, IsDate, IsUUID, IsOptional } from 'class-validator';
+import { Equals, IsString, IsDate, IsUUID, IsOptional } from 'class-validator';
 
+@Reflect.metadata('@entity', 'org.quicko.qpon.customer')
 export class Customer {
+  @Expose({ name: '@entity' })
+  @Equals('org.quicko.qpon.customer')
+  entity = 'org.quicko.qpon.customer';
+
   @Expose({ name: 'customer_id' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()

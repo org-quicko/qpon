@@ -1,8 +1,14 @@
+import 'reflect-metadata';
 import { Expose, Transform } from "class-transformer";
-import { IsString, IsNumber, IsEnum, IsDate, IsUUID } from "class-validator";
+import { Equals, IsString, IsNumber, IsEnum, IsDate, IsUUID } from "class-validator";
 import { ItemConstraint, DiscountType, Status } from "../enums";
 
+@Reflect.metadata('@entity', 'org.quicko.qpon.coupon')
 export class Coupon {
+	@Expose({ name: '@entity' })
+	@Equals('org.quicko.qpon.coupon')
+	entity = 'org.quicko.qpon.coupon';
+
 	@Expose({ name: "coupon_id" })
 	@Transform(({ value }) => value, { toClassOnly: true })
 	@IsUUID()

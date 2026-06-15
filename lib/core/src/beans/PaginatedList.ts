@@ -1,7 +1,13 @@
+import 'reflect-metadata';
 import { Expose } from "class-transformer";
-import { IsArray, IsNumber, IsOptional, ValidateNested } from "class-validator";
+import { Equals, IsArray, IsNumber, IsOptional, ValidateNested } from "class-validator";
 
+@Reflect.metadata('@entity', 'org.quicko.qpon.paginated_list')
 export class PaginatedList<T> {
+	@Expose({ name: '@entity' })
+	@Equals('org.quicko.qpon.paginated_list')
+	entity = 'org.quicko.qpon.paginated_list';
+
 	@Expose({ name: "items" })
 	@ValidateNested({ each: true })
 	@IsArray()

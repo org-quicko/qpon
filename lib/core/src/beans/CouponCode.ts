@@ -1,5 +1,7 @@
+import 'reflect-metadata';
 import { Expose, Transform } from "class-transformer";
 import {
+  Equals,
   IsString,
   IsNumber,
   IsEnum,
@@ -14,7 +16,12 @@ import {
   Visibility,
 } from "../enums";
 
+@Reflect.metadata('@entity', 'org.quicko.qpon.coupon_code')
 export class CouponCode {
+  @Expose({ name: '@entity' })
+  @Equals('org.quicko.qpon.coupon_code')
+  entity = 'org.quicko.qpon.coupon_code';
+
   @Expose({ name: "coupon_code_id" })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()

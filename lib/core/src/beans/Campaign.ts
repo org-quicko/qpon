@@ -1,5 +1,7 @@
+import 'reflect-metadata';
 import { Expose, Transform } from 'class-transformer';
 import {
+  Equals,
   IsString,
   IsNumber,
   IsEnum,
@@ -10,7 +12,12 @@ import {
 
 import { CampaignStatus } from '../enums'
 
+@Reflect.metadata('@entity', 'org.quicko.qpon.campaign')
 export class Campaign {
+  @Expose({ name: '@entity' })
+  @Equals('org.quicko.qpon.campaign')
+  entity = 'org.quicko.qpon.campaign';
+
   @Expose({ name: 'campaign_id' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()
