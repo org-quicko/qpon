@@ -1,11 +1,10 @@
 import { Expose } from 'class-transformer';
-import { Allow, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString, Equals } from 'class-validator';
 
 export class CreateRedemptionDto {
   @Expose({ name: '@entity' })
-  @Allow()
-  @IsOptional()
-  entity?: string;
+  @Equals('org.quicko.qpon.redemption')
+  entity = 'org.quicko.qpon.redemption';
 
   @IsString()
   code: string;

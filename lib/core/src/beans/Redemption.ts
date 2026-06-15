@@ -2,11 +2,11 @@ import 'reflect-metadata';
 import { Expose } from 'class-transformer';
 import { Equals, IsNumber, IsOptional, IsString } from 'class-validator';
 
-@Reflect.metadata('@entity', 'org.quicko.qpon.create_redemption')
+@Reflect.metadata('@entity', 'org.quicko.qpon.redemption')
 export class CreateRedemption {
   @Expose({ name: '@entity' })
-  @Equals('org.quicko.qpon.create_redemption')
-  entity = 'org.quicko.qpon.create_redemption';
+  @Equals('org.quicko.qpon.redemption')
+  entity = 'org.quicko.qpon.redemption';
 
   @IsString()
   code?: string;

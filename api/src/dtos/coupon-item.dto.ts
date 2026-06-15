@@ -1,6 +1,6 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { Expose } from 'class-transformer';
-import { Allow, Equals, IsArray, IsOptional, IsUUID } from 'class-validator';
+import { Equals, IsArray, IsOptional, IsUUID } from 'class-validator';
 import { ItemDto } from './item.dto';
 
 export class CouponItemDto {
@@ -18,9 +18,8 @@ export class CouponItemDto {
 
 export class CreateCouponItemDto {
   @Expose({ name: '@entity' })
-  @Allow()
-  @IsOptional()
-  entity?: string;
+  @Equals('org.quicko.qpon.coupon_item')
+  entity = 'org.quicko.qpon.coupon_item';
 
   @IsArray()
   items: string[];

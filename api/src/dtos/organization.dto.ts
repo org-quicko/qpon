@@ -1,6 +1,6 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { Expose } from 'class-transformer';
-import { Allow, Equals, IsString, IsDate, IsOptional } from 'class-validator';
+import { Equals, IsString, IsDate, IsOptional } from 'class-validator';
 
 export class OrganizationDto {
   @Expose({ name: '@entity' })
@@ -32,9 +32,8 @@ export class OrganizationDto {
 
 export class CreateOrganizationDto {
   @Expose({ name: '@entity' })
-  @Allow()
-  @IsOptional()
-  entity?: string;
+  @Equals('org.quicko.qpon.organization')
+  entity = 'org.quicko.qpon.organization';
 
   @IsString()
   name: string;

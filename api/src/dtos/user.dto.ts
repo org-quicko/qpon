@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-import { Allow, Equals, IsString, IsEnum, IsDate, IsUUID, IsOptional } from 'class-validator';
+import { Equals, IsString, IsEnum, IsDate, IsUUID, IsOptional } from 'class-validator';
 import { roleEnum } from '../enums';
 
 export class UserDto {
@@ -40,9 +40,8 @@ export class UserDto {
 
 export class CreateUserDto {
   @Expose({ name: '@entity' })
-  @Allow()
-  @IsOptional()
-  entity?: string;
+  @Equals('org.quicko.qpon.user')
+  entity = 'org.quicko.qpon.user';
 
   @IsString()
   name: string;
@@ -59,9 +58,8 @@ export class CreateUserDto {
 
 export class UpdateUserDto {
   @Expose({ name: '@entity' })
-  @Allow()
-  @IsOptional()
-  entity?: string;
+  @Equals('org.quicko.qpon.user')
+  entity = 'org.quicko.qpon.user';
 
   @IsOptional()
   @IsString()
@@ -82,9 +80,8 @@ export class UpdateUserDto {
 
 export class UpdateUserRoleDto {
   @Expose({ name: '@entity' })
-  @Allow()
-  @IsOptional()
-  entity?: string;
+  @Equals('org.quicko.qpon.user')
+  entity = 'org.quicko.qpon.user';
 
   @IsEnum(roleEnum)
   role: roleEnum;

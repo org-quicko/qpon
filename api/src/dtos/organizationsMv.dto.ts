@@ -1,7 +1,11 @@
 import { Expose } from 'class-transformer';
-import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
+import { Equals, IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class OrganizationMvDto {
+  @Expose({ name: '@entity' })
+  @Equals('org.quicko.qpon.organization_view')
+  entity = 'org.quicko.qpon.organization_view';
+
   @Expose({ name: 'organization_id' })
   organizationId: string;
 

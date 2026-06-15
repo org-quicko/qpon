@@ -1,7 +1,6 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { Expose } from 'class-transformer';
 import {
-  Allow,
   Equals,
   IsString,
   IsNumber,
@@ -83,9 +82,8 @@ export class CouponCodeDto {
 
 export class CreateCouponCodeDto {
   @Expose({ name: '@entity' })
-  @Allow()
-  @IsOptional()
-  entity?: string;
+  @Equals('org.quicko.qpon.coupon_code')
+  entity = 'org.quicko.qpon.coupon_code';
 
   @IsString()
   code: string;

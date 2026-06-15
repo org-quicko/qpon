@@ -1,7 +1,6 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { Expose } from 'class-transformer';
 import {
-  Allow,
   Equals,
   IsString,
   IsNumber,
@@ -48,9 +47,8 @@ export class CampaignDto {
 
 export class CreateCampaignDto {
   @Expose({ name: '@entity' })
-  @Allow()
-  @IsOptional()
-  entity?: string;
+  @Equals('org.quicko.qpon.campaign')
+  entity = 'org.quicko.qpon.campaign';
 
   @IsString()
   name: string;
