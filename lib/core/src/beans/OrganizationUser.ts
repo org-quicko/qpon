@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Expose, Transform } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import { Equals, IsDate, IsString } from 'class-validator';
 import { Role } from '../enums';
 
@@ -10,7 +10,6 @@ export class OrganizationUser {
   entity = 'org.quicko.qpon.organization_user';
 
   @Expose({ name: 'organization_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   organizationId?: string;
 
   @IsString()
@@ -20,12 +19,10 @@ export class OrganizationUser {
   role?: Role;
 
   @Expose({ name: 'created_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsDate()
   createdAt?: Date;
 
   @Expose({ name: 'updated_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsDate()
   updatedAt?: Date;
 

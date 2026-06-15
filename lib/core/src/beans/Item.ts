@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Expose, Transform } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import { Equals, IsString, IsDate, IsUUID, IsOptional } from 'class-validator';
 
 @Reflect.metadata('@entity', 'org.quicko.qpon.item')
@@ -9,7 +9,6 @@ export class Item {
   entity = 'org.quicko.qpon.item';
 
   @Expose({ name: 'item_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()
   itemId?: string;
 
@@ -21,20 +20,16 @@ export class Item {
 
   @IsOptional()
   @Expose({ name: 'custom_fields' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   customFields?: object;
 
   @Expose({ name: 'external_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   externalId?: string;
 
   @Expose({ name: 'created_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsDate()
   createdAt?: Date;
 
   @Expose({ name: 'updated_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsDate()
   updatedAt?: Date;
 

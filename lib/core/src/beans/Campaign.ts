@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Expose, Transform } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import {
   Equals,
   IsString,
@@ -19,7 +19,6 @@ export class Campaign {
   entity = 'org.quicko.qpon.campaign';
 
   @Expose({ name: 'campaign_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()
   campaignId?: string;
 
@@ -31,7 +30,6 @@ export class Campaign {
   budget?: number;
 
   @Expose({ name: 'external_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsOptional()
   @IsString()
   externalId?: string;
@@ -40,12 +38,10 @@ export class Campaign {
   status?: CampaignStatus;
 
   @Expose({ name: 'created_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsDate()
   createdAt?: Date;
 
   @Expose({ name: 'updated_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsDate()
   updatedAt?: Date;
 

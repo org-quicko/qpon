@@ -1,5 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { Expose, Transform } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import { Allow, Equals, IsString, IsDate, IsUUID, IsOptional } from 'class-validator';
 
 export class ItemDto {
@@ -8,7 +8,6 @@ export class ItemDto {
   entity = 'org.quicko.qpon.item';
 
   @Expose({ name: 'item_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()
   itemId: string;
 
@@ -20,20 +19,16 @@ export class ItemDto {
 
   @IsOptional()
   @Expose({ name: 'custom_fields' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   customFields: any;
 
   @Expose({ name: 'external_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   externalId: string;
 
   @Expose({ name: 'created_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsDate()
   createdAt: Date;
 
   @Expose({ name: 'updated_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsDate()
   updatedAt: Date;
 }
@@ -53,11 +48,9 @@ export class CreateItemDto {
 
   @IsOptional()
   @Expose({ name: 'custom_fields' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   customFields: any;
 
   @Expose({ name: 'external_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsString()
   externalId: string;
 }

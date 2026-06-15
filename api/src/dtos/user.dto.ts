@@ -1,4 +1,4 @@
-import { Expose, Transform } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import { Allow, Equals, IsString, IsEnum, IsDate, IsUUID, IsOptional } from 'class-validator';
 import { roleEnum } from '../enums';
 
@@ -8,7 +8,6 @@ export class UserDto {
   entity = 'org.quicko.qpon.user';
 
   @Expose({ name: 'user_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()
   userId: string;
 
@@ -27,17 +26,14 @@ export class UserDto {
 
   @IsOptional()
   @Expose({ name: 'last_accessed_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsDate()
   lastAccessedAt: Date;
 
   @Expose({ name: 'created_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsDate()
   createdAt: Date;
 
   @Expose({ name: 'updated_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsDate()
   updatedAt: Date;
 }

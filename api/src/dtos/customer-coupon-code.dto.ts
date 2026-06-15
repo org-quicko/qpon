@@ -1,5 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { Expose, Transform } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import { Allow, Equals, IsArray, IsOptional, IsUUID } from 'class-validator';
 import { CustomerDto } from './customer.dto';
 
@@ -10,7 +10,6 @@ export class CustomerCouponCodeDto {
 
   @IsOptional()
   @Expose({ name: 'coupon_code_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()
   couponCodeId: string;
 

@@ -1,5 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { Expose, Transform } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import { Allow, Equals, IsString, IsDate, IsUUID, IsOptional } from 'class-validator';
 
 export class CustomerDto {
@@ -8,7 +8,6 @@ export class CustomerDto {
   entity = 'org.quicko.qpon.customer';
 
   @Expose({ name: 'customer_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()
   customerId: string;
 
@@ -20,7 +19,6 @@ export class CustomerDto {
 
   @IsOptional()
   @Expose({ name: 'isd_code' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsString()
   isdCode: string;
 
@@ -29,17 +27,14 @@ export class CustomerDto {
   phone: string;
 
   @Expose({ name: 'external_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsString()
   externalId: string;
 
   @Expose({ name: 'created_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsDate()
   createdAt: Date;
 
   @Expose({ name: 'updated_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsDate()
   updatedAt: Date;
 }
@@ -58,7 +53,6 @@ export class CreateCustomerDto {
 
   @IsOptional()
   @Expose({ name: 'isd_code' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsString()
   isdCode?: string;
 
@@ -67,7 +61,6 @@ export class CreateCustomerDto {
   phone?: string;
 
   @Expose({ name: 'external_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsString()
   externalId?: string;
 }

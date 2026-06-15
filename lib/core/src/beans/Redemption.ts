@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Expose, Transform } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import { Equals, IsNumber, IsOptional, IsString } from 'class-validator';
 
 @Reflect.metadata('@entity', 'org.quicko.qpon.create_redemption')
@@ -12,7 +12,6 @@ export class CreateRedemption {
   code?: string;
 
   @Expose({ name: 'base_order_value' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsNumber()
   baseOrderValue?: number;
 
@@ -20,17 +19,14 @@ export class CreateRedemption {
   discount?: number;
 
   @Expose({ name: 'external_customer_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsString()
   externalCustomerId?: string;
 
   @Expose({ name: 'external_item_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsString()
   externalItemId?: string;
 
   @Expose({ name: 'external_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsOptional()
   @IsString()
   externalId?: string;

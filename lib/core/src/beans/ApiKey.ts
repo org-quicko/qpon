@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Expose, Transform } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import { Equals, IsDate, IsOptional, IsString, IsUUID } from 'class-validator';
 
 @Reflect.metadata('@entity', 'org.quicko.qpon.api_key')
@@ -9,7 +9,6 @@ export class ApiKey {
   entity = 'org.quicko.qpon.api_key';
 
   @Expose({ name: 'api_key_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()
   apiKeyId?: string;
 
@@ -21,12 +20,10 @@ export class ApiKey {
   secret?: string;
 
   @Expose({ name: 'created_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsDate()
   createdAt?: string;
 
   @Expose({ name: 'updated_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsDate()
   updatedAt?: string;
 

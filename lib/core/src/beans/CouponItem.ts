@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Expose, Transform } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import { Equals, IsArray, IsUUID } from 'class-validator';
 import { Item } from './Item';
 
@@ -10,7 +10,6 @@ export class CouponItem {
   entity = 'org.quicko.qpon.coupon_item';
 
   @Expose({ name: 'coupon_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()
   couponId?: string;
 

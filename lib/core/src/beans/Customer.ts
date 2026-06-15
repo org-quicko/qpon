@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Expose, Transform } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import { Equals, IsString, IsDate, IsUUID, IsOptional } from 'class-validator';
 
 @Reflect.metadata('@entity', 'org.quicko.qpon.customer')
@@ -9,7 +9,6 @@ export class Customer {
   entity = 'org.quicko.qpon.customer';
 
   @Expose({ name: 'customer_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()
   customerId?: string;
 
@@ -21,7 +20,6 @@ export class Customer {
 
   @IsOptional()
   @Expose({ name: 'isd_code' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsString()
   isdCode?: string;
 
@@ -30,17 +28,14 @@ export class Customer {
   phone?: string;
 
   @Expose({ name: 'external_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsString()
   externalId?: string;
 
   @Expose({ name: 'created_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsDate()
   createdAt?: Date;
 
   @Expose({ name: 'updated_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsDate()
   updatedAt?: Date;
 

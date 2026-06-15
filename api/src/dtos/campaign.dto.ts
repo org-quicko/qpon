@@ -1,5 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { Expose, Transform } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import {
   Allow,
   Equals,
@@ -19,7 +19,6 @@ export class CampaignDto {
   entity = 'org.quicko.qpon.campaign';
 
   @Expose({ name: 'campaign_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()
   campaignId: string;
 
@@ -31,7 +30,6 @@ export class CampaignDto {
   budget: number;
 
   @Expose({ name: 'external_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsOptional()
   @IsString()
   externalId: string;
@@ -40,12 +38,10 @@ export class CampaignDto {
   status: campaignStatusEnum;
 
   @Expose({ name: 'created_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsDate()
   createdAt: Date;
 
   @Expose({ name: 'updated_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsDate()
   updatedAt: Date;
 }
@@ -65,7 +61,6 @@ export class CreateCampaignDto {
 
   @IsOptional()
   @Expose({ name: 'external_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsString()
   externalId: string;
 }
