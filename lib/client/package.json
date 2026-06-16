@@ -1,6 +1,6 @@
 {
   "name": "@org-quicko/qpon-client",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Library to access Qpon APIs",
   "author": "Quicko <developer@quicko.org.in>",
   "main": "dist/cjs/index.cjs",
@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@org-quicko/core": "^2.0.0",
-    "@org-quicko/qpon-core": "^1.0.0",
+    "@org-quicko/qpon-core": "^2.0.0",
     "@org-quicko/qpon-sheet-core": "^1.0.0",
     "@org-quicko/sheet": "^1.0.1",
     "axios": "^1.7.7",
