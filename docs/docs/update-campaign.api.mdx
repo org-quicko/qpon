@@ -5,7 +5,7 @@ description: "Update campaign"
 sidebar_label: "Update campaign"
 hide_title: true
 hide_table_of_contents: true
-api: eJy9VMGO2zgM/RWBpy0gT5yZdJL4Nh0ssMVeOt32NAgWtETb6tiSKsmdZg3/+4J2mmQ2xaK9NCeHpPjIx0cO4DwFTMbZtxoK6L3GRJnCzqOpLUhIWEcoHuH+m2knwWPAjhIF9gxgsSMowIUarflnSva30SDBWCjAY2pAQqDPvQmkoUihJwn0FTvf8rvyRq+3pNYZVRvMVtvtdVbeXq8z1KpcVqVabvIlSIiqoQ6hGCDtPb+LKRhbwzjKYwnK9f7nwPPNcv16k1Omt+o6W5UlZbhSmJWv83y9zvOyWm1/FPzA0M/A61tCRatthhtdZavr22221eom22jU1bpcL29U+b/wOwmRVB9M2k+zSO6J7F2fGiged1wcevMn7f8iFSgd7TuuKXpnI0UohnEukWJ64/SeYZSziWziT/S+NWqa6uJTdJZtF/W48hOpBBJ8YEElM+WFstc1pbM4YxPVFGAcxzMaToHLPM/zcfJqiioYz7hQwMdJmOJMmB2lxumZZMUsT2QXsEBvFudajIvhP9IcF7NQ4mI4KmZcfMvN1tMoR5DAbb8/EfT7Zd35yBOv3NSqSdNsH7zjOl/2wUZhokAxI4uKV+nZhSdR9qZNotyLh96oJ3cl3kwGYwWKqLDFsiUpur5NJktk0SaRGtfXTRI+OEUxSpEaEg8v05Llh1GUfTSWYqQokhPaHbmMAq0WobfCVRWFKDiwPqW6e/d2itAYm9Jh0Fcg4QuFOHe0vMqvchgleBdTh5M+DhtxObQXZBxVkehrWvgWjeU8fWjZN4/zkQUM8sVxiSChuLw2h5my8/wOHNucHGc7upPQuJgYYxhKjPQxtOPI5s89BV6nnYQvGAzzNy2XNpG/NRQVtpEu2jluDfz2/rDyrwTf0O+1eTCi3TOd2Pb8DyQ80f47x5RX+RfCnwj81cBnAxp3o4SGUFOY6J8j7mew7APnOWW4OFN85I434t3dh/s/QEJ5uG+d0/wo4DOfZ3yeS3B+llcxzLYBWrR1jzXHzkn59y8TnnSv
+api: eJy9VU2P2zYQ/SvEnFqAsuVdZ23r1M2iQINesmlyWhjFiBxJzEokl6SycQ3992Ikx/bGadH0EJ2kIefN15unPThPAZNx9o2GAnqvMVGmsPNoagsSEtYRige4+2LaSvAYsKNEgU/2YLEjKMCFGq35awT702iQYCwU4DE1ICHQU28CaShS6EkCfcbOt+xXXuvVhtQqo2qN2XKzucrKm6tVhlqVi6pUi3W+AAlRNdQhFHtIO89+MQVjaxgGeUxBud5/X/B8vVi9WueU6Y26ypZlSRkuFWblqzxfrfK8rJab/xr80KHvCa9vCBUtNxmudZUtr2422Uar62ytUVercrW4VuW/ht9KiKT6YNJunEVyj2Rv+9RA8bDl5NCb32n3B6lA6Wjfck7ROxspQrEfphQpptdO7ziMcjaRTfyK3rdGjVOdf4zOsu0iH1d+JJVAgg9MqGRGXPiFbBoz+zpxCWT7jnnlQj176o16dLMn7+zsSL3tIKHsdU3pzN3YRDUFGIbhrI1ngf4Z74S2yPM8H0YITVEF47k4KODDyH5x5tJRapyeJql4lONEC5ijN/Nzwsf5/iv+D/OJjXG+P9JymH/BZuuJLwNI4N6+O03h1/9ZXD4w9yo3Ns2kkWX33vGVl8WyUZgoUEzpiYqX+tmFR1H2pk2i3In7KZZ4PRqMFSiiwhbLlqTo+jaZLJFFm0RqXF83SfjgFMUoRWpI3L+EJcuOUZR9NJZipCiSE9odGx4FWi1Cb4WrKgpR8MX6BHX79s14Q2NsSodBz0DCJwpxqmgxy2c5DBK8i6nDkamH3byc7ItmHPmV6HOa+xaNZZw+tHw2zfyBVwnkC5mLIKG41L3D4PnwXJGOZY4HZ2qxldC4mDjGfl9ipA+hHQY2P/UUeLG3Ej5hMNy/cc21ifyuoaiwjXRRznF/4ad3B/H5WbCaf6vMgxHtjtuJbc9fIOGRdt+QdRaVHxj+1MAfHfhsQAOLUUOoKYztn27cTcGy94xzQrgQTJbbo5C8vX1/9xvv60FpO6fZKeAz/yjweUrB+YlexX6y7aFFW/dY890JlJ+/AUYupU4=
 sidebar_class_name: "patch api-method"
 info_path: qpon
 custom_edit_url: null
@@ -54,7 +54,7 @@ Update campaign
 
 <RequestSchema
   title={"Body"}
-  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"budget":{"type":"integer"}}},"example":{"budget":10000}}}}}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"@entity":{"type":"string","enum":["org.quicko.qpon.campaign"]},"budget":{"type":"integer"}}},"example":{"@entity":"org.quicko.qpon.campaign","budget":10000}}}}}
 >
   
 </RequestSchema>

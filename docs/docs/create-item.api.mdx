@@ -5,7 +5,7 @@ description: "Create item"
 sidebar_label: "Create item"
 hide_title: true
 hide_table_of_contents: true
-api: eJyFVE1v2zAM/SsCTxugNMm+uvq2FTsUO2zttlMRDLTM2GptSZPotZnh/z5QDtKkyTCfZFokH9+j3wA+UES23l1VUICJhEwzy9SBBsY6QXELV/K60hAwYkdMUaIDOOwICvCxRmf/5CI/bQUarIMCAnIDGiL96m2kCgqOPWmgR+xCK3nl6+r8gsz5jNbvcfbm4uLVrHz36nyGlSmX69Is3y+WoCGZhjqEYgDeBMlLHK2rYRxXGhKZPlreZDzs78l96LmB4nY16gEw2M+0+UYmEu/iK8GUgneJEhTDOEGkxB99tZE2xjsmx3LEEFpr8mTzu+SdxI7w+PKODIOGEIVMtrnulp0j1BoqSibaIEVPfjd9Yt/9XFtqq/T/PiFas9/IOqaaIozjKGwzRYet6HKCwXFPj52eTImVbIAS+g/QTt/2QyfgbgG9XSyeA8jpS+n7nAa4zIuntovXETdeEoJPeWLZpQLmGOx8f93SfHi2feNcSiTQIHrdPCn76WjOLQvPkezC/xrseKwn7axb+0y05bzj1yFzdNhBgsomhcr4Xs5r+a0efLxXZW9bVuVGXffW3Psz9TEHrFOoksEWy5a06vqW7YzJoWPFje/rhlWI3lBKWnFD6vqwLDlJTKrsk3WUEiXFXlVeGewC2tolha5SsXfKr9cUk5KL9VOpD1+v8o0KU1N6jNUZaPhNMU0TLc8WZwuZX/Tq0O2xfCjs6d1neuR5aNE6qdHHNrOdNb+Vnxj0gcmIusUJ18nCrzQ0sjTFLQxDiYl+xHYcJfyrpyhGsdLwG6MVRrJtVDbJuYJijW2iI5A7P4AXN1sze6nEHU+B3wbRbYQgbHt5Aw33tDlhleNq1NAQVhQzlOnW5dRw9l1qPVU5MiOxst2f8vXLt++godyaWOcryYn4IB6MDxMKHyb+imGKDdCiq3us5e5UU56//PIbiQ==
+api: eJyVVcuO2zoM/RWBq15AefU1Ha/6QBeDLtrpYzUIClpmbHVsSSPRnaaG/72gnGaSSS4urlfysUgdHlLHA/hAEdl6d1VBASYSMs0sUwcaGOsExQ1cyetaQ8CIHTFFQQdw2BEU4GONzv7OSb7bCjRYBwUE5AY0RLrrbaQKCo49aaBf2IVW4spn1cUlmYsZbV7h7Pnl5dNZ+fLpxQwrU642pVm9Wq5AQzINdQjFALwNEpc4WlfDOK41JDJ9tLzNfNjfknvTcwPFzXrUA2CwH2j7hUwk3uNr4ZSCd4kSFMM4UaTEb321lWOMd0yOZYkhtNbkyhY/kneCnfDx5Q8yDBpCFDHZ5rzwmhxnZo+JayDXd6Krj/X8rrfm1s/vgnfzLPt61DtlTyrWUFEy0QYhdPa76RP77vvGUlul/+YYojWHB1nHVFOEcRylU0zRYSs9PaP+eNDLg2rPF/W3JGBKrARS0tujcqZvh9CZenaMXyyXjxnm8JUQe6wTvMtTrXZMOuLGS0DwKUsig1rAAoNdHM5yWgyPRntcSIoEGmQYPj+Mzfv/L8R+GI6p7uF/q/y07ofuW7fxuVWW8w27DlnE4xMEVDYpVMb3st7Ipb738VaVvW1ZlVt1PdFWbzNgnUKVDLZYtqRV17dsZ0wOHStufF83rEL0hlLSihtS18dpyUlgUmWfrKOUKCn2qvLKYBfQ1i4pdJWKvVN+s6GYlGysH1K9+XSVd1SYmtJjrOag4SfFNFW0mi/nS6lfGtphvhk7lY87f/72MP3iRWjROsnRxzarnYfiRiwE9JHFSfuLM56XJ2OtoZGpKm5gGEpM9C224yjwXU9RbGqt4SdGK4pk06psknUFxQbbRCck924ETz7vrPQfJd58jvwORLcVgbDt5Q003NL2jFGPYjUNYUUxU5l2vZsOnH2VXA9ZTqxQjHR/lT59/PIVNJQ7C+18JTER7+UPgPcTCx8m/YphwgZo0dU91rJ3yinPH04hR3U=
 sidebar_class_name: "post api-method"
 info_path: qpon
 custom_edit_url: null
@@ -54,7 +54,7 @@ Create item
 
 <RequestSchema
   title={"Body"}
-  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"name":{"type":"string"},"description":{"type":"string"},"custom_fields":{"type":"object","properties":{"price":{"type":"integer"}}},"external_id":{"type":"string"}}},"example":{"name":"test item 1","description":"test description","custom_fields":{"price":500},"external_id":"test1"}}}}}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"@entity":{"type":"string","enum":["org.quicko.qpon.item"]},"name":{"type":"string"},"description":{"type":"string"},"custom_fields":{"type":"object","properties":{"price":{"type":"integer"}}},"external_id":{"type":"string"}}},"example":{"@entity":"org.quicko.qpon.item","name":"test item 1","description":"test description","custom_fields":{"price":500},"external_id":"test1"}}}}}
 >
   
 </RequestSchema>

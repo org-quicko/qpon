@@ -5,7 +5,7 @@ description: "Upsert item"
 sidebar_label: "Upsert item"
 hide_title: true
 hide_table_of_contents: true
-api: eJxtVMtu3DoM/RWBq15Azjw6eYx37cVdBHfTtM0qGBS0TY/V2JIqUU2mhv+9oD2YZB5eyUfSIXlInR6cp4BsnL2vIIfkIwXODFMHGhi3EfInuJffjQaPATtiCoL2YLEjyMGFLVrzZyT5YSrQYCzk4JEb0BDoVzKBKsg5JNJAr9j5Vu4VH6vbNZW3GdV3mK3W62VW3CxvM6zKYlEX5eJuvgANsWyoQ8h74J2Xe5GDsVsYho2GSGUKhndjPuyeyX5K3ED+tBl0D+jN/7T7RmUgPuAbySl6ZyNFyPthSpEif3bVTsKUzjJZliV635pyrGz2Mzor2Fk+rvhJJYMGH0RMNiPvXp2zrDVUFMtgvJBe3KdXpmCxFS0vVD280/DQA6bISrqmlnASYdp7D52EgMXqDle3q3W2LOp1tppf1xle3yyym9X1sppjXXxczyXwae7wOE6L2k9LR9w44fNpVEP6n8MMvZm9H5E4608mZpgJQ5xNwwcaROqvb03576zcvRin+Rzg4/repDW2dqOmhscRfPCjHMcsAioTFarSJVnXMvUvLjyrIpmWVbFTD8mUz+5KfR4BYxWqWGKLRUtadallkzFZtKy4cWnbsPLBlRSjVtyQejimJSsXoypSNJZipKjYqcqpEjuPZmujQlupkKxydU0hKjm4faP69OV+PFFhbAqHoboCDb8pxKmixdX8ai71exe5Q/tOyeMWXh5Nplee+RaNFY4UWtmb2vskbwz0kQdE0JBfMAXpMei9xYidNC6yUPR9gZEeQzsMAv9KFORBbzT8xmBEmvF5VybKuoK8xjbSWbaHdwsfvu5N5x8lLnapij2IdidKYZvkDzQ80+6CpQ2bQUNDWFEYU5lO/TsFzL4L1xvLmWmI5Rwex5fH76Ch2HtN5yq5EvBFrBJfpiScn3TM+wnroUW7TbiVsxOlfH8BfLv5IA==
+api: eJyVVE1v4zYQ/SvEnFqA8tc6H9apu0UPQS+b7eYUGMVIGlncSCRDDjdxBf33YiQ3jh1fqhP1RD69eTN8PThPAdk4e1dBDslHCpwZpg40MO4i5I9wJ69bDR4DdsQUBO3BYkeQgws7tOafkeRvU4EGYyEHj9yAhkDPyQSqIOeQSAO9YudbOVd8qm42VN5kVN9itt5sVllxvbrJsCqLZV2Uy9vFEjTEsqEOIe+B917ORQ7G7mAYthoilSkY3o962D2R/Zy4gfxxO+ge0Js/af8XlYH4Dd+KpuidjRQh74dJIkX+4qq9/KZ0lsmyLNH71pRjZfMf0VnBPuhxxQ8qGTT4IGayGXnhN7I8KjsXroFs6sRXF3az52TKJzd79s7ORtu3gz44+6FiDRXFMhgvgi5+p1emYLGVPlxwbHjn/zuFl4X8JwOYIiuB1ArOJEzf3kNnGmC5vsX1zXqTrYp6k60XV3WGV9fL7Hp9taoWWBefNgtRdl4cPIyjqA5SOuLGCZ9Po9UyXDnM0Zv5+/mL8/5sHIe5MMT5NNmgQfr47djxP/6/H299PBV8bO+JAcfmGFu7sSuGxwtw70e/TlkEVCYqVKVLsq7lzr248KSKZFpWxV7dT9LUlxEwVqGKJbZYtKRVl1o2GZNFy4obl3YNKx9cSTFqxQ2p+1NasnIwqiJFYylGioqdqpwqsfNodjYqtJUKySpX1xSiko27I9Xnr3fjjgpjUzgM1Qw0/KQQp4qWs8VsIfV7F7nDcXAPTp72+PJwM73y3LdorHCk0Mq3qf+PcsNBnyRQBA35hUiSIQB9CDgJs8ZFFoq+LzDSQ2iHQeDnREHiZKvhJwYj1ozhUpko6wryGttIH9S+pQb88u0Qeb8qydBLVRxAtHtxCtskb6DhifYXAnWQSGgIKwqjlGnX79MPs+/CdWT5EFkSeG+35+vDd9BQHJKuc5UcCfgiQY0vkwjnJx/zfsJ6aNHuEu5k70Qpz78kJCUb
 sidebar_class_name: "put api-method"
 info_path: qpon
 custom_edit_url: null
@@ -54,7 +54,7 @@ Upsert item
 
 <RequestSchema
   title={"Body"}
-  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"name":{"type":"string"},"description":{"type":"string"},"external_id":{"type":"string"}}},"example":{"name":"test item 2","description":"test description","external_id":"148a4749-2bf9-405f-a561-6452d0afb390"}}}}}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"@entity":{"type":"string","enum":["org.quicko.qpon.item"]},"name":{"type":"string"},"description":{"type":"string"},"external_id":{"type":"string"}}},"example":{"@entity":"org.quicko.qpon.item","name":"test item 2","description":"test description","external_id":"148a4749-2bf9-405f-a561-6452d0afb390"}}}}}
 >
   
 </RequestSchema>

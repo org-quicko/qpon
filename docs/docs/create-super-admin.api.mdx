@@ -5,7 +5,7 @@ description: "Create super admin"
 sidebar_label: "Create super admin"
 hide_title: true
 hide_table_of_contents: true
-api: eJzNVU1vGzkM/SsCz4rjZHPJnJq2e+juoU3TngKjoDW0R82MpIpUk4Ex/72gJh9O6u1eusD64gH1SL3HL+0gJsooPoZ3LTTgMqHQEZdE+QjbwQewILhlaK7hM1OGlYWEGQcSympdWWByJXsZobnegcQbChdFOj2b7A4w+b9pvCKXSR7tKwuZOMXAxNDs4HR5on8tscs+KR1o1GiuinPEvCl9P5qZXWsqPfNAz8UgFET9MaXeuyrn+CtrkB2w62hA/ZIxETQQ11/JCVhIWcWLnym42NIeygehLWWYLAzEjNv9Q5bswxamabJAdziknp5CnC5P9nzgXxVMNczZ8vznDJwtz81VhV4o1GCfCdvR0J1n4f+h9rPl+XPt/8h9mmVn+laI5XVsxznKb9ETcDhAeY8v/BW7YN5GUo00oO8PwTcxDyjQ3CP2/WsBF7WAr4RYFi4OGish823M7a9vPzn940zROfYHeba0wdLLwz1fHhvlWcpnlU9SHpUcZrdPbmbwQODlLZN90Ydvatu+mLuBpIsaK0WuJUAdbjjG5I8L63awoIX7+FTiP/9z8hZ82MSaUy/1+DLFAC8FqdF4NmhcLPq90ZV2G/ONWRffi1mP5rJ4dxMX5nU1aAcbdtjjuidrhtKLPxIKGMRIF8u2E5Ny1FG3Rjoyl8/DUlBHNuvCPhAzsZFo2mgcDgn9NrDB0JpcgombDWU2Ctw+hbr48K4iWuRuHTG3C7DwnTLPik4Wy8WydmBkGTDs5fhg9Z7l47EDhe7kOPU4p7LkOhZzYa91k4OFubQrC52WvbmG3W6NTJ9zP01q/lYoj/PD8B2zV9XzUwAdYUu5vhI3NCqxedqPPunlCu+Lkvhp8vUZmT0unKMkv8Su9jrzw/urT2Bhfb9dhrqjIOOtdg/eQgNgIdYk1L1RbTvoMWzLvMHmmPr7AZWldsY=
+api: eJzNVcFyGzcM/RUOzrQsu75YpzhpD2kOiePk5NF0IC60y3iXpAkwtkaz/54B15ZlRU0vnWl10Q4Igu8BD8AWYqKM4mN438ACXCYUOuGSKJ9gM/gAFgRbhsUtfGXKsLSQMONAQlmtSwtMrmQvG1jcbkHiHYWrIp2ejXYLmPwH2tyQyyQ7+9JCJk4xMDEstnA+P9O/hthlnxQOLNRobopzxLwufb8xE7rGVHjmGZ6LQSiI3seUeu8qndNvrEG2wK6jAfVLNolgAXH1jZyAhZSVvPgJgosN7Xn5INRShtHCQMzY7h+yZB9aGMfRAj3ikHp6CXE+P9u7A//IYKxhLuaXP2fgYn5pbqrrlboa7DNhszH06Fn4f8j9Yn75mvvfYh8n2pnuC7G8jc1mivKv8HlDQaogD1FboFAGFXPM7ey+eHcXZ/cphlmp4h4tBByO0N3jCn/GLpjfI2l+aEDfH3NfxzygwOLJY/9+Lf6sFv+NEMvMxUFjJWR+iLn59etn579dqHeO/VGcDa2x9PL8zl87kb0q1y5DxxPxnIYXrjuqx+Hvo58gPiM8hDHaA5G/qz1x0NQDSRc1Vopc64s6OeAUkz9VhCp+VcXnF/388d+zs+DDOtaqeKnH1ykGOGSsRuPZoHGx6PdaB+pDzHdmVXwvZrUx1xNo87YatH8MO+xx1ZM1Q+nFnwgFDGKki6XtxKQcddBYIx2Z69dhKehFNqvCPhAzsZFommgcDgl9G9hgaEwuwcT1mjIbdWxfQl19el89GuRuFTE3M7DwnTJPjM5m89m8ajiyDFib9SnHR8v7Kh87DQs9ymnqcUplybWxpsrf6h4BC1PtlxY61cXiFrbbFTJ9zf04qvm+UN5Ma+k7Zq+sp0UEHWFDue6oO1JpvJtmzckXfVzd+6Igfpo7usSmG1fOUZJf+i73pPvp480XsLB6mm1DnZCQ8UHVgw+wALAQaxLq1Kq2LfQY2jLNzymm/n4AIb+i4g==
 sidebar_class_name: "post api-method"
 info_path: qpon
 custom_edit_url: null
@@ -54,7 +54,7 @@ Create super admin
 
 <RequestSchema
   title={"Body"}
-  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"name":{"type":"string","example":"John Doe"},"email":{"type":"string","format":"email","example":"super.admin@test.com"},"password":{"type":"string","example":"1234"},"role":{"type":"string","default":"super_admin"}}},"example":{"name":"John Doe","email":"super.admin@test.com","password":"1234","role":"super_admin"}}}}}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"@entity":{"type":"string","enum":["org.quicko.qpon.user"]},"name":{"type":"string","example":"John Doe"},"email":{"type":"string","format":"email","example":"super.admin@test.com"},"password":{"type":"string","example":"1234"},"role":{"type":"string","default":"super_admin"}}},"example":{"@entity":"org.quicko.qpon.user","name":"John Doe","email":"super.admin@test.com","password":"1234","role":"super_admin"}}}}}
 >
   
 </RequestSchema>

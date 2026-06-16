@@ -5,7 +5,7 @@ description: "Create campaign"
 sidebar_label: "Create campaign"
 hide_title: true
 hide_table_of_contents: true
-api: eJydVMFu2zAM/RWBpw2QG6frlsa3tuihGLA1a3cqgoGWmVitLamSvC4z/O8D7Sxxm2IYmpNDiU+Pj+RrwTryGLU1VwVkoDxhpERh7VCvDUiIuA6Q3cHF39BSgkOPNUXyfNKCwZogA+vXaPTvHuyHLkCCNpCBw1iCBE+PjfZUQBZ9QxLoF9au4rz8QzGbk5oltDrF5GQ+P07yT8ezBAuVT1e5mp6mU5AQVEk1QtZC3DjOC9Frs4aukzsKyjbufx4vKCivHTOFDC76LNFn7Wmlp9PZx9OUkmKujpOTPKcETxQm+cc0nc3SNF+dzP9JaykhkGq8jptepmgfyJw1sYTsbsmk0enPtLkh5Snu4ktmG5w1gQJkbTeQpxDPbbHhZ5Q1kUzkT3Su0qoXfHIfuJb2kI/N70lFkOA89zrqHner2AFrViCSN1ixiq9U1Y002ul+SyGKxfXXL+Lm8hZeYECkEDmzOxC+nzYxmraaYmk5x9nQc+b+ZTBBpyfj+QqT9sW4dZOh+WHS7qagm4ygWaBveykvD4rYlviS/V4ZbVa2l0THfkIWzjLw85oW/SgFgWKgIVa8K0/WP4i80VUU+UYsGq0e7JE47wPaCBRBYYV5RVLUTRV1EsmgiSKWtlmXUThvFYUgRSxJLJ7DkuHEIPImaEMhUBDRisLudA0CTSF8Y4RdrcgHwRfXe6iz66v+RoGhzC364ggk/CQfhoqmR+lRyvVzT2o0I8kOG/hMjN30RPoVJ65CbRin8RWfDb294zUA+cw9AkjIDu1k22A+HC+6GjlTyWOT3UHb5hjou6+6jsOPDXlewqWEn+g169WvZKEDfxeQrbAKL41htGvw7tvWQt4LNsXXytoG0WxYPqwa/gcSHmjzijuyAbzp+bFbvYHHXrlu2UkoCQvyvRjD+cXwZnLLKPv8A6tho9pt6/XXG177fGtRtS04x+MTey8+De9bN/Q2a4dYCxWadYNrvjtg8u8P9gBA7w==
+api: eJydVcFu2zgQ/RViTl2AsuVsWsc6bRv0UCzQxk32FBiLETWW2EgkQ1JNXUH/vhjJteU4u1jEJ3momXnz5vGpA+vIY9TWfCogA+UJIyUKG4e6NCAhYhkgu4frX6GNBIceG4rk+aQDgw1BBtaXaPTPodjfugAJ2kAGDmMFEjw9ttpTAVn0LUmgH9i4mvPy34vlitQyoe0VJper1UWSv7tYJliofLHN1eIqXYCEoCpqELIO4s5xXohemxL6Xh4gKNu6/9O8oKC8dowUMrgessSQdYSVXi2Wb69SSoqVukgu85wSvFSY5G/TdLlM03x7ufpPWBsJgVTrddwNNEX7QOZ9GyvI7jcMGp3+k3a3pDzFQ3zDaIOzJlCArOtH8BTiB1vsuI2yJpKJ/IjO1VoNhM+/BZ6lO8dj82+kIkhwnncd9VAX/iATB2TPgUsg0za8cuvL2WOr1YOdPTprZgdVbHq5Z/xsamYwkjdY8xZeYKWfcDxB8e/NfrWCOwpRrG++fBa3H+/gWSOIFCKX78+2O0haTOo1FCvLOc6GgRgWSQZzdHo+FXGYd8803c9HhYV5d5BaP5+U5i18Pe7r4+smPW7iZMQjx9ps7UCujoNW185y+ung60HUQaAYsYot39on6x9E3uo6inwn1iMO8WEIaCNQBIU15jVJ0bR11EkkgyaKWNm2rKJw3ioKQYpYkVifliXDiUHkbdCGQqAgohWFPZAfBJpC+NYIu92SD4JfLI+l3t98Gt4oMFS5RV/MQMJ38mGcaDFLZynPz4trcND7nrLzLZ+QcdBhpB9x7mrUhuu0vuazUQD3fCFBnvhYAAnZubHtVcCHU8tRE4+sWFvZPXRdjoH+8nXfc/ixJc92sJHwHb1mvgZzKHTg5wKyLdbhuUVNbj28+bo3s98E2/NLY+2DaHZMH9Yt/wMJD7R7wafZil7Vfuqbr8BxZK5nQ6kIC/IDGeP59dgzueMqx/wz02PLPFzpmy+37A353iwbW3COxyf+CuDT2N+6cbdZN8Y6qNGULZb87liTf/8AMjtxjg==
 sidebar_class_name: "post api-method"
 info_path: qpon
 custom_edit_url: null
@@ -54,7 +54,7 @@ Create campaign
 
 <RequestSchema
   title={"Body"}
-  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"name":{"type":"string"},"external_id":{"type":"string"}}},"example":{"name":"Test QPON SET","external_id":"test"}}}}}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"@entity":{"type":"string","enum":["org.quicko.qpon.campaign"]},"name":{"type":"string"},"external_id":{"type":"string"}}},"example":{"@entity":"org.quicko.qpon.campaign","name":"Test QPON SET","external_id":"test"}}}}}
 >
   
 </RequestSchema>
