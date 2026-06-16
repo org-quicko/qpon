@@ -2,6 +2,9 @@ import { Expose, Transform } from 'class-transformer';
 import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class OrganizationMvDto {
+  @Expose({ name: '@entity' })
+  entity?: string = 'org.quicko.qpon.organization_view';
+
   @Expose({ name: 'organization_id' })
   @Transform(({ value }) => value, { toClassOnly: true })
   organizationId?: string;

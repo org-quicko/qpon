@@ -2,6 +2,9 @@ import { Expose } from 'class-transformer';
 import { IsArray, IsNumber, IsOptional, ValidateNested } from 'class-validator';
 
 export class PaginatedList<T> {
+  @Expose({ name: '@entity' })
+  entity?: string = 'org.quicko.qpon.paginated_list';
+
   @Expose({ name: 'items' })
   @ValidateNested({ each: true })
   @IsArray()

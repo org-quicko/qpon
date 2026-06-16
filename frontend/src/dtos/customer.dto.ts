@@ -3,6 +3,9 @@ import { Expose, Transform } from 'class-transformer';
 import { IsString, IsDate, IsUUID, IsOptional } from 'class-validator';
 
 export class CustomerDto {
+  @Expose({ name: '@entity' })
+  entity?: string = 'org.quicko.qpon.customer';
+
   @Expose({ name: 'customer_id' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()
@@ -41,6 +44,9 @@ export class CustomerDto {
 }
 
 export class CreateCustomerDto {
+  @Expose({ name: '@entity' })
+  entity?: string = 'org.quicko.qpon.customer';
+
   @prop()
   @required()
   @IsString()
@@ -73,6 +79,9 @@ export class CreateCustomerDto {
 }
 
 export class UpdateCustomerDto {
+  @Expose({ name: '@entity' })
+  entity?: string = 'org.quicko.qpon.customer';
+
   @prop()
   @IsOptional()
   @IsString()

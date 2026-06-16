@@ -11,6 +11,9 @@ import { maxLength, prop, required } from "@rxweb/reactive-form-validators";
 import { statusEnum, itemConstraintEnum, discountTypeEnum } from '../enums';
 
 export class CouponDto {
+  @Expose({ name: '@entity' })
+  entity?: string = 'org.quicko.qpon.coupon';
+
   @Expose({ name: 'coupon_id' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()
@@ -54,6 +57,9 @@ export class CouponDto {
 }
 
 export class CreateCouponDto {
+  @Expose({ name: '@entity' })
+  entity?: string = 'org.quicko.qpon.coupon';
+
   @prop()
   @required()
   @IsString()
@@ -88,6 +94,9 @@ export class CreateCouponDto {
 }
 
 export class UpdateCouponDto {
+  @Expose({ name: '@entity' })
+  entity?: string = 'org.quicko.qpon.coupon';
+
   @prop()
   @IsOptional()
   @IsString()

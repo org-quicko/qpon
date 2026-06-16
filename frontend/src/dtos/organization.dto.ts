@@ -3,6 +3,9 @@ import { Expose, Transform } from 'class-transformer';
 import { IsString, IsDate, IsOptional } from 'class-validator';
 
 export class OrganizationDto {
+  @Expose({ name: '@entity' })
+  entity?: string = 'org.quicko.qpon.organization';
+
   @Expose({ name: 'organization_id' })
   @Transform(({ value }) => value, { toClassOnly: true })
   organizationId?: string;
@@ -31,6 +34,9 @@ export class OrganizationDto {
 }
 
 export class CreateOrganizationDto {
+  @Expose({ name: '@entity' })
+  entity?: string = 'org.quicko.qpon.organization';
+
   @prop()
   @required()
   @IsString()
@@ -50,6 +56,9 @@ export class CreateOrganizationDto {
 }
 
 export class UpdateOrganizationDto {
+  @Expose({ name: '@entity' })
+  entity?: string = 'org.quicko.qpon.organization';
+
   @IsOptional()
   @IsString()
   name?: string;

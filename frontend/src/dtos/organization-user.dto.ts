@@ -3,6 +3,9 @@ import { IsDate, IsString } from 'class-validator';
 import { roleEnum } from '../enums';
 
 export class OrganizationUserDto {
+  @Expose({ name: '@entity' })
+  entity?: string = 'org.quicko.qpon.organization_user';
+
   @Expose({ name: 'organization_id' })
   @Transform(({ value }) => value, { toClassOnly: true })
   organizationId?: string;
