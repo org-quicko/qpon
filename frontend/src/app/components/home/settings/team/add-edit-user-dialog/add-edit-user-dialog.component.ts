@@ -10,6 +10,8 @@ import { OrganizationUsersStore } from '../store/organization-users.store';
 import { FormDialogBoxComponent } from '../../../common/form-dialog-box/form-dialog-box.component';
 import { roleEnum } from '../../../../../../enums';
 import { MatIcon } from "@angular/material/icon";
+import { CreateUserDto, UpdateUserRoleDto } from '../../../../../../dtos/user.dto';
+import { instanceToPlain } from 'class-transformer';
 
 @Component({
     selector: 'app-add-edit-user-dialog',
@@ -118,28 +120,26 @@ export class AddEditUserDialogComponent {
 
         if (!this.isEditMode) {
 
-            const body = {
-                email: this.form.value.email!,
-                name: this.form.value.name!,
-                password: this.form.value.password!,
-                role: this.form.value.role! as roleEnum,
-            };
+            const createUser = new CreateUserDto();
+            createUser.email = this.form.value.email!;
+            createUser.name = this.form.value.name!;
+            createUser.password = this.form.value.password!;
+            createUser.role = this.form.value.role! as roleEnum;
 
-            this.userStore.createUser({ organizationId: orgId, body });
+            this.userStore.createUser({ organizationId: orgId, body: instanceToPlain(createUser) });
             this.dialogRef.close();
             return;
         }
 
-        const body = {
-            role: this.form.value.role! as roleEnum,
-            email: this.form.value.email!,
-            name: this.form.value.name!,
-        };
+        const updateUserRole = new UpdateUserRoleDto();
+        updateUserRole.role = this.form.value.role! as roleEnum;
+        updateUserRole.email = this.form.value.email!;
+        updateUserRole.name = this.form.value.name!;
 
         this.userStore.updateUserRole({
             organizationId: orgId,
             userId: this.data.user.userId,
-            body
+            body: instanceToPlain(updateUserRole)
         });
 
         this.dialogRef.close();

@@ -351,6 +351,7 @@ export class CouponCodeService {
           });
         }
 
+        delete body.entity;
         await manager.update(CouponCode, { couponCodeId }, body);
 
         const updatedCouponCode = await manager.findOne(CouponCode, {

@@ -4,7 +4,7 @@ import { environment } from '../../environments/environment';
 import { ApiResponse } from '../../dtos/api-response.dto';
 import { PaginatedList } from '../../dtos/paginated-list.dto';
 import { ItemDto } from '../../dtos/item.dto';
-import { CouponItemDto, UpdateCouponItemDto } from '../../dtos/coupon-item.dto';
+import { CouponItemDto, CreateCouponItemDto, UpdateCouponItemDto } from '../../dtos/coupon-item.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -28,14 +28,14 @@ export class EligibleItemsService {
     return this.httpClient.get<ApiResponse<PaginatedList<ItemDto>>>(url, {params});
   }
 
-  addItemsForCoupon(organizationId: string, couponId: string, items: string[]) {
+  addItemsForCoupon(organizationId: string, couponId: string, body: CreateCouponItemDto) {
     const url = this.endpoint + "/organizations/" + organizationId + "/coupons/" + couponId + "/items";
-    return this.httpClient.post<ApiResponse<CouponItemDto>>(url, {"items": items});
+    return this.httpClient.post<ApiResponse<CouponItemDto>>(url, body);
   }
 
-  updateItemsForCoupon(organizationId: string, couponId: string, items: string[]) {
+  updateItemsForCoupon(organizationId: string, couponId: string, body: UpdateCouponItemDto) {
     const url = this.endpoint + "/organizations/" + organizationId + "/coupons/" + couponId + "/items";
-    return this.httpClient.patch<ApiResponse<CouponItemDto>>(url, {"items": items});
+    return this.httpClient.patch<ApiResponse<CouponItemDto>>(url, body);
   }
 
   deleteItemForCoupon(organizationId: string, couponId: string, itemId: string) {

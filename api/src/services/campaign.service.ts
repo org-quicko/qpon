@@ -265,6 +265,7 @@ export class CampaignService {
         }
       }
 
+      delete body.entity;
       await this.campaignRepository.update(campaignId, body);
 
       const updatedCampaign = await this.campaignRepository.findOne({

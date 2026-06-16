@@ -35,6 +35,7 @@ import { EligibleItemsService } from '../../../services/eligible-items.service';
 import { CustomerDto } from '../../../../dtos/customer.dto';
 import { CustomerCouponCodeService } from '../../../services/customer-coupon-code.service';
 import { CreateCustomerCouponCodeDto } from '../../../../dtos/customer-coupon-code.dto';
+import { CreateCouponItemDto, UpdateCouponItemDto } from '../../../../dtos/coupon-item.dto';
 import { ItemDto } from '../../../../dtos/item.dto';
 import { PaginatedList } from '../../../../dtos/paginated-list.dto';
 
@@ -262,9 +263,12 @@ export const CouponCodeStore = signalStore(
       
             let itemOperation$: Observable<any> = of(null);
             if (shouldModifyItems) {
+              const couponItem = update ? new UpdateCouponItemDto() : new CreateCouponItemDto();
+              couponItem.items = items;
+              const couponItemBody = instanceToPlain(couponItem);
               itemOperation$ = update
-                ? eligibleItemsService.updateItemsForCoupon(organizationId, couponId, items)
-                : eligibleItemsService.addItemsForCoupon(organizationId, couponId, items);
+                ? eligibleItemsService.updateItemsForCoupon(organizationId, couponId, couponItemBody)
+                : eligibleItemsService.addItemsForCoupon(organizationId, couponId, couponItemBody);
             }
       
             return forkJoin({
@@ -557,7 +561,7 @@ export const CouponCodeStore = signalStore(
                             couponId,
                             campaignId,
                             createdCouponCode.couponCodeId!,
-                            createCustomerCouponCodeDto
+                            instanceToPlain(createCustomerCouponCodeDto)
                           )
                           .pipe(map(() => response)); // keep response shape for forkJoin
                       }
