@@ -466,6 +466,10 @@ export class CouponService {
     } catch (error) {
       this.logger.error(`Error in fetchCouponSummary:`, error);
 
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+
       throw new HttpException(
         'Failed to fetch coupon summary',
         HttpStatus.INTERNAL_SERVER_ERROR,

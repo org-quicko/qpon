@@ -11,10 +11,11 @@ export class CouponItem {
 
   @Expose({ name: 'coupon_id' })
   @IsUUID()
-  couponId?: string;
+  couponId: string;
 
+  @Expose()
   @IsArray()
-  item?: Item[];
+  items: Item[];
 
   getCouponId(): string | undefined {
     return this.couponId;
@@ -24,11 +25,11 @@ export class CouponItem {
     this.couponId = couponId;
   }
 
-  getItem(): Item[] | undefined {
-    return this.item;
+  getItems(): Item[] | undefined {
+    return this.items;
   }
 
-  setItem(item: Item[]): void {
-    this.item = item;
+  setItems(items: Item[]): void {
+    this.items = items;
   }
 }

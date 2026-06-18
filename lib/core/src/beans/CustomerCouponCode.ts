@@ -14,8 +14,9 @@ export class CustomerCouponCode {
   @IsUUID()
   couponCodeId?: string;
 
+  @Expose()
   @IsArray()
-  customers?: Customer[];
+  customers: Customer[];
 
   getCouponCodeId(): string | undefined {
     return this.couponCodeId;

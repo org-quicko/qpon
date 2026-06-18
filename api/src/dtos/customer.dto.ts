@@ -45,10 +45,10 @@ export class CreateCustomerDto {
   entity = 'org.quicko.qpon.customer';
 
   @IsString()
-  name?: string;
+  name: string;
 
   @IsString()
-  email?: string;
+  email: string;
 
   @IsOptional()
   @Expose({ name: 'isd_code' })
@@ -61,7 +61,7 @@ export class CreateCustomerDto {
 
   @Expose({ name: 'external_id' })
   @IsString()
-  externalId?: string;
+  externalId: string;
 }
 
 export class UpdateCustomerDto extends PartialType(CreateCustomerDto) {}

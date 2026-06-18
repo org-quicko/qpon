@@ -20,11 +20,13 @@ export class Campaign {
 
   @Expose({ name: 'campaign_id' })
   @IsUUID()
-  campaignId?: string;
+  campaignId: string;
 
+  @Expose()
   @IsString()
-  name?: string;
+  name: string;
 
+  @Expose()
   @IsOptional()
   @IsNumber()
   budget?: number;
@@ -34,16 +36,17 @@ export class Campaign {
   @IsString()
   externalId?: string;
 
+  @Expose()
   @IsEnum(CampaignStatus)
-  status?: CampaignStatus;
+  status: CampaignStatus;
 
   @Expose({ name: 'created_at' })
   @IsDate()
-  createdAt?: Date;
+  createdAt: Date;
 
   @Expose({ name: 'updated_at' })
   @IsDate()
-  updatedAt?: Date;
+  updatedAt: Date;
 
   getCampaignId(): string | undefined {
     return this.campaignId;

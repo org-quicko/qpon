@@ -28,6 +28,8 @@
     /* Strict Type-Checking Options */
     "strict": true, /* Enable all strict type-checking options. */
     "noImplicitAny": false, /* Raise error on expressions and declarations with an implied 'any' type. */
+    "useUnknownInCatchVariables": false, /* Keep `catch (error)` typed as `any`; error wrappers read provider-specific fields like error.code. */
+    "strictPropertyInitialization": false, /* Beans/DTOs are populated by class-transformer, not constructors. */
     // "strictNullChecks": true,              /* Enable strict null checks. */
     // "strictFunctionTypes": true,           /* Enable strict checking of function types. */
     // "strictBindCallApply": true,           /* Enable strict 'bind', 'call', and 'apply' methods on functions. */

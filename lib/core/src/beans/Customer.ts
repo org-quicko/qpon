@@ -10,34 +10,37 @@ export class Customer {
 
   @Expose({ name: 'customer_id' })
   @IsUUID()
-  customerId?: string;
+  customerId: string;
 
+  @Expose()
   @IsString()
-  name?: string;
+  name: string;
 
+  @Expose()
   @IsString()
-  email?: string;
+  email: string;
 
   @IsOptional()
   @Expose({ name: 'isd_code' })
   @IsString()
   isdCode?: string;
 
+  @Expose()
   @IsOptional()
   @IsString()
   phone?: string;
 
   @Expose({ name: 'external_id' })
   @IsString()
-  externalId?: string;
+  externalId: string;
 
   @Expose({ name: 'created_at' })
   @IsDate()
-  createdAt?: Date;
+  createdAt: Date;
 
   @Expose({ name: 'updated_at' })
   @IsDate()
-  updatedAt?: Date;
+  updatedAt: Date;
 
   getCustomerId(): string | undefined {
     return this.customerId;

@@ -1,6 +1,6 @@
 {
   "name": "@org-quicko/qpon-core",
-  "version": "2.0.0",
+  "version": "2.0.0-alpha",
   "description": "A library in typescript for common entities of Qpon",
   "author": "Quicko <developer@quicko.org.in>",
   "main": "dist/cjs/index.cjs",

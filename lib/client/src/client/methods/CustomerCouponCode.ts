@@ -17,7 +17,7 @@ export class CustomerCouponCode extends RestClient {
     couponId: string,
     campaignId: string,
     couponCodeId: string,
-    data: Pick<CustomerCouponCodeBean, 'customers'>
+    customers: string[]
   ) : Promise<PaginatedList<Customer>> {
     try {
       this.logger.info(
@@ -27,10 +27,10 @@ export class CustomerCouponCode extends RestClient {
         coupon_id: couponId,
         campaign_id: campaignId,
         coupon_code_id: couponCodeId,
-        data,
+        customers,
       });
 
-      const response = await super.post(APIURL.ADD_CUSTOMERS_TO_COUPON_CODE, instanceToPlain(data), {
+      const response = await super.post(APIURL.ADD_CUSTOMERS_TO_COUPON_CODE, instanceToPlain(Object.assign(new CustomerCouponCodeBean(), { customers })), {
         params: [couponId, campaignId, couponCodeId],
       });
 
@@ -41,7 +41,7 @@ export class CustomerCouponCode extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to add customers to coupon code', error);
+      throw new ClientException('Failed to add customers to coupon code', error, error.code);
     }
   }
 
@@ -79,7 +79,7 @@ export class CustomerCouponCode extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to get customers for coupon code', error);
+      throw new ClientException('Failed to get customers for coupon code', error, error.code);
     }
   }
 
@@ -87,7 +87,7 @@ export class CustomerCouponCode extends RestClient {
     couponId: string,
     campaignId: string,
     couponCodeId: string,
-    data: Pick<CustomerCouponCodeBean, 'customers'>
+    customers: string[]
   ) : Promise<PaginatedList<Customer>> {
     try {
       this.logger.info(
@@ -97,10 +97,10 @@ export class CustomerCouponCode extends RestClient {
         coupon_id: couponId,
         campaign_id: campaignId,
         coupon_code_id: couponCodeId,
-        data,
+        customers,
       });
 
-      const response = await super.patch(APIURL.UPDATE_CUSTOMER_COUPON_CODE, data, {
+      const response = await super.patch(APIURL.UPDATE_CUSTOMER_COUPON_CODE, instanceToPlain(Object.assign(new CustomerCouponCodeBean(), { customers })), {
         params: [couponId, campaignId, couponCodeId],
       });
 
@@ -111,7 +111,7 @@ export class CustomerCouponCode extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to update customers associated with coupon code', error);
+      throw new ClientException('Failed to update customers associated with coupon code', error, error.code);
     }
   }
 
@@ -143,7 +143,7 @@ export class CustomerCouponCode extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to delete customer from coupon code', error);
+      throw new ClientException('Failed to delete customer from coupon code', error, error.code);
     }
   }
 }

@@ -44,7 +44,7 @@ export class RestClient {
         return response.data;
       })
       .catch((error) => {
-        throw new ClientException(error.response.data.message, undefined, error.status);
+        throw new ClientException(error.response?.data?.message ?? error.message, undefined, error.response?.status);
       });
   }
 
@@ -59,7 +59,7 @@ export class RestClient {
       .post(Endpoint.build(this.baseUrl, url, options.params), data, { headers })
       .then((response) => response.data)
       .catch((error) => {
-        throw new ClientException(error.response.data.message, undefined, error.status);
+        throw new ClientException(error.response?.data?.message ?? error.message, undefined, error.response?.status);
       });
   }
 
@@ -74,7 +74,7 @@ export class RestClient {
       .patch(Endpoint.build(this.baseUrl, url, options.params), data, { headers })
       .then((response) => response.data)
       .catch((error) => {
-        throw new ClientException(error.response.data.message, undefined, error.status);
+        throw new ClientException(error.response?.data?.message ?? error.message, undefined, error.response?.status);
       });
   }
 
@@ -94,7 +94,7 @@ export class RestClient {
         return response.data;
       })
       .catch((error) => {
-        throw new ClientException(error.response.data.message, undefined, error.status);
+        throw new ClientException(error.response?.data?.message ?? error.message, undefined, error.response?.status);
       });
   }
 
@@ -108,7 +108,7 @@ export class RestClient {
       .put(Endpoint.build(this.baseUrl, url, options.params), data, { headers })
       .then((response) => response.data)
       .catch((error) => {
-        throw new ClientException(error.response.data.message, undefined, error.status);
+        throw new ClientException(error.response?.data?.message ?? error.message, undefined, error.response?.status);
       });
   }
 }

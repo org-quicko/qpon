@@ -37,6 +37,7 @@ export class CouponDto {
   @IsNumber({allowNaN: false, allowInfinity: false}, { message: 'Discount value should be a number' })
   discountValue: number;
 
+  @IsOptional()
   @Expose({ name: 'discount_upto' })
   @IsNumber()
   discountUpto: number;

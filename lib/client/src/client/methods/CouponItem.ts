@@ -1,6 +1,6 @@
 import { ClientException, LoggerFactory, LoggingLevel } from '@org-quicko/core';
 import winston from 'winston';
-import { CouponItem as CouponItemBean } from '@org-quicko/qpon-core';
+import { CouponItem as CouponItemBean, Item, PaginatedList } from '@org-quicko/qpon-core';
 import { instanceToPlain } from 'class-transformer';
 import { APIURL } from '../../resource';
 import { QponCredentials } from '../../beans';
@@ -13,12 +13,13 @@ export class CouponItem extends RestClient {
     super(config, baseUrl);
   }
 
-  async addCouponItems(organizationId: string, couponId: string, data: Pick<CouponItemBean, 'item'>) : Promise<CouponItemBean> {
+  async addCouponItems(organizationId: string, couponId: string, items: Item[]) : Promise<CouponItemBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.addCouponItems.name}`);
-      this.logger.debug(`Request`, { organization_id: organizationId, coupon_id: couponId, data });
+      this.logger.debug(`Request`, { organization_id: organizationId, coupon_id: couponId, items });
 
-      const response = await super.post(APIURL.ADD_COUPON_ITEMS, instanceToPlain(data), {
+      const itemIds = items.map(item => item.itemId);
+      const response = await super.post(APIURL.ADD_COUPON_ITEMS, instanceToPlain(Object.assign(new CouponItemBean(), { items: itemIds })), {
         params: [organizationId, couponId],
       });
 
@@ -27,11 +28,11 @@ export class CouponItem extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to add items to coupon', error);
+      throw new ClientException('Failed to add items to coupon', error, error.code);
     }
   }
 
-  async getItemsForCoupon(organizationId: string, couponId: string, name?: string, skip: number = 0, take: number = 10) {
+  async getItemsForCoupon(organizationId: string, couponId: string, name?: string, skip: number = 0, take: number = 10) : Promise<PaginatedList<Item>> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.getItemsForCoupon.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, coupon_id: couponId });
@@ -52,13 +53,13 @@ export class CouponItem extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.getItemsForCoupon.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
-      throw new ClientException('Failed to get items for coupon', error);
+      throw new ClientException('Failed to get items for coupon', error, error.code);
     }
   }
 
-  async removeItemsFromCoupon(organizationId: string, couponId: string, itemId: string) {
+  async removeItemsFromCoupon(organizationId: string, couponId: string, itemId: string) : Promise<CouponItemBean> {
     try {
       this.logger.info(
         `Start Client : ${this.constructor.name},${this.removeItemsFromCoupon.name}`
@@ -76,27 +77,28 @@ export class CouponItem extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.removeItemsFromCoupon.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
-      throw new ClientException('Failed to remove items from coupon', error);
+      throw new ClientException('Failed to remove items from coupon', error, error.code);
     }
   }
 
-  async updateItemsInCoupon(organizationId: string, couponId: string, data: Pick<CouponItemBean, 'item'>) {
+  async updateItemsInCoupon(organizationId: string, couponId: string, items: Item[]) : Promise<CouponItemBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateItemsInCoupon.name}`);
-      this.logger.debug(`Request`, { organization_id: organizationId, coupon_id: couponId, data });
+      this.logger.debug(`Request`, { organization_id: organizationId, coupon_id: couponId, items });
 
-      const response = await super.patch(APIURL.UPDATE_ITEMS_IN_COUPON, data, {
+      const itemIds = items.map(item => item.itemId);
+      const response = await super.patch(APIURL.UPDATE_ITEMS_IN_COUPON, instanceToPlain(Object.assign(new CouponItemBean(), { items: itemIds })), {
         params: [organizationId, couponId],
       });
 
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.updateItemsInCoupon.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
-      throw new ClientException('Failed to update items in coupon', error);
+      throw new ClientException('Failed to update items in coupon', error, error.code);
     }
   }
 }

@@ -19,7 +19,7 @@ export class Campaign extends RestClient {
       this.logger.info(`Start Client : ${this.constructor.name},${this.createCampaign.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, coupon_id: couponId, data });
 
-      const response = await super.post(APIURL.CREATE_CAMPAIGN, instanceToPlain(data), {
+      const response = await super.post(APIURL.CREATE_CAMPAIGN, instanceToPlain(Object.assign(new CampaignBean(), data)), {
         params: [organizationId, couponId],
       });
 
@@ -28,7 +28,7 @@ export class Campaign extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to create campaign', error);
+      throw new ClientException('Failed to create campaign', error, error.code);
     }
   }
 
@@ -51,7 +51,7 @@ export class Campaign extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to get campaign', error);
+      throw new ClientException('Failed to get campaign', error, error.code);
     }
   }
 
@@ -92,7 +92,7 @@ export class Campaign extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to get campaigns', error);
+      throw new ClientException('Failed to get campaigns', error, error.code);
     }
   }
 
@@ -100,7 +100,7 @@ export class Campaign extends RestClient {
     organizationId: string,
     couponId: string,
     campaignId: string,
-    data: Pick<CampaignBean, 'name' | 'budget' | 'externalId'>
+    data: Partial<Pick<CampaignBean, 'name' | 'budget' | 'externalId'>>
   ) : Promise<CampaignBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateCampaign.name}`);
@@ -111,7 +111,7 @@ export class Campaign extends RestClient {
         data,
       });
 
-      const response = await super.patch(APIURL.UPDATE_CAMPAIGN, data, {
+      const response = await super.patch(APIURL.UPDATE_CAMPAIGN, instanceToPlain(Object.assign(new CampaignBean(), data)), {
         params: [organizationId, couponId, campaignId],
       });
 
@@ -120,7 +120,7 @@ export class Campaign extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to update campaign', error);
+      throw new ClientException('Failed to update campaign', error, error.code);
     }
   }
 
@@ -142,11 +142,11 @@ export class Campaign extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to delete campaign', error);
+      throw new ClientException('Failed to delete campaign', error, error.code);
     }
   }
 
-  async deactivateCampaign(organizationId: string, couponId: string, campaignId: string) {
+  async deactivateCampaign(organizationId: string, couponId: string, campaignId: string) : Promise<CampaignBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.deactivateCampaign.name}`);
       this.logger.debug(`Request`, {
@@ -164,13 +164,13 @@ export class Campaign extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.deactivateCampaign.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
-      throw new ClientException('Failed to deactivate campaign', error);
+      throw new ClientException('Failed to deactivate campaign', error, error.code);
     }
   }
 
-  async reactivateCampaign(organizationId: string, couponId: string, campaignId: string) {
+  async reactivateCampaign(organizationId: string, couponId: string, campaignId: string) : Promise<CampaignBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.reactivateCampaign.name}`);
       this.logger.debug(`Request`, {
@@ -188,9 +188,9 @@ export class Campaign extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.reactivateCampaign.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
-      throw new ClientException('Failed to reactivate campaign', error);
+      throw new ClientException('Failed to reactivate campaign', error, error.code);
     }
   }
 
@@ -214,7 +214,7 @@ export class Campaign extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to get campaign summary', error);
+      throw new ClientException('Failed to get campaign summary', error, error.code);
     }
   }
 
@@ -245,9 +245,9 @@ export class Campaign extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.getCampaignSummaries.name}`);
 
-      return response;
+      return response.data;
     } catch (error) {
-      throw new ClientException('Failed to get campaign summaries', error);
+      throw new ClientException('Failed to get campaign summaries', error, error.code);
     }
   }
 }

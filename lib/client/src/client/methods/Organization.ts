@@ -1,6 +1,7 @@
 import { ClientException, LoggerFactory, LoggingLevel } from '@org-quicko/core';
 import winston from 'winston';
 import { Organization as OrganizationBean, PaginatedList } from '@org-quicko/qpon-core';
+import { instanceToPlain } from 'class-transformer';
 import { APIURL } from '../../resource';
 import { QponCredentials } from '../../beans';
 import { RestClient } from '../RestClient';
@@ -24,7 +25,7 @@ export class Organization extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to get organization', error);
+      throw new ClientException('Failed to get organization', error, error.code);
     }
   }
 
@@ -44,7 +45,7 @@ export class Organization extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to get organization', error);
+      throw new ClientException('Failed to get organization', error, error.code);
     }
   }
 
@@ -60,23 +61,23 @@ export class Organization extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to delete organization', error);
+      throw new ClientException('Failed to delete organization', error, error.code);
     }
   }
 
-  async updateOrganization(organizationId: string, data: Pick<OrganizationBean, 'name' | 'currency' | 'externalId'>) : Promise<OrganizationBean> {
+  async updateOrganization(organizationId: string, data: Partial<Pick<OrganizationBean, 'name' | 'currency' | 'externalId'>>) : Promise<OrganizationBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateOrganization.name}`);
-      this.logger.debug(`Request`, { organization_id: organizationId });
+      this.logger.debug(`Request`, { organization_id: organizationId, data });
 
-      const response = await super.patch(APIURL.UPDATE_ORGANIZATION, data, { params: [organizationId] });
+      const response = await super.patch(APIURL.UPDATE_ORGANIZATION, instanceToPlain(Object.assign(new OrganizationBean(), data)), { params: [organizationId] });
       
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.updateOrganization.name}`);
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to update organization', error);
+      throw new ClientException('Failed to update organization', error, error.code);
     }
   }
 }

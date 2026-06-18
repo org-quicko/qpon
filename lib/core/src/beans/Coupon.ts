@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { Expose } from "class-transformer";
-import { Equals, IsString, IsNumber, IsEnum, IsDate, IsUUID } from "class-validator";
+import { Equals, IsString, IsNumber, IsEnum, IsDate, IsUUID, IsOptional } from "class-validator";
 import { ItemConstraint, DiscountType, Status } from "../enums";
 
 @Reflect.metadata('@entity', 'org.quicko.qpon.coupon')
@@ -11,37 +11,40 @@ export class Coupon {
 
 	@Expose({ name: "coupon_id" })
 	@IsUUID()
-	couponId?: string;
+	couponId: string;
 
+	@Expose()
 	@IsString()
-	name?: string;
+	name: string;
 
 	@Expose({ name: "discount_type" })
 	@IsEnum(DiscountType)
-	discountType?: DiscountType;
+	discountType: DiscountType;
 
 	@Expose({ name: "discount_value" })
 	@IsNumber()
-	discountValue?: number;
+	discountValue: number;
 
 	@Expose({ name: "discount_upto" })
+	@IsOptional()
 	@IsNumber()
 	discountUpto?: number;
 
 	@Expose({ name: "item_constraint" })
 	@IsEnum(ItemConstraint)
-	itemConstraint?: ItemConstraint;
+	itemConstraint: ItemConstraint;
 
+	@Expose()
 	@IsEnum(Status)
-	status?: Status;
+	status: Status;
 
 	@Expose({ name: "created_at" })
 	@IsDate()
-	createdAt?: Date;
+	createdAt: Date;
 
 	@Expose({ name: "updated_at" })
 	@IsDate()
-	updatedAt?: Date;
+	updatedAt: Date;
 
 	getCouponId(): string | undefined {
 		return this.couponId;

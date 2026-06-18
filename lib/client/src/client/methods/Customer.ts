@@ -29,7 +29,7 @@ export class Customer extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to get customer', error);
+      throw new ClientException('Failed to get customer', error, error.code);
     }
   }
 
@@ -49,23 +49,23 @@ export class Customer extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to get customers', error);
+      throw new ClientException('Failed to get customers', error, error.code);
     }
   }
 
-  async createCustomer(organizationId: string, data: Pick<CustomerBean, 'name' | 'email' | 'phone' | 'externalId'>) : Promise<CustomerBean> {
+  async createCustomer(organizationId: string, data: Pick<CustomerBean, 'name' | 'email' | 'phone' | 'isdCode' | 'externalId'>) : Promise<CustomerBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.createCustomer.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, data });
 
-      const response = await super.post(APIURL.CREATE_CUSTOMER, instanceToPlain(data), { params: [organizationId] });
+      const response = await super.post(APIURL.CREATE_CUSTOMER, instanceToPlain(Object.assign(new CustomerBean(), data)), { params: [organizationId] });
 
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.createCustomer.name}`);
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to create customer', error);
+      throw new ClientException('Failed to create customer', error, error.code);
     }
   }
 
@@ -81,23 +81,23 @@ export class Customer extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to delete customer', error);
+      throw new ClientException('Failed to delete customer', error, error.code);
     }
   }
 
-  async updateCustomer(organizationId: string, customerId: string, data: Pick<CustomerBean, 'name' | 'email' | 'phone' | 'externalId'>) : Promise<CustomerBean> {
+  async updateCustomer(organizationId: string, customerId: string, data: Partial<Pick<CustomerBean, 'name' | 'email' | 'phone' | 'isdCode' | 'externalId'>>) : Promise<CustomerBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateCustomer.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, customer_id: customerId, data });
 
-      const response = await super.patch(APIURL.UPDATE_CUSTOMER, data, { params: [organizationId, customerId] });
+      const response = await super.patch(APIURL.UPDATE_CUSTOMER, instanceToPlain(Object.assign(new CustomerBean(), data)), { params: [organizationId, customerId] });
 
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.updateCustomer.name}`);
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to update customer', error);
+      throw new ClientException('Failed to update customer', error, error.code);
     }
   }
 
@@ -113,7 +113,7 @@ export class Customer extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to upsert customer', error);
+      throw new ClientException('Failed to upsert customer', error, error.code);
     }
   }
 }
