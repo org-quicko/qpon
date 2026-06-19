@@ -13,13 +13,12 @@ export class CouponItem extends RestClient {
     super(config, baseUrl);
   }
 
-  async addCouponItems(organizationId: string, couponId: string, items: Item[]) : Promise<CouponItemBean> {
+  async addCouponItems(organizationId: string, couponId: string, items: string[]) : Promise<CouponItemBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.addCouponItems.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, coupon_id: couponId, items });
 
-      const itemIds = items.map(item => item.itemId);
-      const response = await super.post(APIURL.ADD_COUPON_ITEMS, instanceToPlain(Object.assign(new CouponItemBean(), { items: itemIds })), {
+      const response = await super.post(APIURL.ADD_COUPON_ITEMS, instanceToPlain(Object.assign(new CouponItemBean(), { items })), {
         params: [organizationId, couponId],
       });
 
@@ -83,13 +82,12 @@ export class CouponItem extends RestClient {
     }
   }
 
-  async updateItemsInCoupon(organizationId: string, couponId: string, items: Item[]) : Promise<CouponItemBean> {
+  async updateItemsInCoupon(organizationId: string, couponId: string, items: string[]) : Promise<CouponItemBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateItemsInCoupon.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, coupon_id: couponId, items });
 
-      const itemIds = items.map(item => item.itemId);
-      const response = await super.patch(APIURL.UPDATE_ITEMS_IN_COUPON, instanceToPlain(Object.assign(new CouponItemBean(), { items: itemIds })), {
+      const response = await super.patch(APIURL.UPDATE_ITEMS_IN_COUPON, instanceToPlain(Object.assign(new CouponItemBean(), { items })), {
         params: [organizationId, couponId],
       });
 
