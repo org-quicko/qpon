@@ -17,7 +17,7 @@ export class CustomerCouponCode extends RestClient {
     couponId: string,
     campaignId: string,
     couponCodeId: string,
-    customers: string[]
+    customers: Pick<CustomerCouponCodeBean, 'customers'>
   ) : Promise<PaginatedList<Customer>> {
     try {
       this.logger.info(
@@ -87,7 +87,7 @@ export class CustomerCouponCode extends RestClient {
     couponId: string,
     campaignId: string,
     couponCodeId: string,
-    customers: string[]
+    customers: Pick<CustomerCouponCodeBean, 'customers'>
   ) : Promise<PaginatedList<Customer>> {
     try {
       this.logger.info(

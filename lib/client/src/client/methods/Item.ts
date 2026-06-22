@@ -95,7 +95,7 @@ export class Item extends RestClient {
   async updateItem(
     organizationId: string,
     itemId: string,
-    data: Partial<Pick<ItemBean, 'name' | 'description' | 'externalId' | 'customFields'>>
+    data: Pick<ItemBean, 'name' | 'description' | 'externalId' | 'customFields'>
   ): Promise<ItemBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateItem.name}`);

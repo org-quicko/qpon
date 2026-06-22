@@ -84,7 +84,7 @@ export class User extends RestClient {
   async updateUser(
     organizationId: string,
     userId: string,
-    data: Partial<Pick<UserBean, 'name' | 'email'>> & { currentPassword?: string; newPassword?: string }
+    data: Pick<UserBean, 'name' | 'email' | 'password'>
   ) : Promise<UserBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateUser.name}`);

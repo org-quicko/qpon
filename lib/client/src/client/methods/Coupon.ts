@@ -80,7 +80,7 @@ export class Coupon extends RestClient {
   async updateCoupon(
     organizationId: string,
     couponId: string,
-    data: Partial<Pick<CouponBean, 'name' | 'itemConstraint' | 'discountUpto'>>
+    data: Pick<CouponBean, 'name' | 'itemConstraint' | 'discountUpto'>
   ) : Promise<CouponBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateCoupon.name}`);
@@ -99,7 +99,7 @@ export class Coupon extends RestClient {
     }
   }
 
-  async deactivateCoupon(organizationId: string, couponId: string) : Promise<CouponBean> {
+  async deactivateCoupon(organizationId: string, couponId: string) {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.deactivateCoupon.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, coupon_id: couponId });
@@ -113,13 +113,13 @@ export class Coupon extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.deactivateCoupon.name}`);
 
-      return response.data;
+      return response;
     } catch (error) {
       throw new ClientException('Failed to deactivate coupon', error, error.code);
     }
   }
 
-  async reactivateCoupon(organizationId: string, couponId: string) : Promise<CouponBean> {
+  async reactivateCoupon(organizationId: string, couponId: string) {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.reactivateCoupon.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, coupon_id: couponId });
@@ -133,7 +133,7 @@ export class Coupon extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.reactivateCoupon.name}`);
 
-      return response.data;
+      return response;
     } catch (error) {
       throw new ClientException('Failed to reactivate coupon', error, error.code);
     }

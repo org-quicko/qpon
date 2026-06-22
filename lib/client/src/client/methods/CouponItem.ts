@@ -13,7 +13,7 @@ export class CouponItem extends RestClient {
     super(config, baseUrl);
   }
 
-  async addCouponItems(organizationId: string, couponId: string, items: string[]) : Promise<CouponItemBean> {
+  async addCouponItems(organizationId: string, couponId: string, items: Pick<CouponItemBean, 'items'>) : Promise<CouponItemBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.addCouponItems.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, coupon_id: couponId, items });
@@ -58,10 +58,10 @@ export class CouponItem extends RestClient {
     }
   }
 
-  async removeItemsFromCoupon(organizationId: string, couponId: string, itemId: string) : Promise<CouponItemBean> {
+  async removeItemFromCoupon(organizationId: string, couponId: string, itemId: string) : Promise<PaginatedList<Item>> {
     try {
       this.logger.info(
-        `Start Client : ${this.constructor.name},${this.removeItemsFromCoupon.name}`
+        `Start Client : ${this.constructor.name},${this.removeItemFromCoupon.name}`
       );
       this.logger.debug(`Request`, {
         organization_id: organizationId,
@@ -74,7 +74,7 @@ export class CouponItem extends RestClient {
       });
 
       this.logger.debug(`Response`, response);
-      this.logger.info(`End Client : ${this.constructor.name},${this.removeItemsFromCoupon.name}`);
+      this.logger.info(`End Client : ${this.constructor.name},${this.removeItemFromCoupon.name}`);
 
       return response.data;
     } catch (error) {
@@ -82,7 +82,7 @@ export class CouponItem extends RestClient {
     }
   }
 
-  async updateItemsInCoupon(organizationId: string, couponId: string, items: string[]) : Promise<CouponItemBean> {
+  async updateItemsInCoupon(organizationId: string, couponId: string, items: Pick<CouponItemBean, 'items'>) : Promise<PaginatedList<Item>> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateItemsInCoupon.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, coupon_id: couponId, items });

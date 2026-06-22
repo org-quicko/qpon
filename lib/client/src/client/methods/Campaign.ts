@@ -100,7 +100,7 @@ export class Campaign extends RestClient {
     organizationId: string,
     couponId: string,
     campaignId: string,
-    data: Partial<Pick<CampaignBean, 'name' | 'budget' | 'externalId'>>
+    data: Pick<CampaignBean, 'name' | 'budget' | 'externalId'>
   ) : Promise<CampaignBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateCampaign.name}`);
@@ -146,7 +146,7 @@ export class Campaign extends RestClient {
     }
   }
 
-  async deactivateCampaign(organizationId: string, couponId: string, campaignId: string) : Promise<CampaignBean> {
+  async deactivateCampaign(organizationId: string, couponId: string, campaignId: string){
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.deactivateCampaign.name}`);
       this.logger.debug(`Request`, {
@@ -164,13 +164,13 @@ export class Campaign extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.deactivateCampaign.name}`);
 
-      return response.data;
+      return response;
     } catch (error) {
       throw new ClientException('Failed to deactivate campaign', error, error.code);
     }
   }
 
-  async reactivateCampaign(organizationId: string, couponId: string, campaignId: string) : Promise<CampaignBean> {
+  async reactivateCampaign(organizationId: string, couponId: string, campaignId: string){
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.reactivateCampaign.name}`);
       this.logger.debug(`Request`, {
@@ -188,7 +188,7 @@ export class Campaign extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.reactivateCampaign.name}`);
 
-      return response.data;
+      return response;
     } catch (error) {
       throw new ClientException('Failed to reactivate campaign', error, error.code);
     }

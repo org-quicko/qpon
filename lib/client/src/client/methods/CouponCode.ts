@@ -139,8 +139,7 @@ export class CouponCode extends RestClient {
     couponId: string,
     campaignId: string,
     couponCodeId: string,
-    data: Partial<
-      Pick<
+    data: Pick<
         CouponCodeBean,
         | 'visibility'
         | 'description'
@@ -151,7 +150,6 @@ export class CouponCode extends RestClient {
         | 'maxRedemptions'
         | 'minimumAmount'
       >
-    >
   ) : Promise<CouponCodeBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateCouponCode.name}`);

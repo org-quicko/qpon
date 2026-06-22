@@ -65,7 +65,7 @@ export class Organization extends RestClient {
     }
   }
 
-  async updateOrganization(organizationId: string, data: Partial<Pick<OrganizationBean, 'name' | 'currency' | 'externalId'>>) : Promise<OrganizationBean> {
+  async updateOrganization(organizationId: string, data: Pick<OrganizationBean, 'name' | 'currency' | 'externalId'>) : Promise<OrganizationBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateOrganization.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, data });
