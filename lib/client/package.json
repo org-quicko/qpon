@@ -18,7 +18,8 @@
     "test-fetchOffer": "set NODE_ENV=local && ts-node ./tests/offer/fetchOffer.test.ts",
     "test-redeemCouponCode": "set NODE_ENV=local && ts-node ./tests/redemption/redeemCouponCode.test.ts",
     "test-upsertItem": "set NODE_ENV=local && ts-node ./tests/item/upsertItem.test.ts",
-    "test-upsertCustomer": "set NODE_ENV=local && ts-node ./tests/customer/upsertCustomer.test.ts"
+    "test-upsertCustomer": "set NODE_ENV=local && ts-node ./tests/customer/upsertCustomer.test.ts",
+    "test-getCouponItems": "NODE_ENV=local tsx ./tests/couponItems/getCouponItems.test.ts"
   },
   "exports": {
     ".": {
@@ -67,6 +68,8 @@
     "rollup": "^4.41.1",
     "rollup-plugin-dts": "^6.2.1",
     "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.22.4",
     "typescript": "^5.6.2"
   }
 }
