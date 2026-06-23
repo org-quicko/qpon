@@ -1,7 +1,6 @@
 import { ClientException, LoggerFactory, LoggingLevel } from '@org-quicko/core';
 import winston from 'winston';
-import { Customer, CustomerCouponCode as CustomerCouponCodeBean, PaginatedList } from '@org-quicko/qpon-core';
-import { instanceToPlain } from 'class-transformer';
+import { Customer, PaginatedList } from '@org-quicko/qpon-core';
 import { APIURL } from '../../resource';
 import { QponCredentials } from '../../beans';
 import { RestClient } from '../RestClient';
@@ -17,7 +16,7 @@ export class CustomerCouponCode extends RestClient {
     couponId: string,
     campaignId: string,
     couponCodeId: string,
-    customers: Pick<CustomerCouponCodeBean, 'customers'>
+    customerIds: string[]
   ) : Promise<PaginatedList<Customer>> {
     try {
       this.logger.info(
@@ -27,10 +26,15 @@ export class CustomerCouponCode extends RestClient {
         coupon_id: couponId,
         campaign_id: campaignId,
         coupon_code_id: couponCodeId,
-        customers,
+        customers: customerIds,
       });
 
-      const response = await super.post(APIURL.ADD_CUSTOMERS_TO_COUPON_CODE, instanceToPlain(Object.assign(new CustomerCouponCodeBean(), { customers })), {
+      const body = {
+        '@entity': 'org.quicko.qpon.customer_coupon_code',
+        customers: customerIds,
+      };
+
+      const response = await super.post(APIURL.ADD_CUSTOMERS_TO_COUPON_CODE, body, {
         params: [couponId, campaignId, couponCodeId],
       });
 
@@ -87,7 +91,7 @@ export class CustomerCouponCode extends RestClient {
     couponId: string,
     campaignId: string,
     couponCodeId: string,
-    customers: Pick<CustomerCouponCodeBean, 'customers'>
+    customerIds: string[]
   ) : Promise<PaginatedList<Customer>> {
     try {
       this.logger.info(
@@ -97,10 +101,15 @@ export class CustomerCouponCode extends RestClient {
         coupon_id: couponId,
         campaign_id: campaignId,
         coupon_code_id: couponCodeId,
-        customers,
+        customers: customerIds,
       });
 
-      const response = await super.patch(APIURL.UPDATE_CUSTOMER_COUPON_CODE, instanceToPlain(Object.assign(new CustomerCouponCodeBean(), { customers })), {
+      const body = {
+        '@entity': 'org.quicko.qpon.customer_coupon_code',
+        customers: customerIds,
+      };
+
+      const response = await super.patch(APIURL.UPDATE_CUSTOMER_COUPON_CODE, body, {
         params: [couponId, campaignId, couponCodeId],
       });
 
