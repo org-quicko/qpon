@@ -19,7 +19,10 @@
     "test-redeemCouponCode": "set NODE_ENV=local && ts-node ./tests/redemption/redeemCouponCode.test.ts",
     "test-upsertItem": "set NODE_ENV=local && ts-node ./tests/item/upsertItem.test.ts",
     "test-upsertCustomer": "set NODE_ENV=local && ts-node ./tests/customer/upsertCustomer.test.ts",
-    "test-getCouponItems": "NODE_ENV=local tsx ./tests/couponItems/getCouponItems.test.ts"
+    "test-getCouponItems": "NODE_ENV=local tsx ./tests/couponItems/getCouponItems.test.ts",
+    "test-addCouponItems": "NODE_ENV=local tsx ./tests/couponItems/addCouponItems.test.ts",
+    "test-updateCouponItems": "NODE_ENV=local tsx ./tests/couponItems/updateCouponItems.test.ts",
+    "test-removeItemFromCoupon": "NODE_ENV=local tsx ./tests/couponItems/removeItemFromCoupon.test.ts"
   },
   "exports": {
     ".": {

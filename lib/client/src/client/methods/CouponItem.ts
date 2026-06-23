@@ -1,7 +1,6 @@
 import { ClientException, LoggerFactory, LoggingLevel } from '@org-quicko/core';
 import winston from 'winston';
 import { CouponItem as CouponItemBean, Item, PaginatedList } from '@org-quicko/qpon-core';
-import { instanceToPlain } from 'class-transformer';
 import { APIURL } from '../../resource';
 import { QponCredentials } from '../../beans';
 import { RestClient } from '../RestClient';
@@ -13,17 +12,22 @@ export class CouponItem extends RestClient {
     super(config, baseUrl);
   }
 
-  async addCouponItems(organizationId: string, couponId: string, items: Pick<CouponItemBean, 'items'>) : Promise<CouponItemBean> {
+  async addCouponItem(organizationId: string, couponId: string, itemIds: string[]) : Promise<CouponItemBean> {
     try {
-      this.logger.info(`Start Client : ${this.constructor.name},${this.addCouponItems.name}`);
-      this.logger.debug(`Request`, { organization_id: organizationId, coupon_id: couponId, items });
+      this.logger.info(`Start Client : ${this.constructor.name},${this.addCouponItem.name}`);
+      this.logger.info(`Request`, { organization_id: organizationId, coupon_id: couponId, items: itemIds });
 
-      const response = await super.post(APIURL.ADD_COUPON_ITEMS, instanceToPlain(Object.assign(new CouponItemBean(), { items })), {
+      const body = {
+        '@entity': 'org.quicko.qpon.coupon_item',
+        items: itemIds,
+      };
+
+      const response = await super.post(APIURL.ADD_COUPON_ITEMS, body, {
         params: [organizationId, couponId],
       });
 
-      this.logger.debug(`Response`, response);
-      this.logger.info(`End Client : ${this.constructor.name},${this.addCouponItems.name}`);
+      this.logger.info(`Response`, response);
+      this.logger.info(`End Client : ${this.constructor.name},${this.addCouponItem.name}`);
 
       return response.data;
     } catch (error) {
@@ -82,12 +86,17 @@ export class CouponItem extends RestClient {
     }
   }
 
-  async updateItemsInCoupon(organizationId: string, couponId: string, items: Pick<CouponItemBean, 'items'>) : Promise<PaginatedList<Item>> {
+  async updateItemsInCoupon(organizationId: string, couponId: string, itemIds: string[]) : Promise<PaginatedList<Item>> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateItemsInCoupon.name}`);
-      this.logger.debug(`Request`, { organization_id: organizationId, coupon_id: couponId, items });
+      this.logger.debug(`Request`, { organization_id: organizationId, coupon_id: couponId, items: itemIds });
 
-      const response = await super.patch(APIURL.UPDATE_ITEMS_IN_COUPON, instanceToPlain(Object.assign(new CouponItemBean(), { items })), {
+      const body = {
+        '@entity': 'org.quicko.qpon.coupon_item',
+        items: itemIds,
+      };
+
+      const response = await super.patch(APIURL.UPDATE_ITEMS_IN_COUPON, body, {
         params: [organizationId, couponId],
       });
 
