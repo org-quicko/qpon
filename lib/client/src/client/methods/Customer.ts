@@ -33,15 +33,25 @@ export class Customer extends RestClient {
     }
   }
 
-  async getAllCustomers(organizationId: string, skip: number = 0, take: number = 10) : Promise<PaginatedList<CustomerBean>> {
+  async getAllCustomers(
+    organizationId: string,
+    email?: string,
+    externalId?: string,
+    skip: number = 0,
+    take: number = 10
+  ) : Promise<PaginatedList<CustomerBean>> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.getAllCustomers.name}`);
-      this.logger.debug(`Request`, { organization_id: organizationId, skip, take });
+      this.logger.debug(`Request`, { organization_id: organizationId, skip, take, email, external_id: externalId });
+
+      const queryParams: { skip: number; take: number; email?: string; external_id?: string } = { skip, take };
+      if (email) queryParams.email = email;
+      if (externalId) queryParams.external_id = externalId;
 
       const response = await super.get({
         url: APIURL.FETCH_CUSTOMERS,
         params: [organizationId],
-        queryParams: { skip: skip, take: take },
+        queryParams,
       });
 
       this.logger.debug(`Response`, response);
