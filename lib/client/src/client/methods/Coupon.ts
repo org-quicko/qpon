@@ -1,4 +1,4 @@
-import { ClientException, LoggerFactory, LoggingLevel } from '@org-quicko/core';
+import { ClientException, LoggerFactory } from '@org-quicko/core';
 import winston from 'winston';
 import { Coupon as CouponBean, PaginatedList } from '@org-quicko/qpon-core';
 import { CouponSummaryWorkbook } from '@org-quicko/qpon-sheet-core/coupon_summary_workbook/beans';
