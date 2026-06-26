@@ -252,9 +252,10 @@ export class CampaignService {
         const campaign = await this.campaignRepository
           .createQueryBuilder('campaign')
           .where(
-            `LOWER(campaign.name) = LOWER(:name) AND status != 'archive'`,
+            `LOWER(campaign.name) = LOWER(:name) AND status != 'archive' AND campaign.campaign_id != :campaignId`,
             {
               name: body.name,
+              campaignId,
             },
           )
           .getOne();

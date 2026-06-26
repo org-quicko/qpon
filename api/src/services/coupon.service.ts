@@ -227,10 +227,11 @@ export class CouponService {
             .getRepository(Coupon)
             .createQueryBuilder('coupon')
             .where(
-              `LOWER(coupon.name) = LOWER(:name) AND status != 'archive' AND coupon.couponId != :couponId`,
+              `LOWER(coupon.name) = LOWER(:name) AND status != 'archive' AND coupon.coupon_id != :couponId AND coupon.organization_id = :organizationId`,
               {
                 name: body.name,
                 couponId,
+                organizationId,
               },
             )
             .getOne();
