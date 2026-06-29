@@ -9,22 +9,22 @@ export class CreateRedemption {
   entity = 'org.quicko.qpon.redemption';
 
   @IsString()
-  code: string;
+  code?: string;
 
   @Expose({ name: 'base_order_value' })
   @IsNumber()
-  baseOrderValue: number;
+  baseOrderValue?: number;
 
   @IsNumber()
-  discount: number;
+  discount?: number;
 
   @Expose({ name: 'external_customer_id' })
   @IsString()
-  externalCustomerId: string;
+  externalCustomerId?: string;
 
   @Expose({ name: 'external_item_id' })
   @IsString()
-  externalItemId: string;
+  externalItemId?: string;
 
   @Expose({ name: 'external_id' })
   @IsOptional()

@@ -10,11 +10,11 @@ export class Item {
 
   @Expose({ name: 'item_id' })
   @IsUUID()
-  itemId: string;
+  itemId?: string;
 
   @Expose()
   @IsString()
-  name: string;
+  name?: string;
 
   @Expose()
   @IsOptional()
@@ -27,15 +27,15 @@ export class Item {
 
   @Expose({ name: 'external_id' })
   @IsString()
-  externalId: string;
+  externalId?: string;
 
   @Expose({ name: 'created_at' })
   @IsDate()
-  createdAt: Date;
+  createdAt?: Date;
 
   @Expose({ name: 'updated_at' })
   @IsDate()
-  updatedAt: Date;
+  updatedAt?: Date;
 
   getItemId(): string | undefined {
     return this.itemId;

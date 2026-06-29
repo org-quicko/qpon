@@ -24,11 +24,11 @@ export class CouponCode {
 
   @Expose({ name: "coupon_code_id" })
   @IsUUID()
-  couponCodeId: string;
+  couponCodeId?: string;
 
   @Expose()
   @IsString()
-  code: string;
+  code?: string;
 
   @Expose()
   @IsOptional()
@@ -37,7 +37,7 @@ export class CouponCode {
 
   @Expose({ name: "customer_constraint" })
   @IsEnum(CustomerConstraint)
-  customerConstraint: CustomerConstraint;
+  customerConstraint?: CustomerConstraint;
 
   @IsOptional()
   @Expose({ name: "max_redemptions" })
@@ -56,11 +56,11 @@ export class CouponCode {
 
   @Expose()
   @IsEnum(Visibility)
-  visibility: Visibility;
+  visibility?: Visibility;
 
   @Expose({ name: "duration_type" })
   @IsEnum(DurationType)
-  durationType: DurationType;
+  durationType?: DurationType;
 
   @IsOptional()
   @Expose({ name: "expires_at" })
@@ -69,19 +69,19 @@ export class CouponCode {
 
   @Expose({ name: "redemption_count" })
   @IsNumber()
-  redemptionCount: number;
+  redemptionCount?: number;
 
   @Expose({ name: "status" })
   @IsEnum(CouponCodeStatus)
-  status: CouponCodeStatus;
+  status?: CouponCodeStatus;
 
   @Expose({ name: "created_at" })
   @IsDate()
-  createdAt: Date;
+  createdAt?: Date;
 
   @Expose({ name: "updated_at" })
   @IsDate()
-  updatedAt: Date;
+  updatedAt?: Date;
 
   getCouponCodeId(): string | undefined {
     return this.couponCodeId;

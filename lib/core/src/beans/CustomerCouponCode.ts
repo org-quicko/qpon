@@ -16,7 +16,7 @@ export class CustomerCouponCode {
 
   @Expose()
   @IsArray()
-  customers: Customer[];
+  customers?: Customer[];
 
   getCouponCodeId(): string | undefined {
     return this.couponCodeId;
