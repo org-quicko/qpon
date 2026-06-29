@@ -95,7 +95,7 @@ export class Customer extends RestClient {
     }
   }
 
-  async updateCustomer(organizationId: string, customerId: string, data: Partial<Pick<CustomerBean, 'name' | 'email' | 'phone' | 'externalId'>>) : Promise<CustomerBean> {
+  async updateCustomer(organizationId: string, customerId: string, data: Pick<CustomerBean, 'name' | 'email' | 'phone' | 'externalId'>) : Promise<CustomerBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateCustomer.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, customer_id: customerId, data });
