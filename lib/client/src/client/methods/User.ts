@@ -90,13 +90,7 @@ export class User extends RestClient {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateUser.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, user_id: userId, data });
 
-      const body: Record<string, string> = { '@entity': 'org.quicko.qpon.user' };
-      if (data.name) body.name = data.name;
-      if (data.email) body.email = data.email;
-      if (data.currentPassword) body.currentPassword = data.currentPassword;
-      if (data.newPassword) body.newPassword = data.newPassword;
-
-      const response = await super.patch(APIURL.UPDATE_USER, body, {
+      const response = await super.patch(APIURL.UPDATE_USER, instanceToPlain(Object.assign(new UserBean(), data)), {
         params: [organizationId, userId],
       });
 

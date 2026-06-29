@@ -1,6 +1,7 @@
 import { ClientException, LoggerFactory, LoggingLevel } from '@org-quicko/core';
 import winston from 'winston';
 import { CouponItem as CouponItemBean, Item, PaginatedList } from '@org-quicko/qpon-core';
+import { instanceToPlain } from 'class-transformer';
 import { APIURL } from '../../resource';
 import { QponCredentials } from '../../beans';
 import { RestClient } from '../RestClient';
@@ -17,12 +18,7 @@ export class CouponItem extends RestClient {
       this.logger.info(`Start Client : ${this.constructor.name},${this.addCouponItem.name}`);
       this.logger.info(`Request`, { organization_id: organizationId, coupon_id: couponId, items: itemIds });
 
-      const body = {
-        '@entity': 'org.quicko.qpon.coupon_item',
-        items: itemIds,
-      };
-
-      const response = await super.post(APIURL.ADD_COUPON_ITEMS, body, {
+      const response = await super.post(APIURL.ADD_COUPON_ITEMS, instanceToPlain(Object.assign(new CouponItemBean(), { items: itemIds })), {
         params: [organizationId, couponId],
       });
 
@@ -91,12 +87,7 @@ export class CouponItem extends RestClient {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateItemsInCoupon.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, coupon_id: couponId, items: itemIds });
 
-      const body = {
-        '@entity': 'org.quicko.qpon.coupon_item',
-        items: itemIds,
-      };
-
-      const response = await super.patch(APIURL.UPDATE_ITEMS_IN_COUPON, body, {
+      const response = await super.patch(APIURL.UPDATE_ITEMS_IN_COUPON, instanceToPlain(Object.assign(new CouponItemBean(), { items: itemIds })), {
         params: [organizationId, couponId],
       });
 
