@@ -223,18 +223,14 @@ export class CouponService {
         }
 
         if (body.name) {
-          const coupon = await manager
-            .getRepository(Coupon)
-            .createQueryBuilder('coupon')
-            .where(
-              `LOWER(coupon.name) = LOWER(:name) AND status != 'archive' AND coupon.coupon_id != :couponId AND coupon.organization_id = :organizationId`,
-              {
-                name: body.name,
-                couponId,
-                organizationId,
-              },
-            )
-            .getOne();
+          const coupon = await couponRepository.findOne({
+            where: {
+              name: ILike(body.name),
+              status: Not(statusEnum.ARCHIVE),
+              organization: { organizationId },
+              couponId: Not(couponId),
+            },
+          });
 
           if (coupon) {
             this.logger.warn('Coupon with same name exists');

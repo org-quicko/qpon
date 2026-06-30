@@ -249,18 +249,15 @@ export class CampaignService {
       }
 
       if (body.name) {
-        const campaign = await this.campaignRepository
-          .createQueryBuilder('campaign')
-          .where(
-            `LOWER(campaign.name) = LOWER(:name) AND status != 'archive' AND campaign.campaign_id != :campaignId`,
-            {
-              name: body.name,
-              campaignId,
-            },
-          )
-          .getOne();
+        const existingCampaign = await this.campaignRepository.findOne({
+          where: {
+            name: ILike(body.name),
+            status: Not(campaignStatusEnum.ARCHIVE),
+            campaignId: Not(campaignId),
+          },
+        });
 
-        if (campaign) {
+        if (existingCampaign) {
           this.logger.warn('Campaign with same name exists');
           throw new ConflictException('Campaign with same name exists');
         }
