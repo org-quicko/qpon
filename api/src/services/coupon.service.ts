@@ -7,7 +7,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, FindOptionsWhere, ILike, Not, Repository } from 'typeorm';
+import { DataSource, FindOptionsWhere, ILike, Not, Raw, Repository } from 'typeorm';
 import { Coupon } from '../entities/coupon.entity';
 import { CreateCouponDto, UpdateCouponDto } from '../dtos';
 import { LoggerService } from './logger.service';
@@ -56,7 +56,9 @@ export class CouponService {
 
         const existingCoupon = await couponRepository.findOne({
           where: {
-            name: body.name,
+            name: Raw((alias) => `LOWER(${alias}) = LOWER(:name)`, {
+              name: body.name,
+            }),
             status: Not(statusEnum.ARCHIVE),
             organization: {
               organizationId
