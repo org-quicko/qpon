@@ -65,6 +65,12 @@ async function main() {
 
 	await step("COUPONITEM.fetchCouponItems", () => qpon.COUPONITEM.fetchCouponItems(ORG!, couponId));
 	await step("COUPONITEM.addItems", () => qpon.COUPONITEM.addItems(ORG!, couponId, { "@entity": "org.quicko.qpon.coupon_item", items: [itemId] } as any));
+	await step("COUPONITEM.fetchCouponItems [external_id present]", () => qpon.COUPONITEM.fetchCouponItems(ORG!, couponId), (r: any) => {
+		const first = r?.data?.items?.find((i: any) => i?.item_id === itemId) ?? r?.data?.items?.[0];
+		console.log("  fetched coupon item external_id:", first?.external_id);
+		if (!first) throw new Error("no items returned from fetchCouponItems");
+		if (first.external_id == null) throw new Error("external_id MISSING on fetched coupon item");
+	});
 
 	await step("CAMPAIGN.createCampaign", () => qpon.CAMPAIGN.createCampaign(ORG!, couponId, { "@entity": "org.quicko.qpon.campaign", name: `camp-${tag}`, budget: 1000 } as any), (r: any) => { campaignId = r?.data?.campaign_id; });
 	await step("CAMPAIGN.fetchCampaigns", () => qpon.CAMPAIGN.fetchCampaigns(ORG!, couponId));
@@ -81,7 +87,12 @@ async function main() {
 	await step("CUSTOMERS.updateCustomer", () => qpon.CUSTOMERS.updateCustomer(ORG!, customerId, { "@entity": "org.quicko.qpon.customer", name: `cust-${tag}-upd` } as any));
 
 	await step("CUSTOMERCOUPONCODE.addCustomers", () => qpon.CUSTOMERCOUPONCODE.addCustomers(couponId, campaignId, couponCodeId, { "@entity": "org.quicko.qpon.customer_coupon_code", customers: [customerId] } as any));
-	await step("CUSTOMERCOUPONCODE.fetchCustomersForCouponCode", () => qpon.CUSTOMERCOUPONCODE.fetchCustomersForCouponCode(couponId, campaignId, couponCodeId));
+	await step("CUSTOMERCOUPONCODE.fetchCustomersForCouponCode [external_id present]", () => qpon.CUSTOMERCOUPONCODE.fetchCustomersForCouponCode(couponId, campaignId, couponCodeId), (r: any) => {
+		const first = r?.data?.items?.find((c: any) => c?.customer_id === customerId) ?? r?.data?.items?.[0];
+		console.log("  fetched customer external_id:", first?.external_id);
+		if (!first) throw new Error("no customers returned from fetchCustomersForCouponCode");
+		if (first.external_id == null) throw new Error("external_id MISSING on fetched customer");
+	});
 
 	await step("REDEMPTIONS.fetchRedemptionsForCouponCode", () => qpon.REDEMPTIONS.fetchRedemptionsForCouponCode(ORG!, couponId, campaignId, couponCodeId));
 
