@@ -56,7 +56,7 @@ export class CouponService {
 
         const existingCoupon = await couponRepository.findOne({
           where: {
-            name: ILike(body.name),
+            name: body.name,
             status: Not(statusEnum.ARCHIVE),
             organization: {
               organizationId
@@ -225,7 +225,7 @@ export class CouponService {
         if (body.name) {
           const coupon = await couponRepository.findOne({
             where: {
-              name: ILike(body.name),
+              name: body.name,
               status: Not(statusEnum.ARCHIVE),
               organization: { organizationId },
               couponId: Not(couponId),
