@@ -227,10 +227,14 @@ export const CouponCodeStore = signalStore(
                   }
                 },
                 error: (error: HttpErrorResponse) => {
-                  snackbarService.openSnackBar(
-                    'Unable to create coupon',
-                    undefined
-                  );
+                  if (error.status == 409) {
+                    snackbarService.openSnackBar('Coupon with this name already exists', undefined);
+                  } else {
+                    snackbarService.openSnackBar(
+                      'Unable to create coupon',
+                      undefined
+                    );
+                  }
                   CreateError.emit(error.message);
                 },
               })
@@ -345,7 +349,7 @@ export const CouponCodeStore = signalStore(
                   error: (error: HttpErrorResponse) => {
 
                     if(error.status == 409) {
-                      snackbarService.openSnackBar('Campaign already exists', undefined);  
+                      snackbarService.openSnackBar('Campaign with this name already exists', undefined);
                     } else {
                       snackbarService.openSnackBar(
                         'Unable to create campaign',
@@ -596,7 +600,7 @@ export const CouponCodeStore = signalStore(
                   error: (error: HttpErrorResponse) => {
 
                     if(error.status == 409) {
-                      snackbarService.openSnackBar('Coupon code already exists', undefined);
+                      snackbarService.openSnackBar('Coupon code with this name already exists', undefined);
                     } else {
                       snackbarService.openSnackBar(
                         'Failed to create some coupon codes',
@@ -697,7 +701,7 @@ export const CouponCodeStore = signalStore(
                   CreateError.emit(error.message);
 
                   if(error.status == 409) {
-                    snackbarService.openSnackBar('Coupon already exists', undefined);
+                    snackbarService.openSnackBar('Coupon with this name already exists', undefined);
                   } else {
                     snackbarService.openSnackBar('Error updating coupon', undefined);
                   }
@@ -747,7 +751,7 @@ export const CouponCodeStore = signalStore(
                   CreateError.emit(error.message);
 
                   if(error.status == 409) {
-                    snackbarService.openSnackBar('Campaign already exists', undefined);
+                    snackbarService.openSnackBar('Campaign with this name already exists', undefined);
                   } else {
                     snackbarService.openSnackBar('Error updating campaign', undefined);
                   }
