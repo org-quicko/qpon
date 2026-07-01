@@ -251,7 +251,7 @@ export class CampaignService {
       if (body.name) {
         const existingCampaign = await this.campaignRepository.findOne({
           where: {
-            name: ILike(body.name),
+            name: body.name,
             status: Not(campaignStatusEnum.ARCHIVE),
             campaignId: Not(campaignId),
           },
