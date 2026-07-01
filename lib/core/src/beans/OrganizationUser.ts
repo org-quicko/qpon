@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { Equals, IsDate, IsString } from 'class-validator';
 import { Role } from '../enums';
 
@@ -19,10 +19,12 @@ export class OrganizationUser {
   role?: Role;
 
   @Expose({ name: 'created_at' })
+  @Type(() => Date)
   @IsDate()
   createdAt?: Date;
 
   @Expose({ name: 'updated_at' })
+  @Type(() => Date)
   @IsDate()
   updatedAt?: Date;
 

@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Expose } from "class-transformer";
+import { Expose, Type } from 'class-transformer';
 import { Equals, IsArray, IsNumber, IsOptional, ValidateNested } from "class-validator";
 
 @Reflect.metadata('@entity', 'org.quicko.qpon.paginated_list')
@@ -15,16 +15,19 @@ export class PaginatedList<T> {
 
 	@Expose({ name: "count" })
 	@IsOptional()
+	@Type(() => Number)
 	@IsNumber()
 	count?: number;
 
 	@Expose({ name: "skip" })
 	@IsOptional()
+	@Type(() => Number)
 	@IsNumber()
 	skip?: number;
 
 	@Expose({ name: "take" })
 	@IsOptional()
+	@Type(() => Number)
 	@IsNumber()
 	take?: number;
 

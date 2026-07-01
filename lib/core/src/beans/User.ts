@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Expose } from "class-transformer";
+import { Expose, Type } from 'class-transformer';
 import { Equals, IsString, IsEnum, IsDate, IsUUID, IsOptional } from "class-validator";
 import { Role } from "../enums";
 
@@ -28,14 +28,17 @@ export class User {
 
 	@IsOptional()
 	@Expose({ name: "last_accessed_at" })
+	@Type(() => Date)
 	@IsDate()
 	lastAccessedAt?: Date;
 
 	@Expose({ name: "created_at" })
+	@Type(() => Date)
 	@IsDate()
 	createdAt?: Date;
 
 	@Expose({ name: "updated_at" })
+	@Type(() => Date)
 	@IsDate()
 	updatedAt?: Date;
 

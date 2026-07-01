@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Expose } from "class-transformer";
+import { Expose, Type } from 'class-transformer';
 import { Equals, IsString, IsNumber, IsEnum, IsDate, IsUUID, IsOptional } from "class-validator";
 import { ItemConstraint, DiscountType, Status } from "../enums";
 
@@ -22,10 +22,13 @@ export class Coupon {
 	discountType?: DiscountType;
 
 	@Expose({ name: "discount_value" })
+	@Type(() => Number)
 	@IsNumber()
 	discountValue?: number;
 
 	@Expose({ name: "discount_upto" })
+	@IsOptional()
+	@Type(() => Number)
 	@IsNumber()
 	discountUpto?: number;
 
@@ -38,10 +41,12 @@ export class Coupon {
 	status?: Status;
 
 	@Expose({ name: "created_at" })
+	@Type(() => Date)
 	@IsDate()
 	createdAt?: Date;
 
 	@Expose({ name: "updated_at" })
+	@Type(() => Date)
 	@IsDate()
 	updatedAt?: Date;
 

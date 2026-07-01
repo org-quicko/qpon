@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { Equals, IsString, IsDate, IsOptional } from 'class-validator';
 
 @Reflect.metadata('@entity', 'org.quicko.qpon.organization')
@@ -23,10 +23,12 @@ export class Organization {
   externalId?: string;
 
   @Expose({ name: 'created_at' })
+  @Type(() => Date)
   @IsDate()
   createdAt?: Date;
 
   @Expose({ name: 'updated_at' })
+  @Type(() => Date)
   @IsDate()
   updatedAt?: Date;
 

@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { Equals, IsDate, IsOptional, IsString, IsUUID } from 'class-validator';
 
 @Reflect.metadata('@entity', 'org.quicko.qpon.api_key')
@@ -20,12 +20,14 @@ export class ApiKey {
   secret?: string;
 
   @Expose({ name: 'created_at' })
+  @Type(() => Date)
   @IsDate()
-  createdAt?: string;
+  createdAt?: Date;
 
   @Expose({ name: 'updated_at' })
+  @Type(() => Date)
   @IsDate()
-  updatedAt?: string;
+  updatedAt?: Date;
 
   getApiKeyId(): string | undefined {
     return this.apiKeyId;
@@ -51,19 +53,19 @@ export class ApiKey {
     this.secret = secret;
   }
 
-  getCreatedAt(): string | undefined {
+  getCreatedAt(): Date | undefined {
     return this.createdAt;
   }
 
-  setCreatedAt(createdAt: string): void {
+  setCreatedAt(createdAt: Date): void {
     this.createdAt = createdAt;
   }
 
-  getUpdatedAt(): string | undefined {
+  getUpdatedAt(): Date | undefined {
     return this.updatedAt;
   }
 
-  setUpdatedAt(updatedAt: string): void {
+  setUpdatedAt(updatedAt: Date): void {
     this.updatedAt = updatedAt;
   }
 }

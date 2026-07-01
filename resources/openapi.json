@@ -7,28 +7,37 @@
   },
   "tags": [
     {
-      "name": "Organization"
-    },
-    {
-      "name": "Coupon"
+      "name": "Api Key"
     },
     {
       "name": "Campaign"
     },
     {
+      "name": "Coupon"
+    },
+    {
       "name": "Coupon Code"
+    },
+    {
+      "name": "Coupon Item"
+    },
+    {
+      "name": "Customer"
+    },
+    {
+      "name": "Customer coupon code"
+    },
+    {
+      "name": "Item"
     },
     {
       "name": "Offers"
     },
     {
-      "name": "Redemptions"
+      "name": "Organization"
     },
     {
-      "name": "Items"
-    },
-    {
-      "name": "Customers"
+      "name": "Redemption"
     },
     {
       "name": "User"
@@ -38,22 +47,58 @@
     "/api/organizations": {
       "parameters": [],
       "post": {
-        "operationId": "create-organization",
+        "operationId": "createOrganization",
         "summary": "Create organization",
         "tags": [
           "Organization"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
-          "201": {
+          "400": {
+            "description": "400 Invalid body",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "code": 400,
+                  "message": "Bad Request Exception"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "409 Organization already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "code": 409,
+                  "message": "Organization with this name already exists"
+                }
+              }
+            }
+          },
+          "200": {
             "description": "201 Organization created",
             "content": {
               "application/json": {
@@ -114,50 +159,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "400 Invalid body",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "integer"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "example": {
-                  "code": 400,
-                  "message": "Bad Request Exception"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "409 Organization already exists",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "integer"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "example": {
-                  "code": 409,
-                  "message": "Organization with this name already exists"
-                }
-              }
-            }
           }
         },
         "requestBody": {
@@ -181,7 +182,10 @@
                   "currency": {
                     "type": "string"
                   }
-                }
+                },
+                "required": [
+                  "@entity"
+                ]
               },
               "example": {
                 "@entity": "org.quicko.qpon.organization",
@@ -191,10 +195,11 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "Organization"
       },
       "get": {
-        "operationId": "fetch-organizations",
+        "operationId": "fetchOrganizations",
         "summary": "Fetch organizations",
         "tags": [
           "Organization"
@@ -275,12 +280,8 @@
                           "currency": {
                             "type": "string"
                           },
-                          "theme_colour": {
-                            "type": "string"
-                          },
                           "external_id": {
-                            "type": "string",
-                            "format": "email"
+                            "type": "string"
                           },
                           "created_at": {
                             "type": "string",
@@ -353,7 +354,8 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "Organization"
       }
     },
     "/api/organizations/{organization_id}": {
@@ -370,18 +372,10 @@
         }
       ],
       "get": {
-        "operationId": "fetch-organization",
+        "operationId": "fetchOrganization",
         "summary": "Fetch organization",
         "tags": [
           "Organization"
-        ],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
         ],
         "parameters": [],
         "responses": {
@@ -469,21 +463,14 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "Organization"
       },
       "patch": {
-        "operationId": "update-organization",
+        "operationId": "updateOrganization",
         "summary": "Update organization",
         "tags": [
           "Organization"
-        ],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
         ],
         "parameters": [],
         "responses": {
@@ -593,7 +580,10 @@
                   "currency": {
                     "type": "string"
                   }
-                }
+                },
+                "required": [
+                  "@entity"
+                ]
               },
               "example": {
                 "@entity": "org.quicko.qpon.organization",
@@ -603,21 +593,14 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "Organization"
       },
       "delete": {
-        "operationId": "delete-organization",
+        "operationId": "deleteOrganization",
         "summary": "Delete organization",
         "tags": [
           "Organization"
-        ],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
         ],
         "parameters": [],
         "responses": {
@@ -665,7 +648,8 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "Organization"
       }
     },
     "/api/organizations/{organization_id}/api-keys": {
@@ -681,19 +665,36 @@
         }
       ],
       "post": {
-        "operationId": "create-api-key",
+        "operationId": "createApiKey",
         "summary": "Create Api Key",
         "tags": [
           "Api Key"
         ],
-        "security": [
-          {
-            "tokenAuth": []
-          }
-        ],
         "parameters": [],
         "responses": {
-          "201": {
+          "404": {
+            "description": "404 Organization not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "code": 404,
+                  "message": "Organization not found"
+                }
+              }
+            }
+          },
+          "200": {
             "description": "201 Successfully created api keys",
             "content": {
               "application/json": {
@@ -750,43 +751,17 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "404 Organization not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "integer"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "example": {
-                  "code": 404,
-                  "message": "Organization not found"
-                }
-              }
-            }
           }
-        }
+        },
+        "x-client-name": "ApiKey"
       },
       "get": {
-        "operationId": "fetch-api-key",
+        "operationId": "fetchApiKey",
         "summary": "Fetch Api key",
         "tags": [
           "Api Key"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "200 Successfully fetched api key",
@@ -814,6 +789,9 @@
                           "type": "string"
                         },
                         "key": {
+                          "type": "string"
+                        },
+                        "secret": {
                           "type": "string"
                         },
                         "created_at": {
@@ -864,49 +842,20 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "ApiKey"
       }
     },
     "/api/users": {
       "parameters": [],
       "post": {
-        "operationId": "create-super-admin",
+        "operationId": "createSuperAdmin",
         "summary": "Create super admin",
         "tags": [
           "User"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
-          "201": {
-            "description": "201 Successfully created super admin",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "integer"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "example": {
-                  "code": 201,
-                  "message": "Successfully created super admin"
-                }
-              }
-            }
-          },
           "409": {
             "description": "409 Super Admin already exists",
             "content": {
@@ -928,6 +877,28 @@
                 }
               }
             }
+          },
+          "200": {
+            "description": "201 Successfully created super admin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "code": 201,
+                  "message": "Successfully created super admin"
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -943,23 +914,21 @@
                     ]
                   },
                   "name": {
-                    "type": "string",
-                    "example": "John Doe"
+                    "type": "string"
                   },
                   "email": {
-                    "type": "string",
-                    "format": "email",
-                    "example": "super.admin@test.com"
+                    "type": "string"
                   },
                   "password": {
-                    "type": "string",
-                    "example": "1234"
+                    "type": "string"
                   },
                   "role": {
-                    "type": "string",
-                    "default": "super_admin"
+                    "type": "string"
                   }
-                }
+                },
+                "required": [
+                  "@entity"
+                ]
               },
               "example": {
                 "@entity": "org.quicko.qpon.user",
@@ -970,23 +939,16 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "User"
       },
       "get": {
-        "operationId": "fetch-users",
+        "operationId": "fetchUsers",
         "summary": "Fetch users",
         "tags": [
           "User"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "200 Successfully fetched",
@@ -1028,8 +990,17 @@
                                 "type": "string"
                               },
                               "email": {
+                                "type": "string"
+                              },
+                              "password": {
+                                "type": "string"
+                              },
+                              "role": {
+                                "type": "string"
+                              },
+                              "last_accessed_at": {
                                 "type": "string",
-                                "format": "email"
+                                "format": "date-time"
                               },
                               "created_at": {
                                 "type": "string",
@@ -1043,13 +1014,13 @@
                           }
                         },
                         "count": {
-                          "type": "integer"
+                          "type": "number"
                         },
                         "skip": {
-                          "type": "integer"
+                          "type": "number"
                         },
                         "take": {
-                          "type": "integer"
+                          "type": "number"
                         }
                       }
                     }
@@ -1124,7 +1095,8 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "User"
       }
     },
     "/api/organizations/{organization_id}/users": {
@@ -1140,84 +1112,13 @@
         }
       ],
       "post": {
-        "operationId": "create-user",
+        "operationId": "createUser",
         "summary": "Create user",
         "tags": [
           "User"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
-          "201": {
-            "description": "201 User created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "integer"
-                    },
-                    "message": {
-                      "type": "string"
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "@entity": {
-                          "type": "string",
-                          "enum": [
-                            "org.quicko.qpon.user"
-                          ]
-                        },
-                        "user_id": {
-                          "type": "string"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "email": {
-                          "type": "string",
-                          "format": "email"
-                        },
-                        "role": {
-                          "type": "string"
-                        },
-                        "created_at": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "updated_at": {
-                          "type": "string",
-                          "format": "date-time"
-                        }
-                      }
-                    }
-                  }
-                },
-                "example": {
-                  "code": 201,
-                  "message": "Successfully created user",
-                  "data": {
-                    "@entity": "org.quicko.qpon.user",
-                    "user_id": "4ca6cbbd-cab2-4946-8b7f-0a74bb06a9e5",
-                    "name": "Test User",
-                    "email": "test.user@test.com",
-                    "role": "admin",
-                    "created_at": "2025-04-23T13:53:20.826Z",
-                    "updated_at": "2025-04-23T13:53:20.826Z"
-                  }
-                }
-              }
-            }
-          },
           "400": {
             "description": "400 Bad request",
             "content": {
@@ -1261,6 +1162,75 @@
                 }
               }
             }
+          },
+          "200": {
+            "description": "201 User created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "@entity": {
+                          "type": "string",
+                          "enum": [
+                            "org.quicko.qpon.user"
+                          ]
+                        },
+                        "user_id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "password": {
+                          "type": "string"
+                        },
+                        "role": {
+                          "type": "string"
+                        },
+                        "last_accessed_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "code": 201,
+                  "message": "Successfully created user",
+                  "data": {
+                    "@entity": "org.quicko.qpon.user",
+                    "user_id": "4ca6cbbd-cab2-4946-8b7f-0a74bb06a9e5",
+                    "name": "Test User",
+                    "email": "test.user@test.com",
+                    "role": "admin",
+                    "created_at": "2025-04-23T13:53:20.826Z",
+                    "updated_at": "2025-04-23T13:53:20.826Z"
+                  }
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -1276,33 +1246,24 @@
                     ]
                   },
                   "name": {
-                    "type": "string",
-                    "example": "Robert Langdon"
+                    "type": "string"
                   },
                   "email": {
-                    "type": "string",
-                    "format": "email",
-                    "example": "robert.langdon@test.com"
+                    "type": "string"
                   },
                   "password": {
-                    "type": "string",
-                    "example": "1234"
+                    "type": "string"
                   },
                   "role": {
-                    "type": "string",
-                    "enum": [
-                      "admin",
-                      "editor",
-                      "viewer"
-                    ],
-                    "example": "admin"
+                    "type": "string"
                   }
                 },
                 "required": [
                   "name",
                   "email",
                   "password",
-                  "role"
+                  "role",
+                  "@entity"
                 ]
               },
               "example": {
@@ -1314,7 +1275,8 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "User"
       },
       "get": {
         "summary": "Fetch users of an organization",
@@ -1322,14 +1284,6 @@
           "User"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "200 Fetch users",
@@ -1364,12 +1318,23 @@
                           "email": {
                             "type": "string"
                           },
+                          "password": {
+                            "type": "string"
+                          },
+                          "role": {
+                            "type": "string"
+                          },
+                          "last_accessed_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
                           "created_at": {
                             "type": "string",
-                            "format": "style"
+                            "format": "date-time"
                           },
                           "updated_at": {
-                            "type": "string"
+                            "type": "string",
+                            "format": "date-time"
                           }
                         }
                       }
@@ -1416,7 +1381,8 @@
             }
           }
         },
-        "operationId": "fetch-users-of-an-organization"
+        "operationId": "fetchUsersOfAnOrganization",
+        "x-client-name": "User"
       }
     },
     "/api/organizations/{organization_id}/users/{user_id}": {
@@ -1446,14 +1412,6 @@
           "User"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "200 Successfull",
@@ -1484,15 +1442,25 @@
                           "type": "string"
                         },
                         "email": {
+                          "type": "string"
+                        },
+                        "password": {
+                          "type": "string"
+                        },
+                        "role": {
+                          "type": "string"
+                        },
+                        "last_accessed_at": {
                           "type": "string",
-                          "format": "email"
+                          "format": "date-time"
                         },
                         "created_at": {
                           "type": "string",
-                          "format": "style"
+                          "format": "date-time"
                         },
                         "updated_at": {
-                          "type": "string"
+                          "type": "string",
+                          "format": "date-time"
                         }
                       }
                     }
@@ -1552,10 +1520,12 @@
                     "type": "string"
                   },
                   "email": {
-                    "type": "string",
-                    "format": "email"
+                    "type": "string"
                   }
-                }
+                },
+                "required": [
+                  "@entity"
+                ]
               },
               "example": {
                 "@entity": "org.quicko.qpon.user",
@@ -1565,7 +1535,8 @@
             }
           }
         },
-        "operationId": "update-user"
+        "operationId": "updateUser",
+        "x-client-name": "User"
       },
       "delete": {
         "summary": "Delete user",
@@ -1573,14 +1544,6 @@
           "User"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "200 Successfully deleted user",
@@ -1619,7 +1582,8 @@
             }
           }
         },
-        "operationId": "delete-user"
+        "operationId": "deleteUser",
+        "x-client-name": "User"
       }
     },
     "/api/users/login": {
@@ -1708,7 +1672,8 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "User"
       }
     },
     "/api/organizations/{organization_id}/users/{user_id}/role": {
@@ -1738,14 +1703,6 @@
           "User"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "200 Successfully updated user role",
@@ -1781,21 +1738,9 @@
             }
           }
         },
-        "operationId": "update-user-role-in-organization"
+        "operationId": "updateUserRoleInOrganization",
+        "x-client-name": "User"
       }
-    },
-    "/api/users/{user_id}/organizations": {
-      "parameters": [
-        {
-          "name": "user_id",
-          "in": "path",
-          "required": true,
-          "example": "4d6644c1-cb16-44a2-8d24-6d13d8893d63",
-          "schema": {
-            "type": "string"
-          }
-        }
-      ]
     },
     "/api/users/{user_id}": {
       "parameters": [
@@ -1815,14 +1760,6 @@
           "User"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "200 Fetched user",
@@ -1853,8 +1790,17 @@
                           "type": "string"
                         },
                         "email": {
+                          "type": "string"
+                        },
+                        "password": {
+                          "type": "string"
+                        },
+                        "role": {
+                          "type": "string"
+                        },
+                        "last_accessed_at": {
                           "type": "string",
-                          "format": "email"
+                          "format": "date-time"
                         },
                         "created_at": {
                           "type": "string",
@@ -1906,7 +1852,8 @@
             }
           }
         },
-        "operationId": "fetch-user"
+        "operationId": "fetchUser",
+        "x-client-name": "User"
       }
     },
     "/api/organizations/{organization_id}/coupons": {
@@ -1922,22 +1869,14 @@
         }
       ],
       "post": {
-        "operationId": "create-coupon",
+        "operationId": "createCoupon",
         "summary": "Create coupon",
         "tags": [
           "Coupon"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
-          "201": {
+          "200": {
             "description": "201 Successfully created coupon",
             "content": {
               "application/json": {
@@ -1969,9 +1908,15 @@
                           "type": "string"
                         },
                         "discount_value": {
-                          "type": "integer"
+                          "type": "number"
+                        },
+                        "discount_upto": {
+                          "type": "number"
                         },
                         "item_constraint": {
+                          "type": "string"
+                        },
+                        "status": {
                           "type": "string"
                         },
                         "created_at": {
@@ -2023,12 +1968,15 @@
                     "type": "string"
                   },
                   "discount_value": {
-                    "type": "integer"
+                    "type": "number"
                   },
                   "item_constraint": {
                     "type": "string"
                   }
-                }
+                },
+                "required": [
+                  "@entity"
+                ]
               },
               "example": {
                 "@entity": "org.quicko.qpon.coupon",
@@ -2039,7 +1987,8 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "Coupon"
       },
       "get": {
         "summary": "Fetch coupons",
@@ -2146,14 +2095,6 @@
             }
           }
         ],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "200 Fetched coupons",
@@ -2195,28 +2136,19 @@
                                 "type": "string"
                               },
                               "discount_type": {
-                                "type": "string",
-                                "enum": [
-                                  "percentage",
-                                  "fixed"
-                                ]
+                                "type": "string"
+                              },
+                              "discount_value": {
+                                "type": "number"
                               },
                               "discount_upto": {
                                 "type": "number"
                               },
                               "item_constraint": {
-                                "type": "string",
-                                "enum": [
-                                  "all",
-                                  "specific"
-                                ]
+                                "type": "string"
                               },
                               "status": {
-                                "type": "string",
-                                "enum": [
-                                  "active",
-                                  "inactive"
-                                ]
+                                "type": "string"
                               },
                               "created_at": {
                                 "type": "string",
@@ -2230,13 +2162,13 @@
                           }
                         },
                         "count": {
-                          "type": "integer"
+                          "type": "number"
                         },
                         "skip": {
-                          "type": "integer"
+                          "type": "number"
                         },
                         "take": {
-                          "type": "integer"
+                          "type": "number"
                         }
                       }
                     }
@@ -2280,7 +2212,8 @@
             }
           }
         },
-        "operationId": "fetch-coupons"
+        "operationId": "fetchCoupons",
+        "x-client-name": "Coupon"
       }
     },
     "/api/organizations/{organization_id}/coupons/{coupon_id}": {
@@ -2310,14 +2243,6 @@
           "Coupon"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "200 Fetched coupon",
@@ -2349,6 +2274,9 @@
                         },
                         "discount_type": {
                           "type": "string"
+                        },
+                        "discount_value": {
+                          "type": "number"
                         },
                         "discount_upto": {
                           "type": "number"
@@ -2412,7 +2340,8 @@
             }
           }
         },
-        "operationId": "fetch-coupon"
+        "operationId": "fetchCoupon",
+        "x-client-name": "Coupon"
       },
       "patch": {
         "summary": "Update coupon",
@@ -2420,14 +2349,6 @@
           "Coupon"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "200 Successfully updated coupon",
@@ -2459,6 +2380,9 @@
                         },
                         "discount_type": {
                           "type": "string"
+                        },
+                        "discount_value": {
+                          "type": "number"
                         },
                         "discount_upto": {
                           "type": "number"
@@ -2551,7 +2475,10 @@
                   "item_constraint": {
                     "type": "string"
                   }
-                }
+                },
+                "required": [
+                  "@entity"
+                ]
               },
               "example": {
                 "@entity": "org.quicko.qpon.coupon",
@@ -2560,7 +2487,8 @@
             }
           }
         },
-        "operationId": "update-coupon"
+        "operationId": "updateCoupon",
+        "x-client-name": "Coupon"
       },
       "delete": {
         "summary": "Delete coupon",
@@ -2568,14 +2496,6 @@
           "Coupon"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "200 Successfully deactivated coupon",
@@ -2622,7 +2542,8 @@
             }
           }
         },
-        "operationId": "delete-coupon"
+        "operationId": "deleteCoupon",
+        "x-client-name": "Coupon"
       }
     },
     "/api/organizations/{organization_id}/coupons/{coupon_id}/deactivate": {
@@ -2648,13 +2569,33 @@
         }
       ],
       "post": {
-        "operationId": "deactivate-coupon",
+        "operationId": "deactivateCoupon",
         "summary": "Deactivate coupon",
         "tags": [
           "Coupon"
         ],
         "parameters": [],
-        "responses": {}
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-client-name": "Coupon"
       }
     },
     "/api/organizations/{organization_id}/coupons/{coupon_id}/reactivate": {
@@ -2680,21 +2621,33 @@
         }
       ],
       "post": {
-        "operationId": "reactivate-coupon",
+        "operationId": "reactivateCoupon",
         "summary": "Reactivate coupon",
         "tags": [
           "Coupon"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
-        ],
-        "responses": {}
+        },
+        "x-client-name": "Coupon"
       }
     },
     "/api/organizations/{organization_id}/coupons/summary": {
@@ -2710,7 +2663,7 @@
         }
       ],
       "get": {
-        "operationId": "fetch-coupons-summary",
+        "operationId": "fetchCouponsSummary",
         "summary": "Fetch coupons summary",
         "tags": [
           "Coupon"
@@ -2756,14 +2709,6 @@
             }
           }
         ],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "200 Fetched summary of all coupons in an organization",
@@ -2782,18 +2727,7 @@
                       "type": "object",
                       "properties": {
                         "metadata": {
-                          "type": "object",
-                          "properties": {
-                            "@entity": {
-                              "type": "string",
-                              "enum": [
-                                "org.quicko.qpon.organization"
-                              ]
-                            },
-                            "organization_id": {
-                              "type": "string"
-                            }
-                          }
+                          "type": "object"
                         },
                         "sheets": {
                           "type": "array",
@@ -2947,7 +2881,8 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "Coupon"
       }
     },
     "/api/organizations/{organization_id}/coupons/{coupon_id}/summary": {
@@ -2972,7 +2907,7 @@
         }
       ],
       "get": {
-        "operationId": "fetch-coupon-summary",
+        "operationId": "fetchCouponSummary",
         "summary": "Fetch coupon summary",
         "tags": [
           "Coupon"
@@ -3008,14 +2943,6 @@
             }
           }
         ],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "200 Fetched coupon summary",
@@ -3034,18 +2961,7 @@
                       "type": "object",
                       "properties": {
                         "metadata": {
-                          "type": "object",
-                          "properties": {
-                            "@entity": {
-                              "type": "string",
-                              "enum": [
-                                "org.quicko.qpon.organization"
-                              ]
-                            },
-                            "organization_id": {
-                              "type": "string"
-                            }
-                          }
+                          "type": "object"
                         },
                         "sheets": {
                           "type": "array",
@@ -3149,7 +3065,8 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "Coupon"
       }
     },
     "/api/organizations/{organization_id}/coupons/{coupon_id}/items": {
@@ -3174,22 +3091,14 @@
         }
       ],
       "post": {
-        "operationId": "add-items",
+        "operationId": "addItems",
         "summary": "Add items",
         "tags": [
           "Coupon Item"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
-          "201": {
+          "200": {
             "description": "200 Successfully added item",
             "content": {
               "application/json": {
@@ -3210,6 +3119,9 @@
                           "enum": [
                             "org.quicko.qpon.coupon_item"
                           ]
+                        },
+                        "coupon_id": {
+                          "type": "string"
                         },
                         "items": {
                           "type": "array",
@@ -3232,12 +3144,7 @@
                                 "type": "string"
                               },
                               "custom_fields": {
-                                "type": "object",
-                                "properties": {
-                                  "price": {
-                                    "type": "integer"
-                                  }
-                                }
+                                "type": "object"
                               },
                               "external_id": {
                                 "type": "string"
@@ -3300,7 +3207,10 @@
                       "type": "string"
                     }
                   }
-                }
+                },
+                "required": [
+                  "@entity"
+                ]
               },
               "example": {
                 "@entity": "org.quicko.qpon.coupon_item",
@@ -3310,10 +3220,11 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "CouponItem"
       },
       "get": {
-        "operationId": "fetch-coupon-items",
+        "operationId": "fetchCouponItems",
         "summary": "Fetch coupon items",
         "tags": [
           "Coupon Item"
@@ -3347,32 +3258,157 @@
             }
           }
         ],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "@entity": {
+                          "type": "string",
+                          "enum": [
+                            "org.quicko.qpon.coupon_item"
+                          ]
+                        },
+                        "coupon_id": {
+                          "type": "string"
+                        },
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "@entity": {
+                                "type": "string",
+                                "enum": [
+                                  "org.quicko.qpon.item"
+                                ]
+                              },
+                              "item_id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "description": {
+                                "type": "string"
+                              },
+                              "custom_fields": {
+                                "type": "object"
+                              },
+                              "external_id": {
+                                "type": "string"
+                              },
+                              "created_at": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "format": "date-time"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
-        ],
-        "responses": {}
+        },
+        "x-client-name": "CouponItem"
       },
       "patch": {
-        "operationId": "update-items",
+        "operationId": "updateItems",
         "summary": "Update items",
         "tags": [
           "Coupon Item"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "@entity": {
+                          "type": "string",
+                          "enum": [
+                            "org.quicko.qpon.coupon_item"
+                          ]
+                        },
+                        "coupon_id": {
+                          "type": "string"
+                        },
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "@entity": {
+                                "type": "string",
+                                "enum": [
+                                  "org.quicko.qpon.item"
+                                ]
+                              },
+                              "item_id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "description": {
+                                "type": "string"
+                              },
+                              "custom_fields": {
+                                "type": "object"
+                              },
+                              "external_id": {
+                                "type": "string"
+                              },
+                              "created_at": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "format": "date-time"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
-        ],
-        "responses": {},
+        },
         "requestBody": {
           "content": {
             "application/json": {
@@ -3391,7 +3427,10 @@
                       "type": "string"
                     }
                   }
-                }
+                },
+                "required": [
+                  "@entity"
+                ]
               },
               "example": {
                 "@entity": "org.quicko.qpon.coupon_item",
@@ -3402,7 +3441,8 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "CouponItem"
       }
     },
     "/api/organizations/{organization_id}/coupons/{coupon_id}/items/{item_id}": {
@@ -3436,21 +3476,33 @@
         }
       ],
       "delete": {
-        "operationId": "remove-item",
+        "operationId": "removeItem",
         "summary": "Remove item",
         "tags": [
           "Coupon Item"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
-        ],
-        "responses": {}
+        },
+        "x-client-name": "CouponItem"
       }
     },
     "/api/organizations/{organization_id}/items": {
@@ -3466,21 +3518,66 @@
         }
       ],
       "post": {
-        "operationId": "create-item",
+        "operationId": "createItem",
         "summary": "Create item",
         "tags": [
           "Item"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "@entity": {
+                          "type": "string",
+                          "enum": [
+                            "org.quicko.qpon.item"
+                          ]
+                        },
+                        "item_id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "custom_fields": {
+                          "type": "object"
+                        },
+                        "external_id": {
+                          "type": "string"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
-        ],
-        "responses": {},
+        },
         "requestBody": {
           "content": {
             "application/json": {
@@ -3500,17 +3597,15 @@
                     "type": "string"
                   },
                   "custom_fields": {
-                    "type": "object",
-                    "properties": {
-                      "price": {
-                        "type": "integer"
-                      }
-                    }
+                    "type": "object"
                   },
                   "external_id": {
                     "type": "string"
                   }
-                }
+                },
+                "required": [
+                  "@entity"
+                ]
               },
               "example": {
                 "@entity": "org.quicko.qpon.item",
@@ -3523,10 +3618,11 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "Item"
       },
       "get": {
-        "operationId": "fetch-items",
+        "operationId": "fetchItems",
         "summary": "Fetch items",
         "tags": [
           "Item"
@@ -3573,14 +3669,6 @@
             }
           }
         ],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "200 Fetched items",
@@ -3625,12 +3713,7 @@
                                 "type": "string"
                               },
                               "custom_fields": {
-                                "type": "object",
-                                "properties": {
-                                  "price": {
-                                    "type": "integer"
-                                  }
-                                }
+                                "type": "object"
                               },
                               "external_id": {
                                 "type": "string"
@@ -3647,13 +3730,13 @@
                           }
                         },
                         "count": {
-                          "type": "integer"
+                          "type": "number"
                         },
                         "skip": {
-                          "type": "integer"
+                          "type": "number"
                         },
                         "take": {
-                          "type": "integer"
+                          "type": "number"
                         }
                       }
                     }
@@ -3698,7 +3781,8 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "Item"
       }
     },
     "/api/organizations/{organization_id}/items/{item_id}": {
@@ -3723,21 +3807,66 @@
         }
       ],
       "patch": {
-        "operationId": "update-item",
+        "operationId": "updateItem",
         "summary": "Update item",
         "tags": [
           "Item"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "@entity": {
+                          "type": "string",
+                          "enum": [
+                            "org.quicko.qpon.item"
+                          ]
+                        },
+                        "item_id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "custom_fields": {
+                          "type": "object"
+                        },
+                        "external_id": {
+                          "type": "string"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
-        ],
-        "responses": {},
+        },
         "requestBody": {
           "content": {
             "application/json": {
@@ -3748,41 +3877,100 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "Item"
       },
       "delete": {
-        "operationId": "delete-item",
+        "operationId": "deleteItem",
         "summary": "Delete item",
         "tags": [
           "Item"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
-        ],
-        "responses": {}
+        },
+        "x-client-name": "Item"
       },
       "get": {
-        "operationId": "fetch-item",
+        "operationId": "fetchItem",
         "summary": "Fetch item",
         "tags": [
           "Item"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "@entity": {
+                          "type": "string",
+                          "enum": [
+                            "org.quicko.qpon.item"
+                          ]
+                        },
+                        "item_id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "custom_fields": {
+                          "type": "object"
+                        },
+                        "external_id": {
+                          "type": "string"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
-        ],
-        "responses": {}
+        },
+        "x-client-name": "Item"
       }
     },
     "/api/organizations/{organization_id}/items/upsert": {
@@ -3798,21 +3986,66 @@
         }
       ],
       "put": {
-        "operationId": "upsert-item",
+        "operationId": "upsertItem",
         "summary": "Upsert item",
         "tags": [
           "Item"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "@entity": {
+                          "type": "string",
+                          "enum": [
+                            "org.quicko.qpon.item"
+                          ]
+                        },
+                        "item_id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "custom_fields": {
+                          "type": "object"
+                        },
+                        "external_id": {
+                          "type": "string"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
-        ],
-        "responses": {},
+        },
         "requestBody": {
           "content": {
             "application/json": {
@@ -3834,7 +4067,10 @@
                   "external_id": {
                     "type": "string"
                   }
-                }
+                },
+                "required": [
+                  "@entity"
+                ]
               },
               "example": {
                 "@entity": "org.quicko.qpon.item",
@@ -3844,181 +4080,8 @@
               }
             }
           }
-        }
-      }
-    },
-    "/api/organizations/{organization_id}/coupons/{coupon_id}/campaign": {
-      "parameters": [
-        {
-          "name": "organization_id",
-          "in": "path",
-          "required": true,
-          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
-          "schema": {
-            "type": "string"
-          }
         },
-        {
-          "name": "coupon_id",
-          "in": "path",
-          "required": true,
-          "description": "Coupon id",
-          "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "post": {
-        "operationId": "create-campaign",
-        "summary": "Create campaign",
-        "tags": [
-          "Campaign"
-        ],
-        "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
-        "responses": {},
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "@entity": {
-                    "type": "string",
-                    "enum": [
-                      "org.quicko.qpon.campaign"
-                    ]
-                  },
-                  "name": {
-                    "type": "string"
-                  },
-                  "external_id": {
-                    "type": "string"
-                  }
-                }
-              },
-              "example": {
-                "@entity": "org.quicko.qpon.campaign",
-                "name": "Test QPON SET",
-                "external_id": "test"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}": {
-      "parameters": [
-        {
-          "name": "organization_id",
-          "in": "path",
-          "required": true,
-          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "name": "coupon_id",
-          "in": "path",
-          "required": true,
-          "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "name": "campaign_id",
-          "in": "path",
-          "required": true,
-          "example": "d6eace49-a8df-4269-9dc3-8dadf7b713cb",
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "get": {
-        "operationId": "fetch-campaign",
-        "summary": "Fetch campaign",
-        "tags": [
-          "Campaign"
-        ],
-        "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
-        "responses": {}
-      },
-      "patch": {
-        "operationId": "update-campaign",
-        "summary": "Update campaign",
-        "tags": [
-          "Campaign"
-        ],
-        "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
-        "responses": {},
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "@entity": {
-                    "type": "string",
-                    "enum": [
-                      "org.quicko.qpon.campaign"
-                    ]
-                  },
-                  "budget": {
-                    "type": "integer"
-                  }
-                }
-              },
-              "example": {
-                "@entity": "org.quicko.qpon.campaign",
-                "budget": 10000
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "operationId": "delete-campaign",
-        "summary": "Delete campaign",
-        "tags": [
-          "Campaign"
-        ],
-        "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
-        "responses": {}
+        "x-client-name": "Item"
       }
     },
     "/api/organizations/{organization_id}/coupons/{coupon_id}/campaigns": {
@@ -4043,8 +4106,102 @@
           }
         }
       ],
+      "post": {
+        "operationId": "createCampaign",
+        "summary": "Create campaign",
+        "tags": [
+          "Campaign"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "@entity": {
+                          "type": "string",
+                          "enum": [
+                            "org.quicko.qpon.campaign"
+                          ]
+                        },
+                        "campaign_id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "budget": {
+                          "type": "number"
+                        },
+                        "external_id": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "@entity": {
+                    "type": "string",
+                    "enum": [
+                      "org.quicko.qpon.campaign"
+                    ]
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "external_id": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "@entity"
+                ]
+              },
+              "example": {
+                "@entity": "org.quicko.qpon.campaign",
+                "name": "Test QPON SET",
+                "external_id": "test"
+              }
+            }
+          }
+        },
+        "x-client-name": "Campaign"
+      },
       "get": {
-        "operationId": "fetch-campaigns",
+        "operationId": "fetchCampaigns",
         "summary": "Fetch campaigns",
         "tags": [
           "Campaign"
@@ -4091,15 +4248,297 @@
             }
           }
         ],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "@entity": {
+                          "type": "string",
+                          "enum": [
+                            "org.quicko.qpon.paginated_list"
+                          ]
+                        },
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "@entity": {
+                                "type": "string",
+                                "enum": [
+                                  "org.quicko.qpon.campaign"
+                                ]
+                              },
+                              "campaign_id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "budget": {
+                                "type": "number"
+                              },
+                              "external_id": {
+                                "type": "string"
+                              },
+                              "status": {
+                                "type": "string"
+                              },
+                              "created_at": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "updated_at": {
+                                "type": "string",
+                                "format": "date-time"
+                              }
+                            }
+                          }
+                        },
+                        "count": {
+                          "type": "number"
+                        },
+                        "skip": {
+                          "type": "number"
+                        },
+                        "take": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
+        },
+        "x-client-name": "Campaign"
+      }
+    },
+    "/api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}": {
+      "parameters": [
+        {
+          "name": "organization_id",
+          "in": "path",
+          "required": true,
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "coupon_id",
+          "in": "path",
+          "required": true,
+          "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "campaign_id",
+          "in": "path",
+          "required": true,
+          "example": "d6eace49-a8df-4269-9dc3-8dadf7b713cb",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "fetchCampaign",
+        "summary": "Fetch campaign",
+        "tags": [
+          "Campaign"
         ],
-        "responses": {}
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "@entity": {
+                          "type": "string",
+                          "enum": [
+                            "org.quicko.qpon.campaign"
+                          ]
+                        },
+                        "campaign_id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "budget": {
+                          "type": "number"
+                        },
+                        "external_id": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-client-name": "Campaign"
+      },
+      "patch": {
+        "operationId": "updateCampaign",
+        "summary": "Update campaign",
+        "tags": [
+          "Campaign"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "@entity": {
+                          "type": "string",
+                          "enum": [
+                            "org.quicko.qpon.campaign"
+                          ]
+                        },
+                        "campaign_id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "budget": {
+                          "type": "number"
+                        },
+                        "external_id": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "@entity": {
+                    "type": "string",
+                    "enum": [
+                      "org.quicko.qpon.campaign"
+                    ]
+                  },
+                  "budget": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "@entity"
+                ]
+              },
+              "example": {
+                "@entity": "org.quicko.qpon.campaign",
+                "budget": 10000
+              }
+            }
+          }
+        },
+        "x-client-name": "Campaign"
+      },
+      "delete": {
+        "operationId": "deleteCampaign",
+        "summary": "Delete campaign",
+        "tags": [
+          "Campaign"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-client-name": "Campaign"
       }
     },
     "/api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/deactivate": {
@@ -4134,21 +4573,33 @@
         }
       ],
       "post": {
-        "operationId": "deactivate-campaign",
+        "operationId": "deactivateCampaign",
         "summary": "Deactivate campaign",
         "tags": [
           "Campaign"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
-        ],
-        "responses": {}
+        },
+        "x-client-name": "Campaign"
       }
     },
     "/api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/reactivate": {
@@ -4183,21 +4634,33 @@
         }
       ],
       "post": {
-        "operationId": "reactivate-campaign",
+        "operationId": "reactivateCampaign",
         "summary": "Reactivate campaign",
         "tags": [
           "Campaign"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
-        ],
-        "responses": {}
+        },
+        "x-client-name": "Campaign"
       }
     },
     "/api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/summary": {
@@ -4222,7 +4685,7 @@
         }
       ],
       "get": {
-        "operationId": "fetch-campaigns-summary",
+        "operationId": "fetchCampaignsSummary",
         "summary": "Fetch campaigns summary",
         "tags": [
           "Campaign"
@@ -4258,15 +4721,84 @@
             }
           }
         ],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "metadata": {
+                          "type": "object"
+                        },
+                        "sheets": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "blocks": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "header": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "rows": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    },
+                                    "name": {
+                                      "type": "string"
+                                    },
+                                    "@entity": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "@entity": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "@entity": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
-        ],
-        "responses": {}
+        },
+        "x-client-name": "Campaign"
       }
     },
     "/api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/summary": {
@@ -4300,7 +4832,7 @@
         }
       ],
       "get": {
-        "operationId": "fetch-campaign-summary",
+        "operationId": "fetchCampaignSummary",
         "summary": "Fetch campaign summary",
         "tags": [
           "Campaign"
@@ -4316,15 +4848,84 @@
             }
           }
         ],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "metadata": {
+                          "type": "object"
+                        },
+                        "sheets": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "blocks": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "header": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "rows": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    },
+                                    "name": {
+                                      "type": "string"
+                                    },
+                                    "@entity": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "@entity": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "@entity": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
-        ],
-        "responses": {}
+        },
+        "x-client-name": "Campaign"
       }
     },
     "/api/organizations/{organization_id}/customers": {
@@ -4340,87 +4941,13 @@
         }
       ],
       "post": {
-        "operationId": "create-customer",
+        "operationId": "createCustomer",
         "summary": "Create customer",
         "tags": [
           "Customer"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
-          "201": {
-            "description": "201 Customer created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "integer"
-                    },
-                    "message": {
-                      "type": "string"
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "@entity": {
-                          "type": "string",
-                          "enum": [
-                            "org.quicko.qpon.customer"
-                          ]
-                        },
-                        "customer_id": {
-                          "type": "string"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "email": {
-                          "type": "string",
-                          "format": "email"
-                        },
-                        "phone": {
-                          "nullable": true
-                        },
-                        "external_id": {
-                          "type": "string"
-                        },
-                        "created_at": {
-                          "type": "string",
-                          "format": "style"
-                        },
-                        "updated_at": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                },
-                "example": {
-                  "code": 201,
-                  "message": "Successfully created customer",
-                  "data": {
-                    "@entity": "org.quicko.qpon.customer",
-                    "customer_id": "a86a4cc1-bb10-415e-bcc8-2eb34da5f2cc",
-                    "name": "Dan Brown",
-                    "email": "dan@test.com",
-                    "phone": null,
-                    "external_id": "ce993634-297e-41b5-9b00-26d1f4e8c633",
-                    "created_at": "19:59:51.824308+05:30",
-                    "updated_at": "19:59:51.824308+05:30"
-                  }
-                }
-              }
-            }
-          },
           "401": {
             "description": "401 Unauthorized",
             "content": {
@@ -4464,6 +4991,75 @@
                 }
               }
             }
+          },
+          "200": {
+            "description": "201 Customer created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "@entity": {
+                          "type": "string",
+                          "enum": [
+                            "org.quicko.qpon.customer"
+                          ]
+                        },
+                        "customer_id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "isd_code": {
+                          "type": "string"
+                        },
+                        "phone": {
+                          "type": "string"
+                        },
+                        "external_id": {
+                          "type": "string"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "code": 201,
+                  "message": "Successfully created customer",
+                  "data": {
+                    "@entity": "org.quicko.qpon.customer",
+                    "customer_id": "a86a4cc1-bb10-415e-bcc8-2eb34da5f2cc",
+                    "name": "Dan Brown",
+                    "email": "dan@test.com",
+                    "phone": null,
+                    "external_id": "ce993634-297e-41b5-9b00-26d1f4e8c633",
+                    "created_at": "19:59:51.824308+05:30",
+                    "updated_at": "19:59:51.824308+05:30"
+                  }
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -4482,21 +5078,21 @@
                     "type": "string"
                   },
                   "email": {
-                    "type": "string",
-                    "format": "email"
+                    "type": "string"
                   },
                   "isd_code": {
-                    "type": "string",
-                    "format": "utc-millisec"
+                    "type": "string"
                   },
                   "phone": {
-                    "type": "string",
-                    "format": "utc-millisec"
+                    "type": "string"
                   },
                   "external_id": {
                     "type": "string"
                   }
-                }
+                },
+                "required": [
+                  "@entity"
+                ]
               },
               "example": {
                 "@entity": "org.quicko.qpon.customer",
@@ -4508,10 +5104,11 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "Customer"
       },
       "get": {
-        "operationId": "fetch-customers",
+        "operationId": "fetchCustomers",
         "summary": "Fetch customers",
         "tags": [
           "Customer"
@@ -4545,14 +5142,6 @@
             "schema": {
               "deprecated": false
             }
-          }
-        ],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
           }
         ],
         "responses": {
@@ -4596,14 +5185,13 @@
                                 "type": "string"
                               },
                               "email": {
-                                "type": "string",
-                                "format": "email"
+                                "type": "string"
                               },
                               "isd_code": {
-                                "nullable": true
+                                "type": "string"
                               },
                               "phone": {
-                                "nullable": true
+                                "type": "string"
                               },
                               "external_id": {
                                 "type": "string"
@@ -4620,13 +5208,13 @@
                           }
                         },
                         "count": {
-                          "type": "integer"
+                          "type": "number"
                         },
                         "skip": {
-                          "type": "integer"
+                          "type": "number"
                         },
                         "take": {
-                          "type": "integer"
+                          "type": "number"
                         }
                       }
                     }
@@ -4658,7 +5246,8 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "Customer"
       }
     },
     "/api/organizations/{organization_id}/customers/{customer_id}": {
@@ -4683,20 +5272,12 @@
         }
       ],
       "patch": {
-        "operationId": "update-customer",
+        "operationId": "updateCustomer",
         "summary": "Update customer",
         "tags": [
           "Customer"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "200 Updated Customer",
@@ -4727,21 +5308,24 @@
                           "type": "string"
                         },
                         "email": {
-                          "type": "string",
-                          "format": "email"
+                          "type": "string"
+                        },
+                        "isd_code": {
+                          "type": "string"
                         },
                         "phone": {
-                          "nullable": true
+                          "type": "string"
                         },
                         "external_id": {
                           "type": "string"
                         },
                         "created_at": {
                           "type": "string",
-                          "format": "style"
+                          "format": "date-time"
                         },
                         "updated_at": {
-                          "type": "string"
+                          "type": "string",
+                          "format": "date-time"
                         }
                       }
                     }
@@ -4799,23 +5383,16 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "Customer"
       },
       "delete": {
-        "operationId": "delete-customer",
+        "operationId": "deleteCustomer",
         "summary": "Delete customer",
         "tags": [
           "Customer"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "200 Deleted customer",
@@ -4846,21 +5423,24 @@
                           "type": "string"
                         },
                         "email": {
-                          "type": "string",
-                          "format": "email"
+                          "type": "string"
+                        },
+                        "isd_code": {
+                          "type": "string"
                         },
                         "phone": {
-                          "nullable": true
+                          "type": "string"
                         },
                         "external_id": {
                           "type": "string"
                         },
                         "created_at": {
                           "type": "string",
-                          "format": "style"
+                          "format": "date-time"
                         },
                         "updated_at": {
-                          "type": "string"
+                          "type": "string",
+                          "format": "date-time"
                         }
                       }
                     }
@@ -4883,10 +5463,11 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "Customer"
       },
       "get": {
-        "operationId": "fetch-customer",
+        "operationId": "fetchCustomer",
         "summary": "Fetch customer",
         "tags": [
           "Customer"
@@ -4954,14 +5535,13 @@
                                 "type": "string"
                               },
                               "email": {
-                                "type": "string",
-                                "format": "email"
+                                "type": "string"
                               },
                               "isd_code": {
-                                "nullable": true
+                                "type": "string"
                               },
                               "phone": {
-                                "nullable": true
+                                "type": "string"
                               },
                               "external_id": {
                                 "type": "string"
@@ -4978,13 +5558,13 @@
                           }
                         },
                         "count": {
-                          "type": "integer"
+                          "type": "number"
                         },
                         "skip": {
-                          "type": "integer"
+                          "type": "number"
                         },
                         "take": {
-                          "type": "integer"
+                          "type": "number"
                         }
                       }
                     }
@@ -5016,7 +5596,8 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "Customer"
       }
     },
     "/api/organizations/{organization_id}/customers/upsert": {
@@ -5032,20 +5613,12 @@
         }
       ],
       "put": {
-        "operationId": "upsert-customer",
+        "operationId": "upsertCustomer",
         "summary": "Upsert Customer",
         "tags": [
           "Customer"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "200 Successfully upserted customer",
@@ -5076,15 +5649,13 @@
                           "type": "string"
                         },
                         "email": {
-                          "type": "string",
-                          "format": "email"
+                          "type": "string"
                         },
                         "isd_code": {
-                          "nullable": true
+                          "type": "string"
                         },
                         "phone": {
-                          "type": "string",
-                          "format": "utc-millisec"
+                          "type": "string"
                         },
                         "external_id": {
                           "type": "string"
@@ -5134,13 +5705,14 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "Customer"
       }
     },
-    "/api/organizations/{organizationId}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes": {
+    "/api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes": {
       "parameters": [
         {
-          "name": "organizationId",
+          "name": "organization_id",
           "in": "path",
           "required": true,
           "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
@@ -5170,22 +5742,14 @@
         }
       ],
       "post": {
-        "operationId": "create-coupon-code",
+        "operationId": "createCouponCode",
         "summary": "Create coupon code",
         "tags": [
           "Coupon Code"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
-          "201": {
+          "200": {
             "description": "201 Coupon code created",
             "content": {
               "application/json": {
@@ -5214,19 +5778,19 @@
                           "type": "string"
                         },
                         "description": {
-                          "nullable": true
+                          "type": "string"
                         },
                         "customer_constraint": {
                           "type": "string"
                         },
                         "max_redemptions": {
-                          "nullable": true
+                          "type": "number"
                         },
                         "minimum_amount": {
-                          "nullable": true
+                          "type": "number"
                         },
                         "max_redemption_per_customer": {
-                          "nullable": true
+                          "type": "number"
                         },
                         "visibility": {
                           "type": "string"
@@ -5235,16 +5799,22 @@
                           "type": "string"
                         },
                         "expires_at": {
-                          "nullable": true
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "redemption_count": {
+                          "type": "number"
                         },
                         "status": {
                           "type": "string"
                         },
                         "created_at": {
-                          "type": "string"
+                          "type": "string",
+                          "format": "date-time"
                         },
                         "updated_at": {
-                          "type": "string"
+                          "type": "string",
+                          "format": "date-time"
                         }
                       }
                     }
@@ -5303,9 +5873,12 @@
                     "type": "string"
                   },
                   "max_redemptions": {
-                    "type": "integer"
+                    "type": "number"
                   }
-                }
+                },
+                "required": [
+                  "@entity"
+                ]
               },
               "example": {
                 "@entity": "org.quicko.qpon.coupon_code",
@@ -5318,10 +5891,11 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "CouponCode"
       },
       "get": {
-        "operationId": "fetch-coupon-codes",
+        "operationId": "fetchCouponCodes",
         "summary": "Fetch coupon codes",
         "tags": [
           "Coupon Code"
@@ -5418,19 +5992,19 @@
                             "type": "string"
                           },
                           "description": {
-                            "nullable": true
+                            "type": "string"
                           },
                           "customer_constraint": {
                             "type": "string"
                           },
                           "max_redemptions": {
-                            "nullable": true
+                            "type": "number"
                           },
                           "minimum_amount": {
-                            "nullable": true
+                            "type": "number"
                           },
                           "max_redemption_per_customer": {
-                            "nullable": true
+                            "type": "number"
                           },
                           "visibility": {
                             "type": "string"
@@ -5439,17 +6013,22 @@
                             "type": "string"
                           },
                           "expires_at": {
-                            "nullable": true
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "redemption_count": {
+                            "type": "number"
                           },
                           "status": {
                             "type": "string"
                           },
                           "created_at": {
                             "type": "string",
-                            "format": "style"
+                            "format": "date-time"
                           },
                           "updated_at": {
-                            "type": "string"
+                            "type": "string",
+                            "format": "date-time"
                           }
                         }
                       }
@@ -5497,13 +6076,14 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "CouponCode"
       }
     },
-    "/api/organizations/{organizationId}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}": {
+    "/api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}": {
       "parameters": [
         {
-          "name": "organizationId",
+          "name": "organization_id",
           "in": "path",
           "required": true,
           "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
@@ -5543,20 +6123,12 @@
         }
       ],
       "get": {
-        "operationId": "fetch-coupon-code",
+        "operationId": "fetchCouponCode",
         "summary": "Fetch coupon code",
         "tags": [
           "Coupon Code"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "200 Coupon code fetched",
@@ -5587,19 +6159,19 @@
                           "type": "string"
                         },
                         "description": {
-                          "nullable": true
+                          "type": "string"
                         },
                         "customer_constraint": {
                           "type": "string"
                         },
                         "max_redemptions": {
-                          "nullable": true
+                          "type": "number"
                         },
                         "minimum_amount": {
-                          "nullable": true
+                          "type": "number"
                         },
                         "max_redemption_per_customer": {
-                          "nullable": true
+                          "type": "number"
                         },
                         "visibility": {
                           "type": "string"
@@ -5608,17 +6180,22 @@
                           "type": "string"
                         },
                         "expires_at": {
-                          "nullable": true
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "redemption_count": {
+                          "type": "number"
                         },
                         "status": {
                           "type": "string"
                         },
                         "created_at": {
                           "type": "string",
-                          "format": "style"
+                          "format": "date-time"
                         },
                         "updated_at": {
-                          "type": "string"
+                          "type": "string",
+                          "format": "date-time"
                         }
                       }
                     }
@@ -5691,24 +6268,92 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "CouponCode"
       },
       "patch": {
-        "operationId": "update-coupon-code",
+        "operationId": "updateCouponCode",
         "summary": "Update coupon code",
         "tags": [
           "Coupon Code"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "@entity": {
+                          "type": "string",
+                          "enum": [
+                            "org.quicko.qpon.coupon_code"
+                          ]
+                        },
+                        "coupon_code_id": {
+                          "type": "string"
+                        },
+                        "code": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "customer_constraint": {
+                          "type": "string"
+                        },
+                        "max_redemptions": {
+                          "type": "number"
+                        },
+                        "minimum_amount": {
+                          "type": "number"
+                        },
+                        "max_redemption_per_customer": {
+                          "type": "number"
+                        },
+                        "visibility": {
+                          "type": "string"
+                        },
+                        "duration_type": {
+                          "type": "string"
+                        },
+                        "expires_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "redemption_count": {
+                          "type": "number"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updated_at": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
-        ],
-        "responses": {},
+        },
         "requestBody": {
           "content": {
             "application/json": {
@@ -5719,7 +6364,37 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "CouponCode"
+      },
+      "delete": {
+        "operationId": "deleteCouponCode",
+        "summary": "Delete coupon code",
+        "tags": [
+          "Coupon Code"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-client-name": "CouponCode"
       }
     },
     "/api/organizations/{organization_id}/coupon-codes": {
@@ -5735,7 +6410,7 @@
         }
       ],
       "get": {
-        "operationId": "fetch-coupon-code-by-code",
+        "operationId": "fetchCouponCodeByCode",
         "summary": "Fetch coupon code by code",
         "tags": [
           "Coupon Code"
@@ -5802,14 +6477,6 @@
             }
           }
         ],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "200 Fetched Sheet json",
@@ -5828,18 +6495,7 @@
                       "type": "object",
                       "properties": {
                         "metadata": {
-                          "type": "object",
-                          "properties": {
-                            "@entity": {
-                              "type": "string",
-                              "enum": [
-                                "org.quicko.qpon.organization"
-                              ]
-                            },
-                            "organization_id": {
-                              "type": "string"
-                            }
-                          }
+                          "type": "object"
                         },
                         "sheets": {
                           "type": "array",
@@ -5981,130 +6637,11 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "CouponCode"
       }
     },
-    "/api/organizations/{organizationId}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/deactivate": {
-      "parameters": [
-        {
-          "name": "organizationId",
-          "in": "path",
-          "required": true,
-          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "name": "coupon_id",
-          "in": "path",
-          "required": true,
-          "description": "Coupon id",
-          "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "name": "campaign_id",
-          "in": "path",
-          "required": true,
-          "description": "Coupon set id",
-          "example": "d6eace49-a8df-4269-9dc3-8dadf7b713cb",
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "name": "coupon_code_id",
-          "in": "path",
-          "required": true,
-          "description": "Coupon code id",
-          "example": "7f4eff08-9b6f-4634-9348-d29e7075293c",
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "patch": {
-        "operationId": "deactivate-coupon-code",
-        "summary": "Deactivate coupon code",
-        "tags": [
-          "Coupon Code"
-        ],
-        "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
-        "responses": {}
-      }
-    },
-    "/api/organizations/{organizationId}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/reactivate": {
-      "parameters": [
-        {
-          "name": "organizationId",
-          "in": "path",
-          "required": true,
-          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "name": "coupon_id",
-          "in": "path",
-          "required": true,
-          "description": "Coupon id",
-          "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "name": "campaign_id",
-          "in": "path",
-          "required": true,
-          "description": "Coupon set id",
-          "example": "d6eace49-a8df-4269-9dc3-8dadf7b713cb",
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "name": "coupon_code_id",
-          "in": "path",
-          "required": true,
-          "description": "Coupon code id",
-          "example": "7f4eff08-9b6f-4634-9348-d29e7075293c",
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "patch": {
-        "operationId": "reactivate-coupon-code",
-        "summary": "Reactivate coupon code",
-        "tags": [
-          "Coupon Code"
-        ],
-        "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
-        "responses": {}
-      }
-    },
-    "/api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}": {
+    "/api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/deactivate": {
       "parameters": [
         {
           "name": "organization_id",
@@ -6119,6 +6656,7 @@
           "name": "coupon_id",
           "in": "path",
           "required": true,
+          "description": "Coupon id",
           "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
           "schema": {
             "type": "string"
@@ -6128,6 +6666,7 @@
           "name": "campaign_id",
           "in": "path",
           "required": true,
+          "description": "Coupon set id",
           "example": "d6eace49-a8df-4269-9dc3-8dadf7b713cb",
           "schema": {
             "type": "string"
@@ -6137,28 +6676,135 @@
           "name": "coupon_code_id",
           "in": "path",
           "required": true,
+          "description": "Coupon code id",
           "example": "7f4eff08-9b6f-4634-9348-d29e7075293c",
           "schema": {
             "type": "string"
           }
         }
       ],
-      "delete": {
-        "operationId": "delete-coupon-code",
-        "summary": "Delete coupon code",
+      "patch": {
+        "operationId": "deactivateCouponCode",
+        "summary": "Deactivate coupon code",
         "tags": [
           "Coupon Code"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
+        },
+        "x-client-name": "CouponCode",
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/reactivate": {
+      "parameters": [
+        {
+          "name": "organization_id",
+          "in": "path",
+          "required": true,
+          "example": "b3d79ec7-ef8a-4992-b627-adcb1fbc1801",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "coupon_id",
+          "in": "path",
+          "required": true,
+          "description": "Coupon id",
+          "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "campaign_id",
+          "in": "path",
+          "required": true,
+          "description": "Coupon set id",
+          "example": "d6eace49-a8df-4269-9dc3-8dadf7b713cb",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "coupon_code_id",
+          "in": "path",
+          "required": true,
+          "description": "Coupon code id",
+          "example": "7f4eff08-9b6f-4634-9348-d29e7075293c",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "patch": {
+        "operationId": "reactivateCouponCode",
+        "summary": "Reactivate coupon code",
+        "tags": [
+          "Coupon Code"
         ],
-        "responses": {}
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-client-name": "CouponCode",
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        }
       }
     },
     "/api/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/customers": {
@@ -6192,22 +6838,36 @@
         }
       ],
       "post": {
-        "operationId": "add-customers",
+        "operationId": "addCustomers",
         "summary": "Add customers",
         "tags": [
           "Customer coupon code"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
-          "201": {
+          "400": {
+            "description": "400 Invalid customer",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "code": 400,
+                  "message": "Customer with IDs 16a70b71-641e-4c6a-80b7-220217efbce2 do not exist."
+                }
+              }
+            }
+          },
+          "200": {
             "description": "201 Customer added",
             "content": {
               "application/json": {
@@ -6250,21 +6910,24 @@
                                 "type": "string"
                               },
                               "email": {
-                                "type": "string",
-                                "format": "email"
+                                "type": "string"
+                              },
+                              "isd_code": {
+                                "type": "string"
                               },
                               "phone": {
-                                "nullable": true
+                                "type": "string"
                               },
                               "external_id": {
                                 "type": "string"
                               },
                               "created_at": {
                                 "type": "string",
-                                "format": "style"
+                                "format": "date-time"
                               },
                               "updated_at": {
-                                "type": "string"
+                                "type": "string",
+                                "format": "date-time"
                               }
                             }
                           }
@@ -6295,28 +6958,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "400 Invalid customer",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "integer"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "example": {
-                  "code": 400,
-                  "message": "Customer with IDs 16a70b71-641e-4c6a-80b7-220217efbce2 do not exist."
-                }
-              }
-            }
           }
         },
         "requestBody": {
@@ -6337,7 +6978,10 @@
                       "type": "string"
                     }
                   }
-                }
+                },
+                "required": [
+                  "@entity"
+                ]
               },
               "example": {
                 "@entity": "org.quicko.qpon.customer_coupon_code",
@@ -6347,23 +6991,16 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "CustomerCouponCode"
       },
       "get": {
-        "operationId": "fetch-customers-for-coupon-code",
+        "operationId": "fetchCustomersForCouponCode",
         "summary": "Fetch customers",
         "tags": [
           "Customer coupon code"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "200 Successfully fetched",
@@ -6408,18 +7045,24 @@
                                 "type": "string"
                               },
                               "email": {
-                                "type": "string",
-                                "format": "email"
+                                "type": "string"
+                              },
+                              "isd_code": {
+                                "type": "string"
                               },
                               "phone": {
-                                "nullable": true
+                                "type": "string"
+                              },
+                              "external_id": {
+                                "type": "string"
                               },
                               "created_at": {
                                 "type": "string",
-                                "format": "style"
+                                "format": "date-time"
                               },
                               "updated_at": {
-                                "type": "string"
+                                "type": "string",
+                                "format": "date-time"
                               }
                             }
                           }
@@ -6450,23 +7093,16 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "CustomerCouponCode"
       },
       "patch": {
-        "operationId": "update-customers",
+        "operationId": "updateCustomers",
         "summary": "Update customers",
         "tags": [
           "Customer coupon code"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "200 Successfully Updated",
@@ -6511,21 +7147,24 @@
                                 "type": "string"
                               },
                               "email": {
-                                "type": "string",
-                                "format": "email"
+                                "type": "string"
+                              },
+                              "isd_code": {
+                                "type": "string"
                               },
                               "phone": {
-                                "nullable": true
+                                "type": "string"
                               },
                               "external_id": {
                                 "type": "string"
                               },
                               "created_at": {
                                 "type": "string",
-                                "format": "style"
+                                "format": "date-time"
                               },
                               "updated_at": {
-                                "type": "string"
+                                "type": "string",
+                                "format": "date-time"
                               }
                             }
                           }
@@ -6586,7 +7225,10 @@
                       "type": "string"
                     }
                   }
-                }
+                },
+                "required": [
+                  "@entity"
+                ]
               },
               "example": {
                 "@entity": "org.quicko.qpon.customer_coupon_code",
@@ -6597,7 +7239,8 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "CustomerCouponCode"
       }
     },
     "/api/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/customers/{customer_id}": {
@@ -6640,20 +7283,12 @@
         }
       ],
       "delete": {
-        "operationId": "delete-customers",
+        "operationId": "deleteCustomers",
         "summary": "Delete customers",
         "tags": [
           "Customer coupon code"
         ],
         "parameters": [],
-        "security": [
-          {
-            "tokenAuth": []
-          },
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "200 Successfully deleted",
@@ -6677,7 +7312,8 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "CustomerCouponCode"
       }
     },
     "/api/organizations/{organization_id}/offer": {
@@ -6693,7 +7329,7 @@
         }
       ],
       "get": {
-        "operationId": "fetch-offer",
+        "operationId": "fetchOffer",
         "summary": "Fetch offer",
         "tags": [
           "Offers"
@@ -6739,11 +7375,6 @@
             }
           }
         ],
-        "security": [
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "200 Successfully fetched offer",
@@ -6762,18 +7393,7 @@
                       "type": "object",
                       "properties": {
                         "metadata": {
-                          "type": "object",
-                          "properties": {
-                            "@entity": {
-                              "type": "string",
-                              "enum": [
-                                "org.quicko.qpon.organization"
-                              ]
-                            },
-                            "organization_id": {
-                              "type": "string"
-                            }
-                          }
+                          "type": "object"
                         },
                         "sheets": {
                           "type": "array",
@@ -6854,8 +7474,8 @@
                             ],
                             "rows": [
                               [
-                                "₹100 off",
-                                "Get ₹100 off on your purchases",
+                                "\u20b9100 off",
+                                "Get \u20b9100 off on your purchases",
                                 "CUSTOMER1234",
                                 "fixed",
                                 "100",
@@ -6881,7 +7501,8 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "Offer"
       }
     },
     "/api/organizations/{organization_id}/offers": {
@@ -6897,7 +7518,7 @@
         }
       ],
       "get": {
-        "operationId": "fetch-offers",
+        "operationId": "fetchOffers",
         "summary": "Fetch offers",
         "tags": [
           "Offers"
@@ -6972,11 +7593,6 @@
             }
           }
         ],
-        "security": [
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "200 Successfully fetched offers",
@@ -6995,18 +7611,7 @@
                       "type": "object",
                       "properties": {
                         "metadata": {
-                          "type": "object",
-                          "properties": {
-                            "@entity": {
-                              "type": "string",
-                              "enum": [
-                                "org.quicko.qpon.organization"
-                              ]
-                            },
-                            "organization_id": {
-                              "type": "string"
-                            }
-                          }
+                          "type": "object"
                         },
                         "sheets": {
                           "type": "array",
@@ -7087,8 +7692,8 @@
                             ],
                             "rows": [
                               [
-                                "₹100 off",
-                                "Get ₹100 off on your purchases",
+                                "\u20b9100 off",
+                                "Get \u20b9100 off on your purchases",
                                 "CUSTOMEr5678",
                                 "fixed",
                                 "100",
@@ -7099,8 +7704,8 @@
                                 "public"
                               ],
                               [
-                                "₹100 off",
-                                "Get ₹100 off on your purchases",
+                                "\u20b9100 off",
+                                "Get \u20b9100 off on your purchases",
                                 "CUSTOMER1234",
                                 "fixed",
                                 "100",
@@ -7126,7 +7731,8 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "Offer"
       }
     },
     "/api/organizations/{organization_id}/coupon-codes/redeem": {
@@ -7142,40 +7748,13 @@
         }
       ],
       "post": {
-        "operationId": "redeem-coupon-code",
+        "operationId": "redeemCouponCode",
         "summary": "Redeem coupon code",
         "tags": [
           "Redemption"
         ],
         "parameters": [],
-        "security": [
-          {
-            "apiKeySecretAuth": []
-          }
-        ],
         "responses": {
-          "201": {
-            "description": "200 Successfully redeemed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "integer"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "example": {
-                  "code": 201,
-                  "message": "Successfully redemmed coupon code"
-                }
-              }
-            }
-          },
           "400": {
             "description": "400 Customer not eligible",
             "content": {
@@ -7241,6 +7820,28 @@
                 }
               }
             }
+          },
+          "200": {
+            "description": "200 Successfully redeemed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "code": 201,
+                  "message": "Successfully redemmed coupon code"
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -7259,10 +7860,10 @@
                     "type": "string"
                   },
                   "base_order_value": {
-                    "type": "integer"
+                    "type": "number"
                   },
                   "discount": {
-                    "type": "integer"
+                    "type": "number"
                   },
                   "external_item_id": {
                     "type": "string"
@@ -7270,7 +7871,10 @@
                   "external_customer_id": {
                     "type": "string"
                   }
-                }
+                },
+                "required": [
+                  "@entity"
+                ]
               },
               "example": {
                 "@entity": "org.quicko.qpon.redemption",
@@ -7282,7 +7886,8 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "Redemption"
       }
     },
     "/api/organizations/{organization_id}/redemptions": {
@@ -7298,7 +7903,7 @@
         }
       ],
       "get": {
-        "operationId": "fetch-redemptions",
+        "operationId": "fetchRedemptions",
         "summary": "Fetch redemptions",
         "tags": [
           "Redemption"
@@ -7391,18 +7996,7 @@
                       "type": "object",
                       "properties": {
                         "metadata": {
-                          "type": "object",
-                          "properties": {
-                            "@entity": {
-                              "type": "string",
-                              "enum": [
-                                "org.quicko.qpon.organization"
-                              ]
-                            },
-                            "organization_id": {
-                              "type": "string"
-                            }
-                          }
+                          "type": "object"
                         },
                         "sheets": {
                           "type": "array",
@@ -7536,7 +8130,8 @@
               }
             }
           }
-        }
+        },
+        "x-client-name": "Redemption"
       }
     },
     "/api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/redemptions": {
@@ -7579,42 +8174,12 @@
         }
       ],
       "get": {
-        "operationId": "fetch-redemptions-for-coupon-code",
+        "operationId": "fetchRedemptionsForCouponCode",
         "summary": "Fetch redemptions for coupon code",
         "tags": [
           "Redemption"
         ],
         "parameters": [
-          {
-            "name": "coupon_id",
-            "in": "query",
-            "required": false,
-            "description": "Filter to get redemptions for a coupon",
-            "example": "0817580e-d9c2-4bbe-a4ca-b5007700bf49",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "campaign_id",
-            "in": "query",
-            "required": false,
-            "description": "Filter to get redemptions for a campaign",
-            "example": "d6eace49-a8df-4269-9dc3-8dadf7b713cb",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "coupon_code_id",
-            "in": "query",
-            "required": false,
-            "description": "Filter to get redemptions for a coupon code",
-            "example": "7f4eff08-9b6f-4634-9348-d29e7075293c",
-            "schema": {
-              "type": "string"
-            }
-          },
           {
             "name": "customer_email",
             "in": "query",
@@ -7672,18 +8237,7 @@
                       "type": "object",
                       "properties": {
                         "metadata": {
-                          "type": "object",
-                          "properties": {
-                            "@entity": {
-                              "type": "string",
-                              "enum": [
-                                "org.quicko.qpon.organization"
-                              ]
-                            },
-                            "organization_id": {
-                              "type": "string"
-                            }
-                          }
+                          "type": "object"
                         },
                         "sheets": {
                           "type": "array",
@@ -7817,25 +8371,36 @@
               }
             }
           }
-        }
-      }
-    },
-    "components": {
-      "securitySchemes": {
-        "tokenAuth": {
-          "type": "http",
-          "scheme": "bearer",
-          "bearerFormat": "JWT",
-          "in": "header",
-          "description": "JWT token authentication. Format: `Authorization: Bearer <access_token>`"
         },
-        "apiKeySecretAuth": {
-          "type": "apiKey",
-          "name": "x-api-key",
-          "in": "header",
-          "description": "API key authentication (requires both x-api-key and x-api-secret headers)"
-        }
+        "x-client-name": "Redemption"
       }
     }
-  }
+  },
+  "components": {
+    "securitySchemes": {
+      "tokenAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      },
+      "apiKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key"
+      },
+      "apiSecret": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-secret"
+      }
+    }
+  },
+  "security": [
+    {
+      "tokenAuth": []
+    },
+    {
+      "apiKey": [],
+      "apiSecret": []
+    }
+  ]
 }

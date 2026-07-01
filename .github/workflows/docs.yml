@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'docs/**'
+      - 'resources/openapi.json'
   workflow_dispatch:
 
 permissions:

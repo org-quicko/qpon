@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Expose } from "class-transformer";
+import { Expose, Type } from 'class-transformer';
 import {
   Equals,
   IsString,
@@ -41,16 +41,19 @@ export class CouponCode {
 
   @IsOptional()
   @Expose({ name: "max_redemptions" })
+  @Type(() => Number)
   @IsNumber()
   maxRedemptions?: number;
 
   @IsOptional()
   @Expose({ name: "minimum_amount" })
+  @Type(() => Number)
   @IsNumber()
   minimumAmount?: number;
 
   @IsOptional()
   @Expose({ name: "max_redemption_per_customer" })
+  @Type(() => Number)
   @IsNumber()
   maxRedemptionPerCustomer?: number;
 
@@ -68,6 +71,7 @@ export class CouponCode {
   expiresAt?: Date;
 
   @Expose({ name: "redemption_count" })
+  @Type(() => Number)
   @IsNumber()
   redemptionCount?: number;
 
@@ -76,10 +80,12 @@ export class CouponCode {
   status?: CouponCodeStatus;
 
   @Expose({ name: "created_at" })
+  @Type(() => Date)
   @IsDate()
   createdAt?: Date;
 
   @Expose({ name: "updated_at" })
+  @Type(() => Date)
   @IsDate()
   updatedAt?: Date;
 

@@ -5,7 +5,7 @@ description: "Update item"
 sidebar_label: "Update item"
 hide_title: true
 hide_table_of_contents: true
-api: eJy9VMFO3DAQ/RVrTq3k3WVpVSCnApeiXqClJ7SqJvHsxt3ENvYE2Eb+92qSZWEBVeqlOTljz7zxe/Pcgw8Uka13FwYK6IJBpollakED4ypBcQMX8rvQEDBiS0xRoj04bAkK8HGFzv4eivy0BjRYBwUE5Bo0RLrtbCQDBceONNADtqGRvPKDOTqh6mhCy2OcfDw5OZyUnw6PJmiqcr4sq/nxwRw0pKqmFqHogTdB8hJH61aQs961IP3+C3TfbzNy/ivCQkOiqouWN8ON2a/JnXZcQ3GzEHwM9ittvlMViXfxhUCn4F2iBEWfx04o8Zk3G4GpvGNyLEsMobHVwN3sV/JOYrt+8rOee/hMjodGhPHpbWertZ/eBu+mW7nogSk6bISJApgSzyHnnDUYSlW0QVCggB+DyGqb1RLX3oysVULbwF4BMwx29lzbNOtfSJ1nUiPNdmwOAiz9QKXlgeqr4B287ECCyiaFqvKdrJcyWPc+rlXZ2YZVuVFX4wXV2RCwTqFKFTZYNqRV2zVsJ0wOHSuufbeqWYXoK0pJK65JXe2XJSeJSZVdso5SoqTYK+NVhW1Au3JJoTMqdk755ZJiUnJw9VTq9PJiOGEw1aXHaKag4Y5iGm80nx5MDyBrCD5xi4OO2+Hcp3uPiN3EMT3wLDRondToYiN7oxA3MmSg92yWQEPxhu9EDdl69MNCQ+0TS5G+LzHRj9jkLOHbjqLM9ELDHUYr5AwTbmyStYFiiU2iV/3uRhfefdva672Sp+Kte2yD6DbCFTad/IGGNW3eeDfET/8R/pGjvMgaakJDcWBg3D0fgSbXUuMp+5Vdxew7B12eXp9/AQ3l1uetN5IU8V5eI7wf4X0YJSz6MdZDg27V4UrOjkXl+wMKTuzo
+api: eJy9VU1v2zgQ/SvEnHYByh/ZxabRadNeGuyl2bQnwwhG1NhmI5EMOWriFfTfFyPJjh27RXOpLqZJzgdn3nvTgg8Uka13NyXk0IQSmW6YatDAuE6QL6D/u9QQMGJNTFF2W3BYE+Tg4xqd/a/3cW9L0GAd5BCQN6Ah0mNjI5WQc2xIAz1jHSqxK/4oL6/IXGa0eofZn1dXF1nx18VlhqUp5qvCzN/N5qAhmQ3VCHkLvA1ilzhat4au0/sULFP9ltBtO1p03Q8jLMVJCt4lSnJ+MZvJT0nJRBvkwZDDXWMMpbRqKrW7DBqMd0yO5TqGUFnT12f6NYlNexrTF1/JMGgIUTrCdohofEkHt6xjWlOETkNNKeGazqStoUT+Cd9/k2PL21MPGsg1tXTex/XksbHmwU8eg3cT2yOh0/uKn4s+NOVcWod1O3NumsS+vl9Zqsp0mn8nLWSKDqvvhTaRkKm8Rz73qpWPtZxIfShjW5PYDJB/i83uGyBGid/7cjt06+ea3h2A8aAP58v96tXAlHgOQ/znzFSWHGcjEUbiHgP0S/9AdeDMJevdQOIHksDHfjR8w6rZ+xMa1MQbXw7cMkKunmM5TDHY6aECpGn7ShC6qURO0z3nhHJkmti/edEC+wdy1434WyyF1RjsP5LWYqllfUcmEveHyxfTOynmAOQDB/sGbpjDjtu92hDGgTg77/ur48YoHhvCkiLsYAzPGQabSZm6o2zeZJ4GI2mZdSvfW1vuteg2eHfSMtlUNilUxjeyXonyPvn4oIrGVqyKrbodgKLe9xvWKVTJYIVFRVrVTcU2Y3LoWPHGN+sNqxC9KJVWvCF1e+yWnBgmVTTJOkqJkmKvSq8M1gHt2iWFrlSxccqvVhSTkovrF1fXn276GyWmTeExlhPBEcU0vGg+mU1mUsLgE9fY82Es0TE+z4sE0zNPQ4XW9ZSNlZwNGFxIB0AfzaEEGvIzg0mAKEc7+Vpq2Pgk2IK2LTDRl1h1nWw/NhRHCH7DaKU4PVhLm2RdQr7CKtFJvnsJgN/+HefP70pm6bl37BDktgecAz2S8nX+Qo1fGH5Xo070foT1i2J8GAJln8XHi/WJ7EnSg8W1MRT4h3cPhebT9ecPH0FDMWpr3U9CiPgkox2fhlR9GNqdt8NeCxW6ddMPRhicyvc/OikNpA==
 sidebar_class_name: "patch api-method"
 info_path: qpon
 custom_edit_url: null
@@ -62,7 +62,7 @@ Update item
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{}}
+  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"},"data":{"type":"object","properties":{"@entity":{"type":"string","enum":["org.quicko.qpon.item"]},"item_id":{"type":"string"},"name":{"type":"string"},"description":{"type":"string"},"custom_fields":{"type":"object"},"external_id":{"type":"string"},"created_at":{"type":"string","format":"date-time"},"updated_at":{"type":"string","format":"date-time"}}}}}}}}}}
 >
   
 </StatusCodes>
