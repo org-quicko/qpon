@@ -38,7 +38,7 @@ export class CampaignService {
     private campaignSummaryWorkbookConverter: CampaignSummaryWorkbookConverter,
     private logger: LoggerService,
     private datasource: DataSource,
-  ) {}
+  ) { }
 
   /**
    * Create campaign
@@ -51,16 +51,15 @@ export class CampaignService {
     this.logger.info('START: createCampaign service');
     try {
       if (body.name) {
-        const campaign = await this.campaignRepository
-          .createQueryBuilder('campaign')
-          .where(
-            `LOWER(campaign.name) = LOWER(:name) AND status != 'archive' AND coupon_id = :coupon_id`,
-            {
-              name: body.name,
-              coupon_id: couponId,
+        const campaign = await this.campaignRepository.findOne({
+          where: {
+            name: body.name,
+            status: Not(campaignStatusEnum.ARCHIVE),
+            coupon: {
+              couponId,
             },
-          )
-          .getOne();
+          },
+        });
 
         if (campaign) {
           this.logger.warn('Campaign with same name exists');
