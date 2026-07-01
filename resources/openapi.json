@@ -7530,7 +7530,7 @@
             "required": false,
             "example": "6d69a3e4-5c74-4c53-bd04-973030d82a96",
             "schema": {
-              "type": "integer"
+              "type": "string"
             }
           },
           {

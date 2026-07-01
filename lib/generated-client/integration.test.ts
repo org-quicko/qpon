@@ -96,6 +96,19 @@ async function main() {
 
 	await step("REDEMPTIONS.fetchRedemptionsForCouponCode", () => qpon.REDEMPTIONS.fetchRedemptionsForCouponCode(ORG!, couponId, campaignId, couponCodeId));
 
+	// Offers: verify the sheet workbook comes back and external_item_id filter accepts a STRING
+	await step("OFFERS.fetchOffers [sheet-json]", () => qpon.OFFERS.fetchOffers(ORG!, undefined, undefined, undefined, undefined, 0, 10, "application/json;format=sheet-json"), (r: any) => {
+		const wb = r?.data;
+		console.log("  offers workbook @entity:", wb?.["@entity"], "| sheets:", wb?.sheets?.length);
+		if (wb?.["@entity"] !== "workbook") throw new Error("offers response is not a workbook");
+	});
+	await step("OFFERS.fetchOffers [external_item_id=string]", () => qpon.OFFERS.fetchOffers(ORG!, `ext-${tag}`, undefined, undefined, undefined, 0, 10, "application/json;format=sheet-json"));
+	await step("OFFERS.fetchOffer [by code]", () => qpon.OFFERS.fetchOffer(ORG!, undefined, `CODE-${tag}`, undefined, "application/json;format=sheet-json"));
+
+	// Redemption: redeem the public coupon code (customer + item external ids must exist)
+	await step("REDEMPTIONS.redeemCouponCode", () => qpon.REDEMPTIONS.redeemCouponCode(ORG!, { "@entity": "org.quicko.qpon.redemption", code: `CODE-${tag}`, base_order_value: 1000, discount: 10, external_customer_id: `cust-${tag}`, external_item_id: `ext-${tag}` } as any));
+	await step("REDEMPTIONS.fetchRedemptions [after redeem]", () => qpon.REDEMPTIONS.fetchRedemptions(ORG!));
+
 	await step("COUPONCODE.deactivateCouponCode", () => qpon.COUPONCODE.deactivateCouponCode(ORG!, couponId, campaignId, couponCodeId, {} as any));
 	await step("COUPONCODE.reactivateCouponCode", () => qpon.COUPONCODE.reactivateCouponCode(ORG!, couponId, campaignId, couponCodeId, {} as any));
 	await step("CAMPAIGN.deactivateCampaign", () => qpon.CAMPAIGN.deactivateCampaign(ORG!, couponId, campaignId));

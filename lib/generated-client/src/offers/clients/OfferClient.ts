@@ -125,7 +125,7 @@ export class OfferClient {
 	 * @returns Promise<FetchOffersResponse> - Typed response body on success
 	 * @throws ApiError on other non-2xx responses
 	 */
-	public async fetchOffers(organizationId: string, externalItemId?: number, externalCustomerId?: string, sort?: string, discountType?: string, skip?: number, take?: number, acceptType?: string): Promise<FetchOffersResponse> {
+	public async fetchOffers(organizationId: string, externalItemId?: string, externalCustomerId?: string, sort?: string, discountType?: string, skip?: number, take?: number, acceptType?: string): Promise<FetchOffersResponse> {
 		try {
 
 			const headers: Record<string, string> = {};

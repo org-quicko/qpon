@@ -431,7 +431,8 @@ export class RedemptionsService {
 
     if (
       campaign.budget &&
-      campaign_summary!.totalRedemptionAmount > campaign.budget
+      campaign_summary &&
+      campaign_summary.totalRedemptionAmount > campaign.budget
     ) {
       this.logger.warn('Campaign budget exceeded', {
         campaignId: campaign.campaignId,
