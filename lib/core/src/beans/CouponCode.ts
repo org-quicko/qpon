@@ -67,7 +67,8 @@ export class CouponCode {
 
   @IsOptional()
   @Expose({ name: "expires_at" })
-  @IsString()
+  @Type(() => Date)
+  @IsDate()
   expiresAt?: Date;
 
   @Expose({ name: "redemption_count" })
