@@ -227,7 +227,9 @@ export class CouponService {
         if (body.name) {
           const coupon = await couponRepository.findOne({
             where: {
-              name: body.name,
+              name: Raw((alias) => `LOWER(${alias}) = LOWER(:name)`, {
+                name: body.name,
+              }),
               status: Not(statusEnum.ARCHIVE),
               organization: { organizationId },
               couponId: Not(couponId),

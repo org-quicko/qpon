@@ -12,6 +12,7 @@ import {
   ILike,
   MoreThan,
   Not,
+  Raw,
   Repository,
 } from 'typeorm';
 import { Campaign } from '../entities/campaign.entity';
@@ -53,7 +54,9 @@ export class CampaignService {
       if (body.name) {
         const campaign = await this.campaignRepository.findOne({
           where: {
-            name: body.name,
+            name: Raw((alias) => `LOWER(${alias}) = LOWER(:name)`, {
+              name: body.name,
+            }),
             status: Not(campaignStatusEnum.ARCHIVE),
             coupon: {
               couponId,
@@ -250,7 +253,9 @@ export class CampaignService {
       if (body.name) {
         const existingCampaign = await this.campaignRepository.findOne({
           where: {
-            name: body.name,
+            name: Raw((alias) => `LOWER(${alias}) = LOWER(:name)`, {
+              name: body.name,
+            }),
             status: Not(campaignStatusEnum.ARCHIVE),
             campaignId: Not(campaignId),
           },
