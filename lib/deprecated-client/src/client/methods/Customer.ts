@@ -29,29 +29,19 @@ export class Customer extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to get customer', error, error.code);
+      throw new ClientException('Failed to get customer', error);
     }
   }
 
-  async getAllCustomers(
-    organizationId: string,
-    email?: string,
-    externalId?: string,
-    skip: number = 0,
-    take: number = 10
-  ) : Promise<PaginatedList<CustomerBean>> {
+  async getAllCustomers(organizationId: string, skip: number = 0, take: number = 10) : Promise<PaginatedList<CustomerBean>> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.getAllCustomers.name}`);
-      this.logger.debug(`Request`, { organization_id: organizationId, skip, take, email, external_id: externalId });
-
-      const queryParams: { skip: number; take: number; email?: string; external_id?: string } = { skip, take };
-      if (email) queryParams.email = email;
-      if (externalId) queryParams.external_id = externalId;
+      this.logger.debug(`Request`, { organization_id: organizationId, skip, take });
 
       const response = await super.get({
         url: APIURL.FETCH_CUSTOMERS,
         params: [organizationId],
-        queryParams,
+        queryParams: { skip: skip, take: take },
       });
 
       this.logger.debug(`Response`, response);
@@ -59,7 +49,7 @@ export class Customer extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to get customers', error, error.code);
+      throw new ClientException('Failed to get customers', error);
     }
   }
 
@@ -68,14 +58,14 @@ export class Customer extends RestClient {
       this.logger.info(`Start Client : ${this.constructor.name},${this.createCustomer.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, data });
 
-      const response = await super.post(APIURL.CREATE_CUSTOMER, instanceToPlain(Object.assign(new CustomerBean(), data)), { params: [organizationId] });
+      const response = await super.post(APIURL.CREATE_CUSTOMER, instanceToPlain(data), { params: [organizationId] });
 
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.createCustomer.name}`);
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to create customer', error, error.code);
+      throw new ClientException('Failed to create customer', error);
     }
   }
 
@@ -91,7 +81,7 @@ export class Customer extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to delete customer', error, error.code);
+      throw new ClientException('Failed to delete customer', error);
     }
   }
 
@@ -100,14 +90,14 @@ export class Customer extends RestClient {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateCustomer.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, customer_id: customerId, data });
 
-      const response = await super.patch(APIURL.UPDATE_CUSTOMER, instanceToPlain(Object.assign(new CustomerBean(), data)), { params: [organizationId, customerId] });
+      const response = await super.patch(APIURL.UPDATE_CUSTOMER, data, { params: [organizationId, customerId] });
 
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.updateCustomer.name}`);
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to update customer', error, error.code);
+      throw new ClientException('Failed to update customer', error);
     }
   }
 
@@ -123,7 +113,7 @@ export class Customer extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to upsert customer', error, error.code);
+      throw new ClientException('Failed to upsert customer', error);
     }
   }
 }

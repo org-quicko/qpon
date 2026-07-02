@@ -85,7 +85,7 @@ export class Redemption extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to get redemptions', error, error.code);
+      throw new ClientException('Failed to get redemptions', error);
     }
   }
 
@@ -139,7 +139,7 @@ export class Redemption extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to get redemptions for coupon code', error, error.code);
+      throw new ClientException('Failed to get redemptions for coupon code', error);
     }
   }
 
@@ -151,7 +151,7 @@ export class Redemption extends RestClient {
     couponId?: string,
     campaignId?: string,
     couponCodeId?: string
-  ) : Promise<RedemptionWorkbook> {
+  ) {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.generateRedemptionReport.name}`);
       this.logger.debug(`Request`, {
@@ -189,9 +189,9 @@ export class Redemption extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.generateRedemptionReport.name}`);
 
-      return response.data;
+      return response;
     } catch (error) {
-      throw new ClientException('Failed to generate redemption report', error, error.code);
+      throw new ClientException('Failed to generate redemption report', error);
     }
   }
 }

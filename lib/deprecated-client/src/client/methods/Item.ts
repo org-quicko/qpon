@@ -21,7 +21,7 @@ export class Item extends RestClient {
       this.logger.info(`Start Client : ${this.constructor.name},${this.createItem.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, data });
 
-      const response = await super.post(APIURL.CREATE_ITEM, instanceToPlain(Object.assign(new ItemBean(), data)), {
+      const response = await super.post(APIURL.CREATE_ITEM, instanceToPlain(data), {
         params: [organizationId],
       });
 
@@ -30,7 +30,7 @@ export class Item extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to create item', error, error.code);
+      throw new ClientException('Failed to create item', error);
     }
   }
 
@@ -49,7 +49,7 @@ export class Item extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to get item', error, error.code);
+      throw new ClientException('Failed to get item', error);
     }
   }
 
@@ -88,7 +88,7 @@ export class Item extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to get items', error, error.code);
+      throw new ClientException('Failed to get items', error);
     }
   }
 
@@ -101,7 +101,7 @@ export class Item extends RestClient {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateItem.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, item_id: itemId, data });
 
-      const response = await super.patch(APIURL.UPDATE_ITEM, instanceToPlain(Object.assign(new ItemBean(), data)), {
+      const response = await super.patch(APIURL.UPDATE_ITEM, data, {
         params: [organizationId, itemId],
       });
 
@@ -110,7 +110,7 @@ export class Item extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to update item', error, error.code);
+      throw new ClientException('Failed to update item', error);
     }
   }
 
@@ -126,7 +126,7 @@ export class Item extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to delete item', error, error.code);
+      throw new ClientException('Failed to delete item', error);
     }
   }
 
@@ -144,7 +144,7 @@ export class Item extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to upsert item', error, error.code);
+      throw new ClientException('Failed to upsert item', error);
     }
   }
 }

@@ -39,7 +39,7 @@ export class CouponCode extends RestClient {
         data,
       });
 
-      const response = await super.post(APIURL.CREATE_COUPON_CODE, instanceToPlain(Object.assign(new CouponCodeBean(), data)), {
+      const response = await super.post(APIURL.CREATE_COUPON_CODE, instanceToPlain(data), {
         params: [organizationId, couponId, campaignId],
       });
 
@@ -48,7 +48,7 @@ export class CouponCode extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to create coupon code', error, error.code);
+      throw new ClientException('Failed to create coupon code', error);
     }
   }
 
@@ -77,7 +77,7 @@ export class CouponCode extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to get coupon code', error, error.code);
+      throw new ClientException('Failed to get coupon code', error);
     }
   }
 
@@ -130,7 +130,7 @@ export class CouponCode extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to get coupon codes', error, error.code);
+      throw new ClientException('Failed to get coupon codes', error);
     }
   }
 
@@ -140,16 +140,16 @@ export class CouponCode extends RestClient {
     campaignId: string,
     couponCodeId: string,
     data: Pick<
-        CouponCodeBean,
-        | 'visibility'
-        | 'description'
-        | 'customerConstraint'
-        | 'durationType'
-        | 'expiresAt'
-        | 'maxRedemptionPerCustomer'
-        | 'maxRedemptions'
-        | 'minimumAmount'
-      >
+      CouponCodeBean,
+      | 'visibility'
+      | 'description'
+      | 'customerConstraint'
+      | 'durationType'
+      | 'expiresAt'
+      | 'maxRedemptionPerCustomer'
+      | 'maxRedemptions'
+      | 'minimumAmount'
+    >
   ) : Promise<CouponCodeBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateCouponCode.name}`);
@@ -161,7 +161,7 @@ export class CouponCode extends RestClient {
         data,
       });
 
-      const response = await super.patch(APIURL.UPDATE_COUPON_CODE, instanceToPlain(Object.assign(new CouponCodeBean(), data)), {
+      const response = await super.patch(APIURL.UPDATE_COUPON_CODE, instanceToPlain(data), {
         params: [organizationId, couponId, campaignId, couponCodeId],
       });
 
@@ -170,7 +170,7 @@ export class CouponCode extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to update coupon code', error, error.code);
+      throw new ClientException('Failed to update coupon code', error);
     }
   }
 
@@ -180,7 +180,7 @@ export class CouponCode extends RestClient {
     campaignId?: string,
     skip: number = 0,
     take: number = 10
-  ) : Promise<PaginatedList<CouponCodeBean>> {
+  ) {
     try {
       this.logger.info(
         `Start Client : ${this.constructor.name},${this.getCouponCodesByCoupon.name}`
@@ -205,9 +205,9 @@ export class CouponCode extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.getCouponCodesByCoupon.name}`);
 
-      return response.data;
+      return response;
     } catch (error) {
-      throw new ClientException('Failed to get coupon codes by coupon', error, error.code);
+      throw new ClientException('Failed to get coupon codes by coupon', error);
     }
   }
 
@@ -235,7 +235,7 @@ export class CouponCode extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to delete coupon code', error, error.code);
+      throw new ClientException('Failed to delete coupon code', error);
     }
   }
 
@@ -244,7 +244,7 @@ export class CouponCode extends RestClient {
     couponId: string,
     campaignId: string,
     couponCodeId: string
-  ) : Promise<CouponCodeBean> {
+  ) {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.deactivateCouponCode.name}`);
       this.logger.debug(`Request`, {
@@ -254,7 +254,8 @@ export class CouponCode extends RestClient {
         coupon_code_id: couponCodeId,
       });
 
-      const response = await super.patch(APIURL.DEACTIVATE_COUPON_CODE,
+      const response = await super.post(
+        APIURL.DEACTIVATE_COUPON_CODE,
         {},
         { params: [organizationId, couponId, campaignId, couponCodeId] }
       );
@@ -262,9 +263,9 @@ export class CouponCode extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.deactivateCouponCode.name}`);
 
-      return response.data;
+      return response;
     } catch (error) {
-      throw new ClientException('Failed to deactivate coupon code', error, error.code);
+      throw new ClientException('Failed to deactivate coupon code', error);
     }
   }
 
@@ -273,7 +274,7 @@ export class CouponCode extends RestClient {
     couponId: string,
     campaignId: string,
     couponCodeId: string
-  ) : Promise<CouponCodeBean> {
+  ) {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.reactivateCouponCode.name}`);
       this.logger.debug(`Request`, {
@@ -283,7 +284,8 @@ export class CouponCode extends RestClient {
         coupon_code_id: couponCodeId,
       });
 
-      const response = await super.patch(APIURL.REACTIVATE_COUPON_CODE,
+      const response = await super.post(
+        APIURL.REACTIVATE_COUPON_CODE,
         {},
         { params: [organizationId, couponId, campaignId, couponCodeId] }
       );
@@ -291,9 +293,9 @@ export class CouponCode extends RestClient {
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.reactivateCouponCode.name}`);
 
-      return response.data;
+      return response;
     } catch (error) {
-      throw new ClientException('Failed to reactivate coupon code', error, error.code);
+      throw new ClientException('Failed to reactivate coupon code', error);
     }
   }
 }

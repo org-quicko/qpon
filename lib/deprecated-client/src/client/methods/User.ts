@@ -25,7 +25,7 @@ export class User extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to get user', error, error.code);
+      throw new ClientException('Failed to get user', error);
     }
   }
 
@@ -45,7 +45,7 @@ export class User extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to get users', error, error.code);
+      throw new ClientException('Failed to get users', error);
     }
   }
 
@@ -61,7 +61,7 @@ export class User extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to create user', error, error.code);
+      throw new ClientException('Failed to create user', error);
     }
   }
 
@@ -77,20 +77,20 @@ export class User extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to delete user', error, error.code);
+      throw new ClientException('Failed to delete user', error);
     }
   }
 
   async updateUser(
     organizationId: string,
     userId: string,
-    data: { name?: string; email?: string; currentPassword?: string; newPassword?: string }
+    data: Pick<UserBean, 'name' | 'email' | 'password'>
   ) : Promise<UserBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateUser.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, user_id: userId, data });
 
-      const response = await super.patch(APIURL.UPDATE_USER, instanceToPlain(Object.assign(new UserBean(), data)), {
+      const response = await super.patch(APIURL.UPDATE_USER, data, {
         params: [organizationId, userId],
       });
 
@@ -99,7 +99,7 @@ export class User extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to update user', error, error.code);
+      throw new ClientException('Failed to update user', error);
     }
   }
 
@@ -108,7 +108,7 @@ export class User extends RestClient {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateUserRole.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, user_id: userId, data });
 
-      const response = await super.patch(APIURL.UPDATE_USER_ROLE, instanceToPlain(Object.assign(new UserBean(), data)), {
+      const response = await super.patch(APIURL.UPDATE_USER_ROLE, data, {
         params: [organizationId, userId],
       });
 
@@ -117,7 +117,7 @@ export class User extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to update user role', error, error.code);
+      throw new ClientException('Failed to update user role', error);
     }
   }
 
@@ -137,7 +137,7 @@ export class User extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to fetch organizations for user', error, error.code);
+      throw new ClientException('Failed to fetch organizations for user', error);
     }
   }
 
@@ -160,7 +160,7 @@ export class User extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to fetch users for an organization', error, error.code);
+      throw new ClientException('Failed to fetch users for an organization', error);
     }
   }
 }

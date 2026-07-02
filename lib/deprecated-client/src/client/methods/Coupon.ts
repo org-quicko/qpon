@@ -1,4 +1,4 @@
-import { ClientException, LoggerFactory } from '@org-quicko/core';
+import { ClientException, LoggerFactory, LoggingLevel } from '@org-quicko/core';
 import winston from 'winston';
 import { Coupon as CouponBean, PaginatedList } from '@org-quicko/qpon-core';
 import { CouponSummaryWorkbook } from '@org-quicko/qpon-sheet-core/coupon_summary_workbook/beans';
@@ -29,7 +29,7 @@ export class Coupon extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to get coupon', error, error.code);
+      throw new ClientException('Failed to get coupon', error);
     }
   }
 
@@ -51,7 +51,7 @@ export class Coupon extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to get coupons', error, error.code);
+      throw new ClientException('Failed to get coupons', error);
     }
   }
 
@@ -66,27 +66,30 @@ export class Coupon extends RestClient {
       this.logger.info(`Start Client : ${this.constructor.name},${this.createCoupon.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, data });
 
-      const response = await super.post(APIURL.CREATE_COUPON, instanceToPlain(Object.assign(new CouponBean(), data)), { params: [organizationId] });
+      const response = await super.post(APIURL.CREATE_COUPON, instanceToPlain(data), { params: [organizationId] });
 
       this.logger.debug(`Response`, response);
       this.logger.info(`End Client : ${this.constructor.name},${this.createCoupon.name}`);
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to create coupon', error, error.code);
+      throw new ClientException('Failed to create coupon', error);
     }
   }
 
   async updateCoupon(
     organizationId: string,
     couponId: string,
-    data: Pick<CouponBean, 'name' | 'itemConstraint' | 'discountUpto'>
+    data: Pick<
+      CouponBean,
+      'name' | 'itemConstraint' | 'status' | 'discountType' | 'discountUpto' | 'discountValue'
+    >
   ) : Promise<CouponBean> {
     try {
       this.logger.info(`Start Client : ${this.constructor.name},${this.updateCoupon.name}`);
       this.logger.debug(`Request`, { organization_id: organizationId, coupon_id: couponId, data });
 
-      const response = await super.patch(APIURL.UPDATE_COUPON, instanceToPlain(Object.assign(new CouponBean(), data)), {
+      const response = await super.patch(APIURL.UPDATE_COUPON, data, {
         params: [organizationId, couponId],
       });
 
@@ -95,7 +98,7 @@ export class Coupon extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to update coupon', error, error.code);
+      throw new ClientException('Failed to update coupon', error);
     }
   }
 
@@ -115,7 +118,7 @@ export class Coupon extends RestClient {
 
       return response;
     } catch (error) {
-      throw new ClientException('Failed to deactivate coupon', error, error.code);
+      throw new ClientException('Failed to deactivate coupon', error);
     }
   }
 
@@ -135,7 +138,7 @@ export class Coupon extends RestClient {
 
       return response;
     } catch (error) {
-      throw new ClientException('Failed to reactivate coupon', error, error.code);
+      throw new ClientException('Failed to reactivate coupon', error);
     }
   }
 
@@ -153,7 +156,7 @@ export class Coupon extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to delete coupon', error, error.code);
+      throw new ClientException('Failed to delete coupon', error);
     }
   }
 
@@ -169,7 +172,7 @@ export class Coupon extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to get coupon summary', error, error.code);
+      throw new ClientException('Failed to get coupon summary', error);
     }
   }
 
@@ -195,7 +198,7 @@ export class Coupon extends RestClient {
 
       return response.data;
     } catch (error) {
-      throw new ClientException('Failed to get coupon summaries', error, error.code);
+      throw new ClientException('Failed to get coupon summaries', error);
     }
   }
 }
