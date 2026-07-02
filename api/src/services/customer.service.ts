@@ -209,6 +209,7 @@ export class CustomersService {
         throw new NotFoundException('Customer not found');
       }
 
+      delete body.entity;
       await this.customersRepository.update(customerId, body);
 
       const updatedCustomer = await this.customersRepository.findOne({

@@ -1,9 +1,14 @@
-import { Expose, Transform } from 'class-transformer';
-import { IsDate, IsOptional, IsString, IsUUID } from 'class-validator';
+import 'reflect-metadata';
+import { Expose, Type } from 'class-transformer';
+import { Equals, IsDate, IsOptional, IsString, IsUUID } from 'class-validator';
 
+@Reflect.metadata('@entity', 'org.quicko.qpon.api_key')
 export class ApiKey {
+  @Expose({ name: '@entity' })
+  @Equals('org.quicko.qpon.api_key')
+  entity = 'org.quicko.qpon.api_key';
+
   @Expose({ name: 'api_key_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()
   apiKeyId?: string;
 
@@ -15,14 +20,14 @@ export class ApiKey {
   secret?: string;
 
   @Expose({ name: 'created_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
+  @Type(() => Date)
   @IsDate()
-  createdAt?: string;
+  createdAt?: Date;
 
   @Expose({ name: 'updated_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
+  @Type(() => Date)
   @IsDate()
-  updatedAt?: string;
+  updatedAt?: Date;
 
   getApiKeyId(): string | undefined {
     return this.apiKeyId;
@@ -48,19 +53,19 @@ export class ApiKey {
     this.secret = secret;
   }
 
-  getCreatedAt(): string | undefined {
+  getCreatedAt(): Date | undefined {
     return this.createdAt;
   }
 
-  setCreatedAt(createdAt: string): void {
+  setCreatedAt(createdAt: Date): void {
     this.createdAt = createdAt;
   }
 
-  getUpdatedAt(): string | undefined {
+  getUpdatedAt(): Date | undefined {
     return this.updatedAt;
   }
 
-  setUpdatedAt(updatedAt: string): void {
+  setUpdatedAt(updatedAt: Date): void {
     this.updatedAt = updatedAt;
   }
 }

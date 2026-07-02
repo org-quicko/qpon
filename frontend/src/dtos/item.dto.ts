@@ -3,6 +3,9 @@ import { IsString, IsDate, IsUUID, IsOptional } from 'class-validator';
 import { prop, required } from '@rxweb/reactive-form-validators';
 
 export class ItemDto {
+  @Expose({ name: '@entity' })
+  entity?: string = 'org.quicko.qpon.item';
+
   @Expose({ name: 'item_id' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()
@@ -36,6 +39,9 @@ export class ItemDto {
 }
 
 export class CreateItemDto {
+  @Expose({ name: '@entity' })
+  entity?: string = 'org.quicko.qpon.item';
+
   @prop()
   @required()
   @IsString()
@@ -61,6 +67,9 @@ export class CreateItemDto {
 }
 
 export class UpdateItemDto {
+  @Expose({ name: '@entity' })
+  entity?: string = 'org.quicko.qpon.item';
+
   @prop()
   @IsOptional()
   @IsString()

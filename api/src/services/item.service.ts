@@ -248,6 +248,7 @@ export class ItemsService {
         }
       }
 
+      delete body.entity;
       await this.itemsRepository.update({ itemId }, body);
 
       const savedItem = await this.itemsRepository.findOne({
@@ -269,7 +270,7 @@ export class ItemsService {
       }
 
       throw new HttpException(
-        'Failed to update user',
+        'Failed to update item',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }

@@ -225,17 +225,16 @@ export class CouponService {
         }
 
         if (body.name) {
-          const coupon = await manager
-            .getRepository(Coupon)
-            .createQueryBuilder('coupon')
-            .where(
-              `LOWER(coupon.name) = LOWER(:name) AND status != 'archive' AND coupon.couponId != :couponId`,
-              {
+          const coupon = await couponRepository.findOne({
+            where: {
+              name: Raw((alias) => `LOWER(${alias}) = LOWER(:name)`, {
                 name: body.name,
-                couponId,
-              },
-            )
-            .getOne();
+              }),
+              status: Not(statusEnum.ARCHIVE),
+              organization: { organizationId },
+              couponId: Not(couponId),
+            },
+          });
 
           if (coupon) {
             this.logger.warn('Coupon with same name exists');
@@ -467,6 +466,10 @@ export class CouponService {
       );
     } catch (error) {
       this.logger.error(`Error in fetchCouponSummary:`, error);
+
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
 
       throw new HttpException(
         'Failed to fetch coupon summary',

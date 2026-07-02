@@ -277,6 +277,7 @@ export class UserService {
         delete (body as any).newPassword;
       }
 
+      delete (body as any).entity;
       await this.userRepository.update({ userId }, body);
 
       const savedUser = await this.userRepository.findOne({

@@ -1,10 +1,13 @@
-import { Expose, Transform } from 'class-transformer';
-import { IsString, IsEnum, IsDate, IsUUID, IsOptional } from 'class-validator';
+import { Expose } from 'class-transformer';
+import { Equals, IsString, IsEnum, IsDate, IsUUID, IsOptional } from 'class-validator';
 import { roleEnum } from '../enums';
 
 export class UserDto {
+  @Expose({ name: '@entity' })
+  @Equals('org.quicko.qpon.user')
+  entity = 'org.quicko.qpon.user';
+
   @Expose({ name: 'user_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()
   userId: string;
 
@@ -23,22 +26,23 @@ export class UserDto {
 
   @IsOptional()
   @Expose({ name: 'last_accessed_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsDate()
   lastAccessedAt: Date;
 
   @Expose({ name: 'created_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsDate()
   createdAt: Date;
 
   @Expose({ name: 'updated_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsDate()
   updatedAt: Date;
 }
 
 export class CreateUserDto {
+  @Expose({ name: '@entity' })
+  @Equals('org.quicko.qpon.user')
+  entity = 'org.quicko.qpon.user';
+
   @IsString()
   name: string;
 
@@ -53,6 +57,10 @@ export class CreateUserDto {
 }
 
 export class UpdateUserDto {
+  @Expose({ name: '@entity' })
+  @Equals('org.quicko.qpon.user')
+  entity = 'org.quicko.qpon.user';
+
   @IsOptional()
   @IsString()
   name: string;
@@ -71,6 +79,10 @@ export class UpdateUserDto {
 }
 
 export class UpdateUserRoleDto {
+  @Expose({ name: '@entity' })
+  @Equals('org.quicko.qpon.user')
+  entity = 'org.quicko.qpon.user';
+
   @IsEnum(roleEnum)
   role: roleEnum;
 

@@ -1,9 +1,12 @@
-import { Expose, Transform } from 'class-transformer';
-import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
+import { Expose } from 'class-transformer';
+import { Equals, IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class OrganizationMvDto {
+  @Expose({ name: '@entity' })
+  @Equals('org.quicko.qpon.organization_view')
+  entity = 'org.quicko.qpon.organization_view';
+
   @Expose({ name: 'organization_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   organizationId: string;
 
   @IsString()
@@ -26,12 +29,10 @@ export class OrganizationMvDto {
 
   @IsOptional()
   @Expose({ name: 'external_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsString()
   externalId: string;
 
   @Expose({ name: 'created_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsDate()
   createdAt: Date;
 }

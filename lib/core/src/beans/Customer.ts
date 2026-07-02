@@ -1,40 +1,46 @@
-import { Expose, Transform } from 'class-transformer';
-import { IsString, IsDate, IsUUID, IsOptional } from 'class-validator';
+import 'reflect-metadata';
+import { Expose, Type } from 'class-transformer';
+import { Equals, IsString, IsDate, IsUUID, IsOptional } from 'class-validator';
 
+@Reflect.metadata('@entity', 'org.quicko.qpon.customer')
 export class Customer {
+  @Expose({ name: '@entity' })
+  @Equals('org.quicko.qpon.customer')
+  entity = 'org.quicko.qpon.customer';
+
   @Expose({ name: 'customer_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()
   customerId?: string;
 
+  @Expose()
   @IsString()
   name?: string;
 
+  @Expose()
   @IsString()
   email?: string;
 
   @IsOptional()
   @Expose({ name: 'isd_code' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsString()
   isdCode?: string;
 
+  @Expose()
   @IsOptional()
   @IsString()
   phone?: string;
 
   @Expose({ name: 'external_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsString()
   externalId?: string;
 
   @Expose({ name: 'created_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
+  @Type(() => Date)
   @IsDate()
   createdAt?: Date;
 
   @Expose({ name: 'updated_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
+  @Type(() => Date)
   @IsDate()
   updatedAt?: Date;
 

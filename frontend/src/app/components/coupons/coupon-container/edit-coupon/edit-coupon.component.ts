@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { RxFormBuilder } from '@rxweb/reactive-form-validators';
 import { UpdateCouponDto } from '../../../../../dtos/coupon.dto';
+import { instanceToPlain } from 'class-transformer';
 import { AlertTileComponent } from '../common/alert-tile/alert-tile.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
@@ -108,7 +109,7 @@ export class EditCouponComponent implements OnInit {
     this.couponCodeStore.updateCoupon({
       organizationId: this.organization()?.organizationId!,
       couponId: this.couponId,
-      body: updatedCoupon
+      body: instanceToPlain(updatedCoupon)
     })
   }
 

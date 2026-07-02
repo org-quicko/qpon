@@ -5,7 +5,7 @@ description: "Fetch campaign"
 sidebar_label: "Fetch campaign"
 hide_title: true
 hide_table_of_contents: true
-api: eJy9VE1v2zAM/SsCTxsgJ06a1rFv3bANxS7rPk5FMFASHQuxJVeSu2aG//sgJ02TtRjWS282KfGR7z2qB9uSw6CtuVJQQElBVonEpkW9NsAh4NpDcQPvH0IrDi06bCiQi5keDDYEBVi3RqN/j7V+agUctIECWgwVcHB022lHCorgOuJA99i0dbwnzlSWk8wSKpeYLPJ8noiLeZagkmJWCjlbpjPg4GVFDULRQ9i28Z4PTps1DAM/tCBt174MPF3OsvNlSonK5TxZCEEJLiQm4jxNsyxNRbnI/xd8z9BL4NUFoaRFnuBSlclifpEnuZJnyVKhKjORzc6k+Cf8ioMn2TkdtqMWwW7IXHahguJmFZvDVn+m7TeSjsIhvoo9+dYaTx6KfuCgyEun26gdFPAxuoAduaChUNnojzUF4Lu5Cphiq6fHsvtp/5cLhulOEz/tD+IM04fKMfrI2jDSVtpxTh1Ggq5bG/FP24tBpj1DtqvJyujHX9ZtmOh0HZjYsutOy42dsHdjQBuGzEusUdTEWdPVQSeBDJrAQmW7dRVY66wk7zkLFbHr07Jk4kXPROe1Ie/Js2CZsgeOPEOjmOsMs2VJzrN4cP1Y6vLL1XhCoa+ERacmwOGOnN9NNJukkxQGDq31oUETKdjb6okWJ1wcHBHoPkzbGrWJZTpXx9xOp5toAuAnC+qBQ/F0Y/dixeTxLh2mHBNHPl9xqKwPEaPvBXr64ephiOHbjly05IrDHTod6RsNqrSP3wqKEmtPT8aR1gQyAQp483W/Nm9ZfIeeG3MfRLONbGLdxT/gsKHtMw9SXIdXhH8k8LWBjwQaVsPR9n768B2G4Q8gjAVs
+api: eJy9VUtv4zYQ/ivEnFqAsuXEGz9OTYu2WPTSNO3JMBYjcmRxI5EMSW2TGvrvxUh+xm6xuawvFmY47++b2YLzFDAZZz9qWEJJSVU/YePRbCxISLiJsFzBQbSW4DFgQ4kCa7ZgsSFYggsbtOaf3tUno0GCsbAEj6kCCYGeWxNIwzKFliTQCza+ZrviVs8WpGYZlXPMpovFTVbc3cwy1KqYlIWazPMJSIiqogZhuYX06tkupmDsBrpOHlJQrvXvC57PJ7MP85wyvVA32bQoKMOpwqz4kOezWZ4X5XTxtcF3HXpPeH1HqGi6yHCuy2x6c7fIFlrdZnONupwVs8mtKv43/Jq9R+9spMj6mzznP01RBeN5FLCEx1YpirFsa7F/DBKUs4ls4ufofW1UP7nx58g228uYrvhMKoEEHxgyyQwRldN08srYRBsK0EloKEbc0JW0JWhMX+H7B7LJpNdLDxLItg3j0oXN6Lk16smNnr2zI3XAaSfPRnIti2FyVxRFqzeUTlS2bYqhKnpJFCzW/+UzJkxtvKpSgTCR/oTpWkWlCw1ruDeUJdMQ27Rev9Nm/5PwkqnakE3ZDqEntD4HyC9MeqGOai7SRuPswPAneoXlG3cSvmDdnrllNDaUKseLhPsnBwYsYYzejE8XRBxv3+yLbjywN463Bxp3431OLD0Os2NOkGpDD47VFpJ7InvfcqzVmjmJ3vzGSa/Wkr8fSQWe52rNOe5NHxniA9JOHBy6XKXk9+TrFxVhGDCw9354uhPsaF8Ragqwxxe8ZOhNxk3szrJ5l3kcjHiuxpautzap3yIP3l3OlIXCRIFiaKcoeWn/7cKTKFpTJ1G8ioeBOOLHXmCsQBEV1ljUJEXT1slkiSzaJFLl2k2VhA+OV4kUqSLxcO6WLBtGUbTRWIqRokhOaHcAVhRotQitFa4sKUTBDzdHV/e/f+xfaIxV4TDoEaOMQhwqmozyUc4t9C6mBvsttWvRBYDPenHoc6KXNPY1GttTK9SsGyC64iGAPLtiESQsL8/aDqesPD04hyp7xcnmWUuoXGT0wXZbYKS/Qt11LH5uKexA+gWD4fb1cNYm8reGZYl1pItyDqsbvvtjd1u+F3ysr5W5x5h9PeEsyB2p35bH5PmG4Y8N/NaBTwbU8a3Yse647u6VIp9ObC+u5Nm++/XnP6Hr/gX8rysY
 sidebar_class_name: "get api-method"
 info_path: qpon
 custom_edit_url: null
@@ -62,7 +62,7 @@ Fetch campaign
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{}}
+  responses={{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"},"data":{"type":"object","properties":{"@entity":{"type":"string","enum":["org.quicko.qpon.campaign"]},"campaign_id":{"type":"string"},"name":{"type":"string"},"budget":{"type":"number"},"external_id":{"type":"string"},"status":{"type":"string"},"created_at":{"type":"string","format":"date-time"},"updated_at":{"type":"string","format":"date-time"}}}}}}}}}}
 >
   
 </StatusCodes>

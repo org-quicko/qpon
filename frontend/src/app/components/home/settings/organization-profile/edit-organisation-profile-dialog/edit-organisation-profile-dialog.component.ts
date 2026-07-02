@@ -8,6 +8,8 @@ import { MatInputModule } from '@angular/material/input';
 import { SnackbarService } from '../../../../../services/snackbar.service';
 import { OrganizationStore } from '../../../../../store/organization.store';
 import { OrganizationResolver } from '../../../../../resolvers/organization.resolver';
+import { UpdateOrganizationDto } from '../../../../../../dtos/organization.dto';
+import { instanceToPlain } from 'class-transformer';
 
 @Component({
     selector: 'app-edit-organisation-profile-dialog',
@@ -43,12 +45,11 @@ export class EditOrganisationProfileDialogComponent {
     save = async () => {
         if (this.form.invalid) return;
 
-        const body = {
-            name: this.form.value.name!
-        };
+        const updateOrganization = new UpdateOrganizationDto();
+        updateOrganization.name = this.form.value.name!;
 
         try {
-            await this.organizationResolver.update(this.data.organizationId, body);
+            await this.organizationResolver.update(this.data.organizationId, instanceToPlain(updateOrganization));
 
             this.snack.openSnackBar('Organization updated successfully', undefined);
             this.dialogRef.close();

@@ -5,7 +5,7 @@ description: "Create super admin"
 sidebar_label: "Create super admin"
 hide_title: true
 hide_table_of_contents: true
-api: eJzNVU1vGzkM/SsCz4rjZHPJnJq2e+juoU3TngKjoDW0R82MpIpUk4Ex/72gJh9O6u1eusD64gH1SL3HL+0gJsooPoZ3LTTgMqHQEZdE+QjbwQewILhlaK7hM1OGlYWEGQcSympdWWByJXsZobnegcQbChdFOj2b7A4w+b9pvCKXSR7tKwuZOMXAxNDs4HR5on8tscs+KR1o1GiuinPEvCl9P5qZXWsqPfNAz8UgFET9MaXeuyrn+CtrkB2w62hA/ZIxETQQ11/JCVhIWcWLnym42NIeygehLWWYLAzEjNv9Q5bswxamabJAdziknp5CnC5P9nzgXxVMNczZ8vznDJwtz81VhV4o1GCfCdvR0J1n4f+h9rPl+XPt/8h9mmVn+laI5XVsxznKb9ETcDhAeY8v/BW7YN5GUo00oO8PwTcxDyjQ3CP2/WsBF7WAr4RYFi4OGish823M7a9vPzn940zROfYHeba0wdLLwz1fHhvlWcpnlU9SHpUcZrdPbmbwQODlLZN90Ydvatu+mLuBpIsaK0WuJUAdbjjG5I8L63awoIX7+FTiP/9z8hZ82MSaUy/1+DLFAC8FqdF4NmhcLPq90ZV2G/ONWRffi1mP5rJ4dxMX5nU1aAcbdtjjuidrhtKLPxIKGMRIF8u2E5Ny1FG3Rjoyl8/DUlBHNuvCPhAzsZFo2mgcDgn9NrDB0JpcgombDWU2Ctw+hbr48K4iWuRuHTG3C7DwnTLPik4Wy8WydmBkGTDs5fhg9Z7l47EDhe7kOPU4p7LkOhZzYa91k4OFubQrC52WvbmG3W6NTJ9zP01q/lYoj/PD8B2zV9XzUwAdYUu5vhI3NCqxedqPPunlCu+Lkvhp8vUZmT0unKMkv8Su9jrzw/urT2Bhfb9dhrqjIOOtdg/eQgNgIdYk1L1RbTvoMWzLvMHmmPr7AZWldsY=
+api: eJzNlc9vWzcMx/8VgWfZcbJc4lPTboduhzVzcwqMgtaj/dS8JykS1dgw3v8+UPLPxWtRYIf5YoOiyC+pD+kt+EAR2Xr3sYEpmEjINMuB4n3TWwcaGFcJpk/wmCjCXEPAiD0xRbHONURKwbtECaZbuJlM5KuhZKINEhamcDO5VrNsDKW0zF23UTVLo5LkUbhLZLxjciz3MYTOmiLr6muSIFtIpqUe5RdvAsEU/OIrGQYNIUoRbKsE4xs68bKOaUURBg09pYSr08PE0boVDMOggdbYh46OIW4m1yd34IcVDCXM7eTubQduJ3eqNFWVrirsImGzUbS2idP/sPbbyd157f+qfahlR3rJlPi9bzY1yn9SzztybHnzVrUGcrkXLH1cjV+yNc9+/BK8G+eC6aDBYX+pXA3Uo+0ungRM6dXH5uJh9N3F9tXabaRG5OwVz8+7eijkst69Wvjdt0796gkOMqEgNi6IvWNKPDa+h1OtcH3zyy3sBVb/L6dIrkems+R4tEvyWFOeI/qhEP2PkaQ1k0vWO5n1LTyTVHAeTsM37PIh7DAXbrj1Iiz4VN4UuYUpXGGwV1KuAJ/I5Fg68rQF9s/k7rN4Pc0HLczYPySX7BcMdkYmEpfD+fHqTCCqnJwEODxQyxwkUfGCKSwIY52FffSD686gwUonWsLm9E3WIwx2JLUPZ2p+6nqql+Q5ZAj+Oo7Lbz9PyXEI9ozsDSdUHGx7Lg4kW7f0Rb7lcvIQvHvDgxiVTQqV8Vl+L2Xtv/r4rBbZdqwWG/VQFar3xSC7QSWDHS460qrPHdsRk0PHilufVy2rEL0sUa24JfVwHpacXExqkZN1lBIlxV41XhnsA9qVSwpdo2J2yi+XFJMSx9Ux1P2nj8WjwdQuPMZmLHRSTLWi6/FkPClj7hP3WBbRrqEX4T/rx+GxmdZ8FTqU6dKQY9kklfAnIQE0VMbnGlrhf/oE2+0CEz3GbhjE/JIp7uD+htFK1RX8PTvHWftQ9+josyQ/jtqbnSpDU2/cG0OBv+t7OqKf/px9Bg2L3d7uy/aHiK8CDr7CFECDL00ok1ZsW+jQrXL9b6gx5fM3/FDaJA==
 sidebar_class_name: "post api-method"
 info_path: qpon
 custom_edit_url: null
@@ -54,7 +54,7 @@ Create super admin
 
 <RequestSchema
   title={"Body"}
-  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"name":{"type":"string","example":"John Doe"},"email":{"type":"string","format":"email","example":"super.admin@test.com"},"password":{"type":"string","example":"1234"},"role":{"type":"string","default":"super_admin"}}},"example":{"name":"John Doe","email":"super.admin@test.com","password":"1234","role":"super_admin"}}}}}
+  body={{"content":{"application/json":{"schema":{"type":"object","properties":{"@entity":{"type":"string","enum":["org.quicko.qpon.user"]},"name":{"type":"string"},"email":{"type":"string"},"password":{"type":"string"},"role":{"type":"string"}},"required":["@entity"]},"example":{"@entity":"org.quicko.qpon.user","name":"John Doe","email":"super.admin@test.com","password":"1234","role":"super_admin"}}}}}
 >
   
 </RequestSchema>
@@ -62,7 +62,7 @@ Create super admin
 <StatusCodes
   id={undefined}
   label={undefined}
-  responses={{"201":{"description":"201 Successfully created super admin","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"}}},"example":{"code":201,"message":"Successfully created super admin"}}}},"409":{"description":"409 Super Admin already exists","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"}}},"example":{"code":409,"message":"Super Admin already exists"}}}}}}
+  responses={{"200":{"description":"201 Successfully created super admin","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"}}},"example":{"code":201,"message":"Successfully created super admin"}}}},"409":{"description":"409 Super Admin already exists","content":{"application/json":{"schema":{"type":"object","properties":{"code":{"type":"integer"},"message":{"type":"string"}}},"example":{"code":409,"message":"Super Admin already exists"}}}}}}
 >
   
 </StatusCodes>

@@ -12,6 +12,9 @@ import { campaignStatusEnum } from '../enums';
 import { prop, required } from '@rxweb/reactive-form-validators';
 
 export class CampaignDto {
+  @Expose({ name: '@entity' })
+  entity?: string = 'org.quicko.qpon.campaign';
+
   @Expose({ name: 'campaign_id' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()
@@ -45,6 +48,9 @@ export class CampaignDto {
 }
 
 export class CreateCampaignDto {
+  @Expose({ name: '@entity' })
+  entity?: string = 'org.quicko.qpon.campaign';
+
   @prop()
   @required()
   @IsString()
@@ -57,6 +63,9 @@ export class CreateCampaignDto {
 }
 
 export class UpdateCampaignDto {
+  @Expose({ name: '@entity' })
+  entity?: string = 'org.quicko.qpon.campaign';
+
   @prop()
   @IsString()
   name?: string;

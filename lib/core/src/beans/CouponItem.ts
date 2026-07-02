@@ -1,15 +1,21 @@
-import { Expose, Transform } from 'class-transformer';
-import { IsArray, IsUUID } from 'class-validator';
+import 'reflect-metadata';
+import { Expose } from 'class-transformer';
+import { Equals, IsArray, IsUUID } from 'class-validator';
 import { Item } from './Item';
 
+@Reflect.metadata('@entity', 'org.quicko.qpon.coupon_item')
 export class CouponItem {
+  @Expose({ name: '@entity' })
+  @Equals('org.quicko.qpon.coupon_item')
+  entity = 'org.quicko.qpon.coupon_item';
+
   @Expose({ name: 'coupon_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()
   couponId?: string;
 
+  @Expose()
   @IsArray()
-  item?: Item[];
+  items?: Item[];
 
   getCouponId(): string | undefined {
     return this.couponId;
@@ -19,11 +25,11 @@ export class CouponItem {
     this.couponId = couponId;
   }
 
-  getItem(): Item[] | undefined {
-    return this.item;
+  getItems(): Item[] | undefined {
+    return this.items;
   }
 
-  setItem(item: Item[]): void {
-    this.item = item;
+  setItems(items: Item[]): void {
+    this.items = items;
   }
 }

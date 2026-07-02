@@ -107,6 +107,7 @@ export class CustomersController {
   async fetchCustomers(
     @Param('organization_id') organizationId: string,
     @Query('email') email?: string,
+    @Query('external_id') externalId?: string,
     @Query('skip') skip?: number,
     @Query('take') take?: number,
   ) {
@@ -118,6 +119,7 @@ export class CustomersController {
       take,
       {
         email,
+        externalId,
       },
     );
 

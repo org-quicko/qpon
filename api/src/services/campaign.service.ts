@@ -12,6 +12,7 @@ import {
   ILike,
   MoreThan,
   Not,
+  Raw,
   Repository,
 } from 'typeorm';
 import { Campaign } from '../entities/campaign.entity';
@@ -38,7 +39,7 @@ export class CampaignService {
     private campaignSummaryWorkbookConverter: CampaignSummaryWorkbookConverter,
     private logger: LoggerService,
     private datasource: DataSource,
-  ) {}
+  ) { }
 
   /**
    * Create campaign
@@ -51,16 +52,17 @@ export class CampaignService {
     this.logger.info('START: createCampaign service');
     try {
       if (body.name) {
-        const campaign = await this.campaignRepository
-          .createQueryBuilder('campaign')
-          .where(
-            `LOWER(campaign.name) = LOWER(:name) AND status != 'archive' AND coupon_id = :coupon_id`,
-            {
+        const campaign = await this.campaignRepository.findOne({
+          where: {
+            name: Raw((alias) => `LOWER(${alias}) = LOWER(:name)`, {
               name: body.name,
-              coupon_id: couponId,
+            }),
+            status: Not(campaignStatusEnum.ARCHIVE),
+            coupon: {
+              couponId,
             },
-          )
-          .getOne();
+          },
+        });
 
         if (campaign) {
           this.logger.warn('Campaign with same name exists');
@@ -249,22 +251,23 @@ export class CampaignService {
       }
 
       if (body.name) {
-        const campaign = await this.campaignRepository
-          .createQueryBuilder('campaign')
-          .where(
-            `LOWER(campaign.name) = LOWER(:name) AND status != 'archive'`,
-            {
+        const existingCampaign = await this.campaignRepository.findOne({
+          where: {
+            name: Raw((alias) => `LOWER(${alias}) = LOWER(:name)`, {
               name: body.name,
-            },
-          )
-          .getOne();
+            }),
+            status: Not(campaignStatusEnum.ARCHIVE),
+            campaignId: Not(campaignId),
+          },
+        });
 
-        if (campaign) {
+        if (existingCampaign) {
           this.logger.warn('Campaign with same name exists');
           throw new ConflictException('Campaign with same name exists');
         }
       }
 
+      delete body.entity;
       await this.campaignRepository.update(campaignId, body);
 
       const updatedCampaign = await this.campaignRepository.findOne({

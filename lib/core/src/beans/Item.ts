@@ -1,34 +1,41 @@
-import { Expose, Transform } from 'class-transformer';
-import { IsString, IsDate, IsUUID, IsOptional } from 'class-validator';
+import 'reflect-metadata';
+import { Expose, Type } from 'class-transformer';
+import { Equals, IsString, IsDate, IsUUID, IsOptional } from 'class-validator';
 
+@Reflect.metadata('@entity', 'org.quicko.qpon.item')
 export class Item {
+  @Expose({ name: '@entity' })
+  @Equals('org.quicko.qpon.item')
+  entity = 'org.quicko.qpon.item';
+
   @Expose({ name: 'item_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()
   itemId?: string;
 
+  @Expose()
   @IsString()
   name?: string;
 
+  @Expose()
+  @IsOptional()
   @IsString()
   description?: string;
 
   @IsOptional()
   @Expose({ name: 'custom_fields' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   customFields?: object;
 
   @Expose({ name: 'external_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
+  @IsString()
   externalId?: string;
 
   @Expose({ name: 'created_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
+  @Type(() => Date)
   @IsDate()
   createdAt?: Date;
 
   @Expose({ name: 'updated_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
+  @Type(() => Date)
   @IsDate()
   updatedAt?: Date;
 

@@ -1,5 +1,7 @@
-import { Expose, Transform } from 'class-transformer';
+import 'reflect-metadata';
+import { Expose, Type } from 'class-transformer';
 import {
+  Equals,
   IsString,
   IsNumber,
   IsEnum,
@@ -10,35 +12,42 @@ import {
 
 import { CampaignStatus } from '../enums'
 
+@Reflect.metadata('@entity', 'org.quicko.qpon.campaign')
 export class Campaign {
+  @Expose({ name: '@entity' })
+  @Equals('org.quicko.qpon.campaign')
+  entity = 'org.quicko.qpon.campaign';
+
   @Expose({ name: 'campaign_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()
   campaignId?: string;
 
+  @Expose()
   @IsString()
   name?: string;
 
+  @Expose()
   @IsOptional()
+  @Type(() => Number)
   @IsNumber()
   budget?: number;
 
   @Expose({ name: 'external_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsOptional()
   @IsString()
   externalId?: string;
 
+  @Expose()
   @IsEnum(CampaignStatus)
   status?: CampaignStatus;
 
   @Expose({ name: 'created_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
+  @Type(() => Date)
   @IsDate()
   createdAt?: Date;
 
   @Expose({ name: 'updated_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
+  @Type(() => Date)
   @IsDate()
   updatedAt?: Date;
 

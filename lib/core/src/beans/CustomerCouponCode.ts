@@ -1,14 +1,20 @@
-import { Expose, Transform } from 'class-transformer';
-import { IsArray, IsOptional, IsUUID } from 'class-validator';
+import 'reflect-metadata';
+import { Expose } from 'class-transformer';
+import { Equals, IsArray, IsOptional, IsUUID } from 'class-validator';
 import { Customer } from './Customer';
 
+@Reflect.metadata('@entity', 'org.quicko.qpon.customer_coupon_code')
 export class CustomerCouponCode {
+  @Expose({ name: '@entity' })
+  @Equals('org.quicko.qpon.customer_coupon_code')
+  entity = 'org.quicko.qpon.customer_coupon_code';
+
   @IsOptional()
   @Expose({ name: 'coupon_code_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()
   couponCodeId?: string;
 
+  @Expose()
   @IsArray()
   customers?: Customer[];
 

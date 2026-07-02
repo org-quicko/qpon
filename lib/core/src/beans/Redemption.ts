@@ -1,30 +1,34 @@
-import { Expose, Transform } from 'class-transformer';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import 'reflect-metadata';
+import { Expose, Type } from 'class-transformer';
+import { Equals, IsNumber, IsOptional, IsString } from 'class-validator';
 
+@Reflect.metadata('@entity', 'org.quicko.qpon.redemption')
 export class CreateRedemption {
+  @Expose({ name: '@entity' })
+  @Equals('org.quicko.qpon.redemption')
+  entity = 'org.quicko.qpon.redemption';
+
   @IsString()
   code?: string;
 
   @Expose({ name: 'base_order_value' })
-  @Transform(({ value }) => value, { toClassOnly: true })
+  @Type(() => Number)
   @IsNumber()
   baseOrderValue?: number;
 
+  @Type(() => Number)
   @IsNumber()
   discount?: number;
 
   @Expose({ name: 'external_customer_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsString()
   externalCustomerId?: string;
 
   @Expose({ name: 'external_item_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsString()
   externalItemId?: string;
 
   @Expose({ name: 'external_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsOptional()
   @IsString()
   externalId?: string;

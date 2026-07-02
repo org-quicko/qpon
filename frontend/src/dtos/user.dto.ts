@@ -4,6 +4,9 @@ import { roleEnum } from '../enums';
 import { email, prop, required } from '@rxweb/reactive-form-validators';
 
 export class UserDto {
+  @Expose({ name: '@entity' })
+  entity?: string = 'org.quicko.qpon.user';
+
   @Expose({ name: 'user_id' })
   @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()
@@ -40,6 +43,9 @@ export class UserDto {
 }
 
 export class CreateUserDto {
+  @Expose({ name: '@entity' })
+  entity?: string = 'org.quicko.qpon.user';
+
   @prop()
   @required()
   @IsString()
@@ -62,6 +68,9 @@ export class CreateUserDto {
 }
 
 export class UpdateUserDto {
+  @Expose({ name: '@entity' })
+  entity?: string = 'org.quicko.qpon.user';
+
   @IsOptional()
   @IsString()
   name?: string;
@@ -79,6 +88,9 @@ export class UpdateUserDto {
 }
 
 export class UpdateUserRoleDto {
+  @Expose({ name: '@entity' })
+  entity?: string = 'org.quicko.qpon.user';
+
   @IsEnum(roleEnum)
   role?: roleEnum;
 

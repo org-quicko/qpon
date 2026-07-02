@@ -83,7 +83,7 @@ const config: Config = {
         docsPluginId: 'classic',
         config: {
           api: {
-            specPath: './openapi-spec.json',
+            specPath: '../resources/openapi.json',
             outputDir: 'docs',
             sidebarOptions: {
               groupPathsBy: 'tag',

@@ -8,6 +8,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIcon } from "@angular/material/icon";
 import { SnackbarService } from '../../../../../services/snackbar.service';
+import { UpdateUserDto } from '../../../../../../dtos/user.dto';
+import { instanceToPlain } from 'class-transformer';
 
 @Component({
     selector: 'app-edit-profile-dialog',
@@ -97,23 +99,21 @@ export class EditProfileDialogComponent {
             return;
         }
 
-        // Build body
-        const body: any = {
-            email: this.form.value.email!,
-            name: this.form.value.name!,
-        };
+        const updateUser = new UpdateUserDto();
+        updateUser.email = this.form.value.email!;
+        updateUser.name = this.form.value.name!;
 
         // ✔ Only add passwords if both are entered
         if (currentPassword && newPassword) {
-            body.currentPassword = currentPassword;
-            body.newPassword = newPassword;
+            updateUser.currentPassword = currentPassword;
+            updateUser.newPassword = newPassword;
         }
 
         // Call user store update
         this.userStore.updateUser({
             organizationId: this.data.organizationId,
             userId: this.data.userId,
-            body
+            body: instanceToPlain(updateUser)
         });
 
         // Close dialog ONLY when valid

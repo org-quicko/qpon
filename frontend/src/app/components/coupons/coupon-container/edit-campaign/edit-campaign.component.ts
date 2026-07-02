@@ -5,6 +5,7 @@ import { OrganizationStore } from '../../../../store/organization.store';
 import { RxFormBuilder } from '@rxweb/reactive-form-validators';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { CreateCampaignDto, UpdateCampaignDto } from '../../../../../dtos/campaign.dto';
+import { instanceToPlain } from 'class-transformer';
 import { getCurrencySymbol, NgClass } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
@@ -104,7 +105,7 @@ export class EditCampaignComponent implements OnInit {
       organizationId: this.organization()?.organizationId!,
       couponId: this.couponId,
       campaignId: this.campaignId,
-      body: updatedCampaign
+      body: instanceToPlain(updatedCampaign)
     })
   }
 

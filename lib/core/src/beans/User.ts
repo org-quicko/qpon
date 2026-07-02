@@ -1,10 +1,15 @@
-import { Expose, Transform } from "class-transformer";
-import { IsString, IsEnum, IsDate, IsUUID, IsOptional } from "class-validator";
+import 'reflect-metadata';
+import { Expose, Type } from 'class-transformer';
+import { Equals, IsString, IsEnum, IsDate, IsUUID, IsOptional } from "class-validator";
 import { Role } from "../enums";
 
+@Reflect.metadata('@entity', 'org.quicko.qpon.user')
 export class User {
+	@Expose({ name: '@entity' })
+	@Equals('org.quicko.qpon.user')
+	entity = 'org.quicko.qpon.user';
+
 	@Expose({ name: "user_id" })
-	@Transform(({ value }) => value, { toClassOnly: true })
 	@IsUUID()
 	userId?: string;
 
@@ -23,17 +28,17 @@ export class User {
 
 	@IsOptional()
 	@Expose({ name: "last_accessed_at" })
-	@Transform(({ value }) => value, { toClassOnly: true })
+	@Type(() => Date)
 	@IsDate()
 	lastAccessedAt?: Date;
 
 	@Expose({ name: "created_at" })
-	@Transform(({ value }) => value, { toClassOnly: true })
+	@Type(() => Date)
 	@IsDate()
 	createdAt?: Date;
 
 	@Expose({ name: "updated_at" })
-	@Transform(({ value }) => value, { toClassOnly: true })
+	@Type(() => Date)
 	@IsDate()
 	updatedAt?: Date;
 

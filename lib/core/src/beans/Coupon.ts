@@ -1,46 +1,52 @@
-import { Expose, Transform } from "class-transformer";
-import { IsString, IsNumber, IsEnum, IsDate, IsUUID } from "class-validator";
+import 'reflect-metadata';
+import { Expose, Type } from 'class-transformer';
+import { Equals, IsString, IsNumber, IsEnum, IsDate, IsUUID, IsOptional } from "class-validator";
 import { ItemConstraint, DiscountType, Status } from "../enums";
 
+@Reflect.metadata('@entity', 'org.quicko.qpon.coupon')
 export class Coupon {
+	@Expose({ name: '@entity' })
+	@Equals('org.quicko.qpon.coupon')
+	entity = 'org.quicko.qpon.coupon';
+
 	@Expose({ name: "coupon_id" })
-	@Transform(({ value }) => value, { toClassOnly: true })
 	@IsUUID()
 	couponId?: string;
 
+	@Expose()
 	@IsString()
 	name?: string;
 
 	@Expose({ name: "discount_type" })
-	@Transform(({ value }) => value, { toClassOnly: true })
 	@IsEnum(DiscountType)
 	discountType?: DiscountType;
 
 	@Expose({ name: "discount_value" })
-	@Transform(({ value }) => value, { toClassOnly: true })
+	@Type(() => Number)
 	@IsNumber()
 	discountValue?: number;
 
 	@Expose({ name: "discount_upto" })
-	@Transform(({ value }) => value, { toClassOnly: true })
+	@IsOptional()
+	@Type(() => Number)
 	@IsNumber()
 	discountUpto?: number;
 
 	@Expose({ name: "item_constraint" })
-	@Transform(({ value }) => value, { toClassOnly: true })
 	@IsEnum(ItemConstraint)
 	itemConstraint?: ItemConstraint;
 
+	@Expose()
 	@IsEnum(Status)
 	status?: Status;
 
 	@Expose({ name: "created_at" })
-	@Transform(({ value }) => value, { toClassOnly: true })
+	@Type(() => Date)
 	@IsDate()
 	createdAt?: Date;
 
 	@Expose({ name: "updated_at" })
-	@Transform(({ value }) => value, { toClassOnly: true })
+	@Type(() => Date)
 	@IsDate()
 	updatedAt?: Date;
 

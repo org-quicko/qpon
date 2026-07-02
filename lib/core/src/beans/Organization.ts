@@ -1,9 +1,14 @@
-import { Expose, Transform } from 'class-transformer';
-import { IsString, IsDate, IsOptional } from 'class-validator';
+import 'reflect-metadata';
+import { Expose, Type } from 'class-transformer';
+import { Equals, IsString, IsDate, IsOptional } from 'class-validator';
 
+@Reflect.metadata('@entity', 'org.quicko.qpon.organization')
 export class Organization {
+  @Expose({ name: '@entity' })
+  @Equals('org.quicko.qpon.organization')
+  entity = 'org.quicko.qpon.organization';
+
   @Expose({ name: 'organization_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   organizationId?: string;
 
   @IsString()
@@ -14,17 +19,16 @@ export class Organization {
 
   @IsOptional()
   @Expose({ name: 'external_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsString()
   externalId?: string;
 
   @Expose({ name: 'created_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
+  @Type(() => Date)
   @IsDate()
   createdAt?: Date;
 
   @Expose({ name: 'updated_at' })
-  @Transform(({ value }) => value, { toClassOnly: true })
+  @Type(() => Date)
   @IsDate()
   updatedAt?: Date;
 

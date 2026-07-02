@@ -1,5 +1,7 @@
-import { Expose, Transform } from "class-transformer";
+import 'reflect-metadata';
+import { Expose, Type } from 'class-transformer';
 import {
+  Equals,
   IsString,
   IsNumber,
   IsEnum,
@@ -14,74 +16,77 @@ import {
   Visibility,
 } from "../enums";
 
+@Reflect.metadata('@entity', 'org.quicko.qpon.coupon_code')
 export class CouponCode {
+  @Expose({ name: '@entity' })
+  @Equals('org.quicko.qpon.coupon_code')
+  entity = 'org.quicko.qpon.coupon_code';
+
   @Expose({ name: "coupon_code_id" })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsUUID()
   couponCodeId?: string;
 
+  @Expose()
   @IsString()
   code?: string;
 
+  @Expose()
   @IsOptional()
   @IsString()
   description?: string;
 
-  @IsOptional()
   @Expose({ name: "customer_constraint" })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsEnum(CustomerConstraint)
   customerConstraint?: CustomerConstraint;
 
   @IsOptional()
   @Expose({ name: "max_redemptions" })
-  @Transform(({ value }) => value, { toClassOnly: true })
+  @Type(() => Number)
   @IsNumber()
   maxRedemptions?: number;
 
   @IsOptional()
   @Expose({ name: "minimum_amount" })
-  @Transform(({ value }) => value, { toClassOnly: true })
+  @Type(() => Number)
   @IsNumber()
   minimumAmount?: number;
 
   @IsOptional()
   @Expose({ name: "max_redemption_per_customer" })
-  @Transform(({ value }) => value, { toClassOnly: true })
+  @Type(() => Number)
   @IsNumber()
   maxRedemptionPerCustomer?: number;
 
+  @Expose()
   @IsEnum(Visibility)
   visibility?: Visibility;
 
   @Expose({ name: "duration_type" })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsEnum(DurationType)
   durationType?: DurationType;
 
   @IsOptional()
   @Expose({ name: "expires_at" })
-  @Transform(({ value }) => value, { toClassOnly: true })
-  @IsString()
+  @Type(() => Date)
+  @IsDate()
   expiresAt?: Date;
 
   @Expose({ name: "redemption_count" })
-  @Transform(({ value }) => value, { toClassOnly: true })
+  @Type(() => Number)
   @IsNumber()
   redemptionCount?: number;
 
-  @Expose({ name: "coupon_code_status" })
-  @Transform(({ value }) => value, { toClassOnly: true })
+  @Expose({ name: "status" })
   @IsEnum(CouponCodeStatus)
   status?: CouponCodeStatus;
 
   @Expose({ name: "created_at" })
-  @Transform(({ value }) => value, { toClassOnly: true })
+  @Type(() => Date)
   @IsDate()
   createdAt?: Date;
 
   @Expose({ name: "updated_at" })
-  @Transform(({ value }) => value, { toClassOnly: true })
+  @Type(() => Date)
   @IsDate()
   updatedAt?: Date;
 

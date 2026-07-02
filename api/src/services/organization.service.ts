@@ -201,6 +201,7 @@ export class OrganizationService {
         throw new NotFoundException('Organization not found');
       }
 
+      delete body.entity;
       await this.organizationRepository.update(organizationId, body);
 
       const updatedOrganization = await this.organizationRepository.findOne({
@@ -252,7 +253,7 @@ export class OrganizationService {
       this.logger.info('END: deleteOrganization service');
       return this.organizationConverter.convert(organiztion);
     } catch (error) {
-      this.logger.error(`Error in updateOrganization:`, error);
+      this.logger.error(`Error in deleteOrganization:`, error);
 
       throw new HttpException(
         'Failed to delete organization',

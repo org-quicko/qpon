@@ -1,12 +1,15 @@
-import { Expose, Transform } from 'class-transformer';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { Expose } from 'class-transformer';
+import { IsNumber, IsOptional, IsString, Equals } from 'class-validator';
 
 export class CreateRedemptionDto {
+  @Expose({ name: '@entity' })
+  @Equals('org.quicko.qpon.redemption')
+  entity = 'org.quicko.qpon.redemption';
+
   @IsString()
   code: string;
 
   @Expose({ name: 'base_order_value' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsNumber()
   baseOrderValue: number;
 
@@ -14,17 +17,14 @@ export class CreateRedemptionDto {
   discount: number;
 
   @Expose({ name: 'external_customer_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsString()
   externalCustomerId: string;
 
   @Expose({ name: 'external_item_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsString()
   externalItemId: string;
 
   @Expose({ name: 'external_id' })
-  @Transform(({ value }) => value, { toClassOnly: true })
   @IsOptional()
   @IsString()
   externalId?: string;
