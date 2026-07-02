@@ -1,4 +1,4 @@
-name: Publish libs to npm
+name: Publish core to npm
 
 on:
   push:
