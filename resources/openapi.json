@@ -2749,9 +2749,7 @@
                                       "type": "array",
                                       "items": {
                                         "type": "array",
-                                        "items": {
-                                          "type": "string"
-                                        }
+                                        "items": {}
                                       }
                                     },
                                     "name": {
@@ -2787,7 +2785,6 @@
                   "message": "Successfully fetched coupons summary",
                   "data": {
                     "metadata": {
-                      "@entity": "org.quicko.qpon.organization",
                       "organization_id": "ba2b67b1-f932-4f56-abb2-fc445869bcab"
                     },
                     "sheets": [
@@ -2983,9 +2980,7 @@
                                       "type": "array",
                                       "items": {
                                         "type": "array",
-                                        "items": {
-                                          "type": "string"
-                                        }
+                                        "items": {}
                                       }
                                     },
                                     "name": {
@@ -3021,7 +3016,6 @@
                   "message": "Successfully fetched coupon summary",
                   "data": {
                     "metadata": {
-                      "@entity": "org.quicko.qpon.organization",
                       "organization_id": "ba2b67b1-f932-4f56-abb2-fc445869bcab"
                     },
                     "sheets": [
@@ -4761,9 +4755,7 @@
                                       "type": "array",
                                       "items": {
                                         "type": "array",
-                                        "items": {
-                                          "type": "string"
-                                        }
+                                        "items": {}
                                       }
                                     },
                                     "name": {
@@ -4888,9 +4880,7 @@
                                       "type": "array",
                                       "items": {
                                         "type": "array",
-                                        "items": {
-                                          "type": "string"
-                                        }
+                                        "items": {}
                                       }
                                     },
                                     "name": {
@@ -6517,9 +6507,7 @@
                                       "type": "array",
                                       "items": {
                                         "type": "array",
-                                        "items": {
-                                          "type": "string"
-                                        }
+                                        "items": {}
                                       }
                                     },
                                     "name": {
@@ -6555,7 +6543,6 @@
                   "message": "Successfully fetched coupon codes by code",
                   "data": {
                     "metadata": {
-                      "@entity": "org.quicko.qpon.organization",
                       "organization_id": "f47e0a84-78af-42f3-8f1a-8fb1b4523442"
                     },
                     "sheets": [
@@ -7415,9 +7402,7 @@
                                       "type": "array",
                                       "items": {
                                         "type": "array",
-                                        "items": {
-                                          "type": "string"
-                                        }
+                                        "items": {}
                                       }
                                     },
                                     "name": {
@@ -7453,7 +7438,6 @@
                   "message": "Successfully fetched offer",
                   "data": {
                     "metadata": {
-                      "@entity": "org.quicko.qpon.organization",
                       "organization_id": "f47e0a84-78af-42f3-8f1a-8fb1b4523442"
                     },
                     "sheets": [
@@ -7633,9 +7617,7 @@
                                       "type": "array",
                                       "items": {
                                         "type": "array",
-                                        "items": {
-                                          "type": "string"
-                                        }
+                                        "items": {}
                                       }
                                     },
                                     "name": {
@@ -7671,7 +7653,6 @@
                   "message": "Successfully fetched offers",
                   "data": {
                     "metadata": {
-                      "@entity": "org.quicko.qpon.organization",
                       "organization_id": "f47e0a84-78af-42f3-8f1a-8fb1b4523442"
                     },
                     "sheets": [
@@ -8018,9 +7999,7 @@
                                       "type": "array",
                                       "items": {
                                         "type": "array",
-                                        "items": {
-                                          "type": "string"
-                                        }
+                                        "items": {}
                                       }
                                     },
                                     "name": {
@@ -8056,7 +8035,6 @@
                   "message": "Successfully fetched redemptions",
                   "data": {
                     "metadata": {
-                      "@entity": "org.quicko.qpon.organization",
                       "organization_id": "ba2b67b1-f932-4f56-abb2-fc445869bcab"
                     },
                     "sheets": [
@@ -8259,9 +8237,7 @@
                                       "type": "array",
                                       "items": {
                                         "type": "array",
-                                        "items": {
-                                          "type": "string"
-                                        }
+                                        "items": {}
                                       }
                                     },
                                     "name": {
@@ -8297,7 +8273,6 @@
                   "message": "Successfully fetched redemptions",
                   "data": {
                     "metadata": {
-                      "@entity": "org.quicko.qpon.organization",
                       "organization_id": "ba2b67b1-f932-4f56-abb2-fc445869bcab"
                     },
                     "sheets": [
