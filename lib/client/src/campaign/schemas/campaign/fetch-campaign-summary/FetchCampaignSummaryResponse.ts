@@ -8,7 +8,7 @@ export const FetchCampaignSummaryResponseSchema = z.object({
 	sheets: z.array(z.object({
 	blocks: z.array(z.object({
 	header: z.array(z.string()).optional(),
-	rows: z.array(z.array(z.string())).optional(),
+	rows: z.array(z.array(z.any())).optional(),
 	name: z.string().optional(),
 	"@entity": z.string().optional(),
 })).optional(),
