@@ -73,7 +73,7 @@ export class RedemptionsService {
           },
           where: {
             code: body.code,
-            status: Not(couponCodeStatusEnum.ARCHIVE),
+            status: couponCodeStatusEnum.ACTIVE,
             organization: {
               organizationId,
             },
