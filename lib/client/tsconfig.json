@@ -10,8 +10,9 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "types": ["node"]
   },
-  "include": ["index.ts", "Qpon.ts", "QponCredentials.ts", "src/**/*"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts"]
+  "include": ["index.ts", "Qpon.ts", "QponCredentials.ts", "src/**/*", "test/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
