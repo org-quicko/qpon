@@ -27,7 +27,7 @@
             </div>
         </div>
       <div class="flex flex-col gap-[48px]">
-        <form [formGroup]="createSuperAdminForm" class="flex flex-col gap-[32px]">
+        <form [formGroup]="createSuperAdminForm" (ngSubmit)="onCreateSuperAdmin()" class="flex flex-col gap-[32px]">
           <mat-form-field appearance="outline" subscriptSizing="dynamic">
             <mat-label>Name</mat-label>
             <input
@@ -73,15 +73,14 @@
             </button>
             <mat-error>Password is required</mat-error>
           </mat-form-field>
+          <button
+            type="submit"
+            mat-flat-button
+            class="text-on-primary mat-large-font rounded-full"
+          >
+            Sign up
+          </button>
         </form>
-        <button
-        type="submit"
-          mat-flat-button
-          class="text-on-primary mat-large-font rounded-full"
-          (click)="onCreateSuperAdmin()"
-        >
-          Sign up
-        </button>
       </div>
     </div>
   </div>
