@@ -2,7 +2,7 @@ name: Release Docker Image on Docker Hub
 on:
   push:
     tags:
-      - "v[0-9]+.[0-9]+.[0-9]+*"   # only real semver tags trigger this
+      - "v[0-9]+.[0-9]+.[0-9]+*"
 
 jobs:
   docker-release:
