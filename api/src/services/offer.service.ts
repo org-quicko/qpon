@@ -10,7 +10,6 @@ import { In, Repository } from 'typeorm';
 import { Offer } from '../entities/offer.view';
 import { LoggerService } from './logger.service';
 import {
-  couponCodeStatusEnum,
   customerConstraintEnum,
   discountTypeEnum,
   itemConstraintEnum,
@@ -23,7 +22,6 @@ import { CouponItem } from 'src/entities/coupon-item.entity';
 import { Customer } from 'src/entities/customer.entity';
 import { Item } from 'src/entities/item.entity';
 import { Redemption } from 'src/entities/redemption.entity';
-import { CouponCode } from 'src/entities/coupon-code.entity';
 
 @Injectable()
 export class OffersService {
@@ -38,8 +36,6 @@ export class OffersService {
     private readonly customerRepository: Repository<Customer>,
     @InjectRepository(Item)
     private readonly itemRepository: Repository<Item>,
-    @InjectRepository(CouponCode)
-    private readonly couponCodeRepository: Repository<CouponCode>,
     @InjectRepository(Redemption)
     private readonly redemptionRepository: Repository<Redemption>,
     private offerWorkbookConverter: OfferWorkbookConverter,
@@ -319,45 +315,28 @@ export class OffersService {
         }
       }
 
-      if (customer) {
-        const couponCode = await this.couponCodeRepository.findOne({
+      if (customer && offer.maxRedemptionPerCustomer > 0) {
+        const redemptionsCount = await this.redemptionRepository.count({
           where: {
-            code: offer.code,
+            couponCode: {
+              couponCodeId: offer.couponCodeId,
+            },
+            customer: {
+              customerId: customer.customerId,
+            },
             organization: {
               organizationId,
             },
-            status: couponCodeStatusEnum.ACTIVE
           },
         });
 
-        if (!couponCode) {
-          this.logger.warn('Coupon code not found');
-          throw new NotFoundException('Coupon code not found');
-        }
-
-        if (couponCode.maxRedemptionPerCustomer > 0) {
-          const redemptionsCount = await this.redemptionRepository.count({
-            where: {
-              couponCode: {
-                couponCodeId: couponCode.couponCodeId,
-              },
-              customer: {
-                customerId: customer.customerId,
-              },
-              organization: {
-                organizationId,
-              },
-            },
-          });
-
-          if (redemptionsCount >= couponCode.maxRedemptionPerCustomer) {
-            this.logger.warn(
-              'Coupon code is already redeemed maximum number of time',
-            );
-            throw new ConflictException(
-              'Coupon code is already redeemed maximum number of time',
-            );
-          }
+        if (redemptionsCount >= offer.maxRedemptionPerCustomer) {
+          this.logger.warn(
+            'Coupon code is already redeemed maximum number of time',
+          );
+          throw new ConflictException(
+            'Coupon code is already redeemed maximum number of time',
+          );
         }
       }
 
