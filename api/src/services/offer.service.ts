@@ -10,6 +10,7 @@ import { In, Repository } from 'typeorm';
 import { Offer } from '../entities/offer.view';
 import { LoggerService } from './logger.service';
 import {
+  couponCodeStatusEnum,
   customerConstraintEnum,
   discountTypeEnum,
   itemConstraintEnum,
@@ -23,7 +24,6 @@ import { Customer } from 'src/entities/customer.entity';
 import { Item } from 'src/entities/item.entity';
 import { Redemption } from 'src/entities/redemption.entity';
 import { CouponCode } from 'src/entities/coupon-code.entity';
-import { CampaignSummaryMv } from 'src/entities/campaign-summary.view';
 
 @Injectable()
 export class OffersService {
@@ -42,8 +42,6 @@ export class OffersService {
     private readonly couponCodeRepository: Repository<CouponCode>,
     @InjectRepository(Redemption)
     private readonly redemptionRepository: Repository<Redemption>,
-    @InjectRepository(CampaignSummaryMv)
-    private readonly campaignSummaryRepository: Repository<CampaignSummaryMv>,
     private offerWorkbookConverter: OfferWorkbookConverter,
     private logger: LoggerService,
   ) {}
@@ -328,6 +326,7 @@ export class OffersService {
             organization: {
               organizationId,
             },
+            status: couponCodeStatusEnum.ACTIVE
           },
         });
 
