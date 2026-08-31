@@ -1,0 +1,1 @@
+{"parameters":[{"name":"user_id","in":"path","required":true,"example":"4d6644c1-cb16-44a2-8d24-6d13d8893d63","schema":{"type":"string"}}]}

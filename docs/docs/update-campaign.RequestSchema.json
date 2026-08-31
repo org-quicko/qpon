@@ -1,0 +1,1 @@
+{"title":"Body","body":{"content":{"application/json":{"schema":{"type":"object","properties":{"@entity":{"type":"string","enum":["org.quicko.qpon.campaign"]},"name":{"type":"string"},"budget":{"type":"number"},"external_id":{"type":"string"}},"required":["@entity"]},"example":{"@entity":"org.quicko.qpon.campaign","budget":10000}}}}}
