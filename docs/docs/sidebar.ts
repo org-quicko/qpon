@@ -268,6 +268,12 @@ const sidebar: SidebarsConfig = {
           label: "Upsert Customer",
           className: "api-method put",
         },
+        {
+          type: "doc",
+          id: "generate-customer-sales-report",
+          label: "Generate customer sales report",
+          className: "api-method get",
+        },
       ],
     },
     {
@@ -340,6 +346,12 @@ const sidebar: SidebarsConfig = {
           label: "Upsert item",
           className: "api-method put",
         },
+        {
+          type: "doc",
+          id: "generate-sales-by-items-report",
+          label: "Generate sales by items report",
+          className: "api-method get",
+        },
       ],
     },
     {
@@ -394,6 +406,30 @@ const sidebar: SidebarsConfig = {
           label: "Delete organization",
           className: "api-method delete",
         },
+        {
+          type: "doc",
+          id: "fetch-organization-summary",
+          label: "Fetch organization summary",
+          className: "api-method get",
+        },
+        {
+          type: "doc",
+          id: "fetch-item-wise-redemption-summary",
+          label: "Fetch item wise redemption summary",
+          className: "api-method get",
+        },
+        {
+          type: "doc",
+          id: "fetch-coupon-code-wise-redemption-summary",
+          label: "Fetch coupon code wise redemption summary",
+          className: "api-method get",
+        },
+        {
+          type: "doc",
+          id: "fetch-day-wise-redemption-summary",
+          label: "Fetch day wise redemption summary",
+          className: "api-method get",
+        },
       ],
     },
     {
@@ -410,6 +446,12 @@ const sidebar: SidebarsConfig = {
           type: "doc",
           id: "fetch-redemptions",
           label: "Fetch redemptions",
+          className: "api-method get",
+        },
+        {
+          type: "doc",
+          id: "generate-redemption-report",
+          label: "Generate redemption report",
           className: "api-method get",
         },
         {

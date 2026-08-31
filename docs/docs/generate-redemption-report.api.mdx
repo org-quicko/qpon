@@ -1,0 +1,69 @@
+---
+id: generate-redemption-report
+title: "Generate redemption report"
+description: "Streams a CSV with one row per redemption over the requested period, ordered by redemption date. The response is streamed and is not wrapped in the standard `{ code, message, data }` envelope."
+sidebar_label: "Generate redemption report"
+hide_title: true
+hide_table_of_contents: true
+api: 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
+sidebar_class_name: "get api-method"
+info_path: qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+import Translate from "@docusaurus/Translate";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Generate redemption report"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/api/organizations/{organization_id}/redemptions/reports"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Streams a CSV with one row per redemption over the requested period, ordered by redemption date. The response is streamed and is not wrapped in the standard `{ code, message, data }` envelope.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+>
+  <Translate id="theme.openapi.request.title">Request</Translate>
+</Heading>
+
+<ParamsDetails
+  {...require("./generate-redemption-report.ParamsDetails.json")}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  {...require("./generate-redemption-report.RequestSchema.json")}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  {...require("./generate-redemption-report.StatusCodes.json")}
+>
+  
+</StatusCodes>
+
+
+      

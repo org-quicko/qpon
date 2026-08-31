@@ -1,0 +1,69 @@
+---
+id: generate-customer-sales-report
+title: "Generate customer sales report"
+description: "Streams a CSV of sales aggregated by customer over the requested period, ordered by customer name. The response is streamed and is not wrapped in the standard `{ code, message, data }` envelope."
+sidebar_label: "Generate customer sales report"
+hide_title: true
+hide_table_of_contents: true
+api: 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
+sidebar_class_name: "get api-method"
+info_path: qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+import Translate from "@docusaurus/Translate";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Generate customer sales report"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/api/organizations/{organization_id}/customers/reports"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Streams a CSV of sales aggregated by customer over the requested period, ordered by customer name. The response is streamed and is not wrapped in the standard `{ code, message, data }` envelope.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+>
+  <Translate id="theme.openapi.request.title">Request</Translate>
+</Heading>
+
+<ParamsDetails
+  {...require("./generate-customer-sales-report.ParamsDetails.json")}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  {...require("./generate-customer-sales-report.RequestSchema.json")}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  {...require("./generate-customer-sales-report.StatusCodes.json")}
+>
+  
+</StatusCodes>
+
+
+      

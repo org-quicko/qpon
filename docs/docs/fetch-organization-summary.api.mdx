@@ -1,0 +1,69 @@
+---
+id: fetch-organization-summary
+title: "Fetch organization summary"
+description: "Returns the aggregated counts for an organization as a sheet-json workbook. The summary is backed by a materialized view, so a newly created organization has no row until the view is next refreshed."
+sidebar_label: "Fetch organization summary"
+hide_title: true
+hide_table_of_contents: true
+api: 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
+sidebar_class_name: "get api-method"
+info_path: qpon
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+import Translate from "@docusaurus/Translate";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"Fetch organization summary"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/api/organizations/{organization_id}/summary"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+Returns the aggregated counts for an organization as a sheet-json workbook. The summary is backed by a materialized view, so a newly created organization has no row until the view is next refreshed.
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+>
+  <Translate id="theme.openapi.request.title">Request</Translate>
+</Heading>
+
+<ParamsDetails
+  {...require("./fetch-organization-summary.ParamsDetails.json")}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  {...require("./fetch-organization-summary.RequestSchema.json")}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  {...require("./fetch-organization-summary.StatusCodes.json")}
+>
+  
+</StatusCodes>
+
+
+      

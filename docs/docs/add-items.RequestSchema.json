@@ -1,0 +1,1 @@
+{"title":"Body","body":{"content":{"application/json":{"schema":{"type":"object","properties":{"@entity":{"type":"string","enum":["org.quicko.qpon.coupon_item"]},"items":{"type":"array","items":{"type":"string","format":"uuid"}}},"required":["@entity","items"]},"example":{"@entity":"org.quicko.qpon.coupon_item","items":["d98c337f-845f-4a0b-9ee5-5b381f01f6d9"]}}}}}
