@@ -54,7 +54,9 @@ export class OrganizationSubscriber
 
     await event.manager.transaction(async (manager) => {
       await manager.delete(OrganizationUser, {
-        organizationId: event.entity?.organizationId,
+        // `event.entity`'s primary key is cleared once the row is removed;
+        // `databaseEntity` is the pre-removal snapshot and always has it.
+        organizationId: event.databaseEntity.organizationId,
       });
     });
   }
