@@ -1,5 +1,9 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { ConflictException, HttpException, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  HttpException,
+  NotFoundException,
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { OrganizationService } from './organization.service';
 import { OrganizationConverter } from '../converters/organization.converter';
@@ -18,7 +22,11 @@ describe('OrganizationService.deleteOrganization', () => {
 
   // A fresh object per test, since remove() mutates it.
   const organization = () =>
-    ({ organizationId: 'org-1', name: 'Acme', currency: 'INR' }) as Organization;
+    ({
+      organizationId: 'org-1',
+      name: 'Acme',
+      currency: 'INR',
+    }) as Organization;
 
   beforeEach(() => {
     organizationRepository = {
@@ -30,7 +38,12 @@ describe('OrganizationService.deleteOrganization', () => {
       }),
       manager: { count: vi.fn().mockResolvedValue(0) },
     };
-    const logger = { info: vi.fn(), warn: vi.fn(), error: vi.fn(), debug: vi.fn() };
+    const logger = {
+      info: vi.fn(),
+      warn: vi.fn(),
+      error: vi.fn(),
+      debug: vi.fn(),
+    };
     const unused = {} as never;
 
     service = new OrganizationService(
@@ -54,7 +67,10 @@ describe('OrganizationService.deleteOrganization', () => {
     const deleted = await service.deleteOrganization('org-1');
 
     expect(organizationRepository.manager.count).toHaveBeenCalledWith(Coupon, {
-      where: { organization: { organizationId: 'org-1' }, status: statusEnum.ACTIVE },
+      where: {
+        organization: { organizationId: 'org-1' },
+        status: statusEnum.ACTIVE,
+      },
     });
     expect(organizationRepository.remove).toHaveBeenCalledOnce();
     expect(deleted.organizationId).toBe('org-1');
@@ -73,11 +89,15 @@ describe('OrganizationService.deleteOrganization', () => {
   it('responds 404 for an unknown organization', async () => {
     organizationRepository.findOne.mockResolvedValue(null);
 
-    await expect(service.deleteOrganization('missing')).rejects.toBeInstanceOf(NotFoundException);
+    await expect(service.deleteOrganization('missing')).rejects.toBeInstanceOf(
+      NotFoundException,
+    );
   });
 
   it('reports unexpected failures as a 500', async () => {
-    organizationRepository.remove.mockRejectedValue(new Error('connection lost'));
+    organizationRepository.remove.mockRejectedValue(
+      new Error('connection lost'),
+    );
 
     const attempt = service.deleteOrganization('org-1');
 

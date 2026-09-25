@@ -48,7 +48,7 @@ export class OrganizationService {
     private readonly couponCodeSummaryMvRepository: Repository<CouponCodesWiseDayWiseRedemptionSummaryMv>,
     @InjectRepository(DayWiseRedemptionSummaryMv)
     private readonly daywiseRedemptionSummaryMVRepository: Repository<DayWiseRedemptionSummaryMv>,
-  ) { }
+  ) {}
 
   /**
    * Create organization
@@ -252,9 +252,15 @@ export class OrganizationService {
 
       // Everything in the organization is cascade-deleted with it, so refuse
       // while any coupon is still live and could be redeemed.
-      const activeCoupons = await this.organizationRepository.manager.count(Coupon, {
-        where: { organization: { organizationId }, status: statusEnum.ACTIVE },
-      });
+      const activeCoupons = await this.organizationRepository.manager.count(
+        Coupon,
+        {
+          where: {
+            organization: { organizationId },
+            status: statusEnum.ACTIVE,
+          },
+        },
+      );
 
       if (activeCoupons > 0) {
         this.logger.warn('Organization has active coupons');
@@ -312,10 +318,7 @@ export class OrganizationService {
         organizationSummary,
       );
     } catch (error) {
-      this.logger.error(
-        `Error in fetchOrganizationSummary:`,
-        error,
-      );
+      this.logger.error(`Error in fetchOrganizationSummary:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -340,7 +343,6 @@ export class OrganizationService {
     this.logger.info('START: getItemWiseSummary service');
 
     try {
-
       this.logger.debug(
         `Fetching top items for organizationId=${organizationId}`,
       );
@@ -395,8 +397,6 @@ export class OrganizationService {
     }
   }
 
-
-
   /**
    * Fetch top coupon codes summary by total redemptions (org-wise)
    */
@@ -409,7 +409,6 @@ export class OrganizationService {
     this.logger.info('START: getCouponCodeWiseSummary service');
 
     try {
-
       this.logger.debug(
         `Fetching top coupon codes for organizationId=${organizationId}`,
       );
@@ -425,7 +424,7 @@ export class OrganizationService {
         .where('summary.organization_id = :orgId', { orgId: organizationId })
         .groupBy('summary.organization_id')
         .addGroupBy('summary.coupon_code')
-        .orderBy('"totalRedemptions"', 'DESC')   // <-- using alias
+        .orderBy('"totalRedemptions"', 'DESC') // <-- using alias
         .limit(take);
 
       // Optional date filter
@@ -446,8 +445,7 @@ export class OrganizationService {
 
       this.logger.debug(`Fetched ${rows.length} coupon code summary records`);
 
-      const converted =
-        this.couponCodeSummaryWorkbookConverter.convert(rows);
+      const converted = this.couponCodeSummaryWorkbookConverter.convert(rows);
 
       this.logger.info('END: getCouponCodeWiseSummary service');
       return converted;
@@ -463,7 +461,6 @@ export class OrganizationService {
     }
   }
 
-
   /**
    * Fetch day-wise redemption summary (optionally filtered by date range)
    */
@@ -475,7 +472,6 @@ export class OrganizationService {
     this.logger.info('START: getDayWiseRedemptionSummary service');
 
     try {
-
       let dateFilter: any = {};
       const fromDate = startDate ? new Date(startDate) : null;
       const toDate = endDate ? new Date(endDate) : null;
@@ -503,8 +499,7 @@ export class OrganizationService {
         `Fetched ${results.length} records from dayWiseRedemptionSummaryRepo`,
       );
 
-      const workbook =
-        this.RedemptionSummaryWorkbookConverter.convert(results);
+      const workbook = this.RedemptionSummaryWorkbookConverter.convert(results);
 
       this.logger.info('END: getDayWiseRedemptionSummary service');
       return workbook;
@@ -521,5 +516,4 @@ export class OrganizationService {
       );
     }
   }
-
 }
