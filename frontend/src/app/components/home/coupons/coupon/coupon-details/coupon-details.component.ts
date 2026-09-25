@@ -4,7 +4,7 @@ import {
   NgClass,
   TitleCasePipe,
 } from '@angular/common';
-import { Component, inject, Input, OnInit, Signal } from '@angular/core';
+import { Component, inject, Input, OnInit, Signal, ChangeDetectionStrategy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { CouponDto, UpdateCouponDto } from '../../../../../../dtos/coupon.dto';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,7 +18,7 @@ import { CustomDatePipe } from '../../../../../pipe/date.pipe';
 import { DeleteDialogComponent } from '../../../common/delete-dialog/delete-dialog.component';
 import { CouponStore, OnCouponSuccess } from '../store/coupon.store';
 import { UserAbility, UserAbilityTuple } from '../../../../../permissions/ability';
-import { PureAbility } from '@casl/ability';
+import { Ability } from '@casl/ability';
 import { AbilityServiceSignal } from '@casl/angular';
 import { NotAllowedDialogBoxComponent } from '../../../../common/not-allowed-dialog-box/not-allowed-dialog-box.component';
 import { CouponsStore } from '../../../../../store/coupons.store';
@@ -36,6 +36,7 @@ import { CouponsStore } from '../../../../../store/coupons.store';
     CustomDatePipe,
   ],
   templateUrl: './coupon-details.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './coupon-details.component.css',
 })
 export class CouponDetailsComponent implements OnInit {
@@ -50,7 +51,7 @@ export class CouponDetailsComponent implements OnInit {
 
   private readonly abilityService = inject<AbilityServiceSignal<UserAbility>>(AbilityServiceSignal);
 	protected readonly can = this.abilityService.can;
-	private readonly ability = inject<PureAbility<UserAbilityTuple>>(PureAbility);
+	private readonly ability = inject<Ability<UserAbilityTuple>>(Ability);
 
   couponsStore = inject(CouponsStore);
 

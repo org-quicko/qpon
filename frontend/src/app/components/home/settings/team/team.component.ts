@@ -1,11 +1,12 @@
 import {
-    Component,
-    OnInit,
-    effect,
-    inject,
-    signal,
+  Component,
+  OnInit,
+  effect,
+  inject,
+  signal,
+  ChangeDetectionStrategy
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatMenuModule } from '@angular/material/menu';
@@ -28,14 +29,14 @@ import { UserStore } from '../../../../store/user.store';
     selector: 'app-team-users',
     standalone: true,
     imports: [
-        CommonModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatMenuModule,
-        MatIconModule,
-        MatButtonModule,
-        CustomDatePipe,
-    ],
+    MatTableModule,
+    MatPaginatorModule,
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule,
+    CustomDatePipe
+],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './team.component.html',
 })
 export class TeamUsersComponent implements OnInit {

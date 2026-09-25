@@ -96,7 +96,7 @@
                     'text-on-surface': discountType == 'fixed'
                   }"
                 >
-                  {{ getCurrencySymbolOnly(organization()?.currency!) }}
+                  {{ getCurrencySymbolOnly($safeNavigationMigration(organization()?.currency)!) }}
                 </span>
                 <input
                   matInput
@@ -182,7 +182,7 @@
         >
           <div class="h-[48px] w-[48px] flex justify-center items-center">
             <div class="text-xl text-on-surface-variant">
-              {{ getCurrencySymbolOnly(organization()?.currency!) }}
+              {{ getCurrencySymbolOnly($safeNavigationMigration(organization()?.currency)!) }}
             </div>
           </div>
           <input

@@ -1,5 +1,5 @@
-import { Component, Inject, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Inject, inject, ChangeDetectionStrategy } from '@angular/core';
+
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,13 +13,13 @@ import { ApiKeyDto } from '../../../../../../../dtos/api-key.dto';
 	selector: 'app-api-credentials-dialog',
 	standalone: true,
 	imports: [
-		CommonModule,
-		MatDialogModule,
-		MatButtonModule,
-		MatIconModule,
-		MatDividerModule,
-		MatTooltipModule
-	],
+    MatDialogModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDividerModule,
+    MatTooltipModule
+],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	templateUrl: './api-credentials-dialog.component.html',
 })
 export class ApiCredentialsDialogComponent {

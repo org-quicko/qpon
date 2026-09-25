@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { OrganizationStore } from '../../../store/organization.store';
 import { MatDividerModule } from '@angular/material/divider';
@@ -16,6 +16,7 @@ import { CustomerStore } from './store/customer.store';
   ],
   providers: [CustomerStore],
   templateUrl: './create-customers-container.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./create-customers-container.component.css'],
 })
 export class CreateCustomersContainerComponent {

@@ -56,7 +56,7 @@
           {{
             convertToCampaignSummaryRow(summary).getBudget()
               ? (convertToCampaignSummaryRow(summary).getBudget()
-                | currency : organization()?.currency : "symbol")
+                | currency : $safeNavigationMigration(organization()?.currency) : "symbol")
               : "Unlimited"
           }}
         </td>
@@ -69,7 +69,7 @@
           {{
             convertToCampaignSummaryRow(summary).getTotalRedemptionAmount() > 0
               ? (convertToCampaignSummaryRow(summary).getTotalRedemptionAmount()
-                | currency : organization()?.currency : "symbol")
+                | currency : $safeNavigationMigration(organization()?.currency) : "symbol")
               : 0
           }}
         </td>

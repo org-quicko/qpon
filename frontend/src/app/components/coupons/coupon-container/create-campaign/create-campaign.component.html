@@ -81,7 +81,7 @@
             >
               <div class="h-[48px] w-[48px] flex justify-center items-center">
                 <span class="text-on-surface-variant text-xl"
-                  >{{ getCurrencySymbolOnly(organization()?.currency!) }}</span
+                  >{{ getCurrencySymbolOnly($safeNavigationMigration(organization()?.currency)!) }}</span
                 >
               </div>
               <input

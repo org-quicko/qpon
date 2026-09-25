@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CreateCodeComponent } from './create-code/create-code.component';
 import { OrganizationStore } from '../../../../store/organization.store';
 import { CouponCodeStore } from '../../store/coupon-code.store';
@@ -19,6 +19,7 @@ import { AddMoreComponent } from './add-more/add-more.component';
     AddMoreComponent,
   ],
   templateUrl: './create-coupon-code.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./create-coupon-code.component.css'],
 })
 export class CreateCouponCodeComponent implements OnInit {

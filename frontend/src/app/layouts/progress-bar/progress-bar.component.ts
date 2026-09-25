@@ -1,12 +1,13 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { NgIf } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-progress-bar',
-  imports: [NgIf],
+  imports: [],
   templateUrl: './progress-bar.component.html',
   styleUrls: ['./progress-bar.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   animations: [
     trigger('fillAnimation', [
       state('*', style({ width: '{{percentage}}%' }), { params: { percentage: 0 } }),

@@ -16,7 +16,7 @@
         [matAutocomplete]="currencyAuto"
         (input)="filterCurrency($event.target.value)"
         (blur)="validateCurrency()"
-      />
+        />
 
       <mat-autocomplete #currencyAuto="matAutocomplete" (optionSelected)="onCurrencySelected($event.option.value)">
         @for (currency of filteredCurrencyList; track currency) {
@@ -26,9 +26,11 @@
         }
       </mat-autocomplete>
 
-      <mat-error *ngIf="createOrganizationForm.get('currency')?.hasError('required')">
-        Currency is required
-      </mat-error>
+      @if (createOrganizationForm.get('currency')?.hasError('required')) {
+        <mat-error>
+          Currency is required
+        </mat-error>
+      }
     </mat-form-field>
     <mat-form-field appearance="outline" class="w-full">
       <mat-label>External Id</mat-label>

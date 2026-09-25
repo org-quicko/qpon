@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogModule,
@@ -11,6 +11,7 @@ import { OnCampaignSuccess, onChangeStatusSuccess } from '../store/campaign.stor
   selector: 'app-campaigns-change-status',
   imports: [MatDialogModule, MatButtonModule],
   templateUrl: './campaign-change-status-dialog.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './campaign-change-status-dialog.css',
 })
 export class ChangeStatusComponent implements OnInit {

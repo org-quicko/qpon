@@ -6,6 +6,7 @@ import {
   Input,
   OnInit,
   Output,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -18,6 +19,7 @@ import { CustomerStore } from '../../store/customer.store';
   selector: 'app-create-customer',
   imports: [MatFormFieldModule, MatInputModule, ReactiveFormsModule],
   templateUrl: './create-customer.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./create-customer.component.css'],
 })
 export class CreateCustomerComponent implements OnInit {

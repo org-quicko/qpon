@@ -13,42 +13,46 @@
         <div>{{ valueColumn }}</div>
       </div>
 
-      <div *ngIf="data && data.length > 0; else noData" class="space-y-2">
-        <!-- Each row -->
-        <div *ngFor="let item of data" class="grid grid-cols-1 items-center relative mt-3 group">
-          <div class="relative w-full h-8 rounded-md flex items-center">
-            <!-- Filled bar -->
+      @if (data && data.length > 0) {
+        <div class="space-y-2">
+          <!-- Each row -->
+          @for (item of data; track item) {
+            <div class="grid grid-cols-1 items-center relative mt-3 group">
+              <div class="relative w-full h-8 rounded-md flex items-center">
+                <!-- Filled bar -->
             <div class="absolute left-0 top-0 h-full rounded-md bg-inverse-on-surface 
          transition-all duration-300 group-hover:bg-surface-variant" [style.width.%]="(item.value / maxValue) * 100">
+                </div>
+                <!-- Label and value on top of the bar -->
+                <div
+                  class="relative z-10 flex justify-between items-center w-full px-3 text-sm font-medium text-on-surface">
+                  <span>{{ item.label }}</span>
+                  <span>{{ item.value }}</span>
+                </div>
+              </div>
             </div>
-
-            <!-- Label and value on top of the bar -->
-            <div
-              class="relative z-10 flex justify-between items-center w-full px-3 text-sm font-medium text-on-surface">
-              <span>{{ item.label }}</span>
-              <span>{{ item.value }}</span>
-            </div>
-          </div>
+          }
         </div>
-      </div>
-
-      <!-- No Data Template -->
-      <ng-template #noData>
+      } @else {
         <div class="flex items-center justify-center h-[15rem] font-body-medium text-on-surface-variant
            mt-3 border border-dashed border-outline-variant rounded-md">
           No data available
         </div>
-      </ng-template>
+      }
+
+      <!-- No Data Template -->
 
     </div>
 
   </div>
 
-  <div *ngIf="showNavigation" (click)="onNavigate()"
-    class="pt-1 border-t border-outline-variant cursor-pointer hover:bg-surface-container-high">
-    <div class="text-primary text-sm font-medium px-7 py-3 rounded-md w-full">
-      {{ navigationText }}
+  @if (showNavigation) {
+    <div (click)="onNavigate()"
+      class="pt-1 border-t border-outline-variant cursor-pointer hover:bg-surface-container-high">
+      <div class="text-primary text-sm font-medium px-7 py-3 rounded-md w-full">
+        {{ navigationText }}
+      </div>
     </div>
-  </div>
+  }
 
 </mat-card>

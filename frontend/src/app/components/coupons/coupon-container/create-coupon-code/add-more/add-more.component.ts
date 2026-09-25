@@ -7,6 +7,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { OrganizationStore } from '../../../../../store/organization.store';
 import {
@@ -28,6 +29,7 @@ import { CreateCouponCodeDto } from '../../../../../../dtos/coupon-code.dto';
   selector: 'app-add-more',
   imports: [MatIconModule, MatCardModule, MatButtonModule, MatRippleModule, CustomDatePipe],
   templateUrl: './add-more.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./add-more.component.css'],
 })
 export class AddMoreComponent implements OnInit, OnDestroy {

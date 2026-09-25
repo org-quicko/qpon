@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -30,6 +30,7 @@ import { CustomDatePipe } from '../../pipe/date.pipe';
   ],
   providers: [OrganizationsStore],
   templateUrl: './super-admin-organizations.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./super-admin-organizations.component.css'],
 })
 export class SuperAdminOrganizationsComponent implements OnInit {

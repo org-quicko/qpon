@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { CouponStore } from '../store/coupon.store';
 import { OrganizationStore } from '../../../../../store/organization.store';
@@ -10,6 +10,7 @@ import { onChangeStatusSuccess } from '../coupon-tab/campaigns/store/campaigns.s
   selector: 'app-coupon-summary',
   imports: [MatCardModule, NgxSkeletonLoaderModule, CurrencyPipe],
   templateUrl: './coupon-summary.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './coupon-summary.component.css',
 })
 export class CouponSummaryComponent implements OnInit {

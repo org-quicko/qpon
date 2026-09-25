@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { ProgressBarComponent } from '../../../layouts/progress-bar/progress-bar.component';
 import { OrganizationStore } from '../../../store/organization.store';
@@ -16,6 +16,7 @@ import { ItemStore } from './create-items/store/item.store';
   ],
   providers: [ItemStore],
   templateUrl: './items-container.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./items-container.component.css'],
 })
 export class ItemsContainerComponent {

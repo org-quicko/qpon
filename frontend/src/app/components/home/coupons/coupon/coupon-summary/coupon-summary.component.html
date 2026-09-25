@@ -12,11 +12,11 @@
       } @else {
         <p class="mat-title-large text-on-surface">{{ coupon()?.discountType == 'fixed' ?
             coupon()?.discountUpto ? 
-              `${coupon()?.discountValue | currency: organization()?.currency : 'symbol'} upto ${coupon()?.discountUpto | currency: organization()?.currency : 'symbol'}` 
-              : `${coupon()?.discountValue | currency: organization()?.currency : 'symbol'}`
+              `${$safeNavigationMigration(coupon()?.discountValue) | currency: $safeNavigationMigration(organization()?.currency) : 'symbol'} upto ${$safeNavigationMigration(coupon()?.discountUpto) | currency: $safeNavigationMigration(organization()?.currency) : 'symbol'}` 
+              : `${$safeNavigationMigration(coupon()?.discountValue) | currency: $safeNavigationMigration(organization()?.currency) : 'symbol'}`
             :
             coupon()?.discountUpto ? 
-              `${coupon()?.discountValue}% upto ${coupon()?.discountUpto | currency: organization()?.currency : 'symbol'}` 
+              `${coupon()?.discountValue}% upto ${$safeNavigationMigration(coupon()?.discountUpto) | currency: $safeNavigationMigration(organization()?.currency) : 'symbol'}` 
               : `${coupon()?.discountValue}%` }}</p>
       }
     </mat-card-content>
@@ -62,7 +62,7 @@
                 padding: '0px'
               }"></ngx-skeleton-loader>
           } @else {
-            <p class="mat-title-large text-on-surface">{{ couponSummary()?.getRow(0)?.getTotalRedemptionAmount()! > 0 ? (couponSummary()?.getRow(0)?.getTotalRedemptionAmount() | currency: organization()?.currency : 'symbol') : 0  }}</p>
+            <p class="mat-title-large text-on-surface">{{ couponSummary()?.getRow(0)?.getTotalRedemptionAmount()! > 0 ? ($safeNavigationMigration(couponSummary()?.getRow(0)?.getTotalRedemptionAmount()) | currency: $safeNavigationMigration(organization()?.currency) : 'symbol') : 0  }}</p>
           }
     </mat-card-content>
   </mat-card>

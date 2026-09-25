@@ -122,11 +122,11 @@
               {{ 
                   coupon.discountType == 'fixed' ?
                   coupon.discountUpto ? 
-                    `${coupon.discountValue | currency: organization()?.currency : 'symbol'} upto ${coupon.discountUpto | currency: organization()?.currency : 'symbol'}` 
-                    : `${coupon.discountValue | currency: organization()?.currency : 'symbol'}`
+                    `${coupon.discountValue | currency: $safeNavigationMigration(organization()?.currency) : 'symbol'} upto ${coupon.discountUpto | currency: $safeNavigationMigration(organization()?.currency) : 'symbol'}` 
+                    : `${coupon.discountValue | currency: $safeNavigationMigration(organization()?.currency) : 'symbol'}`
                   :
                   coupon.discountUpto ? 
-                    `${coupon.discountValue}% upto ${coupon.discountUpto | currency: organization()?.currency : 'symbol'}` 
+                    `${coupon.discountValue}% upto ${coupon.discountUpto | currency: $safeNavigationMigration(organization()?.currency) : 'symbol'}` 
                     : `${coupon.discountValue}%`
               }}
             </td>

@@ -23,7 +23,7 @@
       >
         <div matPrefix class="h-[40px] w-[40px] flex justify-center items-center">
                 <span class="text-on-surface text-xl"
-                  >{{ getCurrencySymbolOnly(organization()?.currency!) }}</span
+                  >{{ getCurrencySymbolOnly($safeNavigationMigration(organization()?.currency)!) }}</span
                 >
               </div>
         <input

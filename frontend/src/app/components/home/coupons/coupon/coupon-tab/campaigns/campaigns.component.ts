@@ -7,6 +7,7 @@ import {
   OnInit,
   signal,
   Signal,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -19,13 +20,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CampaignSummaryRow } from '@org-quicko/qpon-sheet-core/campaign_summary_workbook/beans';
 import { MatInputModule } from '@angular/material/input';
 import { CustomDatePipe } from '../../../../../../pipe/date.pipe';
-import {
-  CurrencyPipe,
-  NgClass,
-  NgFor,
-  NgStyle,
-  TitleCasePipe,
-} from '@angular/common';
+import { CurrencyPipe, NgClass, NgStyle, TitleCasePipe } from '@angular/common';
 import { OrganizationStore } from '../../../../../../store/organization.store';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ChangeStatusComponent } from './change-status/change-status.component';
@@ -47,7 +42,7 @@ import {
   UserAbilityTuple,
 } from '../../../../../../permissions/ability';
 import { AbilityServiceSignal } from '@casl/angular';
-import { PureAbility } from '@casl/ability';
+import { Ability } from '@casl/ability';
 import {
   CreateCampaignDto,
   UpdateCampaignDto,
@@ -76,6 +71,7 @@ import { SnackbarService } from '../../../../../../services/snackbar.service';
     ReactiveFormsModule,
   ],
   templateUrl: './campaigns.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './campaigns.component.css',
 })
 export class CampaignsComponent implements OnInit {
@@ -118,7 +114,7 @@ export class CampaignsComponent implements OnInit {
   private readonly abilityService =
     inject<AbilityServiceSignal<UserAbility>>(AbilityServiceSignal);
   protected readonly can = this.abilityService.can;
-  private readonly ability = inject<PureAbility<UserAbilityTuple>>(PureAbility);
+  private readonly ability = inject<Ability<UserAbilityTuple>>(Ability);
 
   constructor(
     private route: ActivatedRoute,

@@ -1,4 +1,4 @@
-import { Component, Inject, inject } from '@angular/core';
+import { Component, Inject, inject, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -25,6 +25,7 @@ import { instanceToPlain } from 'class-transformer';
         FormDialogBoxComponent,
         MatIcon
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './add-edit-user-dialog.component.html'
 })
 export class AddEditUserDialogComponent {

@@ -1,4 +1,4 @@
-import { Component, effect, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, effect, EventEmitter, inject, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { CouponCodeStore } from '../../../store/coupon-code.store';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -13,6 +13,7 @@ import { CreateCouponCodeDto } from '../../../../../../dtos/coupon-code.dto';
   selector: 'app-redemption-limits',
   imports: [MatIconModule, MatCheckboxModule, MatInputModule, ReactiveFormsModule],
   templateUrl: './redemption-limits.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./redemption-limits.component.css']
 })
 export class RedemptionLimitsComponent implements OnInit {

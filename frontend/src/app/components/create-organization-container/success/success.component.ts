@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CreateOrganizationStore } from '../store/create-organization.store';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -9,6 +9,7 @@ import { UserStore } from '../../../store/user.store';
   selector: 'app-success',
   imports: [MatIconModule],
   templateUrl: './success.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./success.component.css']
 })
 export class SuccessComponent implements OnInit {

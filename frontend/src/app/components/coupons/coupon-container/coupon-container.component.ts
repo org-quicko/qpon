@@ -6,6 +6,7 @@ import {
   OnInit,
   signal,
   Signal,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {
   ActivatedRoute,
@@ -18,7 +19,7 @@ import { HeaderComponent } from './common/header/header.component';
 import { ProgressBarComponent } from '../../../layouts/progress-bar/progress-bar.component';
 import { CouponCodeStore } from '../store/coupon-code.store';
 import { MatButtonModule } from '@angular/material/button';
-import { NgIf } from '@angular/common';
+
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -31,6 +32,7 @@ import { Subject, takeUntil } from 'rxjs';
   ],
   providers: [CouponCodeStore],
   templateUrl: './coupon-container.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./coupon-container.component.css'],
 })
 export class CouponContainerComponent implements OnInit, OnDestroy {

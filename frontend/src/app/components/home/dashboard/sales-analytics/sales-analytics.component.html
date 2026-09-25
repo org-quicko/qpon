@@ -32,7 +32,7 @@
         <p class="mat-body-large text-on-surface-variant gross-sales-label"
           matTooltip="Total revenue generated from sales" matTooltipPosition="above">Gross sales</p>
         <p class="mat-headline-small text-on-surface">
-          {{ stats.grossSales | currency: organization()?.currency : 'symbol' }}
+          {{ stats.grossSales | currency: $safeNavigationMigration(organization()?.currency) : 'symbol' }}
         </p>
       </mat-card-content>
     </mat-card>
@@ -42,7 +42,7 @@
         <p class="mat-body-large text-on-surface-variant gross-sales-label"
           matTooltip="The price reductions from coupons" matTooltipPosition="above">Discount</p>
         <p class="mat-headline-small text-on-surface">
-          {{ stats.discount | currency: organization()?.currency : 'symbol' }}
+          {{ stats.discount | currency: $safeNavigationMigration(organization()?.currency) : 'symbol' }}
           <span class="text-sm text-on-surface-variant">
             ({{ stats.discountPercent | number:'1.0-2' }}%)
           </span>
@@ -56,7 +56,7 @@
         <p class="mat-body-large text-on-surface-variant gross-sales-label"
           matTooltip="Gross sales after deducting discounts" matTooltipPosition="above">Net sales</p>
         <p class="mat-headline-small text-on-surface">
-          {{ stats.netSales | currency: organization()?.currency : 'symbol' }}
+          {{ stats.netSales | currency: $safeNavigationMigration(organization()?.currency) : 'symbol' }}
         </p>
 
       </mat-card-content>

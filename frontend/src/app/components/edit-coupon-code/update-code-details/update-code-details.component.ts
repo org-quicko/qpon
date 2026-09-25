@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, effect, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -53,6 +53,7 @@ export const MY_FORMATS = {
   ],
   providers: [provideMomentDateAdapter(MY_FORMATS)],
   templateUrl: './update-code-details.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./update-code-details.component.css'],
 })
 export class UpdateCodeDetailsComponent implements OnInit {

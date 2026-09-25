@@ -4,6 +4,7 @@ import {
   inject,
   OnInit,
   signal,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -40,6 +41,7 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
   ],
   providers: [RedemptionsStore],
   templateUrl: './redemption-list.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./redemption-list.component.css'],
 })
 export class RedemptionListComponent implements OnInit {

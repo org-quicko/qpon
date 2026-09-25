@@ -1,5 +1,5 @@
 import { NgClass, TitleCasePipe } from '@angular/common';
-import { Component, effect, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -35,6 +35,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
     NgClass,
   ],
   templateUrl: './invite-team.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./invite-team.component.css'],
 })
 export class InviteTeamComponent implements OnInit {

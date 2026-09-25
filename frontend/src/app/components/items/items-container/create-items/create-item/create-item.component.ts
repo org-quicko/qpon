@@ -6,6 +6,7 @@ import {
   Input,
   OnInit,
   Output,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,7 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { RxFormBuilder } from '@rxweb/reactive-form-validators';
 import { CreateItemDto } from '../../../../../../dtos/item.dto';
 import { MatIconModule } from '@angular/material/icon';
-import { NgFor } from '@angular/common';
+
 import { ItemStore } from '../store/item.store';
 
 @Component({
@@ -24,10 +25,10 @@ import { ItemStore } from '../store/item.store';
     MatFormFieldModule,
     ReactiveFormsModule,
     MatButtonModule,
-    MatIconModule,
-    NgFor,
-  ],
+    MatIconModule
+],
   templateUrl: './create-item.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./create-item.component.css'],
 })
 export class CreateItemComponent implements OnInit {

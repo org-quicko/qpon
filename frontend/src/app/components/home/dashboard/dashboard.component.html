@@ -1,41 +1,42 @@
 <div class="p-2 space-y-8">
 
   <!-- Sales Analytics -->
-  <ng-container *ngIf="salesLoading(); else salesAnalyticsContent">
+  @if (salesLoading()) {
     <!-- Skeleton for Sales Summary header + cards -->
     <div class="space-y-2">
       <ngx-skeleton-loader count="1" [theme]="{ width: '300px', height: '24px', borderRadius: '6px' }"></ngx-skeleton-loader>
     </div>
-
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-      <ngx-skeleton-loader *ngFor="let i of [1,2,3,4]"
+      @for (i of [1,2,3,4]; track i) {
+        <ngx-skeleton-loader
         [theme]="{
           height: '110px',
           borderRadius: '10px',
           background: 'var(--skeleton-bg)'
         }">
-      </ngx-skeleton-loader>
+        </ngx-skeleton-loader>
+      }
     </div>
-  </ng-container>
-
-  <ng-template #salesAnalyticsContent>
-    <app-dashboard-sales-analytics [userName]="user()?.name | titlecase" [stats]="stats">
+  } @else {
+    <app-dashboard-sales-analytics [userName]="$safeNavigationMigration(user()?.name) | titlecase" [stats]="stats">
     </app-dashboard-sales-analytics>
-  </ng-template>
+  }
+
 
   <!-- Item Popularity -->
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
 
     <!-- Left: Product popularity -->
-    <ng-container *ngIf="itemLoading(); else itemPopularityContent">
+    @if (itemLoading()) {
       <div class="flex flex-col space-y-3">
         <ngx-skeleton-loader [theme]="{ width: '60%', height: '18px', borderRadius: '4px' }"></ngx-skeleton-loader>
-        <ngx-skeleton-loader *ngFor="let i of [1,2,3,4,5]"
-          [theme]="{ width: '100%', height: '36px', borderRadius: '8px' }">
-        </ngx-skeleton-loader>
+        @for (i of [1,2,3,4,5]; track i) {
+          <ngx-skeleton-loader
+            [theme]="{ width: '100%', height: '36px', borderRadius: '8px' }">
+          </ngx-skeleton-loader>
+        }
       </div>
-    </ng-container>
-    <ng-template #itemPopularityContent>
+    } @else {
       <app-popularity-chart
         [title]="'Most popular products'"
         [labelColumn]="'Products'"
@@ -45,18 +46,19 @@
         [navigationLink]="'products'"
         >
       </app-popularity-chart>
-    </ng-template>
+    }
 
     <!-- Right: Coupon popularity -->
-    <ng-container *ngIf="couponLoading(); else couponPopularityContent">
+    @if (couponLoading()) {
       <div class="flex flex-col space-y-3">
         <ngx-skeleton-loader [theme]="{ width: '60%', height: '18px', borderRadius: '4px' }"></ngx-skeleton-loader>
-        <ngx-skeleton-loader *ngFor="let i of [1,2,3,4,5]"
-          [theme]="{ width: '100%', height: '36px', borderRadius: '8px' }">
-        </ngx-skeleton-loader>
+        @for (i of [1,2,3,4,5]; track i) {
+          <ngx-skeleton-loader
+            [theme]="{ width: '100%', height: '36px', borderRadius: '8px' }">
+          </ngx-skeleton-loader>
+        }
       </div>
-    </ng-container>
-    <ng-template #couponPopularityContent>
+    } @else {
       <app-popularity-chart
         [title]="'Most popular coupon codes'"
         [labelColumn]="'Codes'"
@@ -66,24 +68,23 @@
         [navigationLink]="'coupon-codes'"
         >
       </app-popularity-chart>
-    </ng-template>
+    }
 
   </div>
 
   <!-- Sales Trend Chart -->
   <div class="mt-6 h-[300px] mb-8">
-    <ng-container *ngIf="salesLoading(); else salesChartContent">
+    @if (salesLoading()) {
       <ngx-skeleton-loader count="1" [theme]="{ height: '320px', borderRadius: '10px', background: 'var(--skeleton-bg)' }"></ngx-skeleton-loader>
-    </ng-container>
-
-    <ng-template #salesChartContent>
+    } @else {
       <app-sales-trend-chart
         [graphData]="graphData()"
         [dateRangeType]="dateRangeStore.activeRange()"
         [startDate]="dateRangeStore.start()"
         [endDate]="dateRangeStore.end()">
       </app-sales-trend-chart>
-    </ng-template>
+    }
+
   </div>
 
   <!-- 💳 Redemption List -->

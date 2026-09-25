@@ -1,4 +1,4 @@
-import { Component, effect, EventEmitter, inject, Input, NgModule, OnDestroy, OnInit, Output, signal } from '@angular/core';
+import { Component, effect, EventEmitter, inject, Input, NgModule, OnDestroy, OnInit, Output, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CouponCodeStore } from '../../../store/coupon-code.store';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -46,6 +46,7 @@ export const MY_FORMATS = {
   ],
   providers: [provideMomentDateAdapter(MY_FORMATS)],
   templateUrl: './create-code.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./create-code.component.css'],
 })
 export class CreateCodeComponent implements OnInit {

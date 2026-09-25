@@ -7,6 +7,7 @@ import {
   Input,
   OnInit,
   ViewChild,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { DyanmicComponentDirective } from '../../directives/dyanmic-component.directive';
 import { OrganizationUserStore } from '../../store/organization-user.store';
@@ -21,6 +22,7 @@ import { UserStore } from '../../store/user.store';
   selector: 'app-dynamic-component-loader',
   imports: [DyanmicComponentDirective, MatProgressSpinnerModule],
   templateUrl: './dynamic-component-loader.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./dynamic-component-loader.component.css'],
 })
 export class DynamicComponentLoaderComponent implements OnInit {

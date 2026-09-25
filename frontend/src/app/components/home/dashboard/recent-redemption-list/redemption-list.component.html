@@ -120,7 +120,7 @@
           <ngx-skeleton-loader
             [theme]="{ height: '24px', width: '80px', margin: '0', padding: '0' }"></ngx-skeleton-loader>
           } @else {
-          {{ redemption.getBaseOrderValue() | currency: organization()?.currency : 'symbol' }}
+          {{ redemption.getBaseOrderValue() | currency: $safeNavigationMigration(organization()?.currency) : 'symbol' }}
           }
         </td>
       </ng-container>
@@ -133,7 +133,7 @@
           <ngx-skeleton-loader
             [theme]="{ height: '24px', width: '80px', margin: '0', padding: '0' }"></ngx-skeleton-loader>
           } @else {
-          {{ redemption.getDiscount() | currency: organization()?.currency : 'symbol' }}
+          {{ redemption.getDiscount() | currency: $safeNavigationMigration(organization()?.currency) : 'symbol' }}
           }
         </td>
       </ng-container>

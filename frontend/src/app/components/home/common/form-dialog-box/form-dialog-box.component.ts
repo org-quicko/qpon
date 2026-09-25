@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
@@ -24,6 +24,7 @@ import { Subject } from 'rxjs';
     NgClass
   ],
   templateUrl: './form-dialog-box.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./form-dialog-box.component.css']
 })
 export class FormDialogBoxComponent implements OnDestroy {

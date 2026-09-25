@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, effect, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, inject, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatOptionModule } from '@angular/material/core';
@@ -43,6 +43,7 @@ import { MatChipsModule } from '@angular/material/chips';
     NgClass,
   ],
   templateUrl: './update-customer-constraint.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./update-customer-constraint.component.css'],
 })
 export class UpdateCustomerConstraintComponent implements OnInit {

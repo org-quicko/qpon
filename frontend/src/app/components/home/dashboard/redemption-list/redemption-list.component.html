@@ -166,7 +166,7 @@
                 margin: '0'
               }"></ngx-skeleton-loader>
           } @else {
-          {{ redemption.getBaseOrderValue() | currency : organization()?.currency : 'symbol' }}
+          {{ redemption.getBaseOrderValue() | currency : $safeNavigationMigration(organization()?.currency) : 'symbol' }}
           }
         </td>
       </ng-container>
@@ -183,7 +183,7 @@
                 margin: '0'
               }"></ngx-skeleton-loader>
           } @else {
-          {{ redemption.getDiscount() | currency : organization()?.currency : 'symbol' }}
+          {{ redemption.getDiscount() | currency : $safeNavigationMigration(organization()?.currency) : 'symbol' }}
           }
         </td>
       </ng-container>

@@ -4,6 +4,7 @@ import {
   inject,
   OnInit,
   signal,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -37,6 +38,7 @@ import { DateRangeStore } from '../../../../store/date-range.store';
     CurrencyPipe,
 ],
   templateUrl: './redemption-list.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./redemption-list.component.css'],
 })
 export class RedemptionListComponent implements OnInit {

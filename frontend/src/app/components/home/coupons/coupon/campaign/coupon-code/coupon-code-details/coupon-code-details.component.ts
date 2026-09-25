@@ -1,4 +1,4 @@
-import { Component, effect, inject, Input, OnInit, Signal } from '@angular/core';
+import { Component, effect, inject, Input, OnInit, Signal, ChangeDetectionStrategy } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { CouponCodeDto, UpdateCouponCodeDto } from '../../../../../../../../dtos/coupon-code.dto';
 import { TitleCasePipe } from '@angular/common';
@@ -14,7 +14,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
 import { NotAllowedDialogBoxComponent } from '../../../../../../common/not-allowed-dialog-box/not-allowed-dialog-box.component';
 import { UserAbility, UserAbilityTuple } from '../../../../../../../permissions/ability';
-import { PureAbility } from '@casl/ability';
+import { Ability } from '@casl/ability';
 import { AbilityServiceSignal } from '@casl/angular';
 import { UpdateCustomerCouponCodeDto } from '../../../../../../../../dtos/customer-coupon-code.dto';
 
@@ -30,6 +30,7 @@ import { UpdateCustomerCouponCodeDto } from '../../../../../../../../dtos/custom
     NgxSkeletonLoaderModule,
   ],
   templateUrl: './coupon-code-details.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./coupon-code-details.component.css'],
 })
 export class CouponCodeDetailsComponent implements OnInit {
@@ -51,7 +52,7 @@ export class CouponCodeDetailsComponent implements OnInit {
 
   private readonly abilityService = inject<AbilityServiceSignal<UserAbility>>(AbilityServiceSignal);
 	protected readonly can = this.abilityService.can;
-	private readonly ability = inject<PureAbility<UserAbilityTuple>>(PureAbility);
+	private readonly ability = inject<Ability<UserAbilityTuple>>(Ability);
 
 
   constructor(private route: ActivatedRoute, private router: Router) {

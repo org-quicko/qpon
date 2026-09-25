@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AvatarModule } from 'ngx-avatars';
 import { UserStore } from '../../../../../store/user.store';
 import { MatMenuModule } from '@angular/material/menu';
@@ -29,6 +29,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
     MatButtonToggleModule,
   ],
   templateUrl: './profile.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './profile.component.css',
 })
 export class ProfileComponent implements OnInit {

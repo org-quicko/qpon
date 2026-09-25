@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CreateItemComponent } from './create-item/create-item.component';
 import { ItemStore } from './store/item.store';
 import { AddMoreComponent } from './add-more/add-more.component';
@@ -8,6 +8,7 @@ import { CreateItemDto } from '../../../../../dtos/item.dto';
   selector: 'app-create-items',
   imports: [CreateItemComponent, AddMoreComponent],
   templateUrl: './create-items.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./create-items.component.css']
 })
 export class CreateItemsComponent {

@@ -24,11 +24,11 @@
                 </div>
                 <div class="flex flex-col gap-1">
                   <div class="mat-body-medium text-on-surface-variant">Visibility</div>
-                  <div class="mat-body-large text-on-surface w-[154px]">{{ couponCode()?.visibility | titlecase }}</div>
+                  <div class="mat-body-large text-on-surface w-[154px]">{{ $safeNavigationMigration(couponCode()?.visibility) | titlecase }}</div>
                 </div>
                 <div class="flex flex-col gap-1">
                   <div class="mat-body-medium text-on-surface-variant">Validity</div>
-                  <div class="mat-body-large text-on-surface w-full">{{ couponCode()?.expiresAt ? `Expires on ${(couponCode()?.expiresAt! | custom_date)}` : "Never" }}</div>
+                  <div class="mat-body-large text-on-surface w-full">{{ couponCode()?.expiresAt ? `Expires on ${($safeNavigationMigration(couponCode()?.expiresAt)! | custom_date)}` : "Never" }}</div>
                 </div>
               } @else {
                 <div class="flex flex-col gap-1">
@@ -93,7 +93,7 @@
                   <div class="flex flex-col gap-1">
                     <div class="mat-body-medium text-on-surface-variant">Can be used by</div>
                     @if(customerConstraint == 'all') {
-                      <div class="mat-body-large text-on-surface">{{ couponCode()?.customerConstraint | titlecase }}</div>
+                      <div class="mat-body-large text-on-surface">{{ $safeNavigationMigration(couponCode()?.customerConstraint) | titlecase }}</div>
                     } @else {
                       <div class="flex gap-2">
                         @if(customers()?.length! > 3) {

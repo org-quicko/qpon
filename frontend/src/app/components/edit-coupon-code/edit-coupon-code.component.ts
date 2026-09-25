@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, Router, RouterOutlet } from '@angular/router';
 import { CouponStore } from './store/coupon.store';
 import { CampaignStore } from './store/campaign.store';
@@ -22,6 +22,7 @@ import { MatDividerModule } from '@angular/material/divider';
     CustomerCouponCodeStore,
   ],
   templateUrl: './edit-coupon-code.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./edit-coupon-code.component.css'],
 })
 export class EditCouponCodeComponent implements OnInit {

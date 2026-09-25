@@ -61,7 +61,7 @@
         </div>
       </div>
       <div class="justify-start mat-body-large text-on-surface-variant">
-        {{ coupon()?.status | titlecase }}
+        {{ $safeNavigationMigration(coupon()?.status) | titlecase }}
       </div>
       }
     </div>
@@ -100,7 +100,7 @@
       </div>
       <div class="justify-start mat-body-large">
         {{ coupon()?.discountType == "fixed" 
-            ? (coupon()?.discountValue | currency: organization()?.currency) 
+            ? ($safeNavigationMigration(coupon()?.discountValue) | currency: $safeNavigationMigration(organization()?.currency)) 
             : (coupon()?.discountValue ? coupon()?.discountValue + "%" : "N/A") }}
         discount
       </div>
@@ -123,7 +123,7 @@
         >
       </div>
       <div class="justify-start mat-body-large">
-        Created on {{ coupon()?.createdAt! | custom_date }}
+        Created on {{ $safeNavigationMigration(coupon()?.createdAt)! | custom_date }}
       </div>
       }
     </div>

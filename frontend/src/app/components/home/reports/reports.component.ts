@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRippleModule } from '@angular/material/core';
@@ -12,6 +12,7 @@ import { ReportName, ReportsStore } from './store/reports.store';
   standalone: true,
   imports: [CommonModule, MatCardModule, MatIconModule, MatRippleModule],
   templateUrl: './reports.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./reports.component.css'],
 })
 export class ReportsComponent {

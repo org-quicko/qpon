@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
@@ -19,13 +19,13 @@ import { CreateOrganizationDto, OrganizationDto } from '../../../../../dtos/orga
   selector: 'app-organization-profile',
   standalone: true,
   imports: [
-    CommonModule,
     MatButtonModule,
     MatDividerModule,
     MatCardModule,
     NgxSkeletonLoaderModule
-  ],
+],
   templateUrl: './organization-profile.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./organization-profile.component.css']
 })
 export class OrganizationProfileComponent {

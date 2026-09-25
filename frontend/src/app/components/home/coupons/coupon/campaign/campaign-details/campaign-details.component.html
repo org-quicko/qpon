@@ -51,7 +51,7 @@
         </div>
       </div>
       <div class="justify-start mat-body-large text-on-surface-variant">
-        {{ campaign()?.getStatus() | titlecase }}
+        {{ $safeNavigationMigration(campaign()?.getStatus()) | titlecase }}
       </div>
       }
     </div>
@@ -94,7 +94,7 @@
       </div>
       <div class="justify-start mat-body-large">
         <!-- Created on {{ getFormattedDate(campaign()?.getCreatedAt()!) }} -->
-        Created on {{ campaign()?.getCreatedAt()! | custom_date }}
+        Created on {{ $safeNavigationMigration(campaign()?.getCreatedAt())! | custom_date }}
       </div>
       }
     </div>

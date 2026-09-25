@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ChooseOrganizationComponent } from "./choose-organization/choose-organization.component";
 import { ProfileComponent } from "./profile/profile.component";
 import { OrganizationStore } from '../../../../store/organization.store';
@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
   selector: 'app-header',
   imports: [MatDividerModule, ProfileComponent, ChooseOrganizationComponent],
   templateUrl: './header.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {

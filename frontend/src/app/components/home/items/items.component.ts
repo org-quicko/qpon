@@ -4,6 +4,7 @@ import {
   inject,
   OnInit,
   signal,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -26,7 +27,7 @@ import { CommonModule } from '@angular/common';
 import { PaginationOptions } from '../../../types/PaginatedOptions';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteItemDialogComponent } from './delete-item-dialog/delete-item-dialog.component';
-import { PureAbility } from '@casl/ability';
+import { Ability } from '@casl/ability';
 import { UserAbility, UserAbilityTuple } from '../../../permissions/ability';
 import { AbilityServiceSignal } from '@casl/angular';
 import { NotAllowedDialogBoxComponent } from '../../common/not-allowed-dialog-box/not-allowed-dialog-box.component';
@@ -46,6 +47,7 @@ import { NotAllowedDialogBoxComponent } from '../../common/not-allowed-dialog-bo
     CommonModule,
   ],
   templateUrl: './items.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './items.component.css',
 })
 export class ItemsComponent implements OnInit {
@@ -65,7 +67,7 @@ export class ItemsComponent implements OnInit {
 
   private readonly abilityService = inject<AbilityServiceSignal<UserAbility>>(AbilityServiceSignal);
   protected readonly can = this.abilityService.can;
-  private readonly ability = inject<PureAbility<UserAbilityTuple>>(PureAbility);
+  private readonly ability = inject<Ability<UserAbilityTuple>>(Ability);
   
 
   constructor(private router: Router, private route: ActivatedRoute) {

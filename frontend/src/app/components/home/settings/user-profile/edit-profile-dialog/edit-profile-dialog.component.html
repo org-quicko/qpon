@@ -7,9 +7,11 @@
     <mat-label>Email</mat-label>
     <input matInput formControlName="email" />
 
-    <mat-error *ngIf="form.get('email')?.hasError('required')">
-      Email is required
-    </mat-error>
+    @if (form.get('email')?.hasError('required')) {
+      <mat-error>
+        Email is required
+      </mat-error>
+    }
   </mat-form-field>
 
   <!-- Name -->
@@ -17,9 +19,11 @@
     <mat-label>Name</mat-label>
     <input matInput formControlName="name" />
 
-    <mat-error *ngIf="form.get('name')?.hasError('required')">
-      Name is required
-    </mat-error>
+    @if (form.get('name')?.hasError('required')) {
+      <mat-error>
+        Name is required
+      </mat-error>
+    }
   </mat-form-field>
 
   <!-- Section Title -->
@@ -69,9 +73,11 @@
     </button>
 
     <!-- MISMATCH ERROR -->
-    <mat-error *ngIf="form.get('confirmPassword')?.hasError('passwordMismatch')">
-      Passwords do not match
-    </mat-error>
+    @if (form.get('confirmPassword')?.hasError('passwordMismatch')) {
+      <mat-error>
+        Passwords do not match
+      </mat-error>
+    }
   </mat-form-field>
 
 </app-form-dialog-box>
