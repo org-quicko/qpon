@@ -69,16 +69,26 @@ After starting the services, visit [http://localhost:3000/setup](http://localhos
 
 ## Environment Variables
 
-| Variable    | Description                      | Example                  |
-| ----------- | -------------------------------- | ------------------------ |
-| DB_USERNAME | Database username                | qpon_user                |
-| DB_PASSWORD | Database password                | strongpassword           |
-| DB_NAME     | Database name                    | qpon_db                  |
-| DB_HOST     | Database host                    | db (use 'db' for Docker) |
-| JWT_SECRET  | JWT signing secret               | any-random-string        |
-| SALT_ROUNDS | Bcrypt salt rounds for passwords | 10                       |
+| Variable     | Description                       | Example                                              |
+| ------------ | ---------------------------------- | ----------------------------------------------------- |
+| DATABASE_URL | Full Postgres connection string used by the API to connect (required) | postgres://qpon_user:strongpassword@db:5432/qpon_db |
+| DB_SCHEMA    | Postgres schema for tables/migrations (defaults to `public`) | qpon      |
+| DB_SSL       | Enable TLS for the Postgres connection (needed for most managed Postgres, e.g. RDS/Aurora) | true |
+| DB_SSL_REJECT_UNAUTHORIZED | Verify the server certificate against Node's trusted CAs (defaults to false) | true |
+| DB_USERNAME  | Postgres user, used to provision the `db` container in Docker Compose | qpon_user                |
+| DB_PASSWORD  | Postgres password, used to provision the `db` container in Docker Compose | strongpassword           |
+| DB_NAME      | Postgres database name, used to provision the `db` container in Docker Compose | qpon_db                  |
+| JWT_SECRET   | JWT signing secret                 | any-random-string        |
+| SALT_ROUNDS  | Bcrypt salt rounds for passwords   | 10                       |
 
-These variables can be set in a `.env` file, in your shell, or directly in `docker-compose.yml`.
+These variables can be set in a `.env` file, in your shell, or directly in `docker-compose.yml`. The API only reads `DATABASE_URL` (and optionally `DB_SCHEMA`, `DB_SSL`, `DB_SSL_REJECT_UNAUTHORIZED`) to connect — `DB_USERNAME`/`DB_PASSWORD`/`DB_NAME` are used solely to provision the Postgres container when using Docker Compose; embed matching values in `DATABASE_URL` yourself.
+
+**Notes when using `DB_SCHEMA`:**
+- The schema must already exist in the database before the app starts or migrations run (e.g. `CREATE SCHEMA IF NOT EXISTS <schema>;`). Postgres does not auto-create it, and if it's missing, table creation silently falls back to `public` instead of failing loudly.
+
+**Notes when using `DB_SSL`:**
+- Most managed Postgres (RDS, Aurora, etc.) requires or enforces TLS. Set `DB_SSL=true` to connect over TLS.
+- Certificate verification (`DB_SSL_REJECT_UNAUTHORIZED=true`) is off by default because Node doesn't trust Amazon's RDS CA out of the box — enabling it without also supplying that CA will fail to connect. Leave it unset/`false` unless you've configured a trusted CA.
 
 ## Project Structure
 
