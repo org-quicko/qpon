@@ -9,11 +9,10 @@ services:
       - .env
     environment:
       - PORT=3000
-      - DB_PORT=5432
-      - DB_USERNAME=${DB_USERNAME}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_NAME=${DB_NAME}
-      - DB_HOST=${DB_HOST}
+      - DATABASE_URL=${DATABASE_URL}
+      - DB_SCHEMA=${DB_SCHEMA}
+      - DB_SSL=${DB_SSL}
+      - DB_SSL_REJECT_UNAUTHORIZED=${DB_SSL_REJECT_UNAUTHORIZED}
       - JWT_SECRET=${JWT_SECRET}
       - SALT_ROUNDS=${SALT_ROUNDS}
       - NODE_ENV=production

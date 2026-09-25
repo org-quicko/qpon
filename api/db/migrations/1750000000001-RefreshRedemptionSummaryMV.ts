@@ -1,15 +1,18 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
+import { getMigrationSchema } from "../migration-utils";
 
 export class RefreshRedemptionSummaryMVs1750000000001 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
+        const schema = getMigrationSchema(queryRunner);
+
         // Drop existing MVs if they exist
-        await queryRunner.query(`DROP MATERIALIZED VIEW IF EXISTS coupon_codes_wise_day_wise_redemption_summary_mv`);
-        await queryRunner.query(`DROP MATERIALIZED VIEW IF EXISTS item_wise_day_wise_redemption_summary_mv`);
-        await queryRunner.query(`DROP MATERIALIZED VIEW IF EXISTS day_wise_redemption_summary_mv`);
+        await queryRunner.query(`DROP MATERIALIZED VIEW IF EXISTS "${schema}".coupon_codes_wise_day_wise_redemption_summary_mv`);
+        await queryRunner.query(`DROP MATERIALIZED VIEW IF EXISTS "${schema}".item_wise_day_wise_redemption_summary_mv`);
+        await queryRunner.query(`DROP MATERIALIZED VIEW IF EXISTS "${schema}".day_wise_redemption_summary_mv`);
 
         // Recreate coupon_codes_wise_day_wise_redemption_summary_mv
         await queryRunner.query(`
-            CREATE MATERIALIZED VIEW coupon_codes_wise_day_wise_redemption_summary_mv AS
+            CREATE MATERIALIZED VIEW "${schema}".coupon_codes_wise_day_wise_redemption_summary_mv AS
             SELECT
                 r.organization_id,
                 r.coupon_code_id,
@@ -18,8 +21,8 @@ export class RefreshRedemptionSummaryMVs1750000000001 implements MigrationInterf
                 COUNT(r.redemption_id) AS total_redemptions,
                 NOW() AS created_at,
                 NOW() AS updated_at
-            FROM redemption r
-            JOIN coupon_code c ON c.coupon_code_id = r.coupon_code_id
+            FROM "${schema}".redemption r
+            JOIN "${schema}".coupon_code c ON c.coupon_code_id = r.coupon_code_id
             WHERE r.organization_id IS NOT NULL
               AND r.coupon_code_id IS NOT NULL
             GROUP BY
@@ -31,22 +34,22 @@ export class RefreshRedemptionSummaryMVs1750000000001 implements MigrationInterf
 
         // Indexes
         await queryRunner.query(`
-    CREATE INDEX IF NOT EXISTS idx_coupon_codes_day_wise_redemption_summary_organization 
-    ON coupon_codes_wise_day_wise_redemption_summary_mv (organization_id)
+    CREATE INDEX IF NOT EXISTS idx_coupon_codes_day_wise_redemption_summary_organization
+    ON "${schema}".coupon_codes_wise_day_wise_redemption_summary_mv (organization_id)
 `);
         await queryRunner.query(`
-    CREATE INDEX IF NOT EXISTS idx_coupon_codes_day_wise_redemption_summary_coupon_code 
-    ON coupon_codes_wise_day_wise_redemption_summary_mv (coupon_code_id)
+    CREATE INDEX IF NOT EXISTS idx_coupon_codes_day_wise_redemption_summary_coupon_code
+    ON "${schema}".coupon_codes_wise_day_wise_redemption_summary_mv (coupon_code_id)
 `);
         await queryRunner.query(`
-    CREATE INDEX IF NOT EXISTS idx_coupon_codes_day_wise_redemption_summary_date 
-    ON coupon_codes_wise_day_wise_redemption_summary_mv (date)
+    CREATE INDEX IF NOT EXISTS idx_coupon_codes_day_wise_redemption_summary_date
+    ON "${schema}".coupon_codes_wise_day_wise_redemption_summary_mv (date)
 `);
 
 
         // Recreate item_wise_day_wise_redemption_summary_mv
         await queryRunner.query(`
-            CREATE MATERIALIZED VIEW item_wise_day_wise_redemption_summary_mv AS
+            CREATE MATERIALIZED VIEW "${schema}".item_wise_day_wise_redemption_summary_mv AS
             SELECT
                 r.organization_id,
                 r.item_id,
@@ -55,8 +58,8 @@ export class RefreshRedemptionSummaryMVs1750000000001 implements MigrationInterf
                 COUNT(r.redemption_id) AS total_redemptions,
                 NOW() AS created_at,
                 NOW() AS updated_at
-            FROM redemption r
-            JOIN item i ON i.item_id = r.item_id
+            FROM "${schema}".redemption r
+            JOIN "${schema}".item i ON i.item_id = r.item_id
             WHERE r.organization_id IS NOT NULL
               AND r.item_id IS NOT NULL
             GROUP BY
@@ -68,22 +71,22 @@ export class RefreshRedemptionSummaryMVs1750000000001 implements MigrationInterf
 
         // Indexes
         await queryRunner.query(`
-    CREATE INDEX IF NOT EXISTS idx_item_day_wise_redemption_summary_organization 
-    ON item_wise_day_wise_redemption_summary_mv (organization_id)
+    CREATE INDEX IF NOT EXISTS idx_item_day_wise_redemption_summary_organization
+    ON "${schema}".item_wise_day_wise_redemption_summary_mv (organization_id)
 `);
         await queryRunner.query(`
-    CREATE INDEX IF NOT EXISTS idx_item_day_wise_redemption_summary_item 
-    ON item_wise_day_wise_redemption_summary_mv (item_id)
+    CREATE INDEX IF NOT EXISTS idx_item_day_wise_redemption_summary_item
+    ON "${schema}".item_wise_day_wise_redemption_summary_mv (item_id)
 `);
         await queryRunner.query(`
-    CREATE INDEX IF NOT EXISTS idx_item_day_wise_redemption_summary_date 
-    ON item_wise_day_wise_redemption_summary_mv (date)
+    CREATE INDEX IF NOT EXISTS idx_item_day_wise_redemption_summary_date
+    ON "${schema}".item_wise_day_wise_redemption_summary_mv (date)
 `);
 
 
         // Recreate day_wise_redemption_summary_mv
         await queryRunner.query(`
-            CREATE MATERIALIZED VIEW day_wise_redemption_summary_mv AS
+            CREATE MATERIALIZED VIEW "${schema}".day_wise_redemption_summary_mv AS
             SELECT
                 r.organization_id,
                 r.redemption_date::text AS date,
@@ -93,26 +96,27 @@ export class RefreshRedemptionSummaryMVs1750000000001 implements MigrationInterf
                 COALESCE(SUM(r.base_order_value - r.discount), 0)::integer AS net_sales_amount,
                 NOW() AS created_at,
                 NOW() AS updated_at
-            FROM redemption r
+            FROM "${schema}".redemption r
             WHERE r.organization_id IS NOT NULL
             GROUP BY r.organization_id, r.redemption_date
         `);
 
         // Indexes
         await queryRunner.query(`
-    CREATE INDEX IF NOT EXISTS idx_day_wise_redemption_summary_organization 
-    ON day_wise_redemption_summary_mv (organization_id)
+    CREATE INDEX IF NOT EXISTS idx_day_wise_redemption_summary_organization
+    ON "${schema}".day_wise_redemption_summary_mv (organization_id)
 `);
         await queryRunner.query(`
-    CREATE INDEX IF NOT EXISTS idx_day_wise_redemption_summary_date 
-    ON day_wise_redemption_summary_mv (date)
+    CREATE INDEX IF NOT EXISTS idx_day_wise_redemption_summary_date
+    ON "${schema}".day_wise_redemption_summary_mv (date)
 `);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
+        const schema = getMigrationSchema(queryRunner);
         // Drop created views
-        await queryRunner.query(`DROP MATERIALIZED VIEW IF EXISTS coupon_codes_wise_day_wise_redemption_summary_mv`);
-        await queryRunner.query(`DROP MATERIALIZED VIEW IF EXISTS item_wise_day_wise_redemption_summary_mv`);
-        await queryRunner.query(`DROP MATERIALIZED VIEW IF EXISTS day_wise_redemption_summary_mv`);
+        await queryRunner.query(`DROP MATERIALIZED VIEW IF EXISTS "${schema}".coupon_codes_wise_day_wise_redemption_summary_mv`);
+        await queryRunner.query(`DROP MATERIALIZED VIEW IF EXISTS "${schema}".item_wise_day_wise_redemption_summary_mv`);
+        await queryRunner.query(`DROP MATERIALIZED VIEW IF EXISTS "${schema}".day_wise_redemption_summary_mv`);
     }
 }
