@@ -1,8 +1,8 @@
-import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
+import type { DataSourceOptions } from "typeorm";
 
 export type DatabaseConnectionOptions = Pick<
-  PostgresConnectionOptions,
-  'type' | 'url' | 'schema' | 'extra' | 'ssl'
+  Extract<DataSourceOptions, { type: "postgres" }>,
+  'type' | 'url' | 'schema' | 'extra' | 'ssl' | 'invalidWhereValuesBehavior'
 >;
 
 interface DatabaseEnv {
@@ -19,6 +19,12 @@ export function buildDatabaseConnectionOptions(
     type: 'postgres',
     url: env.get('DATABASE_URL'),
     schema,
+    // TypeORM 1.x throws by default when a `where` clause contains an
+    // `undefined` value (0.3.x silently ignored it). Controllers build
+    // optional filter objects with shorthand properties (e.g. `{ name }`)
+    // that are `undefined`, not absent, when a query param isn't supplied —
+    // restore the old behavior globally instead of auditing every call site.
+    invalidWhereValuesBehavior: { undefined: 'ignore' },
     // TypeORM's `schema` option only qualifies table names it builds itself
     // (entity queries, the migrations table). Raw SQL in migration files uses
     // unqualified names, so the connection's search_path must also point at

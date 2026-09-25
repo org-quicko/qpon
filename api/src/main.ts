@@ -56,4 +56,4 @@ async function bootstrap() {
     LoggerFactory.createLogger('logger').info(`Go to localhost:3000/setup to create a super admin`);
   }
 }
-bootstrap();
+void bootstrap();

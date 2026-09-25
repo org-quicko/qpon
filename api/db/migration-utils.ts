@@ -1,7 +1,7 @@
 import { QueryRunner } from 'typeorm';
-import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions.js';
+import type { DataSourceOptions } from "typeorm";
 
 export function getMigrationSchema(queryRunner: QueryRunner): string {
-  const options = queryRunner.connection.options as PostgresConnectionOptions;
+  const options = queryRunner.dataSource.options as Extract<DataSourceOptions, { type: "postgres" }>;
   return options.schema || 'public';
 }

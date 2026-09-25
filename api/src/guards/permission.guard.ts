@@ -98,7 +98,5 @@ export class PermissionGuard implements CanActivate {
       }
       return false;
     }
-
-    return true;
   }
 }

@@ -1,6 +1,6 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { Expose } from 'class-transformer';
-import { Equals, IsArray, IsOptional, IsUUID } from 'class-validator';
+import { Equals, IsArray, IsUUID } from 'class-validator';
 import { ItemDto } from './item.dto';
 
 export class CouponItemDto {

@@ -14,7 +14,6 @@ import {
   EntityManager,
   FindOptionsWhere,
   ILike,
-  Not,
   Repository,
 } from 'typeorm';
 import { stringify } from 'csv-stringify';
