@@ -1,0 +1,6 @@
+# Revisions to skip in `git blame` — mechanical reformats with no behaviour
+# change. Configure once with:
+#   git config blame.ignoreRevsFile .git-blame-ignore-revs
+
+# style: format api with oxfmt
+bbb45fe86f65f801dead0512fcd08187b8854382
