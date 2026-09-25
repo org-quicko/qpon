@@ -282,10 +282,7 @@ export class CouponCodeService {
       this.logger.info('END: fetchCouponCodeForValidation service');
       return couponCode;
     } catch (error) {
-      this.logger.error(
-        `Error in fetchCouponCodeForValidation:`,
-        error,
-      );
+      this.logger.error(`Error in fetchCouponCodeForValidation:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -417,10 +414,7 @@ export class CouponCodeService {
         this.couponCodeConverter.convert(couponCode),
       );
     } catch (error) {
-      this.logger.error(
-        `Error in fetchCouponCodesByCode:`,
-        error,
-      );
+      this.logger.error(`Error in fetchCouponCodesByCode:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -475,12 +469,12 @@ export class CouponCodeService {
       }
 
       this.logger.info('END: fetchCouponCodesByCodeSheet service');
-      return this.couponCodeWorkbookConverter.convert(couponCodes, organizationId);
-    } catch (error) {
-      this.logger.error(
-        `Error in fetchCouponCodesByCodeSheet:`,
-        error,
+      return this.couponCodeWorkbookConverter.convert(
+        couponCodes,
+        organizationId,
       );
+    } catch (error) {
+      this.logger.error(`Error in fetchCouponCodesByCodeSheet:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -544,10 +538,7 @@ export class CouponCodeService {
 
       this.logger.info('END: deactivateCouponCode service');
     } catch (error) {
-      this.logger.error(
-        `Error in deactivateCouponCode:`,
-        error,
-      );
+      this.logger.error(`Error in deactivateCouponCode:`, error);
 
       if (
         error instanceof NotFoundException ||
@@ -627,10 +618,7 @@ export class CouponCodeService {
 
       this.logger.info('END: reactivateCouponCode service');
     } catch (error) {
-      this.logger.error(
-        `Error in reactivateCouponCode:`,
-        error,
-      );
+      this.logger.error(`Error in reactivateCouponCode:`, error);
 
       if (
         error instanceof NotFoundException ||

@@ -206,17 +206,16 @@ describe('OffersService (integration)', () => {
         couponCode: { maxRedemptionPerCustomer: 1 },
       });
 
-      await app.get(RedemptionsService).redeemCouponCode(
-        organization.organizationId,
-        {
+      await app
+        .get(RedemptionsService)
+        .redeemCouponCode(organization.organizationId, {
           entity: 'org.quicko.qpon.redemption',
           code: setup.couponCode.code,
           baseOrderValue: 1000,
           discount: 100,
           externalCustomerId: setup.customer.externalId,
           externalItemId: setup.item.externalId,
-        } as never,
-      );
+        } as never);
 
       await expect(
         service.fetchOffer(

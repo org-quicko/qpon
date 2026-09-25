@@ -39,7 +39,7 @@ export class CampaignService {
     private campaignSummaryWorkbookConverter: CampaignSummaryWorkbookConverter,
     private logger: LoggerService,
     private datasource: DataSource,
-  ) { }
+  ) {}
 
   /**
    * Create campaign
@@ -216,10 +216,7 @@ export class CampaignService {
       this.logger.info('END: fetchCampaignForValidation service');
       return campaign;
     } catch (error) {
-      this.logger.error(
-        `Error in fetchCampaignForValidation:`,
-        error,
-      );
+      this.logger.error(`Error in fetchCampaignForValidation:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -313,7 +310,10 @@ export class CampaignService {
 
         await manager.update(
           CouponCode,
-          { campaign: { campaignId }, status: Not(couponCodeStatusEnum.ARCHIVE) },
+          {
+            campaign: { campaignId },
+            status: Not(couponCodeStatusEnum.ARCHIVE),
+          },
           { status: couponCodeStatusEnum.INACTIVE },
         );
 
@@ -323,10 +323,7 @@ export class CampaignService {
 
         this.logger.info('END: deactivateCampaign service');
       } catch (error) {
-        this.logger.error(
-          `Error in deactivateCampaign:`,
-          error,
-        );
+        this.logger.error(`Error in deactivateCampaign:`, error);
 
         if (error instanceof NotFoundException) {
           throw error;
@@ -422,10 +419,7 @@ export class CampaignService {
         take,
       );
     } catch (error) {
-      this.logger.error(
-        `Error in fetchCampaignSummary:`,
-        error,
-      );
+      this.logger.error(`Error in fetchCampaignSummary:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -458,12 +452,12 @@ export class CampaignService {
       }
 
       this.logger.info('END: fetchCampaignSummary service');
-      return this.campaignSummaryWorkbookConverter.convert(campaignSummaryMv, couponId);
-    } catch (error) {
-      this.logger.error(
-        `Error in fetchCampaignSummary:`,
-        error,
+      return this.campaignSummaryWorkbookConverter.convert(
+        campaignSummaryMv,
+        couponId,
       );
+    } catch (error) {
+      this.logger.error(`Error in fetchCampaignSummary:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;

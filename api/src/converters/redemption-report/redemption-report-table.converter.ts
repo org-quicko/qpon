@@ -7,8 +7,7 @@ import { JSONArray } from '@org-quicko/core';
 import { formatDate } from '../../utils/date.utils';
 
 export class RedemptionReportTableConverter {
-  convert(redemptions: Redemption[]) : RedemptionReportTable {
-
+  convert(redemptions: Redemption[]): RedemptionReportTable {
     const redemptionReportTable = new RedemptionReportTable();
 
     for (let index = 0; index < redemptions.length; index++) {

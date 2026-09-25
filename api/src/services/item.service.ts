@@ -41,7 +41,7 @@ export class ItemsService {
     private itemListConverter: ItemsListConverter,
     private logger: LoggerService,
     private datasource: DataSource,
-  ) { }
+  ) {}
 
   /**
    * Create item
@@ -207,10 +207,7 @@ export class ItemsService {
       this.logger.info('END: fetchItemForValidation service');
       return item;
     } catch (error) {
-      this.logger.error(
-        `Error in fetchItemForValidation:`,
-        error,
-      );
+      this.logger.error(`Error in fetchItemForValidation:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -387,10 +384,7 @@ export class ItemsService {
     }
   }
 
-  async upsertItem(
-    organizationId: string,
-    body: CreateItemDto,
-  ) {
+  async upsertItem(organizationId: string, body: CreateItemDto) {
     this.logger.info('START: upsertItem service');
     try {
       const existingItem = await this.itemsRepository.findOne({
@@ -474,7 +468,9 @@ export class ItemsService {
     // Query using clean alias "itemSummary"
     const dbStream = await this.itemWiseMvRepository
       .createQueryBuilder('itemSummary')
-      .where('itemSummary.organization_id = :organizationId', { organizationId })
+      .where('itemSummary.organization_id = :organizationId', {
+        organizationId,
+      })
       .andWhere('itemSummary.date BETWEEN :start AND :end', {
         start: from,
         end: to,
@@ -506,5 +502,4 @@ export class ItemsService {
 
     return passThrough;
   }
-
 }

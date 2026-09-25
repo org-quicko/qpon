@@ -32,10 +32,7 @@ export class AuthService {
       this.logger.info('END: authenticate service');
       return await this.login(entity);
     } catch (error) {
-      this.logger.error(
-        `Error in authenticate service:`,
-        error,
-      );
+      this.logger.error(`Error in authenticate service:`, error);
 
       if (error instanceof UnauthorizedException) {
         throw error;
@@ -66,7 +63,7 @@ export class AuthService {
     const accessToken = await this.jwtService.signAsync(tokenPayload);
 
     return {
-      "access_token": accessToken,
+      access_token: accessToken,
     };
   }
 

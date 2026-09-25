@@ -1,5 +1,11 @@
 import { Expose } from 'class-transformer';
-import { Equals, IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  Equals,
+  IsDate,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class OrganizationMvDto {
   @Expose({ name: '@entity' })

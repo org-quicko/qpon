@@ -6,7 +6,6 @@ import { CampaignSummaryTableConverter } from './campaign-summary-table.converte
 
 @Injectable()
 export class CampaignSummaryWorkbookConverter {
-
   private campaignSummaryTableConverter: CampaignSummaryTableConverter;
 
   constructor() {
@@ -25,7 +24,8 @@ export class CampaignSummaryWorkbookConverter {
     const campaignSummarySheet =
       campaignSummaryWorkbook.getCampaignSummarySheet();
 
-    const campaignSummaryTable = this.campaignSummaryTableConverter.convert(campaignSummaryMv);
+    const campaignSummaryTable =
+      this.campaignSummaryTableConverter.convert(campaignSummaryMv);
 
     campaignSummarySheet.replaceBlock(campaignSummaryTable);
 

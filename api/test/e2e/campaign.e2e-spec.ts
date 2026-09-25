@@ -274,7 +274,12 @@ describe('campaigns (e2e)', () => {
 
   describe('POST /campaigns/:campaign_id/deactivate', () => {
     it('deactivates the campaign and its non-archived coupon codes', async () => {
-      const campaign = await createCampaign(dataSource, organization, coupon, {});
+      const campaign = await createCampaign(
+        dataSource,
+        organization,
+        coupon,
+        {},
+      );
       const code = await createCouponCode(
         dataSource,
         organization,
@@ -330,7 +335,12 @@ describe('campaigns (e2e)', () => {
 
   describe('DELETE /campaigns/:campaign_id', () => {
     it('archives the campaign and its coupon codes', async () => {
-      const campaign = await createCampaign(dataSource, organization, coupon, {});
+      const campaign = await createCampaign(
+        dataSource,
+        organization,
+        coupon,
+        {},
+      );
       const code = await createCouponCode(
         dataSource,
         organization,

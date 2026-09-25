@@ -1,5 +1,11 @@
 import { Expose } from 'class-transformer';
-import { Equals, IsArray, IsNumber, IsOptional, ValidateNested } from 'class-validator';
+import {
+  Equals,
+  IsArray,
+  IsNumber,
+  IsOptional,
+  ValidateNested,
+} from 'class-validator';
 
 export class PaginatedList<T> {
   @Expose({ name: '@entity' })

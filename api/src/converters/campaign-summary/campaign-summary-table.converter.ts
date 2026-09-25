@@ -6,7 +6,7 @@ import { CampaignSummaryMv } from '../../entities/campaign-summary.view';
 import { JSONArray } from '@org-quicko/core';
 
 export class CampaignSummaryTableConverter {
-    convert(campaignSummaryMv: CampaignSummaryMv[]) : CampaignSummaryTable {
+  convert(campaignSummaryMv: CampaignSummaryMv[]): CampaignSummaryTable {
     const campaignSummaryTable = new CampaignSummaryTable();
 
     for (let index = 0; index < campaignSummaryMv.length; index++) {
@@ -33,7 +33,7 @@ export class CampaignSummaryTableConverter {
 
       campaignSummaryTable.addRow(campaignSummaryRow);
     }
-    
+
     return campaignSummaryTable;
   }
 }

@@ -173,10 +173,7 @@ export class CouponItemService {
       this.logger.info('END: fetchItemForValidation service');
       return couponItems;
     } catch (error) {
-      this.logger.error(
-        `Error in fetchItemForValidation:`,
-        error,
-      );
+      this.logger.error(`Error in fetchItemForValidation:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;

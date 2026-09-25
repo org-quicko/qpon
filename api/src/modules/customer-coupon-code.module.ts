@@ -11,7 +11,13 @@ import { CustomerListConverter } from 'src/converters/customer-list.converter';
 import { CustomerWiseDayWiseRedemptionSummaryMv } from 'src/entities/customer_wise_day_wise_redemption_summary_mv';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CustomerCouponCode, Customer, CustomerWiseDayWiseRedemptionSummaryMv])],
+  imports: [
+    TypeOrmModule.forFeature([
+      CustomerCouponCode,
+      Customer,
+      CustomerWiseDayWiseRedemptionSummaryMv,
+    ]),
+  ],
   controllers: [CustomerCouponCodeController],
   providers: [
     CustomerCouponCodeService,

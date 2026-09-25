@@ -1,7 +1,11 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { INestApplication } from '@nestjs/common';
 import { DataSource } from 'typeorm';
-import { createTestApp, seedSuperAdmin, truncateAll } from '../support/test-app';
+import {
+  createTestApp,
+  seedSuperAdmin,
+  truncateAll,
+} from '../support/test-app';
 import { beginIsolatedTransaction } from '../support/transaction';
 import { createCoupon, createOrganization } from '../support/factories';
 import { CouponService } from '../../src/services/coupon.service';

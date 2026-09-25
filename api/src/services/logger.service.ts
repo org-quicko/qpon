@@ -13,7 +13,7 @@ export class LoggerService implements OnModuleInit {
   }
 
   private getLogger() {
-    return LoggerFactory.createLogger(this.loggerName, LoggingLevel.info)
+    return LoggerFactory.createLogger(this.loggerName, LoggingLevel.info);
   }
 
   public info(message: string, meta?: any) {

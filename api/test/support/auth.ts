@@ -47,7 +47,9 @@ export async function createUserWithRole(
   const user = await userRepo.save(
     userRepo.create({
       name: `${options.role} user`,
-      email: options.email ?? `${options.role}-${randomBytes(6).toString('hex')}@test.local`,
+      email:
+        options.email ??
+        `${options.role}-${randomBytes(6).toString('hex')}@test.local`,
       password: options.password ?? 'password',
       role:
         options.role === roleEnum.SUPER_ADMIN
@@ -106,7 +108,9 @@ export async function createApiKeyCredentials(
 }
 
 /** Header pair AuthGuard routes to ApiKeyGuard on. */
-export function apiKeyHeaders(credentials: ApiKeyCredentials): Record<string, string> {
+export function apiKeyHeaders(
+  credentials: ApiKeyCredentials,
+): Record<string, string> {
   return {
     'x-api-key': credentials.key,
     'x-api-secret': credentials.secret,

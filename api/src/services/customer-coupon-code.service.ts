@@ -216,10 +216,7 @@ export class CustomerCouponCodeService {
       this.logger.info('END: fetchCustomerForValidation service');
       return customers;
     } catch (error) {
-      this.logger.error(
-        `Error in fetchCustomerForValidation: `,
-        error,
-      );
+      this.logger.error(`Error in fetchCustomerForValidation: `, error);
 
       if (error instanceof NotFoundException) {
         throw error;

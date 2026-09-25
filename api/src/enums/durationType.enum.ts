@@ -1,5 +1,4 @@
 export enum durationTypeEnum {
-    LIMITED = 'limited',
-    FOREVER = 'forever',
+  LIMITED = 'limited',
+  FOREVER = 'forever',
 }
-

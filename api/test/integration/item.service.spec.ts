@@ -196,7 +196,9 @@ describe('ItemsService (integration)', () => {
     });
 
     it('matches a name substring case-insensitively', async () => {
-      await createItem(dataSource, organization, { name: 'Mechanical Keyboard' });
+      await createItem(dataSource, organization, {
+        name: 'Mechanical Keyboard',
+      });
       await createItem(dataSource, organization, { name: 'Mouse' });
 
       const result = await service.fetchItems(

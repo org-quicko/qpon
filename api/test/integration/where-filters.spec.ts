@@ -1,14 +1,22 @@
 import { describe, it, expect, beforeAll, beforeEach, afterAll } from 'vitest';
 import { INestApplication } from '@nestjs/common';
 import { DataSource } from 'typeorm';
-import { createTestApp, truncateAll, seedSuperAdmin } from '../support/test-app';
+import {
+  createTestApp,
+  truncateAll,
+  seedSuperAdmin,
+} from '../support/test-app';
 import { UserService } from '../../src/services/user.service';
 import { CampaignService } from '../../src/services/campaign.service';
 import { User } from '../../src/entities/user.entity';
 import { Organization } from '../../src/entities/organization.entity';
 import { Coupon } from '../../src/entities/coupon.entity';
 import { Campaign } from '../../src/entities/campaign.entity';
-import { roleEnum, discountTypeEnum, campaignStatusEnum } from '../../src/enums';
+import {
+  roleEnum,
+  discountTypeEnum,
+  campaignStatusEnum,
+} from '../../src/enums';
 
 /**
  * Direct regression coverage for the TypeORM 1.0 behavior change this whole

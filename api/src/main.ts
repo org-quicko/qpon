@@ -16,7 +16,9 @@ async function bootstrap() {
   const userService = app.get(UserService);
   const response = await userService.superAdminExists();
   if (!response.exists) {
-    LoggerFactory.createLogger('logger').info(`Go to localhost:3000/setup to create a super admin`);
+    LoggerFactory.createLogger('logger').info(
+      `Go to localhost:3000/setup to create a super admin`,
+    );
   }
 }
 void bootstrap();

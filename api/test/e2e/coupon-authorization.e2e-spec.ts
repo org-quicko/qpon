@@ -88,7 +88,10 @@ describe('coupon authorization (e2e)', () => {
         await request(app.getHttpServer())
           .patch(`${couponsUrl()}/${coupon.couponId}`)
           .set(...(await authFor(role)))
-          .send({ '@entity': 'org.quicko.qpon.coupon', name: `Renamed ${role}` })
+          .send({
+            '@entity': 'org.quicko.qpon.coupon',
+            name: `Renamed ${role}`,
+          })
           .expect(200);
       },
     );

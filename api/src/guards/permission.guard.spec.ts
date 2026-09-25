@@ -17,7 +17,10 @@ function createContext(headers: Record<string, string>): ExecutionContext {
 }
 
 describe('PermissionGuard', () => {
-  let reflector: { getAllAndOverride: ReturnType<typeof vi.fn>; get: ReturnType<typeof vi.fn> };
+  let reflector: {
+    getAllAndOverride: ReturnType<typeof vi.fn>;
+    get: ReturnType<typeof vi.fn>;
+  };
   let userService: { fetchUserForValidation: ReturnType<typeof vi.fn> };
   let authorizationService: {
     getUserAbility: ReturnType<typeof vi.fn>;
@@ -94,9 +97,7 @@ describe('PermissionGuard', () => {
 
     // The guard used to `return false`, which Nest flattens to a bare
     // "Forbidden resource"; CASL's message names the action and subject.
-    await expect(guard.canActivate(context)).rejects.toThrow(
-      /Cannot execute/,
-    );
+    await expect(guard.canActivate(context)).rejects.toThrow(/Cannot execute/);
   });
 
   it('refuses without leaking the internal message when subject resolution fails', async () => {
@@ -130,7 +131,9 @@ describe('PermissionGuard', () => {
     });
 
     await expect(guard.canActivate(context)).resolves.toBe(true);
-    expect(authorizationService.getApiUserAbility).toHaveBeenCalledWith('org-1');
+    expect(authorizationService.getApiUserAbility).toHaveBeenCalledWith(
+      'org-1',
+    );
     expect(userService.fetchUserForValidation).not.toHaveBeenCalled();
   });
 });

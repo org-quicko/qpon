@@ -1,5 +1,12 @@
 import { Expose } from 'class-transformer';
-import { Equals, IsString, IsEnum, IsDate, IsUUID, IsOptional } from 'class-validator';
+import {
+  Equals,
+  IsString,
+  IsEnum,
+  IsDate,
+  IsUUID,
+  IsOptional,
+} from 'class-validator';
 import { roleEnum } from '../enums';
 
 export class UserDto {

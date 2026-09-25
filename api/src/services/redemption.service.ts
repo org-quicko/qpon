@@ -54,7 +54,7 @@ export class RedemptionsService {
     private redemptionWorkbookConverter: RedemptionWorkbookConverter,
     private logger: LoggerService,
     private datasource: DataSource,
-  ) { }
+  ) {}
 
   /**
    * Redeem coupon code
@@ -140,7 +140,7 @@ export class RedemptionsService {
           updatedCouponCode &&
           updatedCouponCode.maxRedemptions &&
           updatedCouponCode.redemptionCount >=
-          updatedCouponCode.maxRedemptions &&
+            updatedCouponCode.maxRedemptions &&
           updatedCouponCode.status !== couponCodeStatusEnum.REDEEMED
         ) {
           await this.couponCodeRepository.update(couponCodeId, {
@@ -152,7 +152,7 @@ export class RedemptionsService {
       if (campaignId) {
         const campaign_summary = await this.campaignSummaryRepository.findOne({
           where: {
-            campaignId
+            campaignId,
           },
         });
 
@@ -164,7 +164,10 @@ export class RedemptionsService {
             status: campaignStatusEnum.EXHAUSTED,
           });
 
-          await this.couponCodeRepository.update({ campaign: { campaignId }, status: couponCodeStatusEnum.ACTIVE }, { status: couponCodeStatusEnum.INACTIVE });
+          await this.couponCodeRepository.update(
+            { campaign: { campaignId }, status: couponCodeStatusEnum.ACTIVE },
+            { status: couponCodeStatusEnum.INACTIVE },
+          );
         }
       }
       this.logger.info('END: redeemCouponCode service');
@@ -277,7 +280,6 @@ export class RedemptionsService {
       );
     }
   }
-
 
   private validateCouponCode(couponCode: CouponCode) {
     if (
@@ -570,5 +572,4 @@ export class RedemptionsService {
 
     return passThrough;
   }
-
 }

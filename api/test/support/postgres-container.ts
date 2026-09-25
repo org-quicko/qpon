@@ -1,4 +1,7 @@
-import { PostgreSqlContainer, StartedPostgreSqlContainer } from '@testcontainers/postgresql';
+import {
+  PostgreSqlContainer,
+  StartedPostgreSqlContainer,
+} from '@testcontainers/postgresql';
 import { DataSource } from 'typeorm';
 import * as entities from '../../src/entities';
 import { InitialMigration1747285814143 } from '../../db/migrations/1747285814143-initial-migration';

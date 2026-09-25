@@ -82,7 +82,9 @@ describe('tenant isolation across resources (e2e)', () => {
       const item = await createItem(dataSource, homeOrg);
 
       await request(app.getHttpServer())
-        .delete(`/api/organizations/${homeOrg.organizationId}/items/${item.itemId}`)
+        .delete(
+          `/api/organizations/${homeOrg.organizationId}/items/${item.itemId}`,
+        )
         .set(...auth)
         .expect(200);
     });
@@ -236,32 +238,69 @@ describe('tenant isolation across resources (e2e)', () => {
    */
   describe('cross-organization reads', () => {
     const cases: { name: string; path: (o: Organization) => string }[] = [
-      { name: 'coupon list', path: (o) => `/api/organizations/${o.organizationId}/coupons` },
-      { name: 'item list', path: (o) => `/api/organizations/${o.organizationId}/items` },
-      { name: 'customer list', path: (o) => `/api/organizations/${o.organizationId}/customers` },
-      { name: 'redemption list', path: (o) => `/api/organizations/${o.organizationId}/redemptions` },
-      { name: 'offer list', path: (o) => `/api/organizations/${o.organizationId}/offers` },
-      { name: 'api key', path: (o) => `/api/organizations/${o.organizationId}/api-keys` },
-      { name: 'organization summary', path: (o) => `/api/organizations/${o.organizationId}/summary` },
-      { name: 'sales summary', path: (o) => `/api/organizations/${o.organizationId}/sales/summary` },
-      { name: 'item summary', path: (o) => `/api/organizations/${o.organizationId}/items/summary` },
-      { name: 'coupon code summary', path: (o) => `/api/organizations/${o.organizationId}/coupon_codes/summary` },
+      {
+        name: 'coupon list',
+        path: (o) => `/api/organizations/${o.organizationId}/coupons`,
+      },
+      {
+        name: 'item list',
+        path: (o) => `/api/organizations/${o.organizationId}/items`,
+      },
+      {
+        name: 'customer list',
+        path: (o) => `/api/organizations/${o.organizationId}/customers`,
+      },
+      {
+        name: 'redemption list',
+        path: (o) => `/api/organizations/${o.organizationId}/redemptions`,
+      },
+      {
+        name: 'offer list',
+        path: (o) => `/api/organizations/${o.organizationId}/offers`,
+      },
+      {
+        name: 'api key',
+        path: (o) => `/api/organizations/${o.organizationId}/api-keys`,
+      },
+      {
+        name: 'organization summary',
+        path: (o) => `/api/organizations/${o.organizationId}/summary`,
+      },
+      {
+        name: 'sales summary',
+        path: (o) => `/api/organizations/${o.organizationId}/sales/summary`,
+      },
+      {
+        name: 'item summary',
+        path: (o) => `/api/organizations/${o.organizationId}/items/summary`,
+      },
+      {
+        name: 'coupon code summary',
+        path: (o) =>
+          `/api/organizations/${o.organizationId}/coupon_codes/summary`,
+      },
     ];
 
-    it.each(cases)('refuses the $name of another organization', async ({ path }) => {
-      await request(app.getHttpServer())
-        .get(path(foreignOrg))
-        .set(...auth)
-        .expect(403);
-    });
+    it.each(cases)(
+      'refuses the $name of another organization',
+      async ({ path }) => {
+        await request(app.getHttpServer())
+          .get(path(foreignOrg))
+          .set(...auth)
+          .expect(403);
+      },
+    );
 
-    it.each(cases)('still allows the $name of the caller’s own organization', async ({ path }) => {
-      const response = await request(app.getHttpServer())
-        .get(path(homeOrg))
-        .set(...auth);
+    it.each(cases)(
+      'still allows the $name of the caller’s own organization',
+      async ({ path }) => {
+        const response = await request(app.getHttpServer())
+          .get(path(homeOrg))
+          .set(...auth);
 
-      expect(response.status).not.toBe(403);
-    });
+        expect(response.status).not.toBe(403);
+      },
+    );
 
     it('refuses reading a single coupon of another organization', async () => {
       const coupon = await createCoupon(dataSource, foreignOrg);

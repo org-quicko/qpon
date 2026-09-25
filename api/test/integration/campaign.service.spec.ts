@@ -201,7 +201,12 @@ describe('CampaignService (integration)', () => {
 
   describe('deactivateCampaign cascade', () => {
     it('deactivates coupon codes that are not archived', async () => {
-      const campaign = await createCampaign(dataSource, organization, coupon, {});
+      const campaign = await createCampaign(
+        dataSource,
+        organization,
+        coupon,
+        {},
+      );
       const active = await createCouponCode(
         dataSource,
         organization,
@@ -258,7 +263,12 @@ describe('CampaignService (integration)', () => {
 
   describe('deleteCampaign', () => {
     it('archives the campaign and its coupon codes', async () => {
-      const campaign = await createCampaign(dataSource, organization, coupon, {});
+      const campaign = await createCampaign(
+        dataSource,
+        organization,
+        coupon,
+        {},
+      );
       const code = await createCouponCode(
         dataSource,
         organization,

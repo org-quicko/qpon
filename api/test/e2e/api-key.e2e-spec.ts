@@ -55,7 +55,9 @@ describe('api keys (e2e)', () => {
 
       // The stored secret must be a hash, never the value handed back.
       const stored = await dataSource.getRepository(ApiKey).findOneOrFail({
-        where: { organization: { organizationId: organization.organizationId } },
+        where: {
+          organization: { organizationId: organization.organizationId },
+        },
       });
       expect(stored.secret.startsWith('$2')).toBe(true);
     });
@@ -75,7 +77,9 @@ describe('api keys (e2e)', () => {
 
       const count = await dataSource
         .getRepository(ApiKey)
-        .countBy({ organization: { organizationId: organization.organizationId } });
+        .countBy({
+          organization: { organizationId: organization.organizationId },
+        });
       expect(count).toBe(1);
     });
 

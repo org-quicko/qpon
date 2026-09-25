@@ -11,13 +11,9 @@ import { SKIP_TRANSFORM_KEY } from '../decorators/skipTransform.decorator';
 
 @Injectable()
 export class TransformInterceptor<T> implements NestInterceptor<T, Response> {
-  constructor(private readonly reflector: Reflector) { }
+  constructor(private readonly reflector: Reflector) {}
 
-  intercept(
-    context: ExecutionContext,
-    next: CallHandler,
-  ): Observable<any> {
-
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const skipTransform = this.reflector.getAllAndOverride<boolean>(
       SKIP_TRANSFORM_KEY,
       [context.getHandler(), context.getClass()],

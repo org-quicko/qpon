@@ -26,7 +26,7 @@ export class OrganizationController {
   constructor(
     private readonly organizationService: OrganizationService,
     private logger: LoggerService,
-  ) { }
+  ) {}
 
   /**
    * Create organization
@@ -95,7 +95,10 @@ export class OrganizationController {
   /**
    * Fetch top 5 items summary by total redemptions
    */
-  @ApiResponse({ status: 200, description: 'Successfully fetched item-wise redemption summary' })
+  @ApiResponse({
+    status: 200,
+    description: 'Successfully fetched item-wise redemption summary',
+  })
   @Permissions('read', ItemWiseDayWiseRedemptionSummaryMv)
   @Get(':organization_id/items/summary')
   async fetchItemWiseRedemptionSummary(
@@ -120,9 +123,12 @@ export class OrganizationController {
   }
 
   /**
- * Fetch top 5 coupon code summary by total redemptions
- */
-  @ApiResponse({ status: 200, description: 'Successfully fetched coupon-code-wise redemption summary' })
+   * Fetch top 5 coupon code summary by total redemptions
+   */
+  @ApiResponse({
+    status: 200,
+    description: 'Successfully fetched coupon-code-wise redemption summary',
+  })
   @Permissions('read', CouponCodesWiseDayWiseRedemptionSummaryMv)
   @Get(':organization_id/coupon_codes/summary')
   async fetchCouponCodeWiseRedemptionSummary(
@@ -149,8 +155,8 @@ export class OrganizationController {
   }
 
   /**
- * Fetch day-wise redemption (sales) summary
- */
+   * Fetch day-wise redemption (sales) summary
+   */
   @ApiResponse({
     status: 200,
     description: 'Successfully fetched day-wise redemption (sales) summary',

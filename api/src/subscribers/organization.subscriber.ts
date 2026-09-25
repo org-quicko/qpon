@@ -10,9 +10,7 @@ import { roleEnum } from '../enums';
 import { OrganizationUser } from '../entities/organization-user.entity';
 
 @EventSubscriber()
-export class OrganizationSubscriber
-  implements EntitySubscriberInterface<Organization>
-{
+export class OrganizationSubscriber implements EntitySubscriberInterface<Organization> {
   listenTo() {
     return Organization;
   }

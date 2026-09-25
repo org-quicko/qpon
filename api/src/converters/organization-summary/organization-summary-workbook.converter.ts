@@ -5,11 +5,11 @@ import { OrganizationSummaryTableConverter } from './organization-summary-table.
 
 @Injectable()
 export class OrganizationSummaryWorkbookConverter {
-
   private organizationSummaryTableConverter: OrganizationSummaryTableConverter;
 
   constructor() {
-    this.organizationSummaryTableConverter = new OrganizationSummaryTableConverter();
+    this.organizationSummaryTableConverter =
+      new OrganizationSummaryTableConverter();
   }
 
   convert(
@@ -17,9 +17,11 @@ export class OrganizationSummaryWorkbookConverter {
   ): OrganizationSummaryWorkbook {
     const organizationSummaryWorkbook = new OrganizationSummaryWorkbook();
 
-    const organizationSummarySheet = organizationSummaryWorkbook.getOrganizationSummarySheet();
+    const organizationSummarySheet =
+      organizationSummaryWorkbook.getOrganizationSummarySheet();
 
-    const organizationSummaryTable = this.organizationSummaryTableConverter.convert(organizationSummaryMv);
+    const organizationSummaryTable =
+      this.organizationSummaryTableConverter.convert(organizationSummaryMv);
 
     organizationSummarySheet.replaceBlock(organizationSummaryTable);
 

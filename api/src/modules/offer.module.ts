@@ -22,7 +22,7 @@ import { CampaignSummaryMv } from 'src/entities/campaign-summary.view';
       CustomerCouponCode,
       CouponCode,
       Redemption,
-      CampaignSummaryMv
+      CampaignSummaryMv,
     ]),
   ],
   controllers: [OffersController],

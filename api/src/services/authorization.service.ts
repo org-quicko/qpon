@@ -56,27 +56,27 @@ export type actionsType = (typeof actions)[number];
 
 export type subjectsType =
   | InferSubjects<
-    | typeof ApiKey
-    | typeof CampaignSummaryMv
-    | typeof Campaign
-    | typeof CouponCode
-    | typeof CouponItem
-    | typeof CouponSummaryMv
-    | typeof Coupon
-    | typeof CustomerCouponCode
-    | typeof Customer
-    | typeof Item
-    | typeof OrganizationSummaryMv
-    | typeof ItemWiseDayWiseRedemptionSummaryMv
-    | typeof CustomerWiseDayWiseRedemptionSummaryMv
-    | typeof CouponCodesWiseDayWiseRedemptionSummaryMv
-    | typeof DayWiseRedemptionSummaryMv
-    | typeof OrganizationUser
-    | typeof Organization
-    | typeof Offer
-    | typeof Redemption
-    | typeof User
-  >
+      | typeof ApiKey
+      | typeof CampaignSummaryMv
+      | typeof Campaign
+      | typeof CouponCode
+      | typeof CouponItem
+      | typeof CouponSummaryMv
+      | typeof Coupon
+      | typeof CustomerCouponCode
+      | typeof Customer
+      | typeof Item
+      | typeof OrganizationSummaryMv
+      | typeof ItemWiseDayWiseRedemptionSummaryMv
+      | typeof CustomerWiseDayWiseRedemptionSummaryMv
+      | typeof CouponCodesWiseDayWiseRedemptionSummaryMv
+      | typeof DayWiseRedemptionSummaryMv
+      | typeof OrganizationUser
+      | typeof Organization
+      | typeof Offer
+      | typeof Redemption
+      | typeof User
+    >
   | 'all';
 
 export type AppAbility = Ability<[actionsType, subjectsType]>;
@@ -169,7 +169,7 @@ export class AuthorizationService {
     private customerService: CustomersService,
     private itemService: ItemsService,
     private apiKeyService: ApiKeyService,
-  ) { }
+  ) {}
 
   getOrganizationUserPermissions(user: User) {
     const organizationUserPermissions = {};
@@ -215,7 +215,16 @@ export class AuthorizationService {
 
           allow(
             'read',
-            [CouponSummaryMv, CampaignSummaryMv, OrganizationSummaryMv, Offer, ItemWiseDayWiseRedemptionSummaryMv, CouponCodesWiseDayWiseRedemptionSummaryMv, DayWiseRedemptionSummaryMv, CustomerWiseDayWiseRedemptionSummaryMv],
+            [
+              CouponSummaryMv,
+              CampaignSummaryMv,
+              OrganizationSummaryMv,
+              Offer,
+              ItemWiseDayWiseRedemptionSummaryMv,
+              CouponCodesWiseDayWiseRedemptionSummaryMv,
+              DayWiseRedemptionSummaryMv,
+              CustomerWiseDayWiseRedemptionSummaryMv,
+            ],
             {
               organizationId,
             },
@@ -235,7 +244,10 @@ export class AuthorizationService {
           allow(
             'manage',
             CouponItem,
-            inOrganization('coupon.organization.organizationId', organizationId),
+            inOrganization(
+              'coupon.organization.organizationId',
+              organizationId,
+            ),
           );
 
           break;
@@ -258,7 +270,16 @@ export class AuthorizationService {
 
           allow(
             'read',
-            [CouponSummaryMv, CampaignSummaryMv, OrganizationSummaryMv, Offer, ItemWiseDayWiseRedemptionSummaryMv, CouponCodesWiseDayWiseRedemptionSummaryMv, DayWiseRedemptionSummaryMv, CustomerWiseDayWiseRedemptionSummaryMv],
+            [
+              CouponSummaryMv,
+              CampaignSummaryMv,
+              OrganizationSummaryMv,
+              Offer,
+              ItemWiseDayWiseRedemptionSummaryMv,
+              CouponCodesWiseDayWiseRedemptionSummaryMv,
+              DayWiseRedemptionSummaryMv,
+              CustomerWiseDayWiseRedemptionSummaryMv,
+            ],
             {
               organizationId,
             },
@@ -282,7 +303,10 @@ export class AuthorizationService {
           allow(
             'manage',
             CouponItem,
-            inOrganization('coupon.organization.organizationId', organizationId),
+            inOrganization(
+              'coupon.organization.organizationId',
+              organizationId,
+            ),
           );
 
           allow(['read', 'update', 'delete'], User, { userId: user.userId });
@@ -307,7 +331,16 @@ export class AuthorizationService {
 
           allow(
             'read',
-            [CouponSummaryMv, CampaignSummaryMv, OrganizationSummaryMv, Offer, ItemWiseDayWiseRedemptionSummaryMv, CouponCodesWiseDayWiseRedemptionSummaryMv, DayWiseRedemptionSummaryMv, CustomerWiseDayWiseRedemptionSummaryMv],
+            [
+              CouponSummaryMv,
+              CampaignSummaryMv,
+              OrganizationSummaryMv,
+              Offer,
+              ItemWiseDayWiseRedemptionSummaryMv,
+              CouponCodesWiseDayWiseRedemptionSummaryMv,
+              DayWiseRedemptionSummaryMv,
+              CustomerWiseDayWiseRedemptionSummaryMv,
+            ],
             {
               organizationId,
             },
@@ -325,7 +358,10 @@ export class AuthorizationService {
           allow(
             'read',
             CouponItem,
-            inOrganization('coupon.organization.organizationId', organizationId),
+            inOrganization(
+              'coupon.organization.organizationId',
+              organizationId,
+            ),
           );
 
           allow(['read', 'update', 'delete'], User, { userId: user.userId });
@@ -364,7 +400,16 @@ export class AuthorizationService {
 
     allow(
       'read',
-      [CouponSummaryMv, CampaignSummaryMv, OrganizationSummaryMv, Offer, ItemWiseDayWiseRedemptionSummaryMv, CouponCodesWiseDayWiseRedemptionSummaryMv, DayWiseRedemptionSummaryMv, CustomerWiseDayWiseRedemptionSummaryMv],
+      [
+        CouponSummaryMv,
+        CampaignSummaryMv,
+        OrganizationSummaryMv,
+        Offer,
+        ItemWiseDayWiseRedemptionSummaryMv,
+        CouponCodesWiseDayWiseRedemptionSummaryMv,
+        DayWiseRedemptionSummaryMv,
+        CustomerWiseDayWiseRedemptionSummaryMv,
+      ],
       {
         organizationId,
       },
@@ -632,9 +677,8 @@ export class AuthorizationService {
             );
           }
 
-          const coupon = await this.couponService.fetchCouponForValidation(
-            subjectCouponId,
-          );
+          const coupon =
+            await this.couponService.fetchCouponForValidation(subjectCouponId);
 
           const couponItem = Object.create(CouponItem.prototype);
           couponItem.coupon = coupon;

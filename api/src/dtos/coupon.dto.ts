@@ -34,7 +34,10 @@ export class CouponDto {
 
   @IsNotEmpty({ message: 'Discount value should not be empty' })
   @Expose({ name: 'discount_value' })
-  @IsNumber({allowNaN: false, allowInfinity: false}, { message: 'Discount value should be a number' })
+  @IsNumber(
+    { allowNaN: false, allowInfinity: false },
+    { message: 'Discount value should be a number' },
+  )
   discountValue: number;
 
   @IsOptional()

@@ -149,7 +149,9 @@ describe('CouponService (unit)', () => {
     it('translates an unexpected repository failure into a 500', async () => {
       couponRepository.findOne.mockRejectedValue(new Error('connection lost'));
 
-      const error = await service.createCoupon('org-1', createDto()).catch((e) => e);
+      const error = await service
+        .createCoupon('org-1', createDto())
+        .catch((e) => e);
 
       expect(error).toBeInstanceOf(HttpException);
       expect((error as HttpException).getStatus()).toBe(500);
@@ -160,7 +162,9 @@ describe('CouponService (unit)', () => {
         new Error('password authentication failed for user "qpon"'),
       );
 
-      const error = await service.createCoupon('org-1', createDto()).catch((e) => e);
+      const error = await service
+        .createCoupon('org-1', createDto())
+        .catch((e) => e);
 
       expect((error as HttpException).message).toBe('Failed to create coupon');
     });
@@ -211,7 +215,9 @@ describe('CouponService (unit)', () => {
 
       await service.fetchCoupons('org-1');
 
-      expect(couponRepository.findAndCount.mock.calls[0][0].order).toBeUndefined();
+      expect(
+        couponRepository.findAndCount.mock.calls[0][0].order,
+      ).toBeUndefined();
     });
 
     it('returns an empty list rather than throwing when nothing matches', async () => {
@@ -287,9 +293,9 @@ describe('CouponService (unit)', () => {
     it('throws NotFound for an archived coupon', async () => {
       couponRepository.findOne.mockResolvedValue(null);
 
-      await expect(
-        service.reactivateCoupon('archived'),
-      ).rejects.toBeInstanceOf(NotFoundException);
+      await expect(service.reactivateCoupon('archived')).rejects.toBeInstanceOf(
+        NotFoundException,
+      );
     });
 
     it('sets the status back to active', async () => {

@@ -28,8 +28,8 @@ export class ItemsController {
   ) {}
 
   /**
- * REPORT
- */
+   * REPORT
+   */
   @ApiResponse({ status: 200, description: 'Successful response' })
   @SkipTransform()
   @Permissions('read', ItemWiseDayWiseRedemptionSummaryMv)

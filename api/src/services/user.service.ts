@@ -31,7 +31,7 @@ export class UserService {
     private userListConverter: UserListConverter,
     private datasource: DataSource,
     private logger: LoggerService,
-  ) { }
+  ) {}
 
   /**
    * Create user
@@ -164,10 +164,7 @@ export class UserService {
 
       return this.userListConverter.convert(allUsers as any, count, skip, take);
     } catch (error) {
-      this.logger.error(
-        `Error in fetchUsersOfAnOrganization:`,
-        error,
-      );
+      this.logger.error(`Error in fetchUsersOfAnOrganization:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -253,10 +250,13 @@ export class UserService {
       }
 
       /**
-      * If user wants to change password
-      */
+       * If user wants to change password
+       */
       if (body.currentPassword && body.newPassword) {
-        const isValid = await bcrypt.compare(body.currentPassword, user.password);
+        const isValid = await bcrypt.compare(
+          body.currentPassword,
+          user.password,
+        );
 
         if (!isValid) {
           throw new HttpException(
@@ -467,10 +467,7 @@ export class UserService {
       this.logger.info('END: fetchUserForValidation service');
       return user;
     } catch (error) {
-      this.logger.error(
-        `Error in fetchUserValidation:`,
-        error,
-      );
+      this.logger.error(`Error in fetchUserValidation:`, error);
     }
   }
 
@@ -538,10 +535,7 @@ export class UserService {
         this.organizationUserConverter.convert(organizationUser),
       );
     } catch (error) {
-      this.logger.error(
-        `Error in fetchOrganizationsForUser:`,
-        error,
-      );
+      this.logger.error(`Error in fetchOrganizationsForUser:`, error);
 
       throw new HttpException(
         'Failed to fetch organizations for a user',

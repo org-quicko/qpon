@@ -121,10 +121,7 @@ export class ApiKeyService {
       const isValid = await bcrypt.compare(secret, apiKey.secret);
       return isValid ? apiKey : null;
     } catch (error) {
-      this.logger.error(
-        `Error in validateKeyAndSecret:`,
-        error,
-      );
+      this.logger.error(`Error in validateKeyAndSecret:`, error);
 
       throw error;
     }

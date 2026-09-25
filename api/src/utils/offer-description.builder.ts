@@ -18,7 +18,7 @@ export const offerDescriptionBuilder = (offer: Offer): string => {
         description = `Get ${offer.discountValue}% off on purchases above ₹${offer.minimumAmount}.`;
       }
     } else if (offer.expiresAt) {
-      if(offer.discountUpto > 0) {
+      if (offer.discountUpto > 0) {
         description = `Get ${offer.discountValue}% off on purchases, upto ₹${offer.discountUpto} maximum discount. Offer valid till ${offer.expiresAt.toDateString()}.`;
       } else {
         description = `Get ${offer.discountValue}% off on purchases. Offer valid till ${offer.expiresAt.toDateString()}.`;

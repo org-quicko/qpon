@@ -138,9 +138,7 @@ describe('items (e2e)', () => {
         .expect(200);
 
       expect(
-        await dataSource
-          .getRepository(Item)
-          .countBy({ externalId: 'sku-new' }),
+        await dataSource.getRepository(Item).countBy({ externalId: 'sku-new' }),
       ).toBe(1);
     });
 

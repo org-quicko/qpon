@@ -1,7 +1,11 @@
 import { describe, it, expect, beforeAll, beforeEach, afterAll } from 'vitest';
 import { INestApplication } from '@nestjs/common';
 import { DataSource } from 'typeorm';
-import { createTestApp, truncateAll, seedSuperAdmin } from '../support/test-app';
+import {
+  createTestApp,
+  truncateAll,
+  seedSuperAdmin,
+} from '../support/test-app';
 import { Organization } from '../../src/entities/organization.entity';
 import { OrganizationUser } from '../../src/entities/organization-user.entity';
 import { roleEnum } from '../../src/enums';
@@ -61,7 +65,9 @@ describe('OrganizationSubscriber', () => {
     const remainingLinks = await dataSource
       .getRepository(OrganizationUser)
       .find({
-        where: { organization: { organizationId: organization.organizationId } },
+        where: {
+          organization: { organizationId: organization.organizationId },
+        },
       });
 
     expect(remainingLinks).toHaveLength(0);
