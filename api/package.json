@@ -19,6 +19,7 @@
     "test:debug": "vitest --config vitest.config.ts --inspect-brk --no-file-parallelism",
     "test:e2e": "vitest run --config vitest.config.e2e.ts",
     "test:integration": "vitest run --config vitest.config.integration.ts",
+    "db:seed": "npm run build && node dist/db/seed.js",
     "db:fake-migrate": "npm run db:generate && npm run db:fake-migration-run",
     "db:migration-create": "npm run build && node ./node_modules/typeorm/cli.js migration:create",
     "db:migrate": "npm run db:generate && npm run db:migration-run",

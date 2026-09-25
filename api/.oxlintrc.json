@@ -17,6 +17,7 @@
     "typescript/no-unsafe-member-access": "off",
     "typescript/no-unsafe-return": "off",
     "typescript/no-unsafe-assignment": "off",
+    "vitest/require-mock-type-parameters": "off",
     "vitest/expect-expect": [
       "error",
       {
