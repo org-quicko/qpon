@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -16,7 +17,8 @@ import { OrganizationSummaryMv } from '../entities/organization-summary.view';
 import { OrganizationSummaryWorkbookConverter } from '../converters/organization-summary';
 import { OrganizationsMv } from 'src/entities/organizations_mv.entity';
 import { OrganizationsListConverter } from 'src/converters/organizations-list-converter';
-import { sortOrderEnum } from 'src/enums';
+import { sortOrderEnum, statusEnum } from 'src/enums';
+import { Coupon } from '../entities/coupon.entity';
 import { ItemWiseDayWiseRedemptionSummaryMv } from 'src/entities/item-wise-day-wise-redemption-summary-mv';
 import { ItemsSummaryWorkbookConverter } from 'src/converters/items-summary/items-summary-workbook.converter';
 import { CouponCodesWiseDayWiseRedemptionSummaryMv } from 'src/entities/coupon-codes-wise-day-wise-redemption-summary-mv';
@@ -248,12 +250,35 @@ export class OrganizationService {
         throw new NotFoundException('Organization not found');
       }
 
-      await this.organizationRepository.delete(organizationId);
+      // Everything in the organization is cascade-deleted with it, so refuse
+      // while any coupon is still live and could be redeemed.
+      const activeCoupons = await this.organizationRepository.manager.count(Coupon, {
+        where: { organization: { organizationId }, status: statusEnum.ACTIVE },
+      });
+
+      if (activeCoupons > 0) {
+        this.logger.warn('Organization has active coupons');
+        throw new ConflictException(
+          `Organization has ${activeCoupons} active coupon(s). Deactivate them before deleting the organization.`,
+        );
+      }
+
+      // Converted first: `remove` clears the primary key on the entity it's given.
+      const deleted = this.organizationConverter.convert(organiztion);
+
+      // `remove` rather than `delete`: a query-builder delete fires
+      // OrganizationSubscriber.afterRemove with no entity, which it needs.
+      await this.organizationRepository.remove(organiztion);
 
       this.logger.info('END: deleteOrganization service');
-      return this.organizationConverter.convert(organiztion);
+      return deleted;
     } catch (error) {
       this.logger.error(`Error in deleteOrganization:`, error);
+
+      // Keep the 404 / 409 raised above instead of masking them as a 500.
+      if (error instanceof HttpException) {
+        throw error;
+      }
 
       throw new HttpException(
         'Failed to delete organization',
