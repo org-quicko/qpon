@@ -1,12 +1,12 @@
 import { PostgreSqlContainer, StartedPostgreSqlContainer } from '@testcontainers/postgresql';
 import { DataSource } from 'typeorm';
-import * as entities from '../../../src/entities';
-import { InitialMigration1747285814143 } from '../../../db/migrations/1747285814143-initial-migration';
-import { UpdateOfferView1749102129900 } from '../../../db/migrations/1749102129900-update-offer-view';
-import { RefreshRedemptionSummaryMVs1750000000001 } from '../../../db/migrations/1750000000001-RefreshRedemptionSummaryMV';
-import { AddRedemptionDateToRedemption1750000000000 } from '../../../db/migrations/1757000000000-AddRedemptionDateToRedemptionTable';
-import { MVChanges1763469407282 } from '../../../db/migrations/1763469407282-MVChanges';
-import { RemoveOrganizationNameUniqueConstraint1782833374096 } from '../../../db/migrations/1782833374096-RemoveOrganizationNameUniqueConstraint';
+import * as entities from '../../src/entities';
+import { InitialMigration1747285814143 } from '../../db/migrations/1747285814143-initial-migration';
+import { UpdateOfferView1749102129900 } from '../../db/migrations/1749102129900-update-offer-view';
+import { RefreshRedemptionSummaryMVs1750000000001 } from '../../db/migrations/1750000000001-RefreshRedemptionSummaryMV';
+import { AddRedemptionDateToRedemption1750000000000 } from '../../db/migrations/1757000000000-AddRedemptionDateToRedemptionTable';
+import { MVChanges1763469407282 } from '../../db/migrations/1763469407282-MVChanges';
+import { RemoveOrganizationNameUniqueConstraint1782833374096 } from '../../db/migrations/1782833374096-RemoveOrganizationNameUniqueConstraint';
 
 let container: StartedPostgreSqlContainer | undefined;
 

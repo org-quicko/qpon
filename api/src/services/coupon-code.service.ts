@@ -548,6 +548,15 @@ export class CouponCodeService {
         `Error in deactivateCouponCode:`,
         error,
       );
+
+      if (
+        error instanceof NotFoundException ||
+        error instanceof ConflictException ||
+        error instanceof BadRequestException
+      ) {
+        throw error;
+      }
+
       throw new HttpException(
         'Failed to deactivate coupon code',
         HttpStatus.INTERNAL_SERVER_ERROR,

@@ -13,6 +13,8 @@ import {
   FindOptionsWhere,
   ILike,
   In,
+  Not,
+  Raw,
   Repository,
 } from 'typeorm';
 import { Item } from '../entities/item.entity';
@@ -51,6 +53,12 @@ export class ItemsService {
         where: {
           name: ILike(body.name),
           status: statusEnum.ACTIVE,
+          // Item names are unique per organization, never globally: without
+          // this predicate one tenant's item name blocks every other tenant
+          // from using it, and the 409 discloses that it is taken.
+          organization: {
+            organizationId,
+          },
         },
       });
 
@@ -222,6 +230,11 @@ export class ItemsService {
     this.logger.info('START: updateItem service');
     try {
       const item = await this.itemsRepository.findOne({
+        // The organization scopes the duplicate-name check below; the item's
+        // own organization is the right one, so the caller need not supply it.
+        relations: {
+          organization: true,
+        },
         where: {
           itemId,
           status: statusEnum.ACTIVE,
@@ -234,13 +247,18 @@ export class ItemsService {
       }
 
       if (body.name) {
-        const existingItem = await this.itemsRepository
-          .createQueryBuilder('item')
-          .where(`LOWER(item.name) = LOWER(:name) AND status = 'active' AND item_id != :itemId`, {
-            name: body.name,
-            itemId,
-          })
-          .getOne();
+        const existingItem = await this.itemsRepository.findOne({
+          where: {
+            name: Raw((alias) => `LOWER(${alias}) = LOWER(:name)`, {
+              name: body.name,
+            }),
+            status: statusEnum.ACTIVE,
+            itemId: Not(itemId),
+            organization: {
+              organizationId: item.organization.organizationId,
+            },
+          },
+        });
 
         if (existingItem) {
           this.logger.warn('Item with same name exists');

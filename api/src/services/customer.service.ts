@@ -341,6 +341,12 @@ export class CustomersService {
     this.logger.info('START: fetchCustomerForValidation service');
     try {
       const customer = await this.customersRepository.findOne({
+        // PermissionGuard checks this entity against an ability scoped by
+        // `organization.organizationId`, so the relation has to be loaded —
+        // an absent one reads as undefined and denies the action.
+        relations: {
+          organization: true,
+        },
         where: {
           customerId,
           organization: {

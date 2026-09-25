@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import { INestApplication } from '@nestjs/common';
-import { createTestApp } from './setup/test-app';
+import { createTestApp } from '../support/test-app';
 import { MaterializedViewRefreshService } from '../../src/services/materialized-view-refresh.service';
 import { LoggerService } from '../../src/services/logger.service';
 

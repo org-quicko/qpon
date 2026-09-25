@@ -560,10 +560,6 @@ export class UserService {
       });
 
       if (!user) {
-        this.logger.warn('User not found');
-      }
-
-      if (!user) {
         this.logger.warn('User not found', { userId });
         throw new NotFoundException('User not found');
       }
@@ -572,6 +568,15 @@ export class UserService {
       return this.userConverter.convert(user);
     } catch (error) {
       this.logger.error(`Error in fetchUser:`, error);
+
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+
+      throw new HttpException(
+        'Failed to fetch user',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 

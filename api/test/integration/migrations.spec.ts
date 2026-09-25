@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { INestApplication } from '@nestjs/common';
 import { DataSource } from 'typeorm';
-import { createTestApp } from './setup/test-app';
+import { createTestApp } from '../support/test-app';
 import {
   CampaignSummaryMv,
   CouponSummaryMv,

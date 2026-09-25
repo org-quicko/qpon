@@ -76,8 +76,6 @@ export class PermissionGuard implements CanActivate {
       for (let i = 0; i < permissionParams.length; i++) {
         const action = permissionParams[i].action;
 
-        console.log('\n\n', action, subjectObjects[i], '\n\n');
-
         ForbiddenError.from(ability).throwUnlessCan(action, subjectObjects[i]);
       }
 
@@ -91,12 +89,24 @@ export class PermissionGuard implements CanActivate {
       ) {
         this.logger.warn(error.message);
         throw error;
-      } else if (error instanceof Error) {
-        this.logger.error(
-          `User does not have permission to perform this action!`,
-        );
       }
-      return false;
+
+      if (error instanceof ForbiddenError) {
+        // CASL's message names the action and subject that were refused.
+        // Returning false here instead would flatten it to Nest's bare
+        // "Forbidden resource", which tells a client nothing.
+        this.logger.warn(error.message);
+        throw new ForbiddenException(error.message);
+      }
+
+      // Anything else is a failure while resolving the subject, not an
+      // authorization decision. This used to be logged as "User does not have
+      // permission to perform this action!" and swallowed, which is how a
+      // TypeError could masquerade as a deliberate refusal. Log it as the
+      // error it is; still refuse, but without echoing the internal message
+      // to the caller.
+      this.logger.error('Failed to evaluate permissions', error);
+      throw new ForbiddenException();
     }
   }
 }

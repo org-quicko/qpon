@@ -87,7 +87,12 @@ export class CustomerCouponCodeController {
    * Update customers
    */
   @ApiResponse({ status: 200, description: 'Successful response' })
-  // @Permissions('update', CouponCode)
+  // Guarded on CustomerCouponCode rather than CouponCode: this controller is
+  // mounted at /coupons/... with no :organization_id, and the CouponCode
+  // branch of AuthorizationService.getSubjectTypes requires one, so an
+  // `update` on CouponCode here would raise BadRequest on every call. The
+  // sibling delete handler resolves the same way.
+  @Permissions('update', CustomerCouponCode)
   @Patch()
   async updateCustomers(
     @Param('coupon_id') couponId: string,

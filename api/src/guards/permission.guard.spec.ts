@@ -81,7 +81,34 @@ describe('PermissionGuard', () => {
     );
     const context = createContext({ userId: 'user-1' });
 
-    await expect(guard.canActivate(context)).resolves.toBe(false);
+    await expect(guard.canActivate(context)).rejects.toBeInstanceOf(
+      ForbiddenException,
+    );
+  });
+
+  it('carries CASL’s reason through to the refusal', async () => {
+    authorizationService.getUserAbility.mockReturnValue(
+      createMongoAbility([{ action: 'read', subject: 'Campaign' }]),
+    );
+    const context = createContext({ userId: 'user-1' });
+
+    // The guard used to `return false`, which Nest flattens to a bare
+    // "Forbidden resource"; CASL's message names the action and subject.
+    await expect(guard.canActivate(context)).rejects.toThrow(
+      /Cannot execute/,
+    );
+  });
+
+  it('refuses without leaking the internal message when subject resolution fails', async () => {
+    authorizationService.getSubjectTypes.mockRejectedValue(
+      new TypeError("Cannot read properties of null (reading 'constructor')"),
+    );
+    const context = createContext({ userId: 'user-1' });
+
+    const error = await guard.canActivate(context).catch((e: Error) => e);
+
+    expect(error).toBeInstanceOf(ForbiddenException);
+    expect((error as Error).message).not.toContain('constructor');
   });
 
   it('throws when no user is found for the request (not authenticated)', async () => {

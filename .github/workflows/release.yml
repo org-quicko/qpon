@@ -5,7 +5,45 @@ on:
       - "v[0-9]+.[0-9]+.[0-9]+*"
 
 jobs:
+  test:
+    name: API tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: api/package-lock.json
+
+      - name: Install dependencies
+        working-directory: api
+        run: npm ci
+
+      - name: Lint
+        working-directory: api
+        run: npx oxlint --type-aware
+
+      - name: Unit tests
+        working-directory: api
+        run: npm run test
+
+      # Integration and e2e start a postgres:18 container through
+      # testcontainers and run the real migrations against it. The ubuntu
+      # runner already has a Docker daemon, so no service container is needed.
+      - name: Integration tests
+        working-directory: api
+        run: npm run test:integration
+
+      - name: End-to-end tests
+        working-directory: api
+        run: npm run test:e2e
+
   docker-release:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -33,6 +71,11 @@ jobs:
         with:
           context: .
           push: true
+          # Runners start with an empty BuildKit cache; persist layers between
+          # releases so unchanged `npm ci` and build stages are reused.
+          # mode=max also caches the intermediate builder stages.
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |
             labsatquicko/qpon:${{ steps.version.outputs.version }}
             labsatquicko/qpon:latest

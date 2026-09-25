@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll, beforeEach, afterAll } from 'vitest';
 import { INestApplication } from '@nestjs/common';
 import { DataSource } from 'typeorm';
-import { createTestApp, truncateAll, seedSuperAdmin } from './setup/test-app';
+import { createTestApp, truncateAll, seedSuperAdmin } from '../support/test-app';
 import { UserService } from '../../src/services/user.service';
 import { CampaignService } from '../../src/services/campaign.service';
 import { User } from '../../src/entities/user.entity';

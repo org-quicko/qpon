@@ -82,6 +82,79 @@ export type subjectsType =
 export type AppAbility = Ability<[actionsType, subjectsType]>;
 export const createAppAbility = createAbility as CreateAbility<AppAbility>;
 
+/**
+ * Builds the CASL conditions object that scopes a rule to one organization.
+ *
+ * `path` is the dot-separated route from the subject to its organization id
+ * (e.g. 'organization.organizationId' on a Coupon,
+ * 'coupon.organization.organizationId' on a CouponItem). CASL resolves dot
+ * paths at runtime, but its `MongoQuery<T>` type only admits a subject's own
+ * keys, so the object is widened here rather than cast at each call site.
+ *
+ * Passing this scope as an ARRAY is the mistake this helper exists to
+ * prevent: CASL reads a third positional array as `fields`, which imposes no
+ * organization restriction at all, so every member of every organization
+ * passes the check.
+ */
+function inOrganization(path: string, organizationId: string): any {
+  return { [path]: organizationId };
+}
+
+/** Where a subject carries its organization id, matching the rules above. */
+type organizationScopePath =
+  | 'organizationId'
+  | 'organization.organizationId'
+  | 'coupon.organization.organizationId'
+  | 'couponCode.organization.organizationId';
+
+/**
+ * Builds a subject INSTANCE carrying an organization id, for the actions that
+ * have no single entity to authorize against — `create` (nothing exists yet)
+ * and `read_all` (a collection, not a row).
+ *
+ * Returning the bare subject CLASS for those actions, as this file used to,
+ * means CASL matches on subject type alone: a rule's `conditions` are only
+ * evaluated against an instance, so the organization scope was skipped
+ * entirely and any member of any organization was allowed through.
+ *
+ * `Object.create(subject.prototype)` is deliberate — the instance must have
+ * the right constructor for `detectSubjectType`, but running the real
+ * constructor is unnecessary and would invoke entity decorators.
+ *
+ * Falls back to the class when the route carries no `organization_id`. Those
+ * routes have no organization to check against (e.g.
+ * `GET /users/:user_id/organizations`, or `POST /organizations` itself), and
+ * only rules with no organization condition can match them anyway.
+ */
+function subjectInOrganization(
+  subject: any,
+  organizationId: string | undefined,
+  path: organizationScopePath,
+): any {
+  if (!organizationId) {
+    return subject;
+  }
+
+  const instance = Object.create(subject.prototype);
+
+  switch (path) {
+    case 'organizationId':
+      instance.organizationId = organizationId;
+      break;
+    case 'organization.organizationId':
+      instance.organization = { organizationId };
+      break;
+    case 'coupon.organization.organizationId':
+      instance.coupon = { organization: { organizationId } };
+      break;
+    case 'couponCode.organization.organizationId':
+      instance.couponCode = { organization: { organizationId } };
+      break;
+  }
+
+  return instance;
+}
+
 @Injectable()
 export class AuthorizationService {
   constructor(
@@ -137,7 +210,7 @@ export class AuthorizationService {
           allow(
             'manage',
             [Coupon, Campaign, CouponCode, Customer, Item, Redemption, ApiKey],
-            ['organization.organizationId'],
+            inOrganization('organization.organizationId', organizationId),
           );
 
           allow(
@@ -150,11 +223,20 @@ export class AuthorizationService {
 
           allow(['read', 'update', 'delete'], User, { userId: user.userId });
 
-          allow('manage', CustomerCouponCode, [
-            'couponCode.organization.organizationId',
-          ]);
+          allow(
+            'manage',
+            CustomerCouponCode,
+            inOrganization(
+              'couponCode.organization.organizationId',
+              organizationId,
+            ),
+          );
 
-          allow('manage', CouponItem, ['coupon.organization.organizationId']);
+          allow(
+            'manage',
+            CouponItem,
+            inOrganization('coupon.organization.organizationId', organizationId),
+          );
 
           break;
         case roleEnum.EDITOR:
@@ -171,7 +253,7 @@ export class AuthorizationService {
           allow(
             'manage',
             [Coupon, Campaign, CouponCode, Customer, Item, Redemption],
-            ['organization.organizationId'],
+            inOrganization('organization.organizationId', organizationId),
           );
 
           allow(
@@ -182,11 +264,26 @@ export class AuthorizationService {
             },
           );
 
-          allow('read', ApiKey, ['organization.organizationId']);
+          allow(
+            'read',
+            ApiKey,
+            inOrganization('organization.organizationId', organizationId),
+          );
 
-          allow('manage', CustomerCouponCode);
+          allow(
+            'manage',
+            CustomerCouponCode,
+            inOrganization(
+              'couponCode.organization.organizationId',
+              organizationId,
+            ),
+          );
 
-          allow('manage', CouponItem, ['coupon.organization.organizationId']);
+          allow(
+            'manage',
+            CouponItem,
+            inOrganization('coupon.organization.organizationId', organizationId),
+          );
 
           allow(['read', 'update', 'delete'], User, { userId: user.userId });
 
@@ -198,12 +295,14 @@ export class AuthorizationService {
             organizationId: organizationId,
           });
 
-          allow('read', Organization);
+          allow('read', Organization, {
+            organizationId,
+          });
 
           allow(
             ['read', 'read_all'],
             [Coupon, Campaign, CouponCode, Customer, Item, Redemption, ApiKey],
-            ['organization.organizationId'],
+            inOrganization('organization.organizationId', organizationId),
           );
 
           allow(
@@ -214,11 +313,20 @@ export class AuthorizationService {
             },
           );
 
-          allow('read', CustomerCouponCode, [
-            'couponCode.organization.organizationId',
-          ]);
+          allow(
+            'read',
+            CustomerCouponCode,
+            inOrganization(
+              'couponCode.organization.organizationId',
+              organizationId,
+            ),
+          );
 
-          allow('read', CouponItem, ['coupon.organization.organizationId']);
+          allow(
+            'read',
+            CouponItem,
+            inOrganization('coupon.organization.organizationId', organizationId),
+          );
 
           allow(['read', 'update', 'delete'], User, { userId: user.userId });
           break;
@@ -251,7 +359,7 @@ export class AuthorizationService {
     allow(
       'manage',
       [Coupon, Campaign, CouponCode, Customer, Item, Redemption, ApiKey],
-      ['organization.organizationId'],
+      inOrganization('organization.organizationId', organizationId),
     );
 
     allow(
@@ -264,11 +372,17 @@ export class AuthorizationService {
 
     allow(['read', 'update', 'delete'], User);
 
-    allow('manage', CustomerCouponCode, [
-      'couponCode.organization.organizationId',
-    ]);
+    allow(
+      'manage',
+      CustomerCouponCode,
+      inOrganization('couponCode.organization.organizationId', organizationId),
+    );
 
-    allow('manage', CouponItem, ['coupon.organization.organizationId']);
+    allow(
+      'manage',
+      CouponItem,
+      inOrganization('coupon.organization.organizationId', organizationId),
+    );
 
     const ability = build({
       detectSubjectType: (item) =>
@@ -314,7 +428,11 @@ export class AuthorizationService {
           });
         } else if (subject === OrganizationUser) {
           if (action === 'read_all' || action === 'create' || action == 'read')
-            return subject;
+            return subjectInOrganization(
+              subject,
+              subjectOrganizationId,
+              'organizationId',
+            );
 
           if (!subjectOrganizationId || !subjectUserId) {
             throw new BadRequestException(
@@ -331,7 +449,11 @@ export class AuthorizationService {
           });
         } else if (subject === Organization) {
           if (action === 'read' || action == 'read_all' || action === 'create')
-            return subject;
+            return subjectInOrganization(
+              subject,
+              subjectOrganizationId,
+              'organizationId',
+            );
 
           if (!subjectOrganizationId) {
             throw new BadRequestException(
@@ -342,8 +464,16 @@ export class AuthorizationService {
             subjectOrganizationId,
           );
         } else if (subject === Coupon) {
-          if (action === 'read' || action === 'create' || action == 'read_all')
-            return subject;
+          // `read` names a single coupon, so authorize against that coupon
+          // rather than the organization in the path — otherwise org A's
+          // member can read org B's coupon by putting A's id in the path.
+          if (action === 'create' || action == 'read_all' || !subjectCouponId) {
+            return subjectInOrganization(
+              subject,
+              subjectOrganizationId,
+              'organization.organizationId',
+            );
+          }
 
           if (!subjectCouponId) {
             throw new BadRequestException(
@@ -352,8 +482,17 @@ export class AuthorizationService {
           }
           return this.couponService.fetchCouponForValidation(subjectCouponId);
         } else if (subject === Campaign) {
-          if (action === 'read' || action === 'create' || action == 'read_all')
-            return subject;
+          if (
+            action === 'create' ||
+            action == 'read_all' ||
+            !subjectCampaignId
+          ) {
+            return subjectInOrganization(
+              subject,
+              subjectOrganizationId,
+              'organization.organizationId',
+            );
+          }
 
           if (!subjectCampaignId) {
             throw new BadRequestException(
@@ -364,8 +503,22 @@ export class AuthorizationService {
             subjectCampaignId,
           );
         } else if (subject === CouponCode) {
-          if (action === 'read' || action === 'create' || action == 'read_all')
-            return subject;
+          // GET /organizations/:organization_id/coupon-codes looks a code up
+          // by value and carries no coupon/campaign/code id, so it can only
+          // be scoped to the organization in the path.
+          if (
+            action === 'create' ||
+            action == 'read_all' ||
+            !subjectCouponCodeId ||
+            !subjectCouponId ||
+            !subjectCampaignId
+          ) {
+            return subjectInOrganization(
+              subject,
+              subjectOrganizationId,
+              'organization.organizationId',
+            );
+          }
 
           if (
             !subjectCouponCodeId ||
@@ -384,8 +537,13 @@ export class AuthorizationService {
             subjectCouponCodeId,
           );
         } else if (subject === Customer) {
-          if (action === 'read' || action === 'create' || action == 'read_all')
-            return subject;
+          if (action === 'create' || !subjectCustomerId) {
+            return subjectInOrganization(
+              subject,
+              subjectOrganizationId,
+              'organization.organizationId',
+            );
+          }
 
           if (!subjectOrganizationId || !subjectCustomerId) {
             throw new BadRequestException(
@@ -397,8 +555,13 @@ export class AuthorizationService {
             subjectCustomerId,
           );
         } else if (subject === Item) {
-          if (action === 'read' || action === 'create' || action == 'read_all')
-            return subject;
+          if (action === 'create' || action == 'read_all' || !subjectItemId) {
+            return subjectInOrganization(
+              subject,
+              subjectOrganizationId,
+              'organization.organizationId',
+            );
+          }
 
           if (!subjectItemId) {
             throw new BadRequestException(
@@ -407,9 +570,23 @@ export class AuthorizationService {
           }
           return this.itemService.fetchItemForValidation(subjectItemId);
         } else if (subject === Redemption) {
-          return subject;
+          // Redemptions are only ever listed or reported on, never addressed
+          // individually by the guard, so the path organization is the scope.
+          return subjectInOrganization(
+            subject,
+            subjectOrganizationId,
+            'organization.organizationId',
+          );
         } else if (subject === ApiKey) {
-          if (action === 'create' || action == 'read') return subject;
+          // An organization may legitimately have no key yet, and
+          // fetchApiKey returns null in that case — which CASL cannot type,
+          // so scope these to the path organization instead.
+          if (action === 'create' || action == 'read')
+            return subjectInOrganization(
+              subject,
+              subjectOrganizationId,
+              'organization.organizationId',
+            );
 
           if (!subjectOrganizationId) {
             throw new BadRequestException(
@@ -421,18 +598,51 @@ export class AuthorizationService {
           subject === CouponSummaryMv ||
           subject === CampaignSummaryMv ||
           subject === OrganizationSummaryMv ||
-          subject === Offer
+          subject === Offer ||
+          // These four used to fall through to the bare-class `else` below,
+          // so the reporting endpoints were readable across organizations.
+          subject === ItemWiseDayWiseRedemptionSummaryMv ||
+          subject === CouponCodesWiseDayWiseRedemptionSummaryMv ||
+          subject === DayWiseRedemptionSummaryMv ||
+          subject === CustomerWiseDayWiseRedemptionSummaryMv
         ) {
-          if (action === 'read') return subject;
-
+          // Every route reaching these carries :organization_id, and the
+          // rules are scoped by a flat `organizationId` column on the view.
           if (!subjectOrganizationId) {
             throw new BadRequestException(
               `Error. Must provide an Organization ID for performing action on ${subject.name}`,
             );
           }
-        } else if (subject === CustomerCouponCode) {
-          if (action === 'read' || action === 'create') return subject;
 
+          return subjectInOrganization(
+            subject,
+            subjectOrganizationId,
+            'organizationId',
+          );
+        } else if (subject === CouponItem) {
+          // CouponItem had no branch at all, so every action on it — create,
+          // read, update and delete — reached the bare-class `else` and was
+          // permitted in any organization. Its rules are scoped by
+          // `coupon.organization.organizationId`, so authorize against the
+          // real coupon: trusting :organization_id from the path would let a
+          // member of org A pair A's id with a coupon belonging to org B.
+          if (!subjectCouponId) {
+            throw new BadRequestException(
+              `Error. Must provide a Coupon ID for performing action on CouponItem`,
+            );
+          }
+
+          const coupon = await this.couponService.fetchCouponForValidation(
+            subjectCouponId,
+          );
+
+          const couponItem = Object.create(CouponItem.prototype);
+          couponItem.coupon = coupon;
+          return couponItem;
+        } else if (subject === CustomerCouponCode) {
+          // This controller is mounted without :organization_id, so the
+          // organization is reached through the coupon code. The service
+          // returns a subject carrying it even when the allow-list is empty.
           if (!subjectCouponCodeId || !subjectCouponId || !subjectCampaignId) {
             throw new BadRequestException(
               `Error. Must provide an Coupon Code ID, Coupon Code ID and Campaign ID for performing action on CustomerCouponCode`,
