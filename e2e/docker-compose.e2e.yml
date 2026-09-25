@@ -1,0 +1,40 @@
+# A throwaway stack for the e2e suite: the production image plus an empty
+# Postgres kept in memory. `npm run stack:up` builds and starts it; CI builds
+# the image once (QPON_IMAGE) and reuses it here with --no-build.
+name: qpon-e2e
+
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: qpon
+      POSTGRES_PASSWORD: qpon
+      POSTGRES_DB: qpon
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U qpon -d qpon"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+
+  app:
+    image: ${QPON_IMAGE:-qpon:e2e}
+    build:
+      context: ..
+    ports:
+      - "${QPON_PORT:-3000}:3000"
+    environment:
+      PORT: 3000
+      NODE_ENV: production
+      DATABASE_URL: postgres://qpon:qpon@db:5432/qpon
+      JWT_SECRET: e2e-only-secret
+      SALT_ROUNDS: 4
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/api/super-admin/exists >/dev/null || exit 1"]
+      interval: 2s
+      timeout: 5s
+      retries: 60
