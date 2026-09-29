@@ -9,7 +9,6 @@ export const typeOrmConfig = (
   autoLoadEntities: true,
   synchronize: configService.get('NODE_ENV') !== 'production',
   logging: configService.get('NODE_ENV') === 'production' ? ['info'] : true,
-  poolSize: 10,
   connectTimeoutMS: 2000,
   maxQueryExecutionTime: 5000,
 });

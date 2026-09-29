@@ -75,13 +75,15 @@ After starting the services, visit [http://localhost:3000/setup](http://localhos
 | DB_SCHEMA    | Postgres schema for tables/migrations (defaults to `public`) | qpon      |
 | DB_SSL       | Enable TLS for the Postgres connection (needed for most managed Postgres, e.g. RDS/Aurora) | true |
 | DB_SSL_REJECT_UNAUTHORIZED | Verify the server certificate against Node's trusted CAs (defaults to false) | true |
+| MIN_DB_POOL_SIZE | Minimum connections kept in the Postgres pool (defaults to `0`) | 0 |
+| MAX_DB_POOL_SIZE | Maximum connections in the Postgres pool (defaults to `5`) | 5 |
 | DB_USERNAME  | Postgres user, used to provision the `db` container in Docker Compose | qpon_user                |
 | DB_PASSWORD  | Postgres password, used to provision the `db` container in Docker Compose | strongpassword           |
 | DB_NAME      | Postgres database name, used to provision the `db` container in Docker Compose | qpon_db                  |
 | JWT_SECRET   | JWT signing secret                 | any-random-string        |
 | SALT_ROUNDS  | Bcrypt salt rounds for passwords   | 10                       |
 
-These variables can be set in a `.env` file, in your shell, or directly in `docker-compose.yml`. The API only reads `DATABASE_URL` (and optionally `DB_SCHEMA`, `DB_SSL`, `DB_SSL_REJECT_UNAUTHORIZED`) to connect — `DB_USERNAME`/`DB_PASSWORD`/`DB_NAME` are used solely to provision the Postgres container when using Docker Compose; embed matching values in `DATABASE_URL` yourself.
+These variables can be set in a `.env` file, in your shell, or directly in `docker-compose.yml`. The API only reads `DATABASE_URL` (and optionally `DB_SCHEMA`, `DB_SSL`, `DB_SSL_REJECT_UNAUTHORIZED`, `MIN_DB_POOL_SIZE`, `MAX_DB_POOL_SIZE`) to connect — `DB_USERNAME`/`DB_PASSWORD`/`DB_NAME` are used solely to provision the Postgres container when using Docker Compose; embed matching values in `DATABASE_URL` yourself.
 
 **Notes when using `DB_SCHEMA`:**
 - The schema must already exist in the database before the app starts or migrations run (e.g. `CREATE SCHEMA IF NOT EXISTS <schema>;`). Postgres does not auto-create it, and if it's missing, table creation silently falls back to `public` instead of failing loudly.
