@@ -75,11 +75,9 @@ describe('api keys (e2e)', () => {
         .send({})
         .expect(201);
 
-      const count = await dataSource
-        .getRepository(ApiKey)
-        .countBy({
-          organization: { organizationId: organization.organizationId },
-        });
+      const count = await dataSource.getRepository(ApiKey).countBy({
+        organization: { organizationId: organization.organizationId },
+      });
       expect(count).toBe(1);
     });
 

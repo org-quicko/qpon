@@ -30,6 +30,10 @@ services:
       DATABASE_URL: postgres://qpon:qpon@db:5432/qpon
       JWT_SECRET: e2e-only-secret
       SALT_ROUNDS: 4
+      # Campaign tables and summary tiles read from materialized views that a
+      # cron refreshes every 30s by default. Refresh every second instead, so a
+      # test that just created something only has to reload, not wait it out.
+      REFRESH_MV_CRON: "* * * * * *"
     depends_on:
       db:
         condition: service_healthy

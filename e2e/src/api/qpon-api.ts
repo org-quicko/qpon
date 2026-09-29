@@ -16,6 +16,54 @@ export interface Item {
 
 export type NewItem = Omit<Item, 'itemId'>;
 
+export interface Customer {
+  customerId: string;
+  name: string;
+  email: string;
+  externalId: string;
+  isdCode?: string;
+  phone?: string;
+}
+
+export type NewCustomer = Omit<Customer, 'customerId'>;
+
+export interface Coupon {
+  couponId: string;
+  name: string;
+  discountType: 'percentage' | 'fixed';
+  discountValue: number;
+  /** The cap on a percentage discount. Not allowed on a fixed one. */
+  discountUpto?: number;
+  itemConstraint: 'all' | 'specific';
+}
+
+export type NewCoupon = Omit<Coupon, 'couponId'>;
+
+export interface Campaign {
+  campaignId: string;
+  name: string;
+  /** Omitted for an unlimited budget. */
+  budget?: number;
+}
+
+export type NewCampaign = Omit<Campaign, 'campaignId'>;
+
+export interface CouponCode {
+  couponCodeId: string;
+  code: string;
+  description?: string;
+  customerConstraint: 'all' | 'specific';
+  visibility: 'public' | 'private';
+  durationType: 'forever' | 'limited';
+  /** ISO timestamp; only meaningful when `durationType` is `limited`. */
+  expiresAt?: string;
+  maxRedemptions?: number;
+  minimumAmount?: number;
+  maxRedemptionPerCustomer?: number;
+}
+
+export type NewCouponCode = Omit<CouponCode, 'couponCodeId'>;
+
 /**
  * Minimal client for arranging test data. It talks to the same endpoints the
  * app does, so fixtures build state the way a user (or integration) would —
@@ -74,8 +122,17 @@ export class QponApi {
     return { organizationId: data.organization_id, name: data.name };
   }
 
-  /** Deletes the organization and — via FK cascades — everything in it. */
+  /**
+   * Deletes the organization and — via FK cascades — everything in it.
+   *
+   * The API refuses while any coupon is still active, so clear those first:
+   * deactivating a coupon deactivates its campaigns and codes too.
+   */
   async deleteOrganization(organizationId: string): Promise<void> {
+    for (const coupon of await this.fetchCoupons(organizationId, 'active')) {
+      await this.deactivateCoupon(organizationId, coupon.couponId);
+    }
+
     await unwrap(`delete organization ${organizationId}`, this.request.delete(
       `${env.apiURL}/organizations/${organizationId}`,
       { headers: this.auth() },
@@ -116,10 +173,181 @@ export class QponApi {
     return { ...item, itemId: data.item_id };
   }
 
+  async createCustomer(organizationId: string, customer: NewCustomer): Promise<Customer> {
+    const data = await unwrap<{ customer_id: string }>(
+      `create customer "${customer.name}"`,
+      this.request.post(`${env.apiURL}/organizations/${organizationId}/customers`, {
+        headers: this.auth(),
+        data: {
+          '@entity': 'org.quicko.qpon.customer',
+          name: customer.name,
+          email: customer.email,
+          external_id: customer.externalId,
+          isd_code: customer.isdCode,
+          phone: customer.phone,
+        },
+      }),
+    );
+    return { ...customer, customerId: data.customer_id };
+  }
+
+  async createCoupon(organizationId: string, coupon: NewCoupon): Promise<Coupon> {
+    const data = await unwrap<{ coupon_id: string }>(
+      `create coupon "${coupon.name}"`,
+      this.request.post(`${env.apiURL}/organizations/${organizationId}/coupons`, {
+        headers: this.auth(),
+        data: {
+          '@entity': 'org.quicko.qpon.coupon',
+          name: coupon.name,
+          discount_type: coupon.discountType,
+          discount_value: coupon.discountValue,
+          discount_upto: coupon.discountUpto,
+          item_constraint: coupon.itemConstraint,
+        },
+      }),
+    );
+    return { ...coupon, couponId: data.coupon_id };
+  }
+
+  /** Switches a coupon off, taking its campaigns and codes with it. */
+  async deactivateCoupon(organizationId: string, couponId: string): Promise<void> {
+    await unwrap(`deactivate coupon ${couponId}`, this.request.post(
+      `${env.apiURL}/organizations/${organizationId}/coupons/${couponId}/deactivate`,
+      { headers: this.auth() },
+    ));
+  }
+
+  /** Coupons the organization still has switched on, newest first. */
+  async fetchCoupons(organizationId: string, status?: 'active' | 'inactive'): Promise<Coupon[]> {
+    const coupons: Coupon[] = [];
+    for (let skip = 0; ; skip += PAGE_SIZE) {
+      const page = await unwrap<Page<CouponPayload>>(
+        `fetch coupons of organization ${organizationId}`,
+        this.request.get(`${env.apiURL}/organizations/${organizationId}/coupons`, {
+          headers: this.auth(),
+          params: { skip, take: PAGE_SIZE, ...(status ? { status } : {}) },
+        }),
+      );
+      coupons.push(
+        ...page.items.map((item) => ({
+          couponId: item.coupon_id,
+          name: item.name,
+          discountType: item.discount_type,
+          // Numeric columns come back as strings.
+          discountValue: Number(item.discount_value),
+          discountUpto: item.discount_upto == null ? undefined : Number(item.discount_upto),
+          itemConstraint: item.item_constraint,
+        })),
+      );
+      if (coupons.length >= page.count || page.items.length === 0) return coupons;
+    }
+  }
+
+  async createCampaign(
+    organizationId: string,
+    couponId: string,
+    campaign: NewCampaign,
+  ): Promise<Campaign> {
+    const data = await unwrap<{ campaign_id: string }>(
+      `create campaign "${campaign.name}"`,
+      this.request.post(
+        `${env.apiURL}/organizations/${organizationId}/coupons/${couponId}/campaigns`,
+        {
+          headers: this.auth(),
+          data: {
+            '@entity': 'org.quicko.qpon.campaign',
+            name: campaign.name,
+            budget: campaign.budget,
+          },
+        },
+      ),
+    );
+    return { ...campaign, campaignId: data.campaign_id };
+  }
+
+  /** Switches a campaign off, taking its coupon codes with it. */
+  async deactivateCampaign(
+    organizationId: string,
+    couponId: string,
+    campaignId: string,
+  ): Promise<void> {
+    await unwrap(`deactivate campaign ${campaignId}`, this.request.post(
+      `${env.apiURL}/organizations/${organizationId}/coupons/${couponId}` +
+        `/campaigns/${campaignId}/deactivate`,
+      { headers: this.auth() },
+    ));
+  }
+
+  async createCouponCode(
+    organizationId: string,
+    couponId: string,
+    campaignId: string,
+    couponCode: NewCouponCode,
+  ): Promise<CouponCode> {
+    const data = await unwrap<{ coupon_code_id: string }>(
+      `create coupon code "${couponCode.code}"`,
+      this.request.post(
+        `${env.apiURL}/organizations/${organizationId}/coupons/${couponId}` +
+          `/campaigns/${campaignId}/coupon-codes`,
+        {
+          headers: this.auth(),
+          data: {
+            '@entity': 'org.quicko.qpon.coupon_code',
+            code: couponCode.code,
+            description: couponCode.description,
+            customer_constraint: couponCode.customerConstraint,
+            visibility: couponCode.visibility,
+            duration_type: couponCode.durationType,
+            expires_at: couponCode.expiresAt,
+            max_redemptions: couponCode.maxRedemptions,
+            minimum_amount: couponCode.minimumAmount,
+            max_redemption_per_customer: couponCode.maxRedemptionPerCustomer,
+          },
+        },
+      ),
+    );
+    return { ...couponCode, couponCodeId: data.coupon_code_id };
+  }
+
+  /** Restricts a `specific` coupon code to the given customers. */
+  async addCouponCodeCustomers(
+    couponId: string,
+    campaignId: string,
+    couponCodeId: string,
+    customerIds: string[],
+  ): Promise<void> {
+    await unwrap(`restrict coupon code ${couponCodeId} to ${customerIds.length} customer(s)`,
+      this.request.post(
+        `${env.apiURL}/coupons/${couponId}/campaigns/${campaignId}` +
+          `/coupon-codes/${couponCodeId}/customers`,
+        {
+          headers: this.auth(),
+          data: { '@entity': 'org.quicko.qpon.customer_coupon_code', customers: customerIds },
+        },
+      ));
+  }
+
   private auth(): Record<string, string> {
     if (!this.token) throw new Error('This QponApi client is not signed in.');
     return { Authorization: `Bearer ${this.token}` };
   }
+}
+
+/** Plenty for a single test's data, and few enough round trips to page through. */
+const PAGE_SIZE = 100;
+
+interface Page<T> {
+  items: T[];
+  count: number;
+}
+
+interface CouponPayload {
+  coupon_id: string;
+  name: string;
+  discount_type: 'percentage' | 'fixed';
+  discount_value: string;
+  discount_upto: string | null;
+  item_constraint: 'all' | 'specific';
 }
 
 /** Unwraps the API's `{ code, message, data }` envelope, failing loudly with the response body. */

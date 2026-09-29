@@ -10,6 +10,7 @@ import { RefreshRedemptionSummaryMVs1750000000001 } from '../../db/migrations/17
 import { AddRedemptionDateToRedemption1750000000000 } from '../../db/migrations/1757000000000-AddRedemptionDateToRedemptionTable';
 import { MVChanges1763469407282 } from '../../db/migrations/1763469407282-MVChanges';
 import { RemoveOrganizationNameUniqueConstraint1782833374096 } from '../../db/migrations/1782833374096-RemoveOrganizationNameUniqueConstraint';
+import { CascadeOrganizationDeletes1790340633057 } from '../../db/migrations/1790340633057-CascadeOrganizationDeletes';
 
 let container: StartedPostgreSqlContainer | undefined;
 
@@ -27,6 +28,7 @@ const migrations = [
   AddRedemptionDateToRedemption1750000000000,
   MVChanges1763469407282,
   RemoveOrganizationNameUniqueConstraint1782833374096,
+  CascadeOrganizationDeletes1790340633057,
 ];
 
 /**

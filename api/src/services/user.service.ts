@@ -296,7 +296,7 @@ export class UserService {
     } catch (error) {
       this.logger.error(`Error in updateUser:`, error);
 
-      if (error instanceof NotFoundException) {
+      if (error instanceof HttpException) {
         throw error;
       }
 

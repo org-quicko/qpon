@@ -41,14 +41,26 @@ The suite signs in with a fixed set of accounts, reused on every run:
   fresh organization and deletes it (and everything in it) afterwards. Don't
   rely on seed data or on another test having run.
 - **Arrange through the API, act and assert through the UI.** Use fixtures like
-  `createItem` to set up state; only drive the UI for the behaviour under test.
+  `createItem`, `createCustomer`, `createCoupon`, `createCampaign` and
+  `createCouponCode` to set up state; only drive the UI for the behaviour under
+  test. `createCampaign` and `createCouponCode` take the records they hang off.
 - **Pick the role with `test.use({ role: 'viewer' })`.** The default is `admin`.
 - **Locate elements the way users see them:** `getByRole`, `getByLabel`,
   `getByText`, `getByPlaceholder`. If an element has no accessible name (an
   icon-only button, say), add an `aria-label` in the app rather than a CSS
   selector or test id.
 - **Page objects** in `src/pages` hold locators and multi-step actions only —
-  assertions stay in the spec.
+  assertions stay in the spec. List pages extend `HomePage`, which waits for
+  the header to name the signed-in role before a test acts; the full-screen
+  flows extend `Wizard`, which owns the bottom bar's Next/Back/Save/Exit.
+- **Campaigns lag.** The campaign table and the summary tiles read from
+  materialized views the API refreshes on a cron, and the pages fetch once
+  rather than poll — so after creating or changing a campaign, wait for it with
+  `reloadUntilRow` or `reloadUntilVisible` instead of asserting straight away.
+  Everything else (customers, coupons, coupon codes) reads live tables.
+- **The tile-shaped choices are not radios to the browser.** The design hides
+  the radio itself with `display: none`, so `Wizard.choice` clicks the tile by
+  the title printed on it, and there is no checked state to assert.
 
 ## Layout
 
@@ -61,4 +73,8 @@ src/
 tests/
   global.setup.ts  creates/verifies the accounts, once per run
   items/           one folder per feature
+  customers/
+  coupons/         coupons, and the flow that creates one end to end
+  campaigns/
+  coupon-codes/
 ```

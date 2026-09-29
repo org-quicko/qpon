@@ -209,6 +209,7 @@
                   mat-icon-button
                   [matMenuTriggerFor]="couponMenu"
                   (click)="$event.stopPropagation()"
+                  [attr.aria-label]="'Actions for ' + coupon.name"
                 >
                   <mat-icon class="hover:cursor-pointer">more_vert</mat-icon>
                 </button>
