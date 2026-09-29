@@ -145,7 +145,7 @@ test.describe('Managing coupon codes', () => {
     await couponCodeWizard.code.fill(code);
     await couponCodeWizard.publicCode.click();
     await couponCodeWizard.validUntil.click();
-    await couponCodeWizard.chooseExpiry(28);
+    await couponCodeWizard.chooseExpiryToday();
     await couponCodeWizard.continueTo('limits');
     await couponCodeWizard.continueTo('customers');
     await couponCodeWizard.everyone.click();

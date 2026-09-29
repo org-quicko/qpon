@@ -69,16 +69,21 @@ export class CouponCodeWizard extends Wizard {
   }
 
   /**
-   * Picks a day out of the calendar the expiry field opens — the field itself
+   * Picks today out of the calendar the expiry field opens — the field itself
    * is read-only, so this is the only way in. Calendar cells carry no label,
-   * so they are addressed by the number printed on them.
+   * so today is addressed by the number printed on it.
+   *
+   * Today rather than a fixed date because the picker refuses anything
+   * earlier, and a date hard-coded in a test quietly becomes one.
    */
-  async chooseExpiry(dayOfMonth: number): Promise<void> {
+  async chooseExpiryToday(): Promise<void> {
     await this.expiryDate.click();
     await this.page
       .getByRole('gridcell')
-      .filter({ hasText: new RegExp(`^\\s*${dayOfMonth}\\s*$`) })
+      .filter({ hasText: new RegExp(`^\\s*${new Date().getDate()}\\s*$`) })
       .click();
+    // The calendar covers the bar below it until it closes.
+    await expect(this.page.getByRole('gridcell').first()).toBeHidden();
   }
 
   /** Picks a customer out of the "Specific customers" autocomplete. */

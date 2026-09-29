@@ -30,6 +30,12 @@ export const env = {
 
 export type MemberRole = 'admin' | 'editor' | 'viewer';
 
+/**
+ * Who the browser is signed in as. The super admin holds no role in any one
+ * organization — they see every one — so they are not a `MemberRole`.
+ */
+export type BrowserRole = MemberRole | 'super_admin';
+
 export interface Credentials {
   name: string;
   email: string;

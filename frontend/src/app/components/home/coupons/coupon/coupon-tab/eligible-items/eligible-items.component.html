@@ -16,6 +16,7 @@
         <button
           mat-stroked-button
           class="rounded-[100px] mat-label-large"
+          aria-label="Edit eligible items"
           (click)="onAddItem()"
         >
           <mat-icon class="material-symbols-outlined">edit</mat-icon>
@@ -89,7 +90,11 @@
           </th>
           <td mat-cell *matCellDef="let item" class="py-4 px-4">
             <div class="flex justify-end">
-              <button mat-icon-button [matMenuTriggerFor]="options">
+              <button
+                mat-icon-button
+                [matMenuTriggerFor]="options"
+                [attr.aria-label]="'Actions for ' + item.name"
+              >
                 <mat-icon
                   class="hover:cursor-pointer"
                   >more_vert</mat-icon

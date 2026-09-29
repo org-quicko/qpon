@@ -5,6 +5,10 @@ const isCI = !!process.env.CI;
 
 export default defineConfig({
   testDir: './tests',
+  // Workers share one app container, so a busy run makes every step slower.
+  // Well clear of what any single test needs, and still short enough that a
+  // genuine hang fails rather than stalls the run.
+  timeout: 60_000,
   // Every test owns its organization, so nothing is shared between tests.
   fullyParallel: true,
   forbidOnly: isCI,

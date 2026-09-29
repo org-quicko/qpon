@@ -1,5 +1,5 @@
 import { expect, type Locator, type Page } from '@playwright/test';
-import type { MemberRole } from '../env';
+import type { BrowserRole } from '../env';
 
 /**
  * The app renders long before the last of its assets settles, and one of them
@@ -19,12 +19,14 @@ const NAVIGATION = { waitUntil: 'domcontentloaded' } as const;
 export abstract class HomePage {
   constructor(
     protected readonly page: Page,
-    private readonly role: MemberRole,
+    private readonly role: BrowserRole,
   ) {}
 
   /** Resolves once the header confirms the signed-in role. */
   async whenReady(): Promise<void> {
-    await expect(this.page.getByText(new RegExp(`You.re the ${this.role}`))).toBeVisible();
+    // The header prints the role the way a person reads it: "super admin".
+    const role = this.role.replace('_', ' ');
+    await expect(this.page.getByText(new RegExp(`You.re the ${role}`))).toBeVisible();
   }
 
   protected async open(path: string): Promise<void> {

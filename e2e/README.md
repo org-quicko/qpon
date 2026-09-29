@@ -41,10 +41,19 @@ The suite signs in with a fixed set of accounts, reused on every run:
   fresh organization and deletes it (and everything in it) afterwards. Don't
   rely on seed data or on another test having run.
 - **Arrange through the API, act and assert through the UI.** Use fixtures like
-  `createItem`, `createCustomer`, `createCoupon`, `createCampaign` and
-  `createCouponCode` to set up state; only drive the UI for the behaviour under
-  test. `createCampaign` and `createCouponCode` take the records they hang off.
+  `createItem`, `createCustomer`, `createCoupon`, `createCampaign`,
+  `createCouponCode`, `inviteMember` and `redeem` to set up state; only drive
+  the UI for the behaviour under test. The later ones take the records they
+  hang off, e.g. `createCampaign(coupon)`.
+- **Redemptions only ever arrive through the API.** The app reads them and
+  never writes one, so `redeem` stands in for the merchant's integration.
 - **Pick the role with `test.use({ role: 'viewer' })`.** The default is `admin`.
+  Nothing signs in as the super admin: they arrange data through the API only.
+- **The browser starts signed in.** `test.use({ signedIn: false })` skips the
+  cookie, for the tests that are about the login form itself.
+- **Never save a change to the signed-in member's own profile.** Those accounts
+  are shared by the whole suite, so a renamed or re-passworded `e2e-admin@`
+  breaks every other test, on this run and the next.
 - **Locate elements the way users see them:** `getByRole`, `getByLabel`,
   `getByText`, `getByPlaceholder`. If an element has no accessible name (an
   icon-only button, say), add an `aria-label` in the app rather than a CSS
@@ -77,4 +86,19 @@ tests/
   coupons/         coupons, and the flow that creates one end to end
   campaigns/
   coupon-codes/
+  eligible-items/  the items a coupon is narrowed to
+  redemptions/     the redemption lists and the dashboard that counts them
+  team/            the users an organization has, and their roles
+  settings/        the organization, the API key, your own profile
+  auth/            the login form
 ```
+
+## Known gaps
+
+Creating, renaming and deleting an organization are a super admin's, and no
+test signs into the browser as one — they only arrange data through the API.
+So those three forms are out of reach here, and what the suite checks instead
+is that the app refuses them. The API's own tests cover the super admin path.
+
+Offers (`GET /organizations/:id/offers`) have no screen in the app — they are
+there for merchants to integrate against — so nothing here covers them.

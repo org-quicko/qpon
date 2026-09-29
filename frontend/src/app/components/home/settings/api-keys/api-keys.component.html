@@ -51,7 +51,8 @@
 						<div class="mat-body-large text-on-surface font-mono bg-surface-container px-3 py-2 rounded flex-1 break-all">
 							{{ apiKey()?.key }}
 						</div>
-						<button mat-icon-button (click)="copyToClipboard(apiKey()?.key || '')"
+						<button mat-icon-button aria-label="Copy API key"
+							(click)="copyToClipboard(apiKey()?.key || '')"
 							matTooltip="Copy to clipboard">
 							<mat-icon class="material-symbols-outlined">content_copy</mat-icon>
 						</button>

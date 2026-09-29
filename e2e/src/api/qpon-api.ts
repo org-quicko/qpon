@@ -64,6 +64,31 @@ export interface CouponCode {
 
 export type NewCouponCode = Omit<CouponCode, 'couponCodeId'>;
 
+export interface Member {
+  userId: string;
+  name: string;
+  email: string;
+  role: MemberRole;
+}
+
+export type NewMember = Omit<Member, 'userId'> & { password: string };
+
+export interface ApiKey {
+  key: string;
+  /** Only ever returned by the call that created the key. */
+  secret: string;
+}
+
+export interface Redemption {
+  /** The coupon code being redeemed. */
+  code: string;
+  baseOrderValue: number;
+  discount: number;
+  /** The customer's and item's `externalId`, not their UUIDs. */
+  externalCustomerId: string;
+  externalItemId: string;
+}
+
 /**
  * Minimal client for arranging test data. It talks to the same endpoints the
  * app does, so fixtures build state the way a user (or integration) would —
@@ -94,7 +119,7 @@ export class QponApi {
   async superAdminExists(): Promise<boolean> {
     const data = await unwrap<{ exists: boolean }>(
       'check for a super admin',
-      this.request.get(`${env.apiURL}/super-admin/exists`),
+      this.request.get(`${env.apiURL}/super-admin/exists`, IDEMPOTENT),
     );
     return data.exists;
   }
@@ -135,25 +160,32 @@ export class QponApi {
 
     await unwrap(`delete organization ${organizationId}`, this.request.delete(
       `${env.apiURL}/organizations/${organizationId}`,
-      { headers: this.auth() },
+      { ...IDEMPOTENT, headers: this.auth() },
     ));
   }
 
   /** Invites `user`; if they already exist, this just adds the membership. */
   async addMember(organizationId: string, user: Credentials, role: MemberRole): Promise<void> {
-    await unwrap(`add ${user.email} as ${role}`, this.request.post(
-      `${env.apiURL}/organizations/${organizationId}/users`,
-      {
+    await this.inviteUser(organizationId, { ...user, role });
+  }
+
+  /** Same invite the team page performs, for a user the test made up. */
+  async inviteUser(organizationId: string, member: NewMember): Promise<Member> {
+    const data = await unwrap<{ user_id: string }>(
+      `invite ${member.email} as ${member.role}`,
+      this.request.post(`${env.apiURL}/organizations/${organizationId}/users`, {
         headers: this.auth(),
         data: {
           '@entity': 'org.quicko.qpon.user',
-          name: user.name,
-          email: user.email,
-          password: user.password,
-          role,
+          name: member.name,
+          email: member.email,
+          password: member.password,
+          role: member.role,
         },
-      },
-    ));
+      }),
+    );
+    const { password, ...saved } = member;
+    return { ...saved, userId: data.user_id };
   }
 
   async createItem(organizationId: string, item: NewItem): Promise<Item> {
@@ -224,6 +256,7 @@ export class QponApi {
       const page = await unwrap<Page<CouponPayload>>(
         `fetch coupons of organization ${organizationId}`,
         this.request.get(`${env.apiURL}/organizations/${organizationId}/coupons`, {
+          ...IDEMPOTENT,
           headers: this.auth(),
           params: { skip, take: PAGE_SIZE, ...(status ? { status } : {}) },
         }),
@@ -263,6 +296,65 @@ export class QponApi {
       ),
     );
     return { ...campaign, campaignId: data.campaign_id };
+  }
+
+  /**
+   * Narrows a coupon to specific items. Two calls, the way the app does it:
+   * the constraint lives on the coupon, the items hang off it.
+   */
+  async restrictCouponToItems(
+    organizationId: string,
+    couponId: string,
+    itemIds: string[],
+  ): Promise<void> {
+    await unwrap(`narrow coupon ${couponId} to specific items`, this.request.patch(
+      `${env.apiURL}/organizations/${organizationId}/coupons/${couponId}`,
+      {
+        headers: this.auth(),
+        data: { '@entity': 'org.quicko.qpon.coupon', item_constraint: 'specific' },
+      },
+    ));
+
+    await unwrap(`add ${itemIds.length} item(s) to coupon ${couponId}`, this.request.post(
+      `${env.apiURL}/organizations/${organizationId}/coupons/${couponId}/items`,
+      {
+        headers: this.auth(),
+        data: { '@entity': 'org.quicko.qpon.coupon_item', items: itemIds },
+      },
+    ));
+  }
+
+  /** Generates the organization's API key, replacing any it already had. */
+  async createApiKey(organizationId: string): Promise<ApiKey> {
+    const data = await unwrap<{ key: string; secret: string }>(
+      `generate an API key for organization ${organizationId}`,
+      this.request.post(`${env.apiURL}/organizations/${organizationId}/api-keys`, {
+        headers: this.auth(),
+        data: {},
+      }),
+    );
+    return { key: data.key, secret: data.secret };
+  }
+
+  /**
+   * Redeems a coupon code, which is what an integration does at checkout —
+   * the app itself only ever reads redemptions back.
+   */
+  async redeem(organizationId: string, redemption: Redemption): Promise<void> {
+    await unwrap(`redeem "${redemption.code}"`, this.request.post(
+      `${env.apiURL}/organizations/${organizationId}/coupon-codes/redeem`,
+      {
+        headers: this.auth(),
+        data: {
+          '@entity': 'org.quicko.qpon.redemption',
+          code: redemption.code,
+          base_order_value: redemption.baseOrderValue,
+          discount: redemption.discount,
+          external_customer_id: redemption.externalCustomerId,
+          external_item_id: redemption.externalItemId,
+        },
+      },
+    ));
   }
 
   /** Switches a campaign off, taking its coupon codes with it. */
@@ -332,6 +424,13 @@ export class QponApi {
     return { Authorization: `Bearer ${this.token}` };
   }
 }
+
+/**
+ * A busy run can have the app drop a connection mid-request. Retrying is only
+ * safe where sending twice is the same as sending once, so this is spread into
+ * reads and deletes and never into a create.
+ */
+const IDEMPOTENT = { maxRetries: 3 };
 
 /** Plenty for a single test's data, and few enough round trips to page through. */
 const PAGE_SIZE = 100;

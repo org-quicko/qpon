@@ -7,27 +7,44 @@ import {
   type CouponCode,
   type Customer,
   type Item,
+  type Member,
   type NewCampaign,
   type NewCoupon,
   type NewCouponCode,
   type NewCustomer,
   type NewItem,
+  type NewMember,
   type Organization,
 } from '../api/qpon-api';
-import { credentials, env, type MemberRole } from '../env';
+import { credentials, env, type BrowserRole, type MemberRole } from '../env';
 import { CampaignPage } from '../pages/campaign-page';
+import { CouponCodePage } from '../pages/coupon-code-page';
 import { CouponCodeWizard } from '../pages/coupon-code-wizard';
 import { CouponPage } from '../pages/coupon-page';
 import { CouponWizard } from '../pages/coupon-wizard';
 import { CouponsPage } from '../pages/coupons-page';
 import { CustomerWizard } from '../pages/customer-wizard';
 import { CustomersPage } from '../pages/customers-page';
+import { DashboardPage } from '../pages/dashboard-page';
 import { ItemForm } from '../pages/item-form';
 import { ItemsPage } from '../pages/items-page';
+import { LoginPage } from '../pages/login-page';
+import { MemberDialog } from '../pages/member-dialog';
+import { OrganizationsPage } from '../pages/organizations-page';
+import { SettingsPage } from '../pages/settings-page';
 
 type Options = {
-  /** Who the browser is signed in as. Override per file or describe with `test.use({ role })`. */
-  role: MemberRole;
+  /**
+   * Who the browser is signed in as. Override per file or describe with
+   * `test.use({ role })`. `super_admin` signs in as the account that arranges
+   * the data; they see every organization rather than holding a role in one.
+   */
+  role: BrowserRole;
+  /**
+   * Whether the browser starts already signed in. Turn it off with
+   * `test.use({ signedIn: false })` to reach the login form itself.
+   */
+  signedIn: boolean;
 };
 
 type TestFixtures = {
@@ -47,8 +64,25 @@ type TestFixtures = {
     campaign: Campaign,
     overrides?: Partial<NewCouponCode>,
   ) => Promise<CouponCode>;
+  /** Invites a brand-new user into the test's organization through the API. */
+  inviteMember: (overrides?: Partial<NewMember>) => Promise<Member>;
+  /**
+   * Redeems `couponCode` against an item and a customer, the way a merchant's
+   * integration does at checkout — the app itself only reads redemptions back.
+   */
+  redeem: (
+    couponCode: CouponCode,
+    against: { item: Item; customer: Customer },
+    amounts?: { baseOrderValue?: number; discount?: number },
+  ) => Promise<void>;
   itemsPage: ItemsPage;
   itemForm: ItemForm;
+  loginPage: LoginPage;
+  organizationsPage: OrganizationsPage;
+  dashboardPage: DashboardPage;
+  settingsPage: SettingsPage;
+  memberDialog: MemberDialog;
+  couponCodePage: CouponCodePage;
   customersPage: CustomersPage;
   customerWizard: CustomerWizard;
   couponsPage: CouponsPage;
@@ -61,8 +95,8 @@ type TestFixtures = {
 type WorkerFixtures = {
   /** API client signed in as the super admin, used to arrange data. */
   superAdmin: QponApi;
-  /** Access tokens for the member users, fetched once per worker. */
-  accessTokenFor: (role: MemberRole) => Promise<string>;
+  /** Access tokens for the signed-in accounts, fetched once per worker. */
+  accessTokenFor: (role: BrowserRole) => Promise<string>;
 };
 
 /** Short random suffix: unique enough to never collide across tests, workers or runs. */
@@ -73,6 +107,7 @@ export const uniqueSlug = (prefix: string): string => `${prefix}-${randomUUID().
 
 export const test = base.extend<Options & TestFixtures, WorkerFixtures>({
   role: ['admin', { option: true }],
+  signedIn: [true, { option: true }],
 
   superAdmin: [
     async ({ playwright }, use) => {
@@ -86,10 +121,12 @@ export const test = base.extend<Options & TestFixtures, WorkerFixtures>({
   accessTokenFor: [
     async ({ playwright }, use) => {
       const request = await playwright.request.newContext();
-      const tokens = new Map<MemberRole, Promise<string>>();
+      const tokens = new Map<BrowserRole, Promise<string>>();
       await use((role) => {
         if (!tokens.has(role)) {
-          tokens.set(role, QponApi.accessToken(request, credentials.members[role]));
+          const user =
+            role === 'super_admin' ? credentials.superAdmin : credentials.members[role];
+          tokens.set(role, QponApi.accessToken(request, user));
         }
         return tokens.get(role)!;
       });
@@ -101,22 +138,29 @@ export const test = base.extend<Options & TestFixtures, WorkerFixtures>({
   organization: async ({ superAdmin, role }, use) => {
     // The "E2E" prefix makes orgs left behind by an aborted run easy to spot.
     const organization = await superAdmin.createOrganization(unique('E2E'));
-    await superAdmin.addMember(organization.organizationId, credentials.members[role], role);
+    // Creating it already made the super admin a member, so there is only a
+    // membership to add when the browser is signed in as somebody else.
+    if (role !== 'super_admin') {
+      await superAdmin.addMember(organization.organizationId, credentials.members[role], role);
+    }
     await use(organization);
     await superAdmin.deleteOrganization(organization.organizationId);
   },
 
   // Signing in is not what these tests are about, so skip the login form and
   // hand the browser the same cookie the app sets after a successful login.
-  context: async ({ context, role, accessTokenFor }, use) => {
-    await context.addCookies([
-      {
-        name: 'QPON_ACCESS_TOKEN',
-        value: await accessTokenFor(role),
-        url: env.baseURL,
-        sameSite: 'Lax',
-      },
-    ]);
+  // The tests that are about it opt out with `test.use({ signedIn: false })`.
+  context: async ({ context, role, signedIn, accessTokenFor }, use) => {
+    if (signedIn) {
+      await context.addCookies([
+        {
+          name: 'QPON_ACCESS_TOKEN',
+          value: await accessTokenFor(role),
+          url: env.baseURL,
+          sameSite: 'Lax',
+        },
+      ]);
+    }
     await use(context);
   },
 
@@ -182,6 +226,31 @@ export const test = base.extend<Options & TestFixtures, WorkerFixtures>({
     );
   },
 
+  inviteMember: async ({ superAdmin, organization }, use) => {
+    await use((overrides = {}) =>
+      superAdmin.inviteUser(organization.organizationId, {
+        name: unique('Teammate'),
+        // Users are global and unique on email, so that is what has to vary.
+        email: `${uniqueSlug('teammate')}@qpon.test`,
+        password: 'Teammate#e2e1',
+        role: 'viewer',
+        ...overrides,
+      }),
+    );
+  },
+
+  redeem: async ({ superAdmin, organization }, use) => {
+    await use((couponCode, against, amounts = {}) =>
+      superAdmin.redeem(organization.organizationId, {
+        code: couponCode.code,
+        baseOrderValue: amounts.baseOrderValue ?? 1000,
+        discount: amounts.discount ?? 100,
+        externalCustomerId: against.customer.externalId,
+        externalItemId: against.item.externalId,
+      }),
+    );
+  },
+
   itemsPage: async ({ page, role }, use) => {
     await use(new ItemsPage(page, role));
   },
@@ -216,6 +285,30 @@ export const test = base.extend<Options & TestFixtures, WorkerFixtures>({
 
   couponCodeWizard: async ({ page }, use) => {
     await use(new CouponCodeWizard(page));
+  },
+
+  couponCodePage: async ({ page, role }, use) => {
+    await use(new CouponCodePage(page, role));
+  },
+
+  dashboardPage: async ({ page, role }, use) => {
+    await use(new DashboardPage(page, role));
+  },
+
+  settingsPage: async ({ page, role }, use) => {
+    await use(new SettingsPage(page, role));
+  },
+
+  memberDialog: async ({ page }, use) => {
+    await use(new MemberDialog(page));
+  },
+
+  loginPage: async ({ page }, use) => {
+    await use(new LoginPage(page));
+  },
+
+  organizationsPage: async ({ page }, use) => {
+    await use(new OrganizationsPage(page));
   },
 });
 
