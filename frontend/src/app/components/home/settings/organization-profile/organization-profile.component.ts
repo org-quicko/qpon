@@ -1,4 +1,5 @@
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
@@ -64,6 +65,21 @@ export class OrganizationProfileComponent {
     });
   }
 
+  /**
+   * An organization with coupons still switched on cannot be deleted, and the
+   * API says how many and what to do about it — worth repeating verbatim,
+   * because "Failed to delete organization" leaves you with nowhere to go.
+   */
+  private deletionFailureMessage(error: unknown): string {
+    const fallback = 'Failed to delete organization';
+
+    if (!(error instanceof HttpErrorResponse) || error.status !== 409) {
+      return fallback;
+    }
+
+    return error.error?.message ?? fallback;
+  }
+
   onDeleteOrganisation() {
     const org = this.organizationStore.organizaiton();
 
@@ -91,7 +107,7 @@ export class OrganizationProfileComponent {
             window.location.href = window.location.origin + "/organizations";
 
           } catch (err) {
-            this.snack.openSnackBar('Failed to delete organization', undefined);
+            this.snack.openSnackBar(this.deletionFailureMessage(err), undefined);
           }
         }
       }
