@@ -236,6 +236,11 @@ export class CampaignService {
     this.logger.info('START: updateCampaign service');
     try {
       const campaign = await this.campaignRepository.findOne({
+        // The coupon scopes the duplicate-name check below; updateCampaign
+        // takes no coupon id, so it comes from the campaign being edited.
+        relations: {
+          coupon: true,
+        },
         where: {
           campaignId,
           status: Not(campaignStatusEnum.ARCHIVE),
@@ -255,6 +260,10 @@ export class CampaignService {
             }),
             status: Not(campaignStatusEnum.ARCHIVE),
             campaignId: Not(campaignId),
+            // Campaign names are unique per coupon, never globally — matching
+            // createCampaign. Without this a rename collides with a campaign
+            // of any coupon in any organization, and the 409 discloses it.
+            coupon: { couponId: campaign.coupon.couponId },
           },
         });
 
@@ -474,9 +483,24 @@ export class CampaignService {
    * Delete campaign
    */
   async deleteCampaign(couponId: string, campaignId: string) {
-    this.logger.info('STAART: deleteCampaign service');
+    this.logger.info('START: deleteCampaign service');
     return this.datasource.transaction(async (manager) => {
       try {
+        // UPDATE matching zero rows is not an error, so without this the
+        // delete silently "succeeds" for a campaign that does not exist.
+        const campaign = await manager.findOne(Campaign, {
+          where: {
+            campaignId,
+            coupon: { couponId },
+            status: Not(campaignStatusEnum.ARCHIVE),
+          },
+        });
+
+        if (!campaign) {
+          this.logger.warn('Campaign not found', campaignId);
+          throw new NotFoundException('Campaign not found');
+        }
+
         // mark all the coupon codes archive
         await manager.update(
           CouponCode,

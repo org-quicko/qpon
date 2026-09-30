@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll, beforeEach, afterAll } from 'vitest';
-import { INestApplication, ConflictException } from '@nestjs/common';
+import { INestApplication } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { createTestApp, seedSuperAdmin } from '../support/test-app';
 import { useIsolatedTransaction } from '../support/transaction';
@@ -148,7 +148,14 @@ describe('OrganizationService (integration)', () => {
 
       await expect(
         service.deleteOrganization(organization.organizationId),
-      ).rejects.toBeInstanceOf(ConflictException);
+      ).rejects.toMatchObject({
+        status: 409,
+        // The settings page shows this verbatim on a refused delete, so the
+        // count and the instruction are part of the contract.
+        message:
+          'Organization has 1 active coupon(s). ' +
+          'Deactivate them before deleting the organization.',
+      });
 
       // Left untouched, since the delete was refused.
       await expect(

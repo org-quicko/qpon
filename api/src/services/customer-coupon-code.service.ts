@@ -278,7 +278,13 @@ export class CustomerCouponCodeService {
       } catch (error) {
         this.logger.error(`Error in updateCustomers:`, error);
 
-        if (error instanceof NotFoundException) {
+        // validateCustomersExist raises BadRequestException for unknown ids;
+        // let it through rather than reporting a client error as a 500. Same
+        // guard as addCustomers above.
+        if (
+          error instanceof NotFoundException ||
+          error.name === 'BadRequestException'
+        ) {
           throw error;
         }
 

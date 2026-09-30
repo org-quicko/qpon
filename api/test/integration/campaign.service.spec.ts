@@ -1,5 +1,9 @@
 import { describe, it, expect, beforeAll, beforeEach, afterAll } from 'vitest';
-import { INestApplication, ConflictException } from '@nestjs/common';
+import {
+  INestApplication,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { createTestApp, seedSuperAdmin } from '../support/test-app';
 import { useIsolatedTransaction } from '../support/transaction';
@@ -122,13 +126,12 @@ describe('CampaignService (integration)', () => {
       ).resolves.toBeDefined();
     });
 
-    // Documents an asymmetry rather than asserting it is desirable: createCampaign
-    // scopes its duplicate-name lookup to `coupon: { couponId }`
-    // (campaign.service.ts:56-64) while updateCampaign omits that scope
-    // (campaign.service.ts:254-262), matching on name across every coupon in
-    // every organization. A name that is free to create is therefore not
-    // always free to rename onto.
-    it('rejects a rename onto a name used by an unrelated organization', async () => {
+    // createCampaign scopes its duplicate-name lookup to `coupon: { couponId }`;
+    // updateCampaign now does the same, so create and rename agree on what
+    // counts as taken. Previously a rename matched on name across every coupon
+    // in every organization, and the 409 disclosed that some unrelated tenant
+    // was using it.
+    it('allows a rename onto a name used by an unrelated organization', async () => {
       const foreignOrg = await createOrganization(dataSource);
       const foreignCoupon = await createCoupon(dataSource, foreignOrg);
       await createCampaign(dataSource, foreignOrg, foreignCoupon, {
@@ -148,11 +151,46 @@ describe('CampaignService (integration)', () => {
         ),
       ).resolves.toBeDefined();
 
-      // ...but renaming onto the foreign organization's name is not.
+      // ...and so is renaming onto it.
       await expect(
         service.updateCampaign(
           target.campaignId,
           createDto({ name: 'Global Name' }),
+        ),
+      ).resolves.toBeDefined();
+    });
+
+    it('allows a rename onto a name used by another coupon in the same organization', async () => {
+      const otherCoupon = await createCoupon(dataSource, organization);
+      await createCampaign(dataSource, organization, otherCoupon, {
+        name: 'Sibling Name',
+      });
+
+      const target = await createCampaign(dataSource, organization, coupon, {
+        name: 'Own Name',
+      });
+
+      await expect(
+        service.updateCampaign(
+          target.campaignId,
+          createDto({ name: 'Sibling Name' }),
+        ),
+      ).resolves.toBeDefined();
+    });
+
+    it('still rejects a rename onto a name used by the same coupon', async () => {
+      await createCampaign(dataSource, organization, coupon, {
+        name: 'Taken Name',
+      });
+
+      const target = await createCampaign(dataSource, organization, coupon, {
+        name: 'Free Name',
+      });
+
+      await expect(
+        service.updateCampaign(
+          target.campaignId,
+          createDto({ name: 'Taken Name' }),
         ),
       ).rejects.toBeInstanceOf(ConflictException);
     });
@@ -294,18 +332,29 @@ describe('CampaignService (integration)', () => {
       ).toBe(couponCodeStatusEnum.ARCHIVE);
     });
 
-    // Issue 9 in issues.md: the method issues two UPDATEs and returns, and an
-    // UPDATE matching zero rows is not an error — so a non-existent campaign
-    // is "deleted" successfully at the service level. Reached over HTTP the
-    // request still 404s, because PermissionGuard resolves `delete` through
-    // fetchCampaignForValidation first.
-    it('does not raise for a campaign id that does not exist', async () => {
+    // An UPDATE matching zero rows is not an error, so without an explicit
+    // existence check this "succeeds" for a campaign that does not exist.
+    // Over HTTP the request 404s regardless, because PermissionGuard resolves
+    // `delete` through fetchCampaignForValidation first; this pins the
+    // service's own behaviour.
+    it('404s for a campaign id that does not exist', async () => {
       await expect(
         service.deleteCampaign(
           coupon.couponId,
           '3f2504e0-4f89-11d3-9a0c-0305e82c3301',
         ),
-      ).resolves.not.toThrow();
+      ).rejects.toBeInstanceOf(NotFoundException);
+    });
+
+    it('404s for a campaign belonging to a different coupon', async () => {
+      const otherCoupon = await createCoupon(dataSource, organization);
+      const campaign = await createCampaign(dataSource, organization, coupon, {
+        name: 'Elsewhere',
+      });
+
+      await expect(
+        service.deleteCampaign(otherCoupon.couponId, campaign.campaignId),
+      ).rejects.toBeInstanceOf(NotFoundException);
     });
   });
 });

@@ -200,6 +200,57 @@ describe('organization users (e2e)', () => {
       expect(membership.role).toBe(roleEnum.ADMIN);
     });
 
+    it('lets an admin of the organization change it', async () => {
+      const admin = await createUserWithRole(dataSource, {
+        role: roleEnum.ADMIN,
+        organization,
+      });
+      const member = await createUserWithRole(dataSource, {
+        role: roleEnum.VIEWER,
+        organization,
+      });
+
+      await request(app.getHttpServer())
+        .patch(`${usersUrl()}/${member.userId}/role`)
+        .set(...bearer(app, admin))
+        .send({ '@entity': 'org.quicko.qpon.user', role: roleEnum.EDITOR })
+        .expect(200);
+
+      const membership = await dataSource
+        .getRepository(OrganizationUser)
+        .findOneByOrFail({
+          organizationId: organization.organizationId,
+          userId: member.userId,
+        });
+      expect(membership.role).toBe(roleEnum.EDITOR);
+    });
+
+    it('is refused to an admin of another organization', async () => {
+      const otherOrganization = await createOrganization(dataSource);
+      const outsider = await createUserWithRole(dataSource, {
+        role: roleEnum.ADMIN,
+        organization: otherOrganization,
+      });
+      const member = await createUserWithRole(dataSource, {
+        role: roleEnum.VIEWER,
+        organization,
+      });
+
+      await request(app.getHttpServer())
+        .patch(`${usersUrl()}/${member.userId}/role`)
+        .set(...bearer(app, outsider))
+        .send({ '@entity': 'org.quicko.qpon.user', role: roleEnum.ADMIN })
+        .expect(403);
+
+      const membership = await dataSource
+        .getRepository(OrganizationUser)
+        .findOneByOrFail({
+          organizationId: organization.organizationId,
+          userId: member.userId,
+        });
+      expect(membership.role).toBe(roleEnum.VIEWER);
+    });
+
     it('is refused to a viewer', async () => {
       const viewer = await createUserWithRole(dataSource, {
         role: roleEnum.VIEWER,

@@ -219,6 +219,49 @@ describe('CustomerCouponCodeService (integration)', () => {
         ),
       ).rejects.toMatchObject({ status: 404 });
     });
+
+    // The BadRequestException from validateCustomersExist used to be caught
+    // and reported as a 500, unlike addCustomers which allowed it through.
+    it('rejects a customer id that does not exist', async () => {
+      await expect(
+        service.updateCustomers(
+          coupon.couponId,
+          campaign.campaignId,
+          couponCode.couponCodeId,
+          {
+            entity: 'org.quicko.qpon.customer_coupon_code',
+            customers: ['00000000-0000-0000-0000-000000000000'],
+          } as never,
+        ),
+      ).rejects.toBeInstanceOf(BadRequestException);
+    });
+
+    it('leaves the existing customer set untouched when one id is invalid', async () => {
+      const existing = await createCustomer(dataSource, organization);
+      await createCustomerCouponCode(dataSource, existing, couponCode);
+
+      await expect(
+        service.updateCustomers(
+          coupon.couponId,
+          campaign.campaignId,
+          couponCode.couponCodeId,
+          {
+            entity: 'org.quicko.qpon.customer_coupon_code',
+            customers: [
+              existing.customerId,
+              '00000000-0000-0000-0000-000000000000',
+            ],
+          } as never,
+        ),
+      ).rejects.toBeInstanceOf(BadRequestException);
+
+      const remaining = await dataSource
+        .getRepository(CustomerCouponCode)
+        .find({ where: { couponCodeId: couponCode.couponCodeId } });
+
+      expect(remaining).toHaveLength(1);
+      expect(remaining[0].customerId).toBe(existing.customerId);
+    });
   });
 
   describe('removeCustomer', () => {

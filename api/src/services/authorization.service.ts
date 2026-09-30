@@ -484,14 +484,15 @@ export class AuthorizationService {
               `Error. Must provide Organization ID and User ID for performing action on object`,
             );
           }
-          return this.userService.fetchUserForValidation({
-            userId: subjectUserId,
-            organizationUser: {
-              organization: {
-                organizationId: subjectOrganizationId,
-              },
-            },
-          });
+          // The membership, not the user it belongs to. Rules on
+          // OrganizationUser are scoped by `organizationId`, which a User does
+          // not carry — returning one here made `detectSubjectType` say "User"
+          // and no OrganizationUser rule could ever match, so `change_role`
+          // was refused for every role but super admin.
+          return this.userService.fetchOrganizationUserForValidation(
+            subjectOrganizationId,
+            subjectUserId,
+          );
         } else if (subject === Organization) {
           if (action === 'read' || action == 'read_all' || action === 'create')
             return subjectInOrganization(

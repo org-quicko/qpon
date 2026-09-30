@@ -446,6 +446,32 @@ export class UserService {
   }
 
   /**
+   * The membership row that authorizing an action on a team member is decided
+   * against — `change_role` is granted on OrganizationUser, scoped to the
+   * organization, so the subject has to be the membership and not the user.
+   */
+  async fetchOrganizationUserForValidation(
+    organizationId: string,
+    userId: string,
+  ) {
+    this.logger.info('START: fetchOrganizationUserForValidation service');
+    try {
+      const organizationUser = await this.organizationUserRepository.findOne({
+        where: { organizationId, userId },
+      });
+
+      if (!organizationUser) {
+        this.logger.warn('Organization user not found');
+      }
+
+      this.logger.info('END: fetchOrganizationUserForValidation service');
+      return organizationUser;
+    } catch (error) {
+      this.logger.error(`Error in fetchOrganizationUserForValidation:`, error);
+    }
+  }
+
+  /**
    * Fetch user
    */
   async fetchUserForValidation(whereOptions: FindOptionsWhere<User> = {}) {
