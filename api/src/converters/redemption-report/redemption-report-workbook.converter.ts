@@ -5,7 +5,6 @@ import { RedemptionReportTableConverter } from './redemption-report-table.conver
 
 @Injectable()
 export class RedemptionReportWorkbookConverter {
-
   private redemptionReportTableConverter: RedemptionReportTableConverter;
 
   constructor() {
@@ -14,10 +13,12 @@ export class RedemptionReportWorkbookConverter {
 
   convert(redemptions: Redemption[]): RedemptionReportWorkbook {
     const redemptionReportWorkbook = new RedemptionReportWorkbook();
-    
-    const redemptionReportSheet = redemptionReportWorkbook.getRedemptionReportSheet();
 
-    const redemptionReportTable = this.redemptionReportTableConverter.convert(redemptions);
+    const redemptionReportSheet =
+      redemptionReportWorkbook.getRedemptionReportSheet();
+
+    const redemptionReportTable =
+      this.redemptionReportTableConverter.convert(redemptions);
 
     redemptionReportSheet.replaceBlock(redemptionReportTable);
 

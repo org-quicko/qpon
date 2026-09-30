@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
@@ -10,6 +10,7 @@ import { MatListModule } from "@angular/material/list"
   standalone: true,
   imports: [MatSidenavModule, MatIconModule, MatListModule, RouterLinkActive, RouterLink, NgClass],
   templateUrl: './sidenav.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './sidenav.component.css',
 })
 export class SidenavComponent {

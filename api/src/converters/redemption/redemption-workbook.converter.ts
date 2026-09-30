@@ -6,7 +6,6 @@ import { RedemptionTableConverter } from './redemption-table.converter';
 
 @Injectable()
 export class RedemptionWorkbookConverter {
-
   private redemptionTableConverter: RedemptionTableConverter;
 
   constructor() {
@@ -23,13 +22,20 @@ export class RedemptionWorkbookConverter {
     const redemptionWorkbook = new RedemptionWorkbook();
     const redemptionSheet = redemptionWorkbook.getRedemptionSheet();
 
-    const redemptionTable = this.redemptionTableConverter.convert(redemptions, count, skip, take);
+    const redemptionTable = this.redemptionTableConverter.convert(
+      redemptions,
+      count,
+      skip,
+      take,
+    );
 
     redemptionSheet.replaceBlock(redemptionTable);
 
-    redemptionWorkbook.setMetadata(new JSONObject({
-      organization_id: organizationId,
-    }));
+    redemptionWorkbook.setMetadata(
+      new JSONObject({
+        organization_id: organizationId,
+      }),
+    );
 
     return redemptionWorkbook;
   }

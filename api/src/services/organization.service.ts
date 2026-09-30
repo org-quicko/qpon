@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -16,7 +17,8 @@ import { OrganizationSummaryMv } from '../entities/organization-summary.view';
 import { OrganizationSummaryWorkbookConverter } from '../converters/organization-summary';
 import { OrganizationsMv } from 'src/entities/organizations_mv.entity';
 import { OrganizationsListConverter } from 'src/converters/organizations-list-converter';
-import { sortOrderEnum } from 'src/enums';
+import { sortOrderEnum, statusEnum } from 'src/enums';
+import { Coupon } from '../entities/coupon.entity';
 import { ItemWiseDayWiseRedemptionSummaryMv } from 'src/entities/item-wise-day-wise-redemption-summary-mv';
 import { ItemsSummaryWorkbookConverter } from 'src/converters/items-summary/items-summary-workbook.converter';
 import { CouponCodesWiseDayWiseRedemptionSummaryMv } from 'src/entities/coupon-codes-wise-day-wise-redemption-summary-mv';
@@ -46,7 +48,7 @@ export class OrganizationService {
     private readonly couponCodeSummaryMvRepository: Repository<CouponCodesWiseDayWiseRedemptionSummaryMv>,
     @InjectRepository(DayWiseRedemptionSummaryMv)
     private readonly daywiseRedemptionSummaryMVRepository: Repository<DayWiseRedemptionSummaryMv>,
-  ) { }
+  ) {}
 
   /**
    * Create organization
@@ -248,12 +250,41 @@ export class OrganizationService {
         throw new NotFoundException('Organization not found');
       }
 
-      await this.organizationRepository.delete(organizationId);
+      // Everything in the organization is cascade-deleted with it, so refuse
+      // while any coupon is still live and could be redeemed.
+      const activeCoupons = await this.organizationRepository.manager.count(
+        Coupon,
+        {
+          where: {
+            organization: { organizationId },
+            status: statusEnum.ACTIVE,
+          },
+        },
+      );
+
+      if (activeCoupons > 0) {
+        this.logger.warn('Organization has active coupons');
+        throw new ConflictException(
+          `Organization has ${activeCoupons} active coupon(s). Deactivate them before deleting the organization.`,
+        );
+      }
+
+      // Converted first: `remove` clears the primary key on the entity it's given.
+      const deleted = this.organizationConverter.convert(organiztion);
+
+      // `remove` rather than `delete`: a query-builder delete fires
+      // OrganizationSubscriber.afterRemove with no entity, which it needs.
+      await this.organizationRepository.remove(organiztion);
 
       this.logger.info('END: deleteOrganization service');
-      return this.organizationConverter.convert(organiztion);
+      return deleted;
     } catch (error) {
       this.logger.error(`Error in deleteOrganization:`, error);
+
+      // Keep the 404 / 409 raised above instead of masking them as a 500.
+      if (error instanceof HttpException) {
+        throw error;
+      }
 
       throw new HttpException(
         'Failed to delete organization',
@@ -287,10 +318,7 @@ export class OrganizationService {
         organizationSummary,
       );
     } catch (error) {
-      this.logger.error(
-        `Error in fetchOrganizationSummary:`,
-        error,
-      );
+      this.logger.error(`Error in fetchOrganizationSummary:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -315,7 +343,6 @@ export class OrganizationService {
     this.logger.info('START: getItemWiseSummary service');
 
     try {
-
       this.logger.debug(
         `Fetching top items for organizationId=${organizationId}`,
       );
@@ -370,8 +397,6 @@ export class OrganizationService {
     }
   }
 
-
-
   /**
    * Fetch top coupon codes summary by total redemptions (org-wise)
    */
@@ -384,7 +409,6 @@ export class OrganizationService {
     this.logger.info('START: getCouponCodeWiseSummary service');
 
     try {
-
       this.logger.debug(
         `Fetching top coupon codes for organizationId=${organizationId}`,
       );
@@ -400,7 +424,7 @@ export class OrganizationService {
         .where('summary.organization_id = :orgId', { orgId: organizationId })
         .groupBy('summary.organization_id')
         .addGroupBy('summary.coupon_code')
-        .orderBy('"totalRedemptions"', 'DESC')   // <-- using alias
+        .orderBy('"totalRedemptions"', 'DESC') // <-- using alias
         .limit(take);
 
       // Optional date filter
@@ -421,8 +445,7 @@ export class OrganizationService {
 
       this.logger.debug(`Fetched ${rows.length} coupon code summary records`);
 
-      const converted =
-        this.couponCodeSummaryWorkbookConverter.convert(rows);
+      const converted = this.couponCodeSummaryWorkbookConverter.convert(rows);
 
       this.logger.info('END: getCouponCodeWiseSummary service');
       return converted;
@@ -438,7 +461,6 @@ export class OrganizationService {
     }
   }
 
-
   /**
    * Fetch day-wise redemption summary (optionally filtered by date range)
    */
@@ -450,7 +472,6 @@ export class OrganizationService {
     this.logger.info('START: getDayWiseRedemptionSummary service');
 
     try {
-
       let dateFilter: any = {};
       const fromDate = startDate ? new Date(startDate) : null;
       const toDate = endDate ? new Date(endDate) : null;
@@ -478,8 +499,7 @@ export class OrganizationService {
         `Fetched ${results.length} records from dayWiseRedemptionSummaryRepo`,
       );
 
-      const workbook =
-        this.RedemptionSummaryWorkbookConverter.convert(results);
+      const workbook = this.RedemptionSummaryWorkbookConverter.convert(results);
 
       this.logger.info('END: getDayWiseRedemptionSummary service');
       return workbook;
@@ -496,5 +516,4 @@ export class OrganizationService {
       );
     }
   }
-
 }

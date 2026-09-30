@@ -6,7 +6,7 @@ import {
 import { CouponSummaryMv } from '../../entities/coupon-summary.view';
 
 export class CouponSummaryTableConverter {
-  convert(couponSummaryMv: CouponSummaryMv[]) : CouponSummaryTable {
+  convert(couponSummaryMv: CouponSummaryMv[]): CouponSummaryTable {
     const couponSummaryTable = new CouponSummaryTable();
 
     for (let index = 0; index < couponSummaryMv.length; index++) {
@@ -33,7 +33,7 @@ export class CouponSummaryTableConverter {
 
       couponSummaryTable.addRow(couponSummaryRow);
     }
-    
+
     return couponSummaryTable;
   }
 }

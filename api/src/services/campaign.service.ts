@@ -39,7 +39,7 @@ export class CampaignService {
     private campaignSummaryWorkbookConverter: CampaignSummaryWorkbookConverter,
     private logger: LoggerService,
     private datasource: DataSource,
-  ) { }
+  ) {}
 
   /**
    * Create campaign
@@ -216,10 +216,7 @@ export class CampaignService {
       this.logger.info('END: fetchCampaignForValidation service');
       return campaign;
     } catch (error) {
-      this.logger.error(
-        `Error in fetchCampaignForValidation:`,
-        error,
-      );
+      this.logger.error(`Error in fetchCampaignForValidation:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -239,6 +236,11 @@ export class CampaignService {
     this.logger.info('START: updateCampaign service');
     try {
       const campaign = await this.campaignRepository.findOne({
+        // The coupon scopes the duplicate-name check below; updateCampaign
+        // takes no coupon id, so it comes from the campaign being edited.
+        relations: {
+          coupon: true,
+        },
         where: {
           campaignId,
           status: Not(campaignStatusEnum.ARCHIVE),
@@ -258,6 +260,10 @@ export class CampaignService {
             }),
             status: Not(campaignStatusEnum.ARCHIVE),
             campaignId: Not(campaignId),
+            // Campaign names are unique per coupon, never globally — matching
+            // createCampaign. Without this a rename collides with a campaign
+            // of any coupon in any organization, and the 409 discloses it.
+            coupon: { couponId: campaign.coupon.couponId },
           },
         });
 
@@ -313,7 +319,10 @@ export class CampaignService {
 
         await manager.update(
           CouponCode,
-          { campaign: { campaignId }, status: Not(couponCodeStatusEnum.ARCHIVE) },
+          {
+            campaign: { campaignId },
+            status: Not(couponCodeStatusEnum.ARCHIVE),
+          },
           { status: couponCodeStatusEnum.INACTIVE },
         );
 
@@ -323,10 +332,7 @@ export class CampaignService {
 
         this.logger.info('END: deactivateCampaign service');
       } catch (error) {
-        this.logger.error(
-          `Error in deactivateCampaign:`,
-          error,
-        );
+        this.logger.error(`Error in deactivateCampaign:`, error);
 
         if (error instanceof NotFoundException) {
           throw error;
@@ -422,10 +428,7 @@ export class CampaignService {
         take,
       );
     } catch (error) {
-      this.logger.error(
-        `Error in fetchCampaignSummary:`,
-        error,
-      );
+      this.logger.error(`Error in fetchCampaignSummary:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -458,12 +461,12 @@ export class CampaignService {
       }
 
       this.logger.info('END: fetchCampaignSummary service');
-      return this.campaignSummaryWorkbookConverter.convert(campaignSummaryMv, couponId);
-    } catch (error) {
-      this.logger.error(
-        `Error in fetchCampaignSummary:`,
-        error,
+      return this.campaignSummaryWorkbookConverter.convert(
+        campaignSummaryMv,
+        couponId,
       );
+    } catch (error) {
+      this.logger.error(`Error in fetchCampaignSummary:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -480,9 +483,24 @@ export class CampaignService {
    * Delete campaign
    */
   async deleteCampaign(couponId: string, campaignId: string) {
-    this.logger.info('STAART: deleteCampaign service');
+    this.logger.info('START: deleteCampaign service');
     return this.datasource.transaction(async (manager) => {
       try {
+        // UPDATE matching zero rows is not an error, so without this the
+        // delete silently "succeeds" for a campaign that does not exist.
+        const campaign = await manager.findOne(Campaign, {
+          where: {
+            campaignId,
+            coupon: { couponId },
+            status: Not(campaignStatusEnum.ARCHIVE),
+          },
+        });
+
+        if (!campaign) {
+          this.logger.warn('Campaign not found', campaignId);
+          throw new NotFoundException('Campaign not found');
+        }
+
         // mark all the coupon codes archive
         await manager.update(
           CouponCode,

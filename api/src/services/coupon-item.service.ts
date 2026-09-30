@@ -29,8 +29,11 @@ export class CouponItemService {
 
   async addItems(couponId: string, body: CreateCouponItemDto) {
     this.logger.info('START: addItems service');
-    try {
-      return this.datasource.transaction(async (manager) => {
+    // The try sits inside the transaction callback, as in updateItems below.
+    // Wrapping the transaction call instead would never catch anything: an
+    // un-awaited `return promise` inside `try` settles after the block exits.
+    return this.datasource.transaction(async (manager) => {
+      try {
         const couponRepository = manager.getRepository(Coupon);
 
         const coupon = await couponRepository.findOne({
@@ -57,19 +60,22 @@ export class CouponItemService {
 
         this.logger.info('END: addItems service');
         return this.couponItemConverter.convert(savedCouponItems);
-      });
-    } catch (error) {
-      this.logger.error(`Error in addItems:`, error);
+      } catch (error) {
+        this.logger.error(`Error in addItems:`, error);
 
-      if (error.name == 'BadRequestException') {
-        throw error;
+        if (
+          error instanceof NotFoundException ||
+          error.name == 'BadRequestException'
+        ) {
+          throw error;
+        }
+
+        throw new HttpException(
+          'Failed to add items to coupon',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
       }
-
-      throw new HttpException(
-        'Failed to add items to coupon',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    });
   }
 
   async fetchItems(
@@ -173,10 +179,7 @@ export class CouponItemService {
       this.logger.info('END: fetchItemForValidation service');
       return couponItems;
     } catch (error) {
-      this.logger.error(
-        `Error in fetchItemForValidation:`,
-        error,
-      );
+      this.logger.error(`Error in fetchItemForValidation:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;

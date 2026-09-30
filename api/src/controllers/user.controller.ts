@@ -201,7 +201,10 @@ export class UserController {
   /**
    * Check if super admin exists
    */
-  @ApiResponse({ status: 200, description: 'Returns true if a super admin exists' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns true if a super admin exists',
+  })
   @Public()
   @Get('/super-admin/exists')
   async superAdminExists() {

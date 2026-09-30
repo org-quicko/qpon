@@ -1,7 +1,7 @@
-import { Component, OnInit, computed, effect, inject } from '@angular/core';
+import { Component, OnInit, computed, effect, inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { TitleCasePipe, NgIf, CommonModule } from '@angular/common';
+import { TitleCasePipe, CommonModule } from '@angular/common';
 import { DashboardSalesAnalyticsComponent } from './sales-analytics/sales-analytics.component';
 import { PopularityChartComponent } from '../../common/popularity-chart/popularity-chart.component';
 import { SalesTrendChartComponent } from './sales-chart/sales-trend-chart.component';
@@ -23,16 +23,16 @@ import { RedemptionsStore } from './recent-redemption-list/store/redemptions.sto
     MatIconModule,
     MatCardModule,
     TitleCasePipe,
-    NgIf,
     DashboardSalesAnalyticsComponent,
     PopularityChartComponent,
     SalesTrendChartComponent,
     RedemptionListComponent,
     CommonModule,
     NgxSkeletonLoaderComponent
-  ],
+],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [
     SalesSummaryStore,
     ItemSummaryStore,

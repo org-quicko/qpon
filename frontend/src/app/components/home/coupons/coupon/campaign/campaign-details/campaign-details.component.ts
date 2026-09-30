@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit, Signal } from '@angular/core';
+import { Component, inject, Input, OnInit, Signal, ChangeDetectionStrategy } from '@angular/core';
 import { CampaignSummaryRow } from '@org-quicko/qpon-sheet-core/campaign_summary_workbook/beans';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,7 +17,7 @@ import {
   UserAbility,
   UserAbilityTuple,
 } from '../../../../../../permissions/ability';
-import { PureAbility } from '@casl/ability';
+import { Ability } from '@casl/ability';
 import { AbilityServiceSignal } from '@casl/angular';
 import {
   CampaignDto,
@@ -40,6 +40,7 @@ import { SnackbarService } from '../../../../../../services/snackbar.service';
     CustomDatePipe,
   ],
   templateUrl: './campaign-details.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./campaign-details.component.css'],
 })
 export class CampaignDetailsComponent implements OnInit {
@@ -57,7 +58,7 @@ export class CampaignDetailsComponent implements OnInit {
   private readonly abilityService =
     inject<AbilityServiceSignal<UserAbility>>(AbilityServiceSignal);
   protected readonly can = this.abilityService.can;
-  private readonly ability = inject<PureAbility<UserAbilityTuple>>(PureAbility);
+  private readonly ability = inject<Ability<UserAbilityTuple>>(Ability);
 
   constructor(private router: Router, private route: ActivatedRoute, private snackbarService: SnackbarService) {}
 

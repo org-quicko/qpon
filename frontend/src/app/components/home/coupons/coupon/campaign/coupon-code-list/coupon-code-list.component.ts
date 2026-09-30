@@ -9,6 +9,7 @@ import {
   Signal,
   signal,
   ViewChild,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -19,14 +20,7 @@ import { debounceTime, distinctUntilChanged, take } from 'rxjs';
 import { CouponCodeDto, CreateCouponCodeDto, UpdateCouponCodeDto } from '../../../../../../../dtos/coupon-code.dto';
 import { CouponCodesStore } from './store/coupon-codes.store';
 import { OrganizationStore } from '../../../../../../store/organization.store';
-import {
-  formatDate,
-  NgClass,
-  NgFor,
-  NgIf,
-  NgStyle,
-  TitleCasePipe,
-} from '@angular/common';
+import { formatDate, NgClass, NgStyle, TitleCasePipe } from '@angular/common';
 import { CustomDatePipe } from '../../../../../../pipe/date.pipe';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -45,7 +39,7 @@ import { CampaignSummaryRow } from '@org-quicko/qpon-sheet-core/campaign_summary
 import { InactiveMessageDialogComponent } from '../../../../common/inactive-message-dialog/inactive-message-dialog.component';
 import { NotAllowedDialogBoxComponent } from '../../../../../common/not-allowed-dialog-box/not-allowed-dialog-box.component';
 import { UserAbility, UserAbilityTuple } from '../../../../../../permissions/ability';
-import { PureAbility } from '@casl/ability';
+import { Ability } from '@casl/ability';
 import { AbilityServiceSignal } from '@casl/angular';
 import { onChangeStatusSuccess } from '../store/campaign.store';
 
@@ -68,6 +62,7 @@ import { onChangeStatusSuccess } from '../store/campaign.store';
   ],
   providers: [CouponCodesStore],
   templateUrl: './coupon-code-list.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./coupon-code-list.component.css'],
 })
 export class CouponCodeListComponent implements OnInit {
@@ -114,7 +109,7 @@ export class CouponCodeListComponent implements OnInit {
 
   private readonly abilityService = inject<AbilityServiceSignal<UserAbility>>(AbilityServiceSignal);
 	protected readonly can = this.abilityService.can;
-	private readonly ability = inject<PureAbility<UserAbilityTuple>>(PureAbility);
+	private readonly ability = inject<Ability<UserAbilityTuple>>(Ability);
 
   constructor(private route: ActivatedRoute, private router: Router, private snackbar: SnackbarService) {
     this.couponId = '';

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { CouponStore } from '../store/coupon.store';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -23,6 +23,7 @@ import { CampaignsStore } from '../coupon-tab/campaigns/store/campaigns.store';
   ],
   providers: [CouponStore, CampaignStore],
   templateUrl: './campaign.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./campaign.component.css'],
 })
 export class CampaignComponent implements OnInit {

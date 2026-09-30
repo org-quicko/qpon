@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
@@ -23,7 +23,7 @@ import {
   UserAbility,
   UserAbilityTuple,
 } from '../../../../../../permissions/ability';
-import { PureAbility } from '@casl/ability';
+import { Ability } from '@casl/ability';
 import { AbilityServiceSignal } from '@casl/angular';
 import {
   CouponCodeDto,
@@ -56,6 +56,7 @@ import {
     CustomerCouponCodeStore,
   ],
   templateUrl: './coupon-code.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./coupon-code.component.css'],
 })
 export class CouponCodeComponent implements OnInit {
@@ -67,7 +68,7 @@ export class CouponCodeComponent implements OnInit {
   private readonly abilityService =
     inject<AbilityServiceSignal<UserAbility>>(AbilityServiceSignal);
   protected readonly can = this.abilityService.can;
-  private readonly ability = inject<PureAbility<UserAbilityTuple>>(PureAbility);
+  private readonly ability = inject<Ability<UserAbilityTuple>>(Ability);
 
   constructor(
     private router: Router,

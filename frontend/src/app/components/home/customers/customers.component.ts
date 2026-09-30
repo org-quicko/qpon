@@ -4,6 +4,7 @@ import {
   inject,
   OnInit,
   signal,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -28,7 +29,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DeleteCustomerDialogComponent } from './delete-customer-dialog/delete-customer-dialog.component';
 import { UserAbility, UserAbilityTuple } from '../../../permissions/ability';
 import { AbilityServiceSignal } from '@casl/angular';
-import { PureAbility } from '@casl/ability';
+import { Ability } from '@casl/ability';
 import { NotAllowedDialogBoxComponent } from '../../common/not-allowed-dialog-box/not-allowed-dialog-box.component';
 
 @Component({
@@ -47,6 +48,7 @@ import { NotAllowedDialogBoxComponent } from '../../common/not-allowed-dialog-bo
     ReactiveFormsModule,
   ],
   templateUrl: './customers.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './customers.component.css',
 })
 export class CustomersComponent implements OnInit {
@@ -68,7 +70,7 @@ export class CustomersComponent implements OnInit {
 
   private readonly abilityService = inject<AbilityServiceSignal<UserAbility>>(AbilityServiceSignal);
 	protected readonly can = this.abilityService.can;
-	private readonly ability = inject<PureAbility<UserAbilityTuple>>(PureAbility);
+	private readonly ability = inject<Ability<UserAbilityTuple>>(Ability);
 
   customerDataSource = new MatTableDataSource<CustomerDto>();
 

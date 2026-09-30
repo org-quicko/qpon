@@ -5,6 +5,7 @@ import {
   OnInit,
   signal,
   AfterViewInit,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -40,7 +41,7 @@ import { CouponFilterDialogComponent } from './coupon-filter-dialog/coupon-filte
 import { FiltersStore } from '../../../store/filters.store';
 import { UserAbility, UserAbilityTuple } from '../../../permissions/ability';
 import { AbilityServiceSignal } from '@casl/angular';
-import { PureAbility } from '@casl/ability';
+import { Ability } from '@casl/ability';
 import { NotAllowedDialogBoxComponent } from '../../common/not-allowed-dialog-box/not-allowed-dialog-box.component';
 @Component({
   selector: 'app-coupons',
@@ -64,7 +65,8 @@ import { NotAllowedDialogBoxComponent } from '../../common/not-allowed-dialog-bo
     NgxSkeletonLoaderModule,
   ],
   templateUrl: './coupons.component.html',
-  styleUrl: './coupons.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './coupons.component.css',
 })
 export class CouponsComponent implements OnInit {
   columns = [
@@ -109,7 +111,7 @@ export class CouponsComponent implements OnInit {
 
   private readonly abilityService = inject<AbilityServiceSignal<UserAbility>>(AbilityServiceSignal);
 	protected readonly can = this.abilityService.can;
-	private readonly ability = inject<PureAbility<UserAbilityTuple>>(PureAbility);
+	private readonly ability = inject<Ability<UserAbilityTuple>>(Ability);
 
   constructor(
     private formBuilder: FormBuilder,

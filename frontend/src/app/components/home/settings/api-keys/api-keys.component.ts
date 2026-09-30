@@ -1,5 +1,5 @@
-import { Component, OnInit, computed, effect, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, computed, effect, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
@@ -24,15 +24,15 @@ import { ApiCredentialsDialogComponent } from './common/api-credentials-dialog/a
     selector: 'app-api-keys',
     standalone: true,
     imports: [
-        CommonModule,
-        MatButtonModule,
-        MatDividerModule,
-        MatCardModule,
-        MatIconModule,
-        MatTooltipModule,
-        NgxSkeletonLoaderModule,
-        CustomDatePipe,
-    ],
+    MatButtonModule,
+    MatDividerModule,
+    MatCardModule,
+    MatIconModule,
+    MatTooltipModule,
+    NgxSkeletonLoaderModule,
+    CustomDatePipe
+],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './api-keys.component.html',
 })
 export class ApiKeysComponent implements OnInit {

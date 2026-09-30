@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CouponFilter } from '../../../../types/coupon-filter.interface';
 import { FiltersStore } from '../../../../store/filters.store';
@@ -18,6 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
     ReactiveFormsModule,
   ],
   templateUrl: './coupon-filter-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./coupon-filter-dialog.component.css'],
 })
 export class CouponFilterDialogComponent {

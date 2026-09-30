@@ -1,11 +1,11 @@
-import { Component, effect, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { CurrencyList } from '../../../utils/currency-list-util';
 import { MatIconModule } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';
+
 import { CreateOrganizationStore, OnCreateOrganizationSuccess } from '../store/create-organization.store';
 import { RxFormBuilder } from '@rxweb/reactive-form-validators';
 import { Router } from '@angular/router';
@@ -21,11 +21,11 @@ import { MatAutocomplete, MatAutocompleteModule } from "@angular/material/autoco
     MatInputModule,
     MatIconModule,
     MatSelectModule,
-    CommonModule,
     MatAutocomplete,
-    MatAutocompleteModule,
+    MatAutocompleteModule
 ],
   templateUrl: './create-organization.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./create-organization.component.css'],
 })
 export class CreateOrganizationComponent implements OnInit {

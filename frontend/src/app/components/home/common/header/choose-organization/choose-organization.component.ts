@@ -1,5 +1,5 @@
 import { CommonModule, NgIf, TitleCasePipe } from '@angular/common';
-import { Component, effect, inject, OnInit, signal, Signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal, Signal, ChangeDetectionStrategy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
@@ -24,6 +24,7 @@ import { PermissionsService } from '../../../../../services/permission.service';
     NgxSkeletonLoaderModule,
   ],
   templateUrl: './choose-organization.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './choose-organization.component.css',
 })
 export class ChooseOrganizationComponent implements OnInit {

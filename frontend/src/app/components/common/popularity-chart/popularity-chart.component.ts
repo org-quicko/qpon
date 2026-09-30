@@ -1,5 +1,5 @@
-import { Component, inject, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, Input, ChangeDetectionStrategy } from '@angular/core';
+
 import { MatCardModule } from '@angular/material/card';
 import { Router } from "@angular/router";
 import { OrganizationStore } from '../../../store/organization.store';
@@ -7,7 +7,8 @@ import { OrganizationStore } from '../../../store/organization.store';
 @Component({
   selector: 'app-popularity-chart',
   standalone: true,
-  imports: [CommonModule, MatCardModule],
+  imports: [MatCardModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './popularity-chart.component.html',
 })
 export class PopularityChartComponent {

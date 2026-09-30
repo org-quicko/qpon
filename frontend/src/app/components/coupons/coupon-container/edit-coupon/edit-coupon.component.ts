@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CouponCodeStore, CreateSuccess } from '../../store/coupon-code.store';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { OrganizationStore } from '../../../../store/organization.store';
@@ -29,6 +29,7 @@ import { discountTypeEnum } from '../../../../../enums';
     ReactiveFormsModule,
   ],
   templateUrl: './edit-coupon.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./edit-coupon.component.css'],
 })
 export class EditCouponComponent implements OnInit {

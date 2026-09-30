@@ -5,6 +5,7 @@ import {
   inject,
   OnInit,
   ViewChild,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { CouponCodeStore, CreateSuccess } from '../../store/coupon-code.store';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -49,6 +50,7 @@ import { MatChipsModule } from '@angular/material/chips';
     NgClass,
   ],
   templateUrl: './edit-items.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./edit-items.component.css'],
 })
 export class EditItemsComponent implements OnInit {

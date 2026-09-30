@@ -8,7 +8,8 @@ export class CouponCodeSummaryWorkbookConverter {
   private couponCodeSummaryTableConverter: CouponCodeSummaryTableConverter;
 
   constructor() {
-    this.couponCodeSummaryTableConverter = new CouponCodeSummaryTableConverter();
+    this.couponCodeSummaryTableConverter =
+      new CouponCodeSummaryTableConverter();
   }
 
   convert(

@@ -47,7 +47,10 @@ export class Item {
   })
   updatedAt: Date;
 
-  @ManyToOne(() => Organization, (organization) => organization.items, { cascade: ['remove'], onDelete: 'CASCADE' })
+  @ManyToOne(() => Organization, (organization) => organization.items, {
+    cascade: ['remove'],
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({
     name: 'organization_id',
     referencedColumnName: 'organizationId',

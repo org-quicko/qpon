@@ -180,15 +180,43 @@ export class CustomerCouponCodeService {
 
       if (!customers) {
         this.logger.info('Customers not found');
+
+        // PermissionGuard authorizes against whatever this returns, and the
+        // CustomerCouponCode rules are scoped by
+        // `couponCode.organization.organizationId`. With an empty allow-list
+        // there is no row to hand back, and returning null makes CASL's
+        // detectSubjectType throw on `null.constructor` — which the guard
+        // turns into a blanket 403, locking members out of a coupon code
+        // simply because nobody has been added to it yet.
+        //
+        // Return an unsaved CustomerCouponCode carrying the coupon code and
+        // its organization instead, so the same rule is evaluated against the
+        // resource the caller is actually trying to modify.
+        const couponCode = await this.dataSource
+          .getRepository(CouponCode)
+          .findOne({
+            relations: { organization: true },
+            where: {
+              couponCodeId,
+              campaign: { campaignId },
+              coupon: { couponId },
+            },
+          });
+
+        if (!couponCode) {
+          return null;
+        }
+
+        const subject = new CustomerCouponCode();
+        subject.couponCodeId = couponCode.couponCodeId;
+        subject.couponCode = couponCode;
+        return subject;
       }
 
       this.logger.info('END: fetchCustomerForValidation service');
       return customers;
     } catch (error) {
-      this.logger.error(
-        `Error in fetchCustomerForValidation: `,
-        error,
-      );
+      this.logger.error(`Error in fetchCustomerForValidation: `, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -250,7 +278,13 @@ export class CustomerCouponCodeService {
       } catch (error) {
         this.logger.error(`Error in updateCustomers:`, error);
 
-        if (error instanceof NotFoundException) {
+        // validateCustomersExist raises BadRequestException for unknown ids;
+        // let it through rather than reporting a client error as a 500. Same
+        // guard as addCustomers above.
+        if (
+          error instanceof NotFoundException ||
+          error.name === 'BadRequestException'
+        ) {
           throw error;
         }
 

@@ -65,6 +65,12 @@ export class ApiKeyService {
     this.logger.info('START: fetchApiKey service');
     try {
       const apiKey = await this.apiKeyRepository.findOne({
+        // PermissionGuard checks this entity against an ability scoped by
+        // `organization.organizationId`, so the relation has to be loaded —
+        // an absent one reads as undefined and denies the action.
+        relations: {
+          organization: true,
+        },
         where: {
           organization: {
             organizationId,
@@ -115,10 +121,7 @@ export class ApiKeyService {
       const isValid = await bcrypt.compare(secret, apiKey.secret);
       return isValid ? apiKey : null;
     } catch (error) {
-      this.logger.error(
-        `Error in validateKeyAndSecret:`,
-        error,
-      );
+      this.logger.error(`Error in validateKeyAndSecret:`, error);
 
       throw error;
     }

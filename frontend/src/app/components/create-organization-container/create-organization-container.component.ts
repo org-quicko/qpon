@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { OrganizationStore } from '../../store/organization.store';
@@ -17,6 +17,7 @@ import { UsersStore } from './store/users.store';
   ],
   providers: [CreateOrganizationStore, UsersStore],
   templateUrl: './create-organization-container.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./create-organization-container.component.css'],
 })
 export class CreateOrganizationContainerComponent implements OnInit {

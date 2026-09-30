@@ -33,9 +33,7 @@ import { JobsModule } from './modules/jobs.module';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         ...typeOrmConfig(configService),
-        subscribers: [
-          OrganizationSubscriber,
-        ],
+        subscribers: [OrganizationSubscriber],
       }),
     }),
     JobsModule,
@@ -71,4 +69,4 @@ import { JobsModule } from './modules/jobs.module';
     },
   ],
 })
-export class AppModule { }
+export class AppModule {}

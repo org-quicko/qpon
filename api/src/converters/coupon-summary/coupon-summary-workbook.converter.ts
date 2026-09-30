@@ -6,7 +6,6 @@ import { CouponSummaryTableConverter } from './coupon-summary-table.converter';
 
 @Injectable()
 export class CouponSummaryWorkbookConverter {
-
   private couponSummaryTableConverter: CouponSummaryTableConverter;
 
   constructor() {
@@ -17,19 +16,20 @@ export class CouponSummaryWorkbookConverter {
     couponSummaryMv: CouponSummaryMv[],
     organizationId: string,
   ): CouponSummaryWorkbook {
-
     const couponSummaryWorkbook = new CouponSummaryWorkbook();
 
     const couponSummarySheet = couponSummaryWorkbook.getCouponSummarySheet();
 
-    const couponSummaryTable = this.couponSummaryTableConverter.convert(couponSummaryMv);
+    const couponSummaryTable =
+      this.couponSummaryTableConverter.convert(couponSummaryMv);
 
     couponSummarySheet.replaceBlock(couponSummaryTable);
 
-    couponSummaryWorkbook.setMetadata(new JSONObject({
-      organization_id: organizationId,
-    }));
-
+    couponSummaryWorkbook.setMetadata(
+      new JSONObject({
+        organization_id: organizationId,
+      }),
+    );
 
     return couponSummaryWorkbook;
   }

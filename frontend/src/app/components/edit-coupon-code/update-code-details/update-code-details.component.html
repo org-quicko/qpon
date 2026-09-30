@@ -19,7 +19,7 @@
       <mat-form-field appearance="outline" class="opacity-[38%]" subscriptSizing="dynamic">
         <mat-label>Code</mat-label>
         <div class="flex justify-between items-center">
-          <input matInput type="text" [disabled]="true" [value]="couponCode()?.code"/>
+          <input matInput type="text" [disabled]="true" [value]="$safeNavigationMigration(couponCode()?.code)"/>
         </div>    
       </mat-form-field>
       <mat-form-field appearance="outline" subscriptSizing="dynamic">

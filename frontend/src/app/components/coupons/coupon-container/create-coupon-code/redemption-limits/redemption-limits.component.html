@@ -23,7 +23,7 @@
       >
         <div matPrefix class="h-[40px] w-[40px] flex justify-center items-center">
                 <span class="text-on-surface text-xl"
-                  >{{ getCurrencySymbolOnly(organization()?.currency!) }}</span
+                  >{{ getCurrencySymbolOnly($safeNavigationMigration(organization()?.currency)!) }}</span
                 >
               </div>
         <input
@@ -32,6 +32,7 @@
           placeholder="Enter amount"
           class="placeholder:text-outline-variant placeholder:mat-body-large"
           formControlName="minimumAmount"
+          aria-label="Minimum purchase amount"
         />
       </mat-form-field>
     </div>
@@ -55,6 +56,7 @@
           placeholder="100"
           class="placeholder:text-outline-variant"
           formControlName="maxRedemptions"
+          aria-label="Max redemptions"
         />
       </mat-form-field>
     </div>
@@ -79,6 +81,7 @@
           placeholder="1"
           class="placeholder:text-outline-variant"
           formControlName="maxRedemptionPerCustomer"
+          aria-label="Max redemptions per customer"
         />
       </mat-form-field>
     </div>

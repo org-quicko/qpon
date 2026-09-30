@@ -31,14 +31,20 @@ export class CouponItem {
   })
   updatedAt: Date;
 
-  @ManyToOne(() => Item, (item) => item.couponItems, { cascade: ['remove'], onDelete: 'CASCADE' })
+  @ManyToOne(() => Item, (item) => item.couponItems, {
+    cascade: ['remove'],
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({
     name: 'item_id',
     referencedColumnName: 'itemId',
   })
   item: Item;
 
-  @ManyToOne(() => Coupon, (coupon) => coupon.couponItems, { cascade: ['remove'], onDelete: 'CASCADE' })
+  @ManyToOne(() => Coupon, (coupon) => coupon.couponItems, {
+    cascade: ['remove'],
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({
     name: 'coupon_id',
     referencedColumnName: 'couponId',

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { onChangeStatusSuccess } from '../store/coupon-codes.store';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
   selector: 'app-coupon-codes-change-status',
   imports: [MatButtonModule],
   templateUrl: './coupon-code-change-status.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./coupon-code-change-status.component.css']
 })
 export class CouponCodeChangeStatusDialogComponent implements OnInit {

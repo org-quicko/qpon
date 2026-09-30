@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Query, Param, StreamableFile } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Query,
+  Param,
+  StreamableFile,
+} from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { RedemptionsService } from '../services/redemption.service';
 import { LoggerService } from '../services/logger.service';
@@ -14,7 +22,7 @@ export class RedemptionsController {
   constructor(
     private readonly redemptionsService: RedemptionsService,
     private logger: LoggerService,
-  ) { }
+  ) {}
 
   /**
    * Redeem coupon code

@@ -11,11 +11,14 @@ export class ItemsSummaryWorkbookConverter {
     this.itemsSummaryTableConverter = new ItemsSummaryTableConverter();
   }
 
-  convert(itemSummaryMvs: ItemWiseDayWiseRedemptionSummaryMv[]): ItemsSummaryWorkbook {
+  convert(
+    itemSummaryMvs: ItemWiseDayWiseRedemptionSummaryMv[],
+  ): ItemsSummaryWorkbook {
     const itemsSummaryWorkbook = new ItemsSummaryWorkbook();
     const itemsSummarySheet = itemsSummaryWorkbook.getItemsSummarySheet();
 
-    const itemsSummaryTable = this.itemsSummaryTableConverter.convert(itemSummaryMvs);
+    const itemsSummaryTable =
+      this.itemsSummaryTableConverter.convert(itemSummaryMvs);
 
     itemsSummarySheet.replaceBlock(itemsSummaryTable);
 

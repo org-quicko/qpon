@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, signal, Signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal, Signal, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,6 +12,7 @@ import { CouponCodeFilter } from '../../../../../../../types/coupon-code-filter.
   selector: 'app-filter-dialog',
   imports: [MatIconModule, MatButtonModule, MatDividerModule, MatChipsModule, ReactiveFormsModule],
   templateUrl: './filter-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./filter-dialog.component.css']
 })
 export class FilterDialogComponent {

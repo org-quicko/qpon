@@ -1,0 +1,21 @@
+{
+  "name": "qpon-e2e",
+  "version": "1.0.0",
+  "description": "Playwright end-to-end tests for the Qpon web app",
+  "author": "Quicko <developer@quicko.org.in>",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "report": "playwright show-report",
+    "typecheck": "tsc --noEmit",
+    "stack:up": "docker compose -f docker-compose.e2e.yml up -d --build --wait",
+    "stack:down": "docker compose -f docker-compose.e2e.yml down -v"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^22.20.4",
+    "dotenv": "^18.0.3",
+    "typescript": "~6.0.3"
+  }
+}

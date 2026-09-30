@@ -1,10 +1,12 @@
-import { CouponCodeRow, CouponCodeTable } from '@org-quicko/qpon-sheet-core/coupon_code_workbook/beans';
+import {
+  CouponCodeRow,
+  CouponCodeTable,
+} from '@org-quicko/qpon-sheet-core/coupon_code_workbook/beans';
 import { JSONArray } from '@org-quicko/core';
 import { CouponCode } from '../../entities/coupon-code.entity';
 
 export class CouponCodeTableConverter {
-  convert(couponCodes: CouponCode[]) : CouponCodeTable {
-
+  convert(couponCodes: CouponCode[]): CouponCodeTable {
     const couponCodeTable = new CouponCodeTable();
 
     for (let index = 0; index < couponCodes.length; index++) {

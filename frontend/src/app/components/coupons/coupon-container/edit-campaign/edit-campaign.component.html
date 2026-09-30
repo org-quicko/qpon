@@ -88,14 +88,14 @@
       >
         <div class="h-[48px] w-[48px] flex justify-center items-center">
                 <span class="text-on-surface-variant text-xl"
-                  >{{ getCurrencySymbolOnly(organization()?.currency!) }}</span
+                  >{{ getCurrencySymbolOnly($safeNavigationMigration(organization()?.currency)!) }}</span
                 >
         </div>
         <input
           matInput
           class="focus:outline-none align-middle py-[4px] w-full mat-body-large placeholder:text-on-surface-variant text-on-surface"
           placeholder="Budget amount"
-          [value]="this.campaign()?.budget"
+          [value]="$safeNavigationMigration(this.campaign()?.budget)"
           [disabled]="true"
         />
       </div>

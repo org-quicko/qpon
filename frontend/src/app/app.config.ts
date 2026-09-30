@@ -13,7 +13,7 @@ import { RxFormBuilder } from '@rxweb/reactive-form-validators';
 import { RequestInterceptor } from './interceptors/request.interceptor';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
-import { createMongoAbility, PureAbility } from '@casl/ability';
+import { createMongoAbility, Ability } from '@casl/ability';
 import { UserAbility } from './permissions/ability';
 import { provideNativeDateAdapter } from '@angular/material/core';
 
@@ -39,7 +39,7 @@ export const appConfig: ApplicationConfig = {
       deps: [MatIconRegistry, DomSanitizer],
     },
     {
-      provide: PureAbility,
+      provide: Ability,
       useFactory: () => createMongoAbility<UserAbility>()
     },
     provideAnimationsAsync(),

@@ -8,6 +8,7 @@ import {
   OnInit,
   Output,
   ViewChild,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -48,6 +49,7 @@ import { SnackbarService } from '../../../../../services/snackbar.service';
     NgClass,
   ],
   templateUrl: './customer-constraint.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./customer-constraint.component.css'],
 })
 export class CustomerConstraintComponent implements OnInit {

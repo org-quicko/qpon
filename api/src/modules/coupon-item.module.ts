@@ -12,7 +12,14 @@ import { Coupon } from 'src/entities/coupon.entity';
 import { ItemWiseDayWiseRedemptionSummaryMv } from 'src/entities/item-wise-day-wise-redemption-summary-mv';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CouponItem, Item, Coupon, ItemWiseDayWiseRedemptionSummaryMv])],
+  imports: [
+    TypeOrmModule.forFeature([
+      CouponItem,
+      Item,
+      Coupon,
+      ItemWiseDayWiseRedemptionSummaryMv,
+    ]),
+  ],
   controllers: [CouponItemController],
   providers: [
     CouponItemService,

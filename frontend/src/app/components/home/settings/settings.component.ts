@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { MatTabGroup, MatTab } from "@angular/material/tabs";
 import { UserProfileComponent } from "./user-profile/user-profile.component";
 import { OrganizationProfileComponent } from "./organization-profile/organization-profile.component";
@@ -9,6 +9,7 @@ import { ApiKeysComponent } from "./api-keys/api-keys.component";
   selector: 'app-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatTabGroup, MatTab, UserProfileComponent, OrganizationProfileComponent, TeamUsersComponent, ApiKeysComponent],
 })
 export class SettingsComponent {

@@ -6,7 +6,6 @@ import { CouponCodeTableConverter } from './coupon-code-table.converter';
 
 @Injectable()
 export class CouponCodeWorkbookConverter {
-
   private couponCodeTableConverter: CouponCodeTableConverter;
 
   constructor() {
@@ -17,7 +16,6 @@ export class CouponCodeWorkbookConverter {
     couponCodes: CouponCode[],
     organizationId: string,
   ): CouponCodeWorkbook {
-    
     const couponCodeWorkbook = new CouponCodeWorkbook();
     const couponCodeSheet = couponCodeWorkbook.getCouponCodeSheet();
 

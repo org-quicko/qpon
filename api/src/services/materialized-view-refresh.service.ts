@@ -1,4 +1,9 @@
-import { Injectable, HttpException, HttpStatus, OnModuleInit } from '@nestjs/common';
+import {
+  Injectable,
+  HttpException,
+  HttpStatus,
+  OnModuleInit,
+} from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { DataSource } from 'typeorm';
 import { LoggerService } from './logger.service';
@@ -48,7 +53,9 @@ export class MaterializedViewRefreshService implements OnModuleInit {
       for (const view of this.materializedViews) {
         try {
           this.logger.info(`Refreshing materialized view: ${view}...`);
-          await this.dataSource.query(`REFRESH MATERIALIZED VIEW ${view} WITH DATA;`);
+          await this.dataSource.query(
+            `REFRESH MATERIALIZED VIEW ${view} WITH DATA;`,
+          );
           this.logger.info(`Successfully refreshed: ${view}`);
         } catch (error) {
           this.logger.error(`Failed to refresh ${view}`, error);

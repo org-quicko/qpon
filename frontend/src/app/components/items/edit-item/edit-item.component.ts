@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { OrganizationStore } from '../../../store/organization.store';
 import { ItemStore, onItemSuccess } from '../items-container/create-items/store/item.store';
@@ -9,7 +9,7 @@ import { RxFormBuilder } from '@rxweb/reactive-form-validators';
 import { UpdateItemDto } from '../../../../dtos/item.dto';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { NgFor } from '@angular/common';
+
 import { MatInputModule } from '@angular/material/input';
 import { instanceToPlain } from 'class-transformer';
 
@@ -21,11 +21,11 @@ import { instanceToPlain } from 'class-transformer';
     MatIconModule,
     MatFormFieldModule,
     ReactiveFormsModule,
-    MatInputModule,
-    NgFor
-  ],
+    MatInputModule
+],
   providers: [ItemStore],
   templateUrl: './edit-item.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./edit-item.component.css'],
 })
 export class EditItemComponent implements OnInit {

@@ -1,0 +1,99 @@
+name: CI
+
+on:
+  pull_request:
+  workflow_call:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  api:
+    name: API tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: api
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: api/package-lock.json
+
+      - run: npm ci
+
+      - name: Lint
+        run: npx oxlint --type-aware
+
+      - name: Unit tests
+        run: npm run test
+
+      # Integration and e2e start a postgres:18 container through
+      # testcontainers and run the real migrations against it. The ubuntu
+      # runner already has a Docker daemon, so no service container is needed.
+      - name: Integration tests
+        run: npm run test:integration
+
+      - name: End-to-end tests
+        run: npm run test:e2e
+
+  playwright:
+    name: Playwright tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      QPON_IMAGE: qpon:e2e
+    defaults:
+      run:
+        working-directory: e2e
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: e2e/package-lock.json
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Build app image
+        working-directory: .
+        run: docker build -t "$QPON_IMAGE" .
+
+      - name: Start stack
+        run: docker compose -f docker-compose.e2e.yml up -d --no-build --wait
+
+      - name: Playwright tests
+        run: npm test
+
+      - name: Show app logs
+        if: failure()
+        run: docker compose -f docker-compose.e2e.yml logs app
+
+      - name: Upload Playwright report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: |
+            e2e/playwright-report
+            e2e/test-results
+          retention-days: 7
+
+      - name: Stop stack
+        if: always()
+        run: docker compose -f docker-compose.e2e.yml down -v

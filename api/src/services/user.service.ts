@@ -31,7 +31,7 @@ export class UserService {
     private userListConverter: UserListConverter,
     private datasource: DataSource,
     private logger: LoggerService,
-  ) { }
+  ) {}
 
   /**
    * Create user
@@ -164,10 +164,7 @@ export class UserService {
 
       return this.userListConverter.convert(allUsers as any, count, skip, take);
     } catch (error) {
-      this.logger.error(
-        `Error in fetchUsersOfAnOrganization:`,
-        error,
-      );
+      this.logger.error(`Error in fetchUsersOfAnOrganization:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -253,10 +250,13 @@ export class UserService {
       }
 
       /**
-      * If user wants to change password
-      */
+       * If user wants to change password
+       */
       if (body.currentPassword && body.newPassword) {
-        const isValid = await bcrypt.compare(body.currentPassword, user.password);
+        const isValid = await bcrypt.compare(
+          body.currentPassword,
+          user.password,
+        );
 
         if (!isValid) {
           throw new HttpException(
@@ -296,7 +296,7 @@ export class UserService {
     } catch (error) {
       this.logger.error(`Error in updateUser:`, error);
 
-      if (error instanceof NotFoundException) {
+      if (error instanceof HttpException) {
         throw error;
       }
 
@@ -446,6 +446,32 @@ export class UserService {
   }
 
   /**
+   * The membership row that authorizing an action on a team member is decided
+   * against — `change_role` is granted on OrganizationUser, scoped to the
+   * organization, so the subject has to be the membership and not the user.
+   */
+  async fetchOrganizationUserForValidation(
+    organizationId: string,
+    userId: string,
+  ) {
+    this.logger.info('START: fetchOrganizationUserForValidation service');
+    try {
+      const organizationUser = await this.organizationUserRepository.findOne({
+        where: { organizationId, userId },
+      });
+
+      if (!organizationUser) {
+        this.logger.warn('Organization user not found');
+      }
+
+      this.logger.info('END: fetchOrganizationUserForValidation service');
+      return organizationUser;
+    } catch (error) {
+      this.logger.error(`Error in fetchOrganizationUserForValidation:`, error);
+    }
+  }
+
+  /**
    * Fetch user
    */
   async fetchUserForValidation(whereOptions: FindOptionsWhere<User> = {}) {
@@ -467,10 +493,7 @@ export class UserService {
       this.logger.info('END: fetchUserForValidation service');
       return user;
     } catch (error) {
-      this.logger.error(
-        `Error in fetchUserValidation:`,
-        error,
-      );
+      this.logger.error(`Error in fetchUserValidation:`, error);
     }
   }
 
@@ -538,10 +561,7 @@ export class UserService {
         this.organizationUserConverter.convert(organizationUser),
       );
     } catch (error) {
-      this.logger.error(
-        `Error in fetchOrganizationsForUser:`,
-        error,
-      );
+      this.logger.error(`Error in fetchOrganizationsForUser:`, error);
 
       throw new HttpException(
         'Failed to fetch organizations for a user',
@@ -560,10 +580,6 @@ export class UserService {
       });
 
       if (!user) {
-        this.logger.warn('User not found');
-      }
-
-      if (!user) {
         this.logger.warn('User not found', { userId });
         throw new NotFoundException('User not found');
       }
@@ -572,6 +588,15 @@ export class UserService {
       return this.userConverter.convert(user);
     } catch (error) {
       this.logger.error(`Error in fetchUser:`, error);
+
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+
+      throw new HttpException(
+        'Failed to fetch user',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 

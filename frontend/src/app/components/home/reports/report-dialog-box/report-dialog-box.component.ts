@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, Inject, Signal } from '@angular/core';
+
+import { Component, Inject, Signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -29,19 +29,19 @@ export const MY_FORMATS = {
 	selector: 'app-generate-report-dialog',
 	standalone: true,
 	imports: [
-		CommonModule,
-		ReactiveFormsModule,
-		MatDialogModule,
-		MatFormFieldModule,
-		MatSelectModule,
-		MatDatepickerModule,
-		MatInputModule,
-		MatButtonModule,
-		MatDividerModule,
-		MatIconModule,
-		FormDialogBoxComponent,
-	],
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatButtonModule,
+    MatDividerModule,
+    MatIconModule,
+    FormDialogBoxComponent
+],
 	templateUrl: './report-dialog-box.component.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	providers: [
 		provideMomentDateAdapter(MY_FORMATS),
 	]

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Output, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { CouponsStore } from '../../../../store/coupons.store';
@@ -6,6 +6,7 @@ import { CouponsStore } from '../../../../store/coupons.store';
   selector: 'app-change-status',
   imports: [MatDialogModule, MatButtonModule],
   templateUrl: './change-status.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './change-status.component.css'
 })
 export class ChangeStatusComponent {

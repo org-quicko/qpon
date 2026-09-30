@@ -5,9 +5,11 @@ printf "\n======================================================================
 printf "\n=========================\n\nMigrating Data\n\n==========================\n"
 
 if [ "$NODE_ENV" = "production" ]; then
-    if [ -d "/app/db/migrations" ]; then
+    if [ -d "/app/dist/db/migrations" ]; then
         echo "Running migrations for production...."
-        npm run db:migration-run
+        # Run the compiled migrations directly: `npm run db:migration-run`
+        # rebuilds the app first, which needs the sources and dev dependencies.
+        node ./node_modules/typeorm/cli.js migration:run --dataSource ./dist/db/data-source.js
     else
         echo "No migrations folder found, skipping migration."
     fi

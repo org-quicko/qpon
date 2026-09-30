@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CouponCodeStore, CreateSuccess } from '../../store/coupon-code.store';
 import { MatInputModule } from '@angular/material/input';
 import {
@@ -26,6 +26,7 @@ import { SnackbarService } from '../../../../services/snackbar.service';
     ReactiveFormsModule,
   ],
   templateUrl: './create-campaign.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./create-campaign.component.css'],
 })
 export class CreateCampaignComponent implements OnInit {

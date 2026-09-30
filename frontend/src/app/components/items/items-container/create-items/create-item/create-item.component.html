@@ -26,37 +26,37 @@
         class="rounded-full text-primary"
         type="button"
         (click)="addCustomField()"
-      >
+        >
         Add
       </button>
     </div>
 
     <div class="flex flex-col gap-4">
-      <div
-        *ngFor="let field of customFields.controls; let i = index"
-        class="flex gap-4 justify-between items-start"
-        [formGroup]="field"
-      >
-        <mat-form-field appearance="outline" class="w-full" subscriptSizing="dynamic">
-          <mat-label>Key</mat-label>
-          <input matInput formControlName="key" />
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="w-full"subscriptSizing="dynamic">
-          <mat-label>Value</mat-label>
-          <input matInput formControlName="value" />
-        </mat-form-field>
-        <div class="relative top-2">
-          <button
-            mat-icon-button
-            color="warn"
-            type="button"
-            (click)="removeCustomField(i)"
+      @for (field of customFields.controls; track field; let i = $index) {
+        <div
+          class="flex gap-4 justify-between items-start"
+          [formGroup]="field"
           >
-            <mat-icon class="material-symbols-outlined">delete</mat-icon>
-          </button>
+          <mat-form-field appearance="outline" class="w-full" subscriptSizing="dynamic">
+            <mat-label>Key</mat-label>
+            <input matInput formControlName="key" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-full"subscriptSizing="dynamic">
+            <mat-label>Value</mat-label>
+            <input matInput formControlName="value" />
+          </mat-form-field>
+          <div class="relative top-2">
+            <button
+              mat-icon-button
+              color="warn"
+              type="button"
+              (click)="removeCustomField(i)"
+              >
+              <mat-icon class="material-symbols-outlined">delete</mat-icon>
+            </button>
+          </div>
         </div>
-      </div>
+      }
     </div>
   </div>
 </div>

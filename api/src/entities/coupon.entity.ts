@@ -56,7 +56,10 @@ export class Coupon {
   })
   updatedAt: Date;
 
-  @ManyToOne(() => Organization, (organization) => organization.coupons, { cascade: ['remove'], onDelete: 'CASCADE' })
+  @ManyToOne(() => Organization, (organization) => organization.coupons, {
+    cascade: ['remove'],
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({
     name: 'organization_id',
     referencedColumnName: 'organizationId',

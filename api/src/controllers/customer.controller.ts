@@ -28,8 +28,8 @@ export class CustomersController {
   ) {}
 
   /**
- * CUSTOMER REPORT
- */
+   * CUSTOMER REPORT
+   */
   @ApiResponse({ status: 200, description: 'Successful response' })
   @SkipTransform()
   @Permissions('read', CustomerWiseDayWiseRedemptionSummaryMv)
@@ -41,12 +41,11 @@ export class CustomersController {
   ): Promise<StreamableFile> {
     this.logger.info('START: generateCustomerSalesReport controller');
 
-    const stream =
-      await this.customersService.streamSalesByCustomerReport(
-        organizationId,
-        from,
-        to,
-      );
+    const stream = await this.customersService.streamSalesByCustomerReport(
+      organizationId,
+      from,
+      to,
+    );
 
     this.logger.info('END: generateCustomerSalesReport controller');
 

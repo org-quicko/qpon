@@ -1,0 +1,43 @@
+import { defineConfig, devices } from '@playwright/test';
+import { env } from './src/env';
+
+const isCI = !!process.env.CI;
+
+export default defineConfig({
+  testDir: './tests',
+  // Workers share one app container, so a busy run makes every step slower.
+  // Well clear of what any single test needs, and still short enough that a
+  // genuine hang fails rather than stalls the run.
+  timeout: 60_000,
+  // The runners are slower than a dev machine; the default 5s made a few
+  // dialogs and lazily loaded panels flaky there.
+  expect: { timeout: isCI ? 10_000 : 5_000 },
+  // Every test owns its organization, so nothing is shared between tests.
+  fullyParallel: true,
+  forbidOnly: isCI,
+  retries: isCI ? 1 : 0,
+  workers: isCI ? 2 : undefined,
+  reporter: isCI
+    ? [['github'], ['html', { open: 'never' }]]
+    : [['list'], ['html', { open: 'never' }]],
+
+  use: {
+    baseURL: env.baseURL,
+    trace: 'retain-on-failure',
+    screenshot: 'only-on-failure',
+    // The layouts are fixed-width desktop designs.
+    viewport: { width: 1440, height: 900 },
+  },
+
+  projects: [
+    {
+      name: 'setup',
+      testMatch: /global\.setup\.ts/,
+    },
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } },
+      dependencies: ['setup'],
+    },
+  ],
+});

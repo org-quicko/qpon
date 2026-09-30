@@ -71,7 +71,12 @@ export class OffersService {
 
       if (!allOffers || allOffers.length === 0) {
         this.logger.warn('No offers found');
-        return this.offerWorkbookConverter.convert([], organizationId, skip, take);
+        return this.offerWorkbookConverter.convert(
+          [],
+          organizationId,
+          skip,
+          take,
+        );
       }
 
       const couponIdsForSpecificItems: string[] = [];
@@ -118,31 +123,33 @@ export class OffersService {
         });
 
         if (relevantCustomer) {
-          matchingCustomerCouponCodes = await this.customerCouponCodeRepository.find({
-            where: {
-              customerId: relevantCustomer.customerId,
-              couponCodeId: In(couponCodeIdsForSpecificCustomers),
-            },
-          });
+          matchingCustomerCouponCodes =
+            await this.customerCouponCodeRepository.find({
+              where: {
+                customerId: relevantCustomer.customerId,
+                couponCodeId: In(couponCodeIdsForSpecificCustomers),
+              },
+            });
         }
       }
 
       const itemCouponSet = new Set(
-        matchingCouponItems.map(ci => `${ci.couponId}-${ci.itemId}`)
+        matchingCouponItems.map((ci) => `${ci.couponId}-${ci.itemId}`),
       );
       const customerCouponCodeSet = new Set(
-        matchingCustomerCouponCodes.map(ccc => `${ccc.couponCodeId}-${ccc.customerId}`)
+        matchingCustomerCouponCodes.map(
+          (ccc) => `${ccc.couponCodeId}-${ccc.customerId}`,
+        ),
       );
 
       const eligibleOffers: Offer[] = [];
 
-      for (const offer of allOffers) {        
+      for (const offer of allOffers) {
         let isOfferEligible = false;
         let finalItemId: string | undefined;
         let finalExternalItemId: string | undefined;
         let finalCustomerId: string | undefined;
         let finalExternalCustomerId: string | undefined;
-
 
         // Condition 1: ALL item and ALL customer constraints
         if (
@@ -155,10 +162,14 @@ export class OffersService {
         else if (
           offer.itemConstraint === itemConstraintEnum.ALL &&
           offer.customerConstraint === customerConstraintEnum.SPECIFIC &&
-          externalCustomerId && relevantCustomer
+          externalCustomerId &&
+          relevantCustomer
         ) {
-  
-          if (customerCouponCodeSet.has(`${offer.couponCodeId}-${relevantCustomer.customerId}`)) {
+          if (
+            customerCouponCodeSet.has(
+              `${offer.couponCodeId}-${relevantCustomer.customerId}`,
+            )
+          ) {
             isOfferEligible = true;
             finalCustomerId = relevantCustomer.customerId;
             finalExternalCustomerId = relevantCustomer.externalId;
@@ -168,7 +179,8 @@ export class OffersService {
         else if (
           offer.itemConstraint === itemConstraintEnum.SPECIFIC &&
           offer.customerConstraint === customerConstraintEnum.ALL &&
-          externalItemId && relevantItem
+          externalItemId &&
+          relevantItem
         ) {
           if (itemCouponSet.has(`${offer.couponId}-${relevantItem.itemId}`)) {
             isOfferEligible = true;
@@ -180,12 +192,16 @@ export class OffersService {
         else if (
           offer.itemConstraint === itemConstraintEnum.SPECIFIC &&
           offer.customerConstraint === customerConstraintEnum.SPECIFIC &&
-          externalItemId && relevantItem &&
-          externalCustomerId && relevantCustomer
+          externalItemId &&
+          relevantItem &&
+          externalCustomerId &&
+          relevantCustomer
         ) {
           if (
             itemCouponSet.has(`${offer.couponId}-${relevantItem.itemId}`) &&
-            customerCouponCodeSet.has(`${offer.couponCodeId}-${relevantCustomer.customerId}`)
+            customerCouponCodeSet.has(
+              `${offer.couponCodeId}-${relevantCustomer.customerId}`,
+            )
           ) {
             isOfferEligible = true;
             finalItemId = relevantItem.itemId;
@@ -201,7 +217,7 @@ export class OffersService {
             finalExternalCustomerId,
             finalExternalItemId,
             finalItemId,
-            finalCustomerId
+            finalCustomerId,
           );
           eligibleOffers.push(offerObject);
         }
@@ -288,9 +304,7 @@ export class OffersService {
         }
       }
 
-      if (
-        offer.customerConstraint === customerConstraintEnum.SPECIFIC
-      ) {
+      if (offer.customerConstraint === customerConstraintEnum.SPECIFIC) {
         if (customer !== null) {
           const customerCouponCode =
             await this.customerCouponCodeRepository.findOne({
@@ -304,7 +318,7 @@ export class OffersService {
                 customerId: customer.customerId,
               },
             });
-  
+
           if (!customerCouponCode) {
             this.logger.warn('Customer is ineligible for the offer');
             throw new ConflictException('Customer is ineligible for the offer');
@@ -388,12 +402,13 @@ export class OffersService {
       externalItemId: offer.externalItemId,
       externalCustomerId: offer.externalCustomerId,
       couponCodeId: offer.couponCodeId,
-      maxRedemptionPerCustomer: offer.maxRedemptionPerCustomer
+      maxRedemptionPerCustomer: offer.maxRedemptionPerCustomer,
     };
 
     if (
       offer.itemConstraint === itemConstraintEnum.SPECIFIC &&
-      externalItemId && itemId
+      externalItemId &&
+      itemId
     ) {
       offerObject.itemId = itemId;
       offerObject.externalItemId = externalItemId;
@@ -401,7 +416,8 @@ export class OffersService {
 
     if (
       offer.customerConstraint === customerConstraintEnum.SPECIFIC &&
-      externalCustomerId && customerId
+      externalCustomerId &&
+      customerId
     ) {
       offerObject.customerId = customerId;
       offerObject.externalCustomerId = externalCustomerId;

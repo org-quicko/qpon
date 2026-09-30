@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CreateCustomerComponent } from './create-customer/create-customer.component';
 import { AddMoreComponent } from './add-more/add-more.component';
 import { CreateCustomerDto } from '../../../../../dtos/customer.dto';
@@ -7,6 +7,7 @@ import { CreateCustomerDto } from '../../../../../dtos/customer.dto';
   selector: 'app-create-customers',
   imports: [CreateCustomerComponent, AddMoreComponent],
   templateUrl: './create-customers.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./create-customers.component.css']
 })
 export class CreateCustomersComponent {

@@ -1,4 +1,4 @@
-import { Component, effect, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { Component, effect, EventEmitter, inject, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { CustomerStore, OnCustomerSuccess } from '../../store/customer.store';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,6 +11,7 @@ import { CreateCustomerDto } from '../../../../../../dtos/customer.dto';
   selector: 'app-add-more',
   imports: [MatCardModule, MatIconModule, MatButtonModule],
   templateUrl: './add-more.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./add-more.component.css']
 })
 export class AddMoreComponent {

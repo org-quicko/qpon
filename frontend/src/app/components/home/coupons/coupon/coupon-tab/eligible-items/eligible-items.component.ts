@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -10,7 +10,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ItemDto } from '../../../../../../../dtos/item.dto';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatMenuModule } from '@angular/material/menu';
-import { NgFor, NgStyle } from '@angular/common';
+import { NgStyle } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
@@ -18,7 +18,7 @@ import { PaginationOptions } from '../../../../../../types/PaginatedOptions';
 import { MatDialog } from '@angular/material/dialog';
 import { NotAllowedDialogBoxComponent } from '../../../../../common/not-allowed-dialog-box/not-allowed-dialog-box.component';
 import { UserAbility, UserAbilityTuple } from '../../../../../../permissions/ability';
-import { PureAbility } from '@casl/ability';
+import { Ability } from '@casl/ability';
 import { AbilityServiceSignal } from '@casl/angular';
 import { CouponItemDto, CreateCouponItemDto } from '../../../../../../../dtos/coupon-item.dto';
 
@@ -36,6 +36,7 @@ import { CouponItemDto, CreateCouponItemDto } from '../../../../../../../dtos/co
   ],
   providers: [EligibleItemsStore],
   templateUrl: './eligible-items.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './eligible-items.component.css',
 })
 export class EligibleItemsComponent implements OnInit {
@@ -65,7 +66,7 @@ export class EligibleItemsComponent implements OnInit {
 
   private readonly abilityService = inject<AbilityServiceSignal<UserAbility>>(AbilityServiceSignal);
 	protected readonly can = this.abilityService.can;
-	private readonly ability = inject<PureAbility<UserAbilityTuple>>(PureAbility);
+	private readonly ability = inject<Ability<UserAbilityTuple>>(Ability);
 
   constructor(private route: ActivatedRoute, private router: Router) {
     this.couponId = '';

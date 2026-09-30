@@ -6,7 +6,9 @@ import {
 import { ItemWiseDayWiseRedemptionSummaryMv } from 'src/entities/item-wise-day-wise-redemption-summary-mv';
 
 export class ItemsSummaryTableConverter {
-  convert(itemSummaryMvs: ItemWiseDayWiseRedemptionSummaryMv[]): ItemsSummaryTable {
+  convert(
+    itemSummaryMvs: ItemWiseDayWiseRedemptionSummaryMv[],
+  ): ItemsSummaryTable {
     const itemsSummaryTable = new ItemsSummaryTable();
 
     for (const mv of itemSummaryMvs) {

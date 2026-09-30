@@ -122,11 +122,11 @@
               {{ 
                   coupon.discountType == 'fixed' ?
                   coupon.discountUpto ? 
-                    `${coupon.discountValue | currency: organization()?.currency : 'symbol'} upto ${coupon.discountUpto | currency: organization()?.currency : 'symbol'}` 
-                    : `${coupon.discountValue | currency: organization()?.currency : 'symbol'}`
+                    `${coupon.discountValue | currency: $safeNavigationMigration(organization()?.currency) : 'symbol'} upto ${coupon.discountUpto | currency: $safeNavigationMigration(organization()?.currency) : 'symbol'}` 
+                    : `${coupon.discountValue | currency: $safeNavigationMigration(organization()?.currency) : 'symbol'}`
                   :
                   coupon.discountUpto ? 
-                    `${coupon.discountValue}% upto ${coupon.discountUpto | currency: organization()?.currency : 'symbol'}` 
+                    `${coupon.discountValue}% upto ${coupon.discountUpto | currency: $safeNavigationMigration(organization()?.currency) : 'symbol'}` 
                     : `${coupon.discountValue}%`
               }}
             </td>
@@ -209,6 +209,7 @@
                   mat-icon-button
                   [matMenuTriggerFor]="couponMenu"
                   (click)="$event.stopPropagation()"
+                  [attr.aria-label]="'Actions for ' + coupon.name"
                 >
                   <mat-icon class="hover:cursor-pointer">more_vert</mat-icon>
                 </button>

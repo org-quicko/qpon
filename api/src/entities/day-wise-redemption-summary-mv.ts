@@ -1,8 +1,8 @@
 import { ViewEntity, ViewColumn, Index } from 'typeorm';
 
 @ViewEntity({
-    name: 'day_wise_redemption_summary_mv',
-    expression: `
+  name: 'day_wise_redemption_summary_mv',
+  expression: `
     SELECT
       r.organization_id,
       r.redemption_date::text AS date,
@@ -16,32 +16,32 @@ import { ViewEntity, ViewColumn, Index } from 'typeorm';
     WHERE r.organization_id IS NOT NULL
     GROUP BY r.organization_id, r.redemption_date
   `,
-    materialized: true,
+  materialized: true,
 })
 export class DayWiseRedemptionSummaryMv {
-    @Index()
-    @ViewColumn({ name: 'organization_id' })
-    organizationId: string;
+  @Index()
+  @ViewColumn({ name: 'organization_id' })
+  organizationId: string;
 
-    @Index()
-    @ViewColumn({ name: 'date' })
-    date: string;
+  @Index()
+  @ViewColumn({ name: 'date' })
+  date: string;
 
-    @ViewColumn({ name: 'total_redemptions_count' })
-    totalRedemptionsCount: number;
+  @ViewColumn({ name: 'total_redemptions_count' })
+  totalRedemptionsCount: number;
 
-    @ViewColumn({ name: 'gross_sales_amount' })
-    grossSalesAmount: number;
+  @ViewColumn({ name: 'gross_sales_amount' })
+  grossSalesAmount: number;
 
-    @ViewColumn({ name: 'discount_amount' })
-    discountAmount: number;
+  @ViewColumn({ name: 'discount_amount' })
+  discountAmount: number;
 
-    @ViewColumn({ name: 'net_sales_amount' })
-    netSalesAmount: number;
+  @ViewColumn({ name: 'net_sales_amount' })
+  netSalesAmount: number;
 
-    @ViewColumn({ name: 'created_at' })
-    createdAt: Date;
+  @ViewColumn({ name: 'created_at' })
+  createdAt: Date;
 
-    @ViewColumn({ name: 'updated_at' })
-    updatedAt: Date;
+  @ViewColumn({ name: 'updated_at' })
+  updatedAt: Date;
 }

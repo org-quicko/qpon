@@ -1,4 +1,4 @@
-import { Component, inject, effect } from '@angular/core';
+import { Component, inject, effect, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatIcon } from "@angular/material/icon";
 import { DateRangeFilterComponent } from "../../../../layouts/range-selector/date-range-filter.component";
@@ -6,14 +6,15 @@ import { OrganizationStore } from '../../../../store/organization.store';
 import { CouponCodeSummaryStore } from '../store/coupon-code-summary.store';
 import { DateRangeStore } from '../../../../store/date-range.store';
 import { MatCard } from "@angular/material/card";
-import { NgIf, NgForOf } from '@angular/common';
+
 import { NgxSkeletonLoaderComponent } from "ngx-skeleton-loader";
 
 @Component({
   selector: 'app-coupon-codes-list',
   templateUrl: './coupon-codes-list.component.html',
   styleUrls: ['./coupon-codes-list.component.css'],
-  imports: [MatIcon, DateRangeFilterComponent, MatCard, NgIf, NgForOf, NgxSkeletonLoaderComponent],
+  imports: [MatIcon, DateRangeFilterComponent, MatCard, NgxSkeletonLoaderComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [CouponCodeSummaryStore]
 })
 export class CouponCodesListComponent {

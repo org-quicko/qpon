@@ -106,7 +106,6 @@ export function formatDate(date: Date): string {
   return fullDateString;
 }
 
-
 export function formatDateReport(date: Date | string): string {
   const d = new Date(date);
   const day = String(d.getDate()).padStart(2, '0');

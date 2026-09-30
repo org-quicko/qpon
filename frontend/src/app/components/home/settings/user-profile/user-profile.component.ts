@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
@@ -13,13 +13,13 @@ import { OrganizationStore } from '../../../../store/organization.store';
   selector: 'app-user-profile',
   standalone: true,
   imports: [
-    CommonModule,
     MatButtonModule,
     MatDividerModule,
     MatCardModule,
     NgxSkeletonLoaderModule
-  ],
+],
   templateUrl: './user-profile.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./user-profile.component.css']
 })
 export class UserProfileComponent {

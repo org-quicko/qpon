@@ -1,9 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { OrganizationUserStore } from '../../store/organization-user.store';
 import { Router } from '@angular/router';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';
+
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MatDividerModule } from '@angular/material/divider';
 
@@ -13,10 +13,10 @@ import { MatDividerModule } from '@angular/material/divider';
     MatListModule,
     MatIconModule,
     MatDividerModule,
-    CommonModule,
-    NgxSkeletonLoaderModule,
-  ],
+    NgxSkeletonLoaderModule
+],
   templateUrl: './organizations.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './organizations.component.css',
 })
 export class OrganizationsComponent {

@@ -1,7 +1,7 @@
-import { Component, Inject, inject } from '@angular/core';
+import { Component, Inject, inject, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { FormDialogBoxComponent } from '../../../common/form-dialog-box/form-dialog-box.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -15,12 +15,12 @@ import { instanceToPlain } from 'class-transformer';
     selector: 'app-edit-organisation-profile-dialog',
     standalone: true,
     imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        FormDialogBoxComponent
-    ],
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormDialogBoxComponent
+],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './edit-organisation-profile-dialog.component.html'
 })
 export class EditOrganisationProfileDialogComponent {

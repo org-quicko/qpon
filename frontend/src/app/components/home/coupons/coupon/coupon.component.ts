@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CouponStore } from './store/coupon.store';
 import { OrganizationStore } from '../../../../store/organization.store';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -17,6 +17,7 @@ import { OnCouponsSuccess } from '../../../../store/coupons.store';
   imports: [MatIconModule, CouponDetailsComponent, CouponSummaryComponent, CouponTabComponent, NgxSkeletonLoaderModule],
   providers: [CouponStore, CampaignsStore],
   templateUrl: './coupon.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './coupon.component.css',
 })
 export class CouponComponent implements OnInit {

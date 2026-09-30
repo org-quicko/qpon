@@ -39,7 +39,7 @@ export class CustomersService {
     private customerListConverter: CustomerListConverter,
     private logger: LoggerService,
     private datasource: DataSource,
-  ) { }
+  ) {}
 
   /**
    * Create customer
@@ -328,10 +328,7 @@ export class CustomersService {
       this.logger.info('END: validateCustomersExist service');
       return existingCustomers;
     } catch (error) {
-      this.logger.error(
-        `Error in validateCustomersExist:`,
-        error,
-      );
+      this.logger.error(`Error in validateCustomersExist:`, error);
 
       throw error;
     }
@@ -341,6 +338,12 @@ export class CustomersService {
     this.logger.info('START: fetchCustomerForValidation service');
     try {
       const customer = await this.customersRepository.findOne({
+        // PermissionGuard checks this entity against an ability scoped by
+        // `organization.organizationId`, so the relation has to be loaded —
+        // an absent one reads as undefined and denies the action.
+        relations: {
+          organization: true,
+        },
         where: {
           customerId,
           organization: {
@@ -358,10 +361,7 @@ export class CustomersService {
       this.logger.info('END: fetchCustomerForValidation service');
       return customer;
     } catch (error) {
-      this.logger.error(
-        `Error in fetchCustomerForValidation:`,
-        error,
-      );
+      this.logger.error(`Error in fetchCustomerForValidation:`, error);
 
       if (error instanceof NotFoundException) {
         throw error;
@@ -392,7 +392,7 @@ export class CustomersService {
           name: body.name,
           email: body.email,
           phone: body.phone,
-          isdCode: body.isdCode
+          isdCode: body.isdCode,
         });
 
         const customer = await this.customersRepository.findOne({
@@ -465,7 +465,9 @@ export class CustomersService {
 
     const dbStream = await this.customerWiseMvRepository
       .createQueryBuilder('customerSummary')
-      .where('customerSummary.organization_id = :organizationId', { organizationId })
+      .where('customerSummary.organization_id = :organizationId', {
+        organizationId,
+      })
       .andWhere('customerSummary.date BETWEEN :start AND :end', {
         start: from,
         end: to,

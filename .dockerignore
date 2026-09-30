@@ -1,3 +1,20 @@
+# Allow-list: the image only needs the frontend and api sources. Everything
+# else (docs, lib, .git, build output) stays out of the build context so it
+# neither slows the upload nor invalidates cached layers.
+*
+!frontend/
+!api/
+
 **/node_modules
-**/generated
+**/dist
 **/.env
+**/.env.*
+**/generated
+
+frontend/.angular
+frontend/docs
+frontend/**/*.spec.ts
+
+api/test
+api/**/*.spec.ts
+api/coverage

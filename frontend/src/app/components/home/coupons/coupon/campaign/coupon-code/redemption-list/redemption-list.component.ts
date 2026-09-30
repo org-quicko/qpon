@@ -4,6 +4,7 @@ import {
   inject,
   OnInit,
   signal,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,7 +15,7 @@ import { RedemptionsStore } from './store/redemptions.store';
 import { ActivatedRoute, Params } from '@angular/router';
 import { OrganizationStore } from '../../../../../../../store/organization.store';
 import { CustomDatePipe } from '../../../../../../../pipe/date.pipe';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
@@ -37,6 +38,7 @@ import { sortOrderEnum } from '../../../../../../../../enums';
   ],
   providers: [RedemptionsStore],
   templateUrl: './redemption-list.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./redemption-list.component.css'],
 })
 export class RedemptionListComponent implements OnInit {

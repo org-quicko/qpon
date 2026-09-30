@@ -1,5 +1,5 @@
 import { CurrencyPipe, NgClass, getCurrencySymbol } from '@angular/common';
-import { Component, effect, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Validators, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -27,6 +27,7 @@ import { getCountryCode, getCountryData } from 'countries-list';
     ReactiveFormsModule,
   ],
   templateUrl: './create-coupon.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./create-coupon.component.css'],
 })
 export class CreateCouponComponent implements OnInit {

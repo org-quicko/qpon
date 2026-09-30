@@ -5,8 +5,9 @@ import {
   SimpleChanges,
   ViewChild,
   OnDestroy,
+  ChangeDetectionStrategy
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { DateRangeType } from '../../../../store/date-range.store';
@@ -31,11 +32,12 @@ interface ChartPoint {
 @Component({
   selector: 'app-sales-trend-chart',
   standalone: true,
-  imports: [CommonModule, BaseChartDirective],
+  imports: [BaseChartDirective],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="bg-surface-container-lowest relative">
       <h3 class="text-base text-on-surface-variant font-medium mb-3">Sales</h3>
-
+    
       <div class="h-[410px] relative mb-4 border border-outline-variant rounded-lg p-6">
         <!-- Always render chart -->
         <canvas
@@ -44,18 +46,19 @@ interface ChartPoint {
           [options]="chartOptions"
           [type]="'line'">
         </canvas>
-
+    
         <!-- Centered “No data available” -->
-        <div
-          *ngIf="!hasData"
-          class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-          <p class="font-medium text-on-surface">
-            No data available
-          </p>
-        </div>
+        @if (!hasData) {
+          <div
+            class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
+            <p class="font-medium text-on-surface">
+              No data available
+            </p>
+          </div>
+        }
       </div>
     </div>
-  `,
+    `,
 })
 export class SalesTrendChartComponent implements OnChanges, OnDestroy {
   @Input() graphData: DailyData[] = [];

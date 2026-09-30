@@ -44,7 +44,7 @@
               class="mat-display-medium text-on-surface focus:outline-none bg-transparent max-w-[180px] overflow-hidden"
               placeholder="0"
               [style]="`width: ${updatePercentageWidth()}ch;`"
-              [value]="discountType == 'percentage' ? coupon()?.discountValue : 0"
+              [value]="discountType == 'percentage' ? $safeNavigationMigration(coupon()?.discountValue) : 0"
               [ngClass]="{
                 'placeholder:text-outline-variant': discountType != 'percentage',
                 'text-outline-variant': discountType != 'percentage'
@@ -83,7 +83,7 @@
                 'text-on-surface': discountType == 'fixed'
               }"
             >
-              {{ getCurrencySymbolOnly(organization()?.currency!) }}
+              {{ getCurrencySymbolOnly($safeNavigationMigration(organization()?.currency)!) }}
             </span>
 
             <input
@@ -92,7 +92,7 @@
               class="mat-display-medium text-on-surface focus:outline-none pl-7 w-full leading-none"
               min="0"
               placeholder="0"
-              [value]="discountType == 'fixed' ? coupon()?.discountValue : 0"
+              [value]="discountType == 'fixed' ? $safeNavigationMigration(coupon()?.discountValue) : 0"
               [ngClass]="{
                 'placeholder:text-outline-variant': discountType != 'fixed',
                 'text-outline-variant': discountType != 'fixed'
@@ -163,7 +163,7 @@
                 [disabled]="true"
                 class="focus:outline-none align-middle py-[4px] w-full mat-body-large placeholder:text-on-surface-variant text-on-surface"
                 placeholder="Add amount"
-                [value]="coupon()?.discountUpto"
+                [value]="$safeNavigationMigration(coupon()?.discountUpto)"
               />
             </div>
           </div>

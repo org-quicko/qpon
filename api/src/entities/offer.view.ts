@@ -94,7 +94,7 @@ export class Offer {
     },
   })
   minimumAmount: number;
-  
+
   @ViewColumn({
     name: 'max_redemption_per_customer',
     transformer: {

@@ -7,7 +7,14 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, FindOptionsWhere, ILike, Not, Raw, Repository } from 'typeorm';
+import {
+  DataSource,
+  FindOptionsWhere,
+  ILike,
+  Not,
+  Raw,
+  Repository,
+} from 'typeorm';
 import { Coupon } from '../entities/coupon.entity';
 import { CreateCouponDto, UpdateCouponDto } from '../dtos';
 import { LoggerService } from './logger.service';
@@ -49,7 +56,9 @@ export class CouponService {
     return this.datasource.transaction(async (manager) => {
       try {
         if (body.discountType && body.discountValue <= 0) {
-          throw new BadRequestException('Discount value must be greater than 0');
+          throw new BadRequestException(
+            'Discount value must be greater than 0',
+          );
         }
 
         const couponRepository = manager.getRepository(Coupon);
@@ -61,8 +70,8 @@ export class CouponService {
             }),
             status: Not(statusEnum.ARCHIVE),
             organization: {
-              organizationId
-            }
+              organizationId,
+            },
           },
         });
 
@@ -509,10 +518,7 @@ export class CouponService {
         organizationId,
       );
     } catch (error) {
-      this.logger.error(
-        `Error in fetchCouponsSummary:`,
-        error,
-      );
+      this.logger.error(`Error in fetchCouponsSummary:`, error);
 
       throw new HttpException(
         'Failed to fetch summary of coupons',

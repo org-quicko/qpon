@@ -119,9 +119,9 @@ export function defineUserAbilities(role: roleEnum): UserAbility {
     );
 
     forbid(
-      ['create', 'delete'],
+      ['create', 'update', 'delete'],
       [OrganizationDto, CreateOrganizationDto]
-    ).because('Only super admin can create or delete an organization');
+    ).because('Only super admin can create, rename or delete an organization');
 
     forbid(
       [
@@ -196,7 +196,6 @@ export function defineUserAbilities(role: roleEnum): UserAbility {
         RedemptionRow,
         CreateUserDto,
         UserDto,
-        OrganizationDto,
         OrganizationUserDto,
         UpdateUserRoleDto,
         ApiKeyDto

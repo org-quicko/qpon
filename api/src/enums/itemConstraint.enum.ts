@@ -1,5 +1,4 @@
 export enum itemConstraintEnum {
-    ALL = 'all',
-    SPECIFIC = 'specific',
+  ALL = 'all',
+  SPECIFIC = 'specific',
 }
-

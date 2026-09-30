@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { OrganizationStore } from '../../../../../store/organization.store';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -8,6 +8,7 @@ import { MatDividerModule } from '@angular/material/divider';
   selector: 'app-coupon-code-creation-header',
   imports: [MatButtonModule, MatDividerModule],
   templateUrl: './header.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {

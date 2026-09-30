@@ -6,8 +6,9 @@ import {
 import { OrganizationSummaryMv } from '../../entities/organization-summary.view';
 
 export class OrganizationSummaryTableConverter {
-  convert(organizationSummaryMv: OrganizationSummaryMv) : OrganizationSummaryTable {
-
+  convert(
+    organizationSummaryMv: OrganizationSummaryMv,
+  ): OrganizationSummaryTable {
     const organizationSummaryTable = new OrganizationSummaryTable();
 
     const organizationSummaryRow = new OrganizationSummaryRow(new JSONArray());
@@ -43,7 +44,7 @@ export class OrganizationSummaryTableConverter {
     );
 
     organizationSummaryTable.addRow(organizationSummaryRow);
-    
+
     return organizationSummaryTable;
   }
 }

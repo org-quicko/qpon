@@ -1,11 +1,13 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
+import { getMigrationSchema } from "../migration-utils";
 
 export class UpdateOfferView1749102129900 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`DROP VIEW IF EXISTS offer`);
+        const schema = getMigrationSchema(queryRunner);
+        await queryRunner.query(`DROP VIEW IF EXISTS "${schema}".offer`);
         await queryRunner.query(`
-            CREATE VIEW offer 
+            CREATE VIEW "${schema}".offer
             AS
             SELECT DISTINCT ON (cc.coupon_code_id)
                 c.organization_id,
@@ -30,19 +32,20 @@ export class UpdateOfferView1749102129900 implements MigrationInterface {
                 cc.status AS coupon_code_status,
                 now() as created_at,
                 clock_timestamp() as updated_at
-            FROM coupon c
-            LEFT JOIN campaign camp ON camp.coupon_id = c.coupon_id
-            LEFT JOIN coupon_code cc ON c.coupon_id = cc.coupon_id
-            LEFT JOIN coupon_item ct ON c.coupon_id = ct.coupon_id
-            LEFT JOIN item t ON ct.item_id = t.item_id
-            LEFT JOIN customer_coupon_code ccc ON ccc.coupon_code_id = cc.coupon_code_id
-            LEFT JOIN customer cust ON cust.customer_id = ccc.customer_id
+            FROM "${schema}".coupon c
+            LEFT JOIN "${schema}".campaign camp ON camp.coupon_id = c.coupon_id
+            LEFT JOIN "${schema}".coupon_code cc ON c.coupon_id = cc.coupon_id
+            LEFT JOIN "${schema}".coupon_item ct ON c.coupon_id = ct.coupon_id
+            LEFT JOIN "${schema}".item t ON ct.item_id = t.item_id
+            LEFT JOIN "${schema}".customer_coupon_code ccc ON ccc.coupon_code_id = cc.coupon_code_id
+            LEFT JOIN "${schema}".customer cust ON cust.customer_id = ccc.customer_id
             WHERE cc.status = 'active' AND  (cc.expires_at > now() OR cc.expires_at IS NULL);
         `);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`DROP VIEW IF EXISTS offer`);
+        const schema = getMigrationSchema(queryRunner);
+        await queryRunner.query(`DROP VIEW IF EXISTS "${schema}".offer`);
     }
 
 }

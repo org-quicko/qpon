@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CouponCodeStore, CreateSuccess } from '../../store/coupon-code.store';
 import { OrganizationStore } from '../../../../store/organization.store';
@@ -23,6 +23,7 @@ import { AlertTileComponent } from '../common/alert-tile/alert-tile.component';
     AlertTileComponent,
   ],
   templateUrl: './edit-campaign.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./edit-campaign.component.css']
 })
 export class EditCampaignComponent implements OnInit {
