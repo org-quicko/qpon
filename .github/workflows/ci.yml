@@ -2,9 +2,6 @@ name: CI
 
 on:
   pull_request:
-  push:
-    branches:
-      - 'feature/**'
   workflow_call:
 
 concurrency:
@@ -17,15 +14,14 @@ permissions:
 jobs:
   api:
     name: API tests
-    if: github.event_name != 'pull_request' || startsWith(github.head_ref, 'feature/')
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: api
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -50,7 +46,6 @@ jobs:
 
   playwright:
     name: Playwright tests
-    if: github.event_name != 'pull_request' || startsWith(github.head_ref, 'feature/')
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
@@ -59,9 +54,9 @@ jobs:
       run:
         working-directory: e2e
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -91,7 +86,7 @@ jobs:
 
       - name: Upload Playwright report
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: playwright-report
           path: |

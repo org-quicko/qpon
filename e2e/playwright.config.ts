@@ -9,6 +9,9 @@ export default defineConfig({
   // Well clear of what any single test needs, and still short enough that a
   // genuine hang fails rather than stalls the run.
   timeout: 60_000,
+  // The runners are slower than a dev machine; the default 5s made a few
+  // dialogs and lazily loaded panels flaky there.
+  expect: { timeout: isCI ? 10_000 : 5_000 },
   // Every test owns its organization, so nothing is shared between tests.
   fullyParallel: true,
   forbidOnly: isCI,
