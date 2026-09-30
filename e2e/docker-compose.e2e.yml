@@ -5,13 +5,13 @@ name: qpon-e2e
 
 services:
   db:
-    image: postgres:17-alpine
+    image: postgres:18-alpine
     environment:
       POSTGRES_USER: qpon
       POSTGRES_PASSWORD: qpon
       POSTGRES_DB: qpon
     tmpfs:
-      - /var/lib/postgresql/data
+      - /var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U qpon -d qpon"]
       interval: 2s

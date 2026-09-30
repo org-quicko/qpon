@@ -6,41 +6,8 @@ on:
 
 jobs:
   test:
-    name: API tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-          cache-dependency-path: api/package-lock.json
-
-      - name: Install dependencies
-        working-directory: api
-        run: npm ci
-
-      - name: Lint
-        working-directory: api
-        run: npx oxlint --type-aware
-
-      - name: Unit tests
-        working-directory: api
-        run: npm run test
-
-      # Integration and e2e start a postgres:18 container through
-      # testcontainers and run the real migrations against it. The ubuntu
-      # runner already has a Docker daemon, so no service container is needed.
-      - name: Integration tests
-        working-directory: api
-        run: npm run test:integration
-
-      - name: End-to-end tests
-        working-directory: api
-        run: npm run test:e2e
+    name: Tests
+    uses: ./.github/workflows/ci.yml
 
   docker-release:
     needs: test
