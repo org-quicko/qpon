@@ -1,0 +1,181 @@
+---
+title: "Qpon Coupon Codes: Visibility, Limits, and Expiry Rules"
+sidebarTitle: "Coupon Codes"
+description: "Coupon codes are the redeemable strings customers enter at checkout. Configure visibility, duration type, redemption limits, and customer constraints."
+---
+
+## What Is a Coupon Code?
+
+A **coupon code** is the redeemable string a customer types at checkout — for example `SUMMER20` or `WELCOME-XYZ`. It is the leaf node of Qpon's resource hierarchy: every code belongs to a campaign, which belongs to a coupon, which belongs to an organization.
+
+Each coupon code is fully independent. Two codes under the same campaign can have different expiry dates, different customer targets, different redemption limits, and different visibility settings.
+
+---
+
+## Fields
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `coupon_code_id` | UUID | auto | Primary key, generated automatically. |
+| `code` | string | ✅ | The promotional string customers enter (e.g. `"SUMMER20"`). |
+| `description` | string | optional | A human-readable note about the code's purpose or target audience. |
+| `customer_constraint` | enum | ✅ | Either `all` or `specific`. Controls who can redeem this code. |
+| `max_redemptions` | number | optional | Global cap on how many times this code can be redeemed across all customers. Unlimited if omitted. |
+| `max_redemption_per_customer` | number | optional | Cap on how many times a single customer can redeem this code. Unlimited if omitted. |
+| `minimum_amount` | number | optional | Minimum order value required to apply this code. No minimum if omitted. |
+| `visibility` | enum | ✅ | Either `public` or `private`. Controls discoverability. |
+| `duration_type` | enum | ✅ | Either `forever` or `limited`. Controls whether the code expires. |
+| `expires_at` | timestamp | conditional | Required when `duration_type` is `limited`. The UTC timestamp after which the code is no longer valid. |
+| `redemption_count` | number | auto | Running total of successful redemptions. Managed by Qpon — read-only. |
+| `status` | enum | auto | One of `active`, `inactive`, `expired`, `redeemed`, or `archive`. |
+| `created_at` | timestamp | auto | Creation timestamp (with time zone). |
+| `updated_at` | timestamp | auto | Last modification timestamp (with time zone). |
+
+---
+
+## Visibility
+
+The `visibility` field, drawn from `visibilityEnum`, controls whether a code is discoverable by any customer or is restricted to an explicit list.
+
+| Value | Behavior |
+|---|---|
+| `public` | The code can be surfaced to any customer — for example displayed on a landing page, included in an email blast, or returned in a general offers query. |
+| `private` | The code is not surfaced publicly. It is typically assigned to specific customers via the `customer_coupon_code` join table and is only returned in offer queries for those customers. |
+
+Use `private` codes for targeted rewards (e.g., a win-back discount for a churned user) and `public` codes for broadly distributed promotions.
+
+---
+
+## Duration and Expiry
+
+The `duration_type` field, drawn from `durationTypeEnum`, determines whether a code has a time limit.
+
+<AccordionGroup>
+  <Accordion title="forever">
+    The code does not expire. It remains valid until it is manually deactivated, archived, or its redemption limits are exhausted. Do not set `expires_at` when using this option.
+  </Accordion>
+  <Accordion title="limited">
+    The code expires at a specific point in time. You must provide a valid UTC timestamp in `expires_at`. Once `now()` passes `expires_at`, Qpon treats the code as expired and it will not be returned in offer resolution or accepted for redemption.
+  </Accordion>
+</AccordionGroup>
+
+<Warning>
+  If you set `duration_type: "limited"` but omit `expires_at`, the code will behave as though it has already expired. Always provide `expires_at` when using `limited` duration.
+</Warning>
+
+---
+
+## Customer Constraint
+
+The `customer_constraint` field, drawn from `customerConstraintEnum`, controls who is allowed to redeem the code.
+
+| Value | Behavior |
+|---|---|
+| `all` | Any customer in the organization can redeem this code (subject to other limits). |
+| `specific` | Only customers who have been explicitly assigned to this code via the `customer_coupon_code` join table can redeem it. All others are rejected. |
+
+Combine `specific` customer constraint with `private` visibility for fully targeted, non-discoverable codes.
+
+---
+
+## Redemption Limits
+
+Qpon provides two independent redemption limit controls:
+
+| Field | Scope | Behavior |
+|---|---|---|
+| `max_redemptions` | Global | The code can be redeemed at most this many times across all customers combined. Once reached, the code status transitions to `redeemed`. |
+| `max_redemption_per_customer` | Per customer | A single customer can redeem this code at most this many times. Other customers are unaffected. |
+
+Both limits can be set together for fine-grained control:
+
+```json
+{
+  "max_redemptions": 100,
+  "max_redemption_per_customer": 1
+}
+```
+
+This configuration allows up to 100 total uses of the code, but each individual customer may only redeem it once.
+
+---
+
+## Minimum Amount
+
+The `minimum_amount` field requires the customer's order value to meet or exceed a threshold before the code can be applied.
+
+```text
+if order_value < minimum_amount → code rejected
+```
+
+This is useful for driving higher average order values (e.g., "Get $10 off orders over $75").
+
+---
+
+## Status Lifecycle
+
+Coupon code status is controlled by `couponCodeStatusEnum`:
+
+```text
+active  ──►  inactive  ──►  archive
+  │
+  ├──► expired   (automatic, when expires_at passes)
+  └──► redeemed  (automatic, when max_redemptions is reached)
+```
+
+| Status | Value | Meaning |
+|---|---|---|
+| Active | `active` | The code is live and available for redemption. |
+| Inactive | `inactive` | The code has been manually paused. It will not appear in offer resolution. |
+| Expired | `expired` | The code's `expires_at` timestamp has passed. Set automatically by Qpon. |
+| Redeemed | `redeemed` | The code has been used the maximum allowed number of times (`max_redemptions`). Set automatically by Qpon. |
+| Archive | `archive` | The code is permanently retired and excluded from all active queries. |
+
+<Note>
+  `expired` and `redeemed` are system-managed transitions. You do not need to poll or update these manually — Qpon's offer view filters them out in real time using `cc.status = 'active' AND (cc.expires_at > now() OR cc.expires_at IS NULL)`.
+</Note>
+
+---
+
+## Example Coupon Code Payloads
+
+**Public, unlimited, non-expiring code:**
+```json
+{
+  "@entity": "org.quicko.qpon.coupon_code",
+  "code": "WELCOME10",
+  "description": "10% off for all new customers",
+  "customer_constraint": "all",
+  "visibility": "public",
+  "duration_type": "forever"
+}
+```
+
+**Private, single-use, expiring code for a specific customer:**
+```json
+{
+  "@entity": "org.quicko.qpon.coupon_code",
+  "code": "WINBACK-A4F9",
+  "description": "Win-back offer for lapsed users",
+  "customer_constraint": "specific",
+  "max_redemptions": 1,
+  "max_redemption_per_customer": 1,
+  "minimum_amount": 50,
+  "visibility": "private",
+  "duration_type": "limited",
+  "expires_at": "2025-09-30T23:59:59Z"
+}
+```
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Offers" icon="bolt" href="/concepts/offers">
+    Resolve which codes apply to a customer + item pair at checkout.
+  </Card>
+  <Card title="Campaigns" icon="megaphone" href="/concepts/campaigns">
+    Understand the campaign that every coupon code belongs to.
+  </Card>
+</CardGroup>

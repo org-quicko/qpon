@@ -1,0 +1,320 @@
+---
+title: "Using the Qpon TypeScript Client SDK: Code Examples"
+sidebarTitle: "Usage"
+description: "Instantiate the Qpon client, authenticate with API keys, and call methods for coupons, campaigns, coupon codes, redemptions, customers, and catalog items."
+---
+
+The examples below cover the full lifecycle of a typical Qpon integration: creating credentials, working with coupons and campaigns, generating coupon codes, resolving offers at checkout, recording redemptions, and syncing customers and catalog items.
+
+## Instantiating the client
+
+Import `Qpon` and `QponCredentials`, then create a single instance you can share across your application. The constructor accepts your API key, API secret, and the base URL of your self-hosted Qpon server.
+
+```typescript
+import { Qpon, QponCredentials } from '@org-quicko/qpon-client';
+
+const credentials = new QponCredentials('your-api-key', 'your-api-secret');
+const qpon = new Qpon(credentials, 'https://your-qpon-instance.example.com');
+```
+
+`QponCredentials` stores the key and secret and exposes them via `getApiKey()` and `getApiSecret()`. The `Qpon` constructor passes them to every resource client as `x-api-key` and `x-api-secret` request headers.
+
+<Note>
+  Always use API key credentials for server-side usage. Never expose your API key or secret in client-side browser code or mobile apps. Treat these values as secrets and load them from environment variables or a secrets manager.
+</Note>
+
+---
+
+## Working with coupons
+
+`qpon.COUPONS` provides full CRUD for coupon definitions, plus `deactivate` and `reactivate` lifecycle actions.
+
+<CodeGroup>
+
+```typescript Create a coupon
+const coupon = await qpon.COUPONS.createCoupon(organizationId, {
+  '@entity': 'org.quicko.qpon.coupon',
+  name: 'Summer Sale',
+  discount_type: 'percentage',
+  discount_value: 20,
+  item_constraint: 'all',
+});
+
+console.log(coupon.data.coupon_id);
+```
+
+```typescript Fetch coupons with filters
+// Returns active coupons for the organization
+const coupons = await qpon.COUPONS.fetchCoupons(
+  organizationId,
+  'active',       // status
+);
+
+// Further optional filters: discountType, externalItemId, name,
+// take, skip, sortBy, sortOrder, itemConstraint
+```
+
+```typescript Fetch a single coupon
+const coupon = await qpon.COUPONS.fetchCoupon(organizationId, couponId);
+```
+
+```typescript Update a coupon
+await qpon.COUPONS.updateCoupon(organizationId, couponId, {
+  '@entity': 'org.quicko.qpon.coupon',
+  name: 'Summer Sale — Extended',
+});
+```
+
+```typescript Deactivate and reactivate
+await qpon.COUPONS.deactivateCoupon(organizationId, couponId);
+
+// Re-enable later
+await qpon.COUPONS.reactivateCoupon(organizationId, couponId);
+```
+
+```typescript Coupon summary reports
+// Fetch aggregated summary across all coupons (requires x-accept-type header value)
+const allSummary = await qpon.COUPONS.fetchCouponsSummary(
+  organizationId,
+  'application/json', // acceptType (required)
+  couponId,           // optional: filter by a specific coupon
+  10,                 // take
+  0,                  // skip
+);
+
+// Fetch summary for a single coupon
+const couponSummary = await qpon.COUPONS.fetchCouponSummary(
+  organizationId,
+  couponId,
+  'application/json', // acceptType (required)
+);
+```
+
+</CodeGroup>
+
+---
+
+## Creating a campaign
+
+Campaigns group coupon codes together and can have an optional budget cap. A campaign always belongs to a coupon.
+
+```typescript
+const campaign = await qpon.CAMPAIGN.createCampaign(organizationId, couponId, {
+  '@entity': 'org.quicko.qpon.campaign',
+  name: 'Summer 2024',
+  budget: 500,
+});
+
+const campaignId = campaign.data.campaign_id;
+```
+
+Additional `CAMPAIGN` methods: `fetchCampaigns`, `fetchCampaign`, `updateCampaign`, `deleteCampaign`, `deactivateCampaign`, `reactivateCampaign`, `fetchCampaignsSummary`, `fetchCampaignSummary`.
+
+---
+
+## Generating a coupon code
+
+Coupon codes live under a campaign. Control visibility, expiry, redemption limits, and which customers are eligible.
+
+```typescript
+const code = await qpon.COUPONCODE.createCouponCode(
+  organizationId,
+  couponId,
+  campaignId,
+  {
+    '@entity': 'org.quicko.qpon.coupon_code',
+    code: 'SUMMER20',
+    visibility: 'public',
+    duration_type: 'limited',
+    expires_at: '2024-12-31T23:59:59Z',
+    max_redemptions: 1000,
+    customer_constraint: 'all',
+  },
+);
+
+const couponCodeId = code.data.coupon_code_id;
+```
+
+Additional `COUPONCODE` methods: `fetchCouponCodes`, `fetchCouponCode`, `fetchCouponCodeByCode`, `updateCouponCode`, `deleteCouponCode`, `deactivateCouponCode`, `reactivateCouponCode`.
+
+---
+
+## Resolving an offer at checkout
+
+Before applying a discount, call `fetchOffer` to check what discount is available for a given code, customer, and item combination. This is a read-only check — it does **not** consume any redemption budget.
+
+```typescript
+const offer = await qpon.OFFERS.fetchOffer(
+  organizationId,
+  'usr_456',    // external_customer_id
+  'SUMMER20',   // code
+  'prod_123',   // external_item_id
+);
+
+console.log(offer.data.discount_type);  // e.g. "percentage"
+console.log(offer.data.discount_value); // e.g. 20
+```
+
+To retrieve all applicable offers for a customer or item (e.g. for a promotional listing page), use `fetchOffers`:
+
+```typescript
+const offers = await qpon.OFFERS.fetchOffers(
+  organizationId,
+  'prod_123',  // externalItemId
+  'usr_456',   // externalCustomerId
+);
+```
+
+---
+
+## Redeeming a coupon code
+
+Once the order is confirmed, record the redemption. The `redeemCouponCode` method validates eligibility, checks redemption limits, and marks the code as used for the given customer.
+
+```typescript
+await qpon.REDEMPTIONS.redeemCouponCode(organizationId, {
+  '@entity': 'org.quicko.qpon.redemption',
+  code: 'SUMMER20',
+  external_customer_id: 'usr_456',
+  external_item_id: 'prod_123',
+});
+```
+
+The redemption client throws specific typed errors for common failure cases:
+
+| Thrown error | HTTP status | Meaning |
+|---|---|---|
+| `RedeemCouponCode400CustomerNotEligibleError` | 400 | Customer does not meet the coupon's constraints |
+| `RedeemCouponCode404CouponCodeNotFoundError` | 404 | No matching coupon code exists |
+| `RedeemCouponCode409CustomerHasAlreadyRedeemedCouponCodeError` | 409 | Customer has already redeemed this code |
+
+To retrieve redemption history, use `fetchRedemptions` (org-level) or `fetchRedemptionsForCouponCode` (code-level):
+
+```typescript
+// fetchRedemptions(organizationId, couponId?, campaignId?, couponCodeId?, customerEmail?, skip?, take?)
+const history = await qpon.REDEMPTIONS.fetchRedemptions(
+  organizationId,
+  couponId,    // couponId
+  campaignId,  // campaignId
+  undefined,   // couponCodeId
+  undefined,   // customerEmail
+  0,           // skip
+  25,          // take
+);
+```
+
+---
+
+## Managing customers and items
+
+Sync your customers and catalog items into Qpon to enable customer-specific constraints and item-scoped coupons. Both clients support upsert by external ID, making integration with your existing database straightforward.
+
+<CodeGroup>
+
+```typescript Customers
+// Create or update a customer by external ID
+await qpon.CUSTOMERS.upsertCustomer(organizationId, {
+  '@entity': 'org.quicko.qpon.customer',
+  name: 'Jane Smith',
+  email: 'jane@example.com',
+  external_id: 'usr_456',
+});
+
+// Fetch all customers (paginated)
+const customers = await qpon.CUSTOMERS.fetchCustomers(
+  organizationId,
+  0,    // skip
+  10,   // take
+);
+```
+
+```typescript Items
+// Sync a catalog item by external ID
+await qpon.ITEM.upsertItem(organizationId, {
+  '@entity': 'org.quicko.qpon.item',
+  name: 'Blue Sneakers',
+  external_id: 'prod_123',
+});
+
+// Fetch all items (paginated, filterable by name or external_id)
+const items = await qpon.ITEM.fetchItems(organizationId);
+```
+
+</CodeGroup>
+
+---
+
+## Error handling
+
+All resource clients throw an `ApiError` for any non-2xx response that is not covered by a more specific typed error class. `ApiError` exposes the HTTP status code and the raw response body.
+
+```typescript
+import { ApiError } from '@org-quicko/qpon-client';
+
+try {
+  await qpon.COUPONS.fetchCoupon(organizationId, couponId);
+} catch (error) {
+  if (error instanceof ApiError) {
+    console.error('HTTP status:', error.statusCode);
+    console.error('Response body:', error.body);
+  }
+}
+```
+
+For operations with well-defined failure modes, the SDK throws more specific subclasses of `ApiError` that carry a fully typed `body` property. For example, `fetchCoupon` throws `FetchCoupon404CouponNotFoundError` on a 404, so you can branch on the exact error type:
+
+```typescript
+import {
+  ApiError,
+  FetchCoupon404CouponNotFoundError,
+} from '@org-quicko/qpon-client';
+
+try {
+  await qpon.COUPONS.fetchCoupon(organizationId, couponId);
+} catch (error) {
+  if (error instanceof FetchCoupon404CouponNotFoundError) {
+    // Typed body specific to this error
+    console.error('Coupon not found:', error.body);
+  } else if (error instanceof ApiError) {
+    // Catch-all for other HTTP errors
+    console.error(error.statusCode, error.body);
+  }
+}
+```
+
+---
+
+## Custom interceptors
+
+The `Qpon` constructor accepts optional arrays of request and response interceptors. Use them to add logging, tracing, retry logic, or custom header injection without modifying your business logic.
+
+```typescript
+import type {
+  BeforeRequestInterceptor,
+  AfterResponseInterceptor,
+} from '@org-quicko/qpon-client';
+import type { InternalAxiosRequestConfig, AxiosResponse } from 'axios';
+
+const logRequest: BeforeRequestInterceptor = {
+  beforeRequest(config: InternalAxiosRequestConfig) {
+    console.log(`→ ${config.method?.toUpperCase()} ${config.baseURL}${config.url}`);
+    return config; // must return the (optionally modified) config
+  },
+};
+
+const logResponse: AfterResponseInterceptor = {
+  afterResponse(response: AxiosResponse) {
+    console.log(`← ${response.status}`);
+    return response; // must return the (optionally modified) response
+  },
+};
+
+const qpon = new Qpon(
+  credentials,
+  'https://your-qpon-instance.example.com',
+  [logRequest],   // BeforeRequestInterceptor[]
+  [logResponse],  // AfterResponseInterceptor[]
+);
+```
+
+Interceptors are registered on each resource client's internal Axios instance, so they apply to all requests made through that `Qpon` instance.

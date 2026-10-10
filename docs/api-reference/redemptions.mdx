@@ -1,0 +1,276 @@
+---
+title: "Redemptions API — Record and Query Coupon Redemptions"
+sidebarTitle: "Redemptions"
+description: "REST endpoints for redeeming coupon codes and querying redemption history. Filter redemptions by coupon, campaign, code, customer, or date range."
+---
+
+A redemption is the permanent record of a coupon code being applied to a purchase. Once created, redemptions cannot be deleted or reversed — they form an immutable audit trail of every discount that was granted in your system. Use the query endpoints to build dashboards, detect fraud, or reconcile discounts in your finance workflows.
+
+<Warning>
+**Redemption is irreversible.** Once you call `POST /coupon-codes/redeem`, the redemption is permanently recorded and any single-use or per-customer limits are decremented. Only call this endpoint **after** you have successfully confirmed payment from the customer. If payment fails, do not call this endpoint — you cannot undo a redemption.
+</Warning>
+
+---
+
+## Redeem a Coupon Code
+
+`POST /api/organizations/{organization_id}/coupon-codes/redeem`
+
+Records a coupon redemption against an active coupon code for a given customer and item. Before calling this endpoint you should validate the code is applicable using [`GET /offer`](/api-reference/offers#fetch-offer).
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization in which the coupon was issued.
+</ParamField>
+
+### Request Body
+
+<ParamField body="@entity" type="string" required>
+  Must be exactly `"org.quicko.qpon.redemption"`. Identifies the payload type for the API.
+</ParamField>
+
+<ParamField body="code" type="string" required>
+  The coupon code string the customer applied (e.g. `"SUMMER20"`).
+</ParamField>
+
+<ParamField body="external_customer_id" type="string" required>
+  Your system's identifier for the customer redeeming the code. Must match an existing customer registered via the Customers API.
+</ParamField>
+
+<ParamField body="external_item_id" type="string" required>
+  Your catalog's identifier for the item the coupon is being applied to. Must match an existing item registered via the Items API.
+</ParamField>
+
+<ParamField body="base_order_value" type="number" required>
+  The original order value **before** the discount is applied, in your currency's base unit (e.g. cents or paise).
+</ParamField>
+
+<ParamField body="discount" type="number" required>
+  The actual discount amount granted, in your currency's base unit. Calculate this from the `discount_value` / `discount_upto` fields returned by `GET /offer`.
+</ParamField>
+
+<ParamField body="external_id" type="string">
+  Optional identifier from your system for this redemption event (e.g. your order ID). Useful for correlating Qpon redemption records with your own order database.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  `"Successfully redemmed coupon code"`.
+</ResponseField>
+
+### Example
+
+```bash
+curl --request POST \
+  --url https://your-qpon-host/api/organizations/ORG_ID/coupon-codes/redeem \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "@entity": "org.quicko.qpon.redemption",
+    "code": "SUMMER20",
+    "external_customer_id": "usr_a1b2c3d4",
+    "external_item_id": "sku_premium_monthly",
+    "base_order_value": 9999,
+    "discount": 1999,
+    "external_id": "order_xyz789"
+  }'
+```
+
+---
+
+## Fetch Redemptions
+
+`GET /api/organizations/{organization_id}/redemptions`
+
+Returns a paginated list of all redemptions for the organization. Supports flexible filtering by coupon, campaign, code, customer email, and date range — making it suitable for reporting, support lookups, and fraud investigation.
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="coupon_id" type="string">
+  Filter to redemptions of codes belonging to a specific coupon (Qpon UUID).
+</ParamField>
+
+<ParamField query="campaign_id" type="string">
+  Filter to redemptions of codes belonging to a specific campaign (Qpon UUID).
+</ParamField>
+
+<ParamField query="coupon_code_id" type="string">
+  Filter to redemptions of a single specific coupon code record (Qpon UUID).
+</ParamField>
+
+<ParamField query="customer_email" type="string">
+  Filter to redemptions made by a customer with this email address.
+</ParamField>
+
+<ParamField query="from" type="string">
+  Start of the date range in `YYYY-MM-DD` format (inclusive). Filters on the redemption date.
+</ParamField>
+
+<ParamField query="to" type="string">
+  End of the date range in `YYYY-MM-DD` format (inclusive).
+</ParamField>
+
+<ParamField query="skip" type="integer">
+  Number of records to skip for pagination. Defaults to `0`.
+</ParamField>
+
+<ParamField query="take" type="integer">
+  Maximum number of records to return. Defaults to `10`.
+</ParamField>
+
+<ParamField query="sort_by" type="string">
+  Field name to sort results by (e.g. `"redemption_date"`, `"created_at"`).
+</ParamField>
+
+<ParamField query="sort_order" type="string">
+  Sort direction. Accepted values: `"ASC"` or `"DESC"`.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  `"Successfully fetched redemptions"`.
+</ResponseField>
+
+<ResponseField name="result" type="array">
+  <Expandable title="Redemption object">
+    <ResponseField name="redemption_id" type="string">
+      UUID assigned by Qpon to this redemption record.
+    </ResponseField>
+    <ResponseField name="code" type="string">
+      The coupon code string that was redeemed.
+    </ResponseField>
+    <ResponseField name="external_customer_id" type="string">
+      Your system's identifier for the customer who redeemed the code.
+    </ResponseField>
+    <ResponseField name="external_item_id" type="string">
+      Your catalog's identifier for the item the coupon was applied to.
+    </ResponseField>
+    <ResponseField name="redemption_date" type="string">
+      ISO 8601 timestamp of when the redemption occurred.
+    </ResponseField>
+    <ResponseField name="created_at" type="string">
+      ISO 8601 timestamp of when the redemption record was written to the database.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example
+
+```bash
+curl --request GET \
+  --url 'https://your-qpon-host/api/organizations/ORG_ID/redemptions?coupon_id=COUPON_UUID&from=2024-01-01&to=2024-03-31&skip=0&take=25&sort_by=redemption_date&sort_order=DESC'
+```
+
+---
+
+## Fetch Redemptions for a Coupon Code
+
+`GET /api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/redemptions`
+
+Retrieves the redemption history scoped to a specific coupon code within a campaign. All three path segment IDs are required; the coupon, campaign, and code must all belong to the same organization.
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+<ParamField path="coupon_id" type="string" required>
+  UUID of the parent coupon.
+</ParamField>
+
+<ParamField path="campaign_id" type="string" required>
+  UUID of the campaign that contains the coupon code.
+</ParamField>
+
+<ParamField path="coupon_code_id" type="string" required>
+  UUID of the specific coupon code whose redemptions you want to retrieve.
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="customer_email" type="string">
+  Filter to redemptions by a customer with this email address.
+</ParamField>
+
+<ParamField query="skip" type="integer">
+  Number of records to skip for pagination. Defaults to `0`.
+</ParamField>
+
+<ParamField query="take" type="integer">
+  Maximum number of records to return. Defaults to `10`.
+</ParamField>
+
+<ParamField query="sort_by" type="string">
+  Field name to sort results by (e.g. `"redemption_date"`).
+</ParamField>
+
+<ParamField query="sort_order" type="string">
+  Sort direction. Accepted values: `"ASC"` or `"DESC"`.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  `"Successfully fetched redemptions"`.
+</ResponseField>
+
+<ResponseField name="result" type="array">
+  Array of redemption objects — same shape as the Fetch Redemptions response.
+</ResponseField>
+
+### Example
+
+```bash
+curl --request GET \
+  --url 'https://your-qpon-host/api/organizations/ORG_ID/coupons/COUPON_ID/campaigns/CAMPAIGN_ID/coupon-codes/COUPON_CODE_ID/redemptions?sort_by=redemption_date&sort_order=DESC&skip=0&take=10'
+```
+
+---
+
+## Download Redemption Report
+
+`GET /api/organizations/{organization_id}/redemptions/reports`
+
+Streams a CSV file containing the full redemption history for the organization within the requested date window. The file is named `redemption_report.csv` and is served with `Content-Type: text/csv`.
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="from" type="string">
+  Start date for the report window in `YYYY-MM-DD` format (inclusive).
+</ParamField>
+
+<ParamField query="to" type="string">
+  End date for the report window in `YYYY-MM-DD` format (inclusive).
+</ParamField>
+
+### Response
+
+Returns a binary CSV file download.
+
+| Header | Value |
+|---|---|
+| `Content-Type` | `text/csv` |
+| `Content-Disposition` | `attachment; filename=redemption_report.csv` |
+
+### Example
+
+```bash
+curl --request GET \
+  --url 'https://your-qpon-host/api/organizations/ORG_ID/redemptions/reports?from=2024-01-01&to=2024-03-31' \
+  --output redemption_report.csv
+```

@@ -1,0 +1,122 @@
+---
+title: "Qpon Data Model: Core Resource Hierarchy Explained"
+sidebarTitle: "Data Model"
+description: "Understand the core resource hierarchy in Qpon: organizations contain coupons, which have campaigns, which hold coupon codes that customers redeem."
+---
+
+## Overview
+
+Qpon is built around a clear, hierarchical data model. Every resource — from a discount rule to an individual redeemable code — belongs to a well-defined layer. Understanding this hierarchy is the fastest way to reason about how Qpon works and how to integrate it with your own platform.
+
+## The Resource Hierarchy
+
+```text
+Organization
+└── Coupon  (discount template: type, value, item scope)
+    └── Campaign  (distribution group: budget, lifecycle)
+        └── Coupon Code  (redeemable string: visibility, limits, expiry)
+            └── Redemption  (recorded use: customer, item, discount applied)
+
+Organization (also owns, at the same level)
+├── Customer  (org-scoped buyer profile, maps to your user via external_id)
+└── Item      (org-scoped product/SKU, maps to your catalog via external_id)
+
+Offer  (read-only computed view — resolves applicable codes for a customer + item pair)
+```
+
+No resource can exist outside an organization. Deleting an organization cascades through every child resource.
+
+---
+
+## Entity Roles
+
+### Organization
+The top-level tenant boundary. Every coupon, campaign, coupon code, customer, item, and redemption is scoped to exactly one organization. An organization holds a `currency` setting and an optional `external_id` so you can map it to your own multi-tenant system.
+
+→ [Organizations in depth](/concepts/organizations)
+
+### Coupon
+The discount template. A coupon declares *what* discount applies: `percentage` or `fixed`, by how much, with an optional cap (`discount_upto`), and *which items* it applies to (`item_constraint`). A coupon does not contain codes — it is the rule that campaigns and codes inherit.
+
+→ [Coupons in depth](/concepts/coupons)
+
+### Campaign
+A named distribution window for a coupon. Campaigns carry an optional `budget` (maximum total redemptions) and their own lifecycle status. A single coupon can be reused across multiple campaigns — for example a "10% off" coupon can power both a Q1 campaign and a summer sale campaign.
+
+→ [Campaigns in depth](/concepts/campaigns)
+
+### Coupon Code
+The actual string a customer types at checkout. Each code belongs to exactly one campaign (and therefore one coupon). Codes carry their own access rules: `visibility` (`public` or `private`), `customer_constraint`, redemption limits, minimum order amount, and expiry.
+
+→ [Coupon Codes in depth](/concepts/coupon-codes)
+
+### Redemption
+An immutable record created when a customer successfully applies a coupon code to an order. It captures the `base_order_value`, the `discount` granted, and foreign-key links to the coupon code, campaign, coupon, customer, item, and organization.
+
+### Customer
+An org-scoped profile representing a buyer. Customers carry `name`, `email`, optional phone fields, and an `external_id` so you can map them to users in your own system. They appear in redemption records and are referenced when a coupon code's `customer_constraint` is set to `specific`.
+
+### Item
+An org-scoped product or SKU. Items carry `name`, `description`, an optional `custom_fields` JSONB blob, and an `external_id`. When a coupon's `item_constraint` is `specific`, eligible items are listed in the `coupon_items` join table.
+
+### Offer *(read-only view)*
+A PostgreSQL view that resolves, in real time, the set of active coupon codes that are applicable to a given `external_customer_id` + `external_item_id` combination. You never write to the Offer resource; you query it at checkout to retrieve the best available discount.
+
+→ [Offers in depth](/concepts/offers)
+
+---
+
+## Visual Map
+
+```text
+┌──────────────────────────────────────────────────────────────┐
+│  Organization                                                │
+│  ┌────────────┐   ┌──────────┐   ┌─────────────────────┐   │
+│  │  Customer  │   │   Item   │   │       Coupon         │   │
+│  └─────┬──────┘   └────┬─────┘   │  discount_type       │   │
+│        │               │         │  discount_value       │   │
+│        │               │         │  item_constraint      │   │
+│        │               │         └──────────┬───────────┘   │
+│        │               │                    │               │
+│        │               │             ┌──────┴──────┐        │
+│        │               │             │  Campaign   │        │
+│        │               │             │  budget     │        │
+│        │               │             └──────┬──────┘        │
+│        │               │                    │               │
+│        │               │           ┌────────┴────────┐      │
+│        │               │           │  Coupon Code    │      │
+│        │               │           │  visibility     │      │
+│        │               │           │  duration_type  │      │
+│        │               │           └────────┬────────┘      │
+│        │               │                    │               │
+│        └───────────────┴──────────► Redemption ◄────────────┘
+│                                                              │
+│  ┌──────────────────────────────────────────────────────┐   │
+│  │  Offer (read-only view)                              │   │
+│  │  Resolved from Coupon + Campaign + Coupon Code +     │   │
+│  │  Customer + Item — queried at checkout               │   │
+│  └──────────────────────────────────────────────────────┘   │
+└──────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Explore Each Concept
+
+<CardGroup cols={2}>
+  <Card title="Organizations" icon="building" href="/concepts/organizations">
+    Multi-tenant scoping, role-based access, and external ID mapping.
+  </Card>
+  <Card title="Coupons" icon="tag" href="/concepts/coupons">
+    Discount templates: type, value, item constraint, and status lifecycle.
+  </Card>
+  <Card title="Campaigns" icon="megaphone" href="/concepts/campaigns">
+    Budget-bound distribution windows that group coupon codes.
+  </Card>
+  <Card title="Coupon Codes" icon="ticket" href="/concepts/coupon-codes">
+    The redeemable strings customers enter — with visibility, limits, and expiry.
+  </Card>
+  <Card title="Offers" icon="bolt" href="/concepts/offers">
+    Real-time resolution of applicable discounts for a customer + item pair.
+  </Card>
+</CardGroup>

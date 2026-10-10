@@ -1,0 +1,133 @@
+---
+title: "Qpon Campaigns: Budget-Bound Coupon Distribution Windows"
+sidebarTitle: "Campaigns"
+description: "Campaigns group coupon codes under a coupon with optional budgets and lifecycle control. Learn active, inactive, exhausted, and archive status values."
+---
+
+## What Is a Campaign?
+
+A **campaign** is the distribution layer between a coupon and its individual redeemable codes. Where a coupon defines *what* discount to give, a campaign defines the *context* in which that discount is distributed — for example a seasonal promotion, a loyalty reward window, or a referral program.
+
+Every coupon code belongs to exactly one campaign. A single coupon can have many campaigns, enabling you to reuse the same discount rule across multiple distribution contexts with independent budgets and lifecycles.
+
+---
+
+## Fields
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `campaign_id` | UUID | auto | Primary key, generated automatically. |
+| `name` | string | ✅ | Human-readable label for this campaign (e.g. `"Q1 New User Promo"`). |
+| `budget` | number | optional | Maximum number of total redemptions allowed across all codes in this campaign. When omitted, there is no budget cap. |
+| `external_id` | string | optional | Your own system's identifier for this campaign — see [External ID Mapping](#external-id-mapping). |
+| `status` | enum | auto | One of `active`, `inactive`, `exhausted`, or `archive`. Defaults to `active`. |
+| `created_at` | timestamp | auto | Creation timestamp (with time zone). |
+| `updated_at` | timestamp | auto | Last modification timestamp (with time zone). |
+
+---
+
+## Campaign Status Lifecycle
+
+Campaign status is controlled by `campaignStatusEnum`:
+
+```text
+active  ──►  inactive  ──►  archive
+  │
+  └──► exhausted  (automatic, when budget is reached)
+```
+
+| Status | Value | Meaning |
+|---|---|---|
+| Active | `active` | The campaign is live. Its coupon codes can be discovered and redeemed. |
+| Inactive | `inactive` | The campaign is manually paused. Codes under this campaign cannot be redeemed until the campaign is re-activated. |
+| Exhausted | `exhausted` | The campaign's `budget` has been reached. Qpon sets this status automatically when total redemptions equal the budget. No further redemptions are accepted. |
+| Archive | `archive` | The campaign is permanently retired and excluded from offer resolution and active listings. |
+
+<Note>
+  `exhausted` is the only status that Qpon sets automatically based on data. All other status transitions are performed via the API.
+</Note>
+
+---
+
+## How Budgets Work
+
+Setting a `budget` on a campaign creates a hard cap on the total number of redemptions that can occur across all coupon codes in that campaign.
+
+```text
+remaining = budget - (sum of all redemption_count values across campaign's coupon codes)
+```
+
+When `remaining` reaches zero, Qpon transitions the campaign status to `exhausted` and rejects any further redemption attempts against codes in that campaign — even if individual codes still have remaining quota.
+
+**Budget is optional.** If you omit `budget` (or set it to `null`), the campaign runs indefinitely until you manually set it to `inactive` or `archive`.
+
+| Scenario | Recommended approach |
+|---|---|
+| Flash sale with a fixed number of discounts | Set `budget` to the maximum redemptions you want to allow |
+| Ongoing loyalty program | Omit `budget`; manage availability through individual code limits |
+| Time-bounded seasonal promo | Omit `budget`; use `expires_at` on individual coupon codes |
+
+---
+
+## One Coupon, Many Campaigns
+
+A coupon can be the parent of multiple campaigns simultaneously, each with its own budget and lifecycle:
+
+```text
+Coupon: "10% Off Any Order"
+├── Campaign: "Q1 2025 New Users"   (budget: 500)
+├── Campaign: "Summer Sale"          (budget: 1000)
+└── Campaign: "Referral Program"     (budget: null — unlimited)
+```
+
+This lets you track and cap each distribution context independently while reporting roll-up redemption totals at the coupon level.
+
+---
+
+## External ID Mapping
+
+The `external_id` field lets you tie a Qpon campaign to an entity in your own system — for example a marketing campaign ID, an A/B test variant, or a CRM automation ID.
+
+```json
+{
+  "@entity": "org.quicko.qpon.campaign",
+  "name": "Summer Sale 2025",
+  "budget": 1000,
+  "external_id": "mktg-campaign-778"
+}
+```
+
+You can use `external_id` in API queries to look up a campaign by your own identifier rather than Qpon's internal `campaign_id`.
+
+---
+
+## Example Campaign Payload
+
+```json
+{
+  "@entity": "org.quicko.qpon.campaign",
+  "name": "Q1 New User Discount",
+  "budget": 500,
+  "external_id": "q1-new-user-2025"
+}
+```
+
+```json
+{
+  "@entity": "org.quicko.qpon.campaign",
+  "name": "Always-On Referral Program"
+}
+```
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Coupon Codes" icon="ticket" href="/concepts/coupon-codes">
+    Add redeemable codes to your campaign with visibility and limit controls.
+  </Card>
+  <Card title="Coupons" icon="tag" href="/concepts/coupons">
+    Understand the discount template that every campaign inherits from.
+  </Card>
+</CardGroup>

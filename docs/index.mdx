@@ -1,0 +1,71 @@
+---
+title: "Qpon: Self-Hosted Coupon Management for Startups"
+sidebarTitle: "Home"
+description: "Qpon is an open-source, self-hosted coupon platform. Create coupons, run campaigns, distribute codes, and track redemptions with a full REST API."
+---
+
+Qpon is a self-hosted coupon management platform built for startups and engineering teams who need full control over their promotional workflows. Built on NestJS, PostgreSQL, and Angular, Qpon gives you a REST API, a management dashboard, and a TypeScript client SDK — all deployable in minutes with Docker.
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Deploy Qpon and make your first API call in under 5 minutes.
+  </Card>
+  <Card title="Core Concepts" icon="book-open" href="/concepts/data-model">
+    Understand organizations, coupons, campaigns, and coupon codes.
+  </Card>
+  <Card title="API Reference" icon="code" href="/api-reference/overview">
+    Explore all REST endpoints with request and response schemas.
+  </Card>
+  <Card title="Client SDK" icon="npm" href="/sdk/overview">
+    Use the type-safe TypeScript client to integrate Qpon in minutes.
+  </Card>
+</CardGroup>
+
+## What you can build
+
+Qpon handles the full lifecycle of promotional codes — from creation to redemption tracking. Typical use cases include:
+
+- **E-commerce promotions** — percentage or fixed-amount discounts tied to specific products
+- **SaaS trial offers** — private codes distributed to specific customers with per-customer redemption limits
+- **Marketing campaigns** — budgeted campaigns with start/end windows and exhaustion tracking
+- **Loyalty programs** — customer-specific codes with maximum redemption controls
+
+## How it works
+
+<Steps>
+  <Step title="Deploy Qpon">
+    Run Qpon with a single `docker compose up -d` command. Qpon bundles the API, frontend dashboard, and PostgreSQL database.
+  </Step>
+  <Step title="Create an organization">
+    Use the setup wizard at `/setup` to create your super admin account and first organization. Everything in Qpon is scoped to an organization.
+  </Step>
+  <Step title="Build your coupon catalog">
+    Create coupons with discount rules, then organize them into campaigns with budgets and validity windows.
+  </Step>
+  <Step title="Distribute and redeem">
+    Generate coupon codes (public or private), assign them to customers, and call the redeem endpoint from your checkout flow.
+  </Step>
+</Steps>
+
+## Key features
+
+<CardGroup cols={3}>
+  <Card title="Multi-tenant" icon="building">
+    Full multi-organization support with role-based access control across five roles.
+  </Card>
+  <Card title="Flexible discounts" icon="percent">
+    Percentage and fixed-amount discounts with optional maximum discount caps.
+  </Card>
+  <Card title="Campaign budgets" icon="chart-bar">
+    Set budgets on campaigns and track exhaustion in real time.
+  </Card>
+  <Card title="API key auth" icon="key">
+    Issue API keys for server-to-server integrations alongside JWT session auth.
+  </Card>
+  <Card title="TypeScript SDK" icon="square-js">
+    Auto-generated, Zod-validated client library published to npm.
+  </Card>
+  <Card title="CSV reports" icon="file-csv">
+    Export redemption, item, and customer reports as CSV files.
+  </Card>
+</CardGroup>

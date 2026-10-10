@@ -1,0 +1,490 @@
+---
+title: "Campaigns API — Organize and Budget Coupon Distribution"
+sidebarTitle: "Campaigns"
+description: "Create and manage campaigns under a coupon. Set a redemption budget, monitor exhaustion, and control lifecycle — active, inactive, exhausted, and archive."
+---
+
+A **Campaign** groups a set of coupon codes under a single coupon. Campaigns let you set a total redemption budget, track usage, and isolate distribution channels (e.g. an email blast vs. an in-app promotion) under the same discount rule. When a campaign's budget is fully consumed, it transitions to `exhausted` automatically.
+
+**Campaign status values:** `active` | `inactive` | `exhausted` | `archive`
+
+---
+
+## Create Campaign
+
+Creates a new campaign under a coupon.
+
+**`POST /api/organizations/{organization_id}/coupons/{coupon_id}/campaigns`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+<ParamField path="coupon_id" type="string" required>
+  UUID of the coupon this campaign belongs to.
+</ParamField>
+
+### Request Body
+
+<ParamField body="@entity" type="string" required>
+  Must be `"org.quicko.qpon.campaign"`.
+</ParamField>
+
+<ParamField body="name" type="string" required>
+  Human-readable name for the campaign (e.g. `"Black Friday Email Blast"`).
+</ParamField>
+
+<ParamField body="budget" type="number">
+  Optional total redemption budget. Once this many redemptions are recorded, the campaign status transitions to `exhausted`. Omit for an unlimited campaign.
+</ParamField>
+
+<ParamField body="external_id" type="string">
+  Optional identifier from your own system for cross-referencing this campaign.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+<ResponseField name="result" type="object">
+  <Expandable title="result">
+    <ResponseField name="@entity" type="string">
+      Always `"org.quicko.qpon.campaign"`.
+    </ResponseField>
+    <ResponseField name="campaign_id" type="string">
+      UUID of the newly created campaign.
+    </ResponseField>
+    <ResponseField name="name" type="string">
+      Name of the campaign.
+    </ResponseField>
+    <ResponseField name="budget" type="number">
+      Total redemption budget, if set.
+    </ResponseField>
+    <ResponseField name="external_id" type="string">
+      External identifier, if provided.
+    </ResponseField>
+    <ResponseField name="status" type="string">
+      Initial status. One of `"active"`, `"inactive"`, `"exhausted"`, `"archive"`.
+    </ResponseField>
+    <ResponseField name="created_at" type="string">
+      ISO 8601 timestamp of creation.
+    </ResponseField>
+    <ResponseField name="updated_at" type="string">
+      ISO 8601 timestamp of last update.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example
+
+```bash
+curl -X POST https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/coupons/f1a2b3c4-0000-0000-0000-000000000001/campaigns \
+  -H "Content-Type: application/json" \
+  -d '{
+    "@entity": "org.quicko.qpon.campaign",
+    "name": "Black Friday Email Blast",
+    "budget": 500,
+    "external_id": "bfriday-2025"
+  }'
+```
+
+---
+
+## Fetch Campaigns
+
+Returns a paginated, filterable list of campaigns for a coupon.
+
+**`GET /api/organizations/{organization_id}/coupons/{coupon_id}/campaigns`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+<ParamField path="coupon_id" type="string" required>
+  UUID of the coupon.
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="status" type="string">
+  Filter by campaign status: `"active"`, `"inactive"`, `"exhausted"`, or `"archive"`.
+</ParamField>
+
+<ParamField query="budgeted" type="boolean">
+  If `true`, returns only campaigns that have a `budget` set. If `false`, returns only unbudgeted campaigns.
+</ParamField>
+
+<ParamField query="take" type="number">
+  Maximum number of records to return (page size).
+</ParamField>
+
+<ParamField query="skip" type="number">
+  Number of records to skip (offset for pagination).
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+<ResponseField name="result" type="array">
+  Array of campaign objects, each with the same fields as the Create Campaign response.
+</ResponseField>
+
+### Example
+
+```bash
+curl -X GET "https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/coupons/f1a2b3c4-0000-0000-0000-000000000001/campaigns?status=active&budgeted=true&take=10&skip=0" \
+  -H "Content-Type: application/json"
+```
+
+---
+
+## Fetch Campaign
+
+Retrieves a single campaign by its ID.
+
+**`GET /api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+<ParamField path="coupon_id" type="string" required>
+  UUID of the coupon.
+</ParamField>
+
+<ParamField path="campaign_id" type="string" required>
+  UUID of the campaign to fetch.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+<ResponseField name="result" type="object">
+  The campaign object with all fields (same shape as Create Campaign response).
+</ResponseField>
+
+### Example
+
+```bash
+curl -X GET https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/coupons/f1a2b3c4-0000-0000-0000-000000000001/campaigns/c9a8b7c6-0000-0000-0000-000000000002 \
+  -H "Content-Type: application/json"
+```
+
+---
+
+## Update Campaign
+
+Partially updates a campaign. All body fields are optional.
+
+**`PATCH /api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+<ParamField path="coupon_id" type="string" required>
+  UUID of the coupon.
+</ParamField>
+
+<ParamField path="campaign_id" type="string" required>
+  UUID of the campaign to update.
+</ParamField>
+
+### Request Body
+
+<ParamField body="@entity" type="string" required>
+  Must be `"org.quicko.qpon.campaign"`.
+</ParamField>
+
+<ParamField body="name" type="string">
+  Updated campaign name.
+</ParamField>
+
+<ParamField body="budget" type="number">
+  Updated total redemption budget.
+</ParamField>
+
+<ParamField body="external_id" type="string">
+  Updated external identifier.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+<ResponseField name="result" type="object">
+  The updated campaign object with all fields.
+</ResponseField>
+
+### Example
+
+```bash
+curl -X PATCH https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/coupons/f1a2b3c4-0000-0000-0000-000000000001/campaigns/c9a8b7c6-0000-0000-0000-000000000002 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "@entity": "org.quicko.qpon.campaign",
+    "name": "Black Friday 2025 — Extended",
+    "budget": 1000
+  }'
+```
+
+---
+
+## Delete Campaign
+
+Permanently deletes a campaign and all of its coupon codes.
+
+**`DELETE /api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+<ParamField path="coupon_id" type="string" required>
+  UUID of the coupon.
+</ParamField>
+
+<ParamField path="campaign_id" type="string" required>
+  UUID of the campaign to delete.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+### Example
+
+```bash
+curl -X DELETE https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/coupons/f1a2b3c4-0000-0000-0000-000000000001/campaigns/c9a8b7c6-0000-0000-0000-000000000002 \
+  -H "Content-Type: application/json"
+```
+
+---
+
+## Deactivate Campaign
+
+Transitions a campaign from `active` to `inactive`, suspending redemptions for all its codes.
+
+**`POST /api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/deactivate`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+<ParamField path="coupon_id" type="string" required>
+  UUID of the coupon.
+</ParamField>
+
+<ParamField path="campaign_id" type="string" required>
+  UUID of the campaign to deactivate.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+### Example
+
+```bash
+curl -X POST https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/coupons/f1a2b3c4-0000-0000-0000-000000000001/campaigns/c9a8b7c6-0000-0000-0000-000000000002/deactivate \
+  -H "Content-Type: application/json"
+```
+
+---
+
+## Reactivate Campaign
+
+Transitions a campaign from `inactive` back to `active`, re-enabling redemptions.
+
+**`POST /api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/reactivate`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+<ParamField path="coupon_id" type="string" required>
+  UUID of the coupon.
+</ParamField>
+
+<ParamField path="campaign_id" type="string" required>
+  UUID of the campaign to reactivate.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+### Example
+
+```bash
+curl -X POST https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/coupons/f1a2b3c4-0000-0000-0000-000000000001/campaigns/c9a8b7c6-0000-0000-0000-000000000002/reactivate \
+  -H "Content-Type: application/json"
+```
+
+---
+
+## Fetch Campaigns Summary
+
+Returns aggregated summary statistics for all campaigns under a coupon. Archived campaigns are excluded by default.
+
+**`GET /api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/summary`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+<ParamField path="coupon_id" type="string" required>
+  UUID of the coupon.
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="name" type="string">
+  Filter summaries by campaign name.
+</ParamField>
+
+<ParamField query="status" type="string">
+  Filter by campaign status: `"active"`, `"inactive"`, or `"archive"`.
+</ParamField>
+
+<ParamField query="sort_by" type="string">
+  Field name to sort results by.
+</ParamField>
+
+<ParamField query="sort_order" type="string">
+  Sort direction: `"asc"` or `"desc"`.
+</ParamField>
+
+<ParamField query="take" type="number">
+  Maximum number of summary records to return.
+</ParamField>
+
+<ParamField query="skip" type="number">
+  Number of records to skip for pagination.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+<ResponseField name="result" type="array">
+  <Expandable title="result[]">
+    <ResponseField name="campaign_id" type="string">
+      UUID of the campaign.
+    </ResponseField>
+    <ResponseField name="name" type="string">
+      Name of the campaign.
+    </ResponseField>
+    <ResponseField name="status" type="string">
+      Current campaign status.
+    </ResponseField>
+    <ResponseField name="budget" type="number">
+      Total redemption budget, if set.
+    </ResponseField>
+    <ResponseField name="total_coupon_codes" type="number">
+      Total number of coupon codes issued in this campaign.
+    </ResponseField>
+    <ResponseField name="total_redemptions" type="number">
+      Total redemption count for this campaign.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example
+
+```bash
+curl -X GET "https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/coupons/f1a2b3c4-0000-0000-0000-000000000001/campaigns/summary?status=active&sort_by=total_redemptions&sort_order=desc&take=10&skip=0" \
+  -H "Content-Type: application/json"
+```
+
+---
+
+## Fetch Campaign Summary
+
+Returns aggregated summary statistics for a single campaign.
+
+**`GET /api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/summary`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+<ParamField path="coupon_id" type="string" required>
+  UUID of the coupon.
+</ParamField>
+
+<ParamField path="campaign_id" type="string" required>
+  UUID of the campaign.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+<ResponseField name="result" type="object">
+  <Expandable title="result">
+    <ResponseField name="campaign_id" type="string">
+      UUID of the campaign.
+    </ResponseField>
+    <ResponseField name="name" type="string">
+      Name of the campaign.
+    </ResponseField>
+    <ResponseField name="status" type="string">
+      Current campaign status.
+    </ResponseField>
+    <ResponseField name="budget" type="number">
+      Total redemption budget, if set.
+    </ResponseField>
+    <ResponseField name="total_coupon_codes" type="number">
+      Total coupon codes issued in this campaign.
+    </ResponseField>
+    <ResponseField name="total_redemptions" type="number">
+      Total redemption count for this campaign.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example
+
+```bash
+curl -X GET https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/coupons/f1a2b3c4-0000-0000-0000-000000000001/campaigns/c9a8b7c6-0000-0000-0000-000000000002/summary \
+  -H "Content-Type: application/json"
+```

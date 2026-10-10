@@ -1,0 +1,148 @@
+---
+title: "Qpon REST API Reference: Endpoints, Formats & Resources"
+sidebarTitle: "Overview"
+description: "All Qpon API endpoints are REST over HTTPS. Learn the base URL, response envelope format, pagination, error codes, and how resources are organized."
+---
+
+Qpon exposes a RESTful HTTP API for managing coupons, campaigns, customers, redemptions, and more. Every feature available in the dashboard is also available through this API, making it easy to integrate Qpon programmatically into any backend service or workflow.
+
+## Base URL
+
+By default, the Qpon API server runs locally on port `3000`. All endpoints are prefixed with `/api`.
+
+```
+http://localhost:3000/api
+```
+
+When deploying to a custom host, replace `http://localhost:3000` with your server's base address. For example:
+
+```
+https://qpon.yourcompany.com/api
+```
+
+---
+
+## Response Envelope
+
+Every response — both successful and erroneous — is wrapped in a consistent JSON envelope.
+
+**Success response**
+
+```json
+{
+  "code": 200,
+  "message": "Successfully fetched coupons",
+  "data": { ... }
+}
+```
+
+| Field     | Type            | Description                                              |
+|-----------|-----------------|----------------------------------------------------------|
+| `code`    | integer         | HTTP status code mirrored inside the body                |
+| `message` | string          | Human-readable description of the outcome               |
+| `data`    | object \| array | The returned resource or list; omitted on error responses |
+
+**Error response**
+
+```json
+{
+  "code": 404,
+  "message": "Coupon not found"
+}
+```
+
+Error responses omit the `data` field and include a descriptive `message` explaining what went wrong.
+
+---
+
+## Common HTTP Status Codes
+
+| Code  | Meaning                                                   |
+|-------|-----------------------------------------------------------|
+| `200` | Success — the request was processed and data is returned  |
+| `400` | Invalid request — bad body, missing fields, or wrong type |
+| `401` | Unauthorized — missing or invalid authentication          |
+| `404` | Not found — the requested resource does not exist         |
+| `409` | Conflict — a duplicate resource already exists            |
+
+---
+
+## Pagination
+
+All list endpoints support cursor-style offset pagination via query parameters.
+
+| Parameter | Type    | Default | Description                          |
+|-----------|---------|---------|--------------------------------------|
+| `skip`    | integer | `0`     | Number of records to skip (offset)   |
+| `take`    | integer | `10`    | Maximum number of records to return  |
+
+**Example**
+
+```
+GET /api/organizations/{organization_id}/coupons?skip=20&take=10
+```
+
+This returns records 21–30 — the third page when `take=10`.
+
+---
+
+## The `@entity` Field
+
+All request bodies for write operations include an `"@entity"` field. This is a reverse-domain namespaced string that identifies the resource type being operated on.
+
+```json
+{
+  "@entity": "org.quicko.qpon.coupon",
+  "name": "SUMMER20",
+  "description": "20% off summer sale"
+}
+```
+
+The `@entity` value is specific to each resource and is **required** on all `POST` and `PUT` request bodies. You will find the correct value documented on each individual endpoint page.
+
+Common `@entity` values include:
+
+| Resource        | `@entity` value                    |
+|-----------------|-------------------------------------|
+| Organization    | `org.quicko.qpon.organization`     |
+| Coupon          | `org.quicko.qpon.coupon`           |
+| Campaign        | `org.quicko.qpon.campaign`         |
+| Coupon Code     | `org.quicko.qpon.coupon_code`      |
+| Customer        | `org.quicko.qpon.customer`         |
+| Item            | `org.quicko.qpon.item`             |
+| Offer           | `org.quicko.qpon.offer`            |
+| Redemption      | `org.quicko.qpon.redemption`       |
+| API Key         | `org.quicko.qpon.api_key`          |
+
+---
+
+## Resource Groups
+
+Qpon's API is organized around the following resource groups. Click any card to explore the endpoints for that resource.
+
+<CardGroup cols={2}>
+  <Card title="Organizations" href="/api-reference/organizations">
+    Create and manage the top-level organizations that own coupons, campaigns, and customers.
+  </Card>
+  <Card title="Coupons" href="/api-reference/coupons">
+    Define coupon rules, discount types, validity windows, and usage limits.
+  </Card>
+  <Card title="Campaigns" href="/api-reference/campaigns">
+    Group coupons into time-bound marketing campaigns.
+  </Card>
+  <Card title="Coupon Codes" href="/api-reference/coupon-codes">
+    Generate and manage redeemable codes that are issued to customers.
+  </Card>
+  <Card title="Customers" href="/api-reference/customers">
+    Register customers and track their coupon activity across your organization.
+  </Card>
+  <Card title="Items" href="/api-reference/items">
+    Attach line-item context to coupons for product-specific discounts.
+  </Card>
+  <Card title="Offers" href="/api-reference/offers">
+    Configure offer types such as percentage, flat, or free-shipping discounts.
+  </Card>
+  <Card title="Redemptions" href="/api-reference/redemptions">
+    Record and query coupon redemption events for reporting and fraud prevention.
+  </Card>
+</CardGroup>

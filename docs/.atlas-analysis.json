@@ -1,0 +1,150 @@
+{
+  "projectType": "saas",
+  "projectName": "Qpon",
+  "projectDescription": "Self-hosted, open-source coupon management platform for creating, distributing, and redeeming promotional codes at scale.",
+  "theme": "luma",
+  "primaryColor": "#ffffff",
+  "lightColor": "#7c7c7c",
+  "darkColor": "#060606",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "quickstart",
+              "deployment"
+            ]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "concepts/data-model",
+              "concepts/organizations",
+              "concepts/coupons",
+              "concepts/campaigns",
+              "concepts/coupon-codes",
+              "concepts/offers"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/authentication",
+              "guides/customers-and-items",
+              "guides/redeeming-coupons",
+              "guides/reports"
+            ]
+          },
+          {
+            "group": "Client SDK",
+            "pages": [
+              "sdk/overview",
+              "sdk/installation",
+              "sdk/usage"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "api-reference/overview",
+              "api-reference/authentication"
+            ]
+          },
+          {
+            "group": "Resources",
+            "pages": [
+              "api-reference/organizations",
+              "api-reference/coupons",
+              "api-reference/campaigns",
+              "api-reference/coupon-codes",
+              "api-reference/customers",
+              "api-reference/items",
+              "api-reference/offers",
+              "api-reference/redemptions"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Multi-organization support with role-based access control (super_admin, admin, editor, viewer, regular)",
+    "Flexible discount types: percentage and fixed-amount",
+    "Campaign management with optional budgets and status lifecycle (active, inactive, exhausted, archive)",
+    "Coupon codes with visibility (public/private), duration (limited/forever), and customer constraints",
+    "Real-time offer resolution — check applicable discounts for a customer and item pair",
+    "Coupon code redemption with per-code and per-customer limits",
+    "Analytics dashboards: day-wise, item-wise, and coupon-code-wise redemption summaries",
+    "CSV export reports for redemptions, items, and customers",
+    "Type-safe TypeScript client library (@org-quicko/qpon-client) with Zod validation",
+    "API key authentication for server-to-server integrations",
+    "Docker-based one-command deployment"
+  ],
+  "publicApiSurface": [
+    "POST /api/organizations",
+    "GET /api/organizations",
+    "GET /api/organizations/:organization_id",
+    "PATCH /api/organizations/:organization_id",
+    "DELETE /api/organizations/:organization_id",
+    "GET /api/organizations/:organization_id/summary",
+    "POST /api/users/login",
+    "POST /api/organizations/:organization_id/coupons",
+    "GET /api/organizations/:organization_id/coupons",
+    "GET /api/organizations/:organization_id/coupons/:coupon_id",
+    "PATCH /api/organizations/:organization_id/coupons/:coupon_id",
+    "DELETE /api/organizations/:organization_id/coupons/:coupon_id",
+    "POST /api/organizations/:organization_id/coupons/:coupon_id/deactivate",
+    "POST /api/organizations/:organization_id/coupons/:coupon_id/reactivate",
+    "POST /api/organizations/:organization_id/coupons/:coupon_id/campaigns",
+    "GET /api/organizations/:organization_id/coupons/:coupon_id/campaigns",
+    "GET /api/organizations/:organization_id/coupons/:coupon_id/campaigns/:campaign_id",
+    "PATCH /api/organizations/:organization_id/coupons/:coupon_id/campaigns/:campaign_id",
+    "DELETE /api/organizations/:organization_id/coupons/:coupon_id/campaigns/:campaign_id",
+    "POST /api/organizations/:organization_id/coupons/:coupon_id/campaigns/:campaign_id/coupon-codes",
+    "GET /api/organizations/:organization_id/coupons/:coupon_id/campaigns/:campaign_id/coupon-codes",
+    "GET /api/organizations/:organization_id/coupons/:coupon_id/campaigns/:campaign_id/coupon-codes/:coupon_code_id",
+    "PATCH /api/organizations/:organization_id/coupons/:coupon_id/campaigns/:campaign_id/coupon-codes/:coupon_code_id",
+    "DELETE /api/organizations/:organization_id/coupons/:coupon_id/campaigns/:campaign_id/coupon-codes/:coupon_code_id",
+    "POST /api/organizations/:organization_id/coupon-codes/redeem",
+    "GET /api/organizations/:organization_id/offers",
+    "GET /api/organizations/:organization_id/offer",
+    "POST /api/organizations/:organization_id/customers",
+    "PUT /api/organizations/:organization_id/customers/upsert",
+    "GET /api/organizations/:organization_id/customers",
+    "GET /api/organizations/:organization_id/customers/:customer_id",
+    "POST /api/organizations/:organization_id/items",
+    "PUT /api/organizations/:organization_id/items/upsert",
+    "GET /api/organizations/:organization_id/items",
+    "GET /api/organizations/:organization_id/redemptions",
+    "GET /api/organizations/:organization_id/redemptions/reports",
+    "POST /api/organizations/:organization_id/api-keys",
+    "GET /api/organizations/:organization_id/api-keys",
+    "Qpon (TypeScript client class)",
+    "Qpon.COUPONS.createCoupon()",
+    "Qpon.COUPONS.fetchCoupons()",
+    "Qpon.COUPONS.fetchCoupon()",
+    "Qpon.COUPONS.updateCoupon()",
+    "Qpon.COUPONS.deleteCoupon()",
+    "Qpon.COUPONS.deactivateCoupon()",
+    "Qpon.COUPONS.reactivateCoupon()",
+    "Qpon.CAMPAIGN.createCampaign()",
+    "Qpon.COUPONCODE.createCouponCode()",
+    "Qpon.REDEMPTIONS.redeemCouponCode()",
+    "Qpon.OFFERS.fetchOffers()",
+    "Qpon.OFFERS.fetchOffer()",
+    "Qpon.CUSTOMERS.createCustomer()",
+    "Qpon.CUSTOMERS.upsertCustomer()",
+    "Qpon.ITEM.createItem()",
+    "Qpon.ITEM.upsertItem()",
+    "Qpon.APIKEYS.createApiKey()"
+  ]
+}

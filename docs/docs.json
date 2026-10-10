@@ -1,0 +1,96 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "name": "Qpon",
+  "theme": "luma",
+  "colors": {
+    "primary": "#ffffff",
+    "light": "#7c7c7c",
+    "dark": "#060606"
+  },
+  "favicon": "https://media.brand.dev/e4a2ce0d-9aed-4988-9af6-a65992e4f2c7.png",
+  "logo": {
+    "light": "https://media.brand.dev/ff390636-cd31-4db1-b22e-d247b35c497a.svg",
+    "dark": "https://media.brand.dev/ff390636-cd31-4db1-b22e-d247b35c497a.svg"
+  },
+  "navbar": {
+    "primary": {
+      "type": "github",
+      "href": "https://github.com/org-quicko/qpon"
+    }
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/org-quicko/qpon"
+    }
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "quickstart",
+              "deployment"
+            ]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "concepts/data-model",
+              "concepts/organizations",
+              "concepts/coupons",
+              "concepts/campaigns",
+              "concepts/coupon-codes",
+              "concepts/offers"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/authentication",
+              "guides/customers-and-items",
+              "guides/redeeming-coupons",
+              "guides/reports"
+            ]
+          },
+          {
+            "group": "Client SDK",
+            "pages": [
+              "sdk/overview",
+              "sdk/installation",
+              "sdk/usage"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "api-reference/overview",
+              "api-reference/authentication"
+            ]
+          },
+          {
+            "group": "Resources",
+            "pages": [
+              "api-reference/organizations",
+              "api-reference/coupons",
+              "api-reference/campaigns",
+              "api-reference/coupon-codes",
+              "api-reference/customers",
+              "api-reference/items",
+              "api-reference/offers",
+              "api-reference/redemptions"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

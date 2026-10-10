@@ -1,0 +1,432 @@
+---
+title: "Customers API — Register and Manage End Users"
+sidebarTitle: "Customers"
+description: "REST endpoints for creating, upserting, listing, and deleting customers in Qpon. Use external_id to link Qpon customers to your own user accounts."
+---
+
+Customers in Qpon represent the end users of your application. Every customer record can be tied back to your own user database through the `external_id` field, letting you issue and redeem coupons without storing duplicate identity data. The Customers API provides full CRUD operations plus a bulk upsert and a CSV sales report export.
+
+---
+
+## Create Customer
+
+`POST /api/organizations/{organization_id}/customers`
+
+Registers a new customer under the given organization. The `email` field must be unique within the organization.
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization the customer belongs to.
+</ParamField>
+
+### Request Body
+
+<ParamField body="@entity" type="string" required>
+  Must be exactly `"org.quicko.qpon.customer"`. Identifies the payload type for the API.
+</ParamField>
+
+<ParamField body="email" type="string" required>
+  The customer's email address. Used as the primary human-readable identifier within an organization.
+</ParamField>
+
+<ParamField body="name" type="string" required>
+  Full display name of the customer.
+</ParamField>
+
+<ParamField body="external_id" type="string" required>
+  Your application's own identifier for this user (e.g. a UUID or database primary key from your system). Store this to correlate Qpon records with your own user accounts.
+</ParamField>
+
+<ParamField body="isd_code" type="string">
+  International subscriber dialing code for the customer's phone number (e.g. `"+1"`).
+</ParamField>
+
+<ParamField body="phone" type="string">
+  Customer's phone number (without the ISD code prefix).
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation, e.g. `"Successfully created customer"`.
+</ResponseField>
+
+<ResponseField name="result" type="object">
+  <Expandable title="result">
+    <ResponseField name="customer_id" type="string">
+      UUID assigned by Qpon to the newly created customer.
+    </ResponseField>
+    <ResponseField name="name" type="string">
+      Customer's display name.
+    </ResponseField>
+    <ResponseField name="email" type="string">
+      Customer's email address.
+    </ResponseField>
+    <ResponseField name="external_id" type="string">
+      The external identifier you supplied, echoed back.
+    </ResponseField>
+    <ResponseField name="isd_code" type="string">
+      ISD / country calling code.
+    </ResponseField>
+    <ResponseField name="phone" type="string">
+      Customer's phone number.
+    </ResponseField>
+    <ResponseField name="created_at" type="string">
+      ISO 8601 timestamp of when the record was created.
+    </ResponseField>
+    <ResponseField name="updated_at" type="string">
+      ISO 8601 timestamp of the most recent update.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example
+
+```bash
+curl --request POST \
+  --url https://your-qpon-host/api/organizations/ORG_ID/customers \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "@entity": "org.quicko.qpon.customer",
+    "name": "Alice Sharma",
+    "email": "alice@example.com",
+    "external_id": "usr_a1b2c3d4"
+  }'
+```
+
+---
+
+## Upsert Customer
+
+`PUT /api/organizations/{organization_id}/customers/upsert`
+
+Creates a customer if no record with the given `external_id` exists; otherwise updates the existing record. This is the recommended way to keep your Qpon customer list in sync with your application's user base without having to check for existence first.
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+### Request Body
+
+<ParamField body="@entity" type="string" required>
+  Must be `"org.quicko.qpon.customer"`.
+</ParamField>
+
+<ParamField body="email" type="string" required>
+  The customer's email address.
+</ParamField>
+
+<ParamField body="name" type="string" required>
+  Full display name of the customer.
+</ParamField>
+
+<ParamField body="external_id" type="string" required>
+  Your system's identifier for the user. Acts as the upsert key — if a customer with this `external_id` already exists, their record is updated instead of a new one being created.
+</ParamField>
+
+<ParamField body="isd_code" type="string">
+  International subscriber dialing code.
+</ParamField>
+
+<ParamField body="phone" type="string">
+  Customer's phone number.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  `"Successfully upserted customer"`.
+</ResponseField>
+
+<ResponseField name="result" type="object">
+  <Expandable title="result">
+    <ResponseField name="customer_id" type="string">
+      UUID of the created or updated customer.
+    </ResponseField>
+    <ResponseField name="name" type="string">
+      Customer's display name.
+    </ResponseField>
+    <ResponseField name="email" type="string">
+      Customer's email address.
+    </ResponseField>
+    <ResponseField name="external_id" type="string">
+      The external identifier echoed back.
+    </ResponseField>
+    <ResponseField name="created_at" type="string">
+      ISO 8601 creation timestamp.
+    </ResponseField>
+    <ResponseField name="updated_at" type="string">
+      ISO 8601 last-updated timestamp.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example
+
+```bash
+curl --request PUT \
+  --url https://your-qpon-host/api/organizations/ORG_ID/customers/upsert \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "@entity": "org.quicko.qpon.customer",
+    "name": "Alice Sharma",
+    "email": "alice@example.com",
+    "external_id": "usr_a1b2c3d4"
+  }'
+```
+
+---
+
+## Fetch Customers
+
+`GET /api/organizations/{organization_id}/customers`
+
+Returns a paginated list of customers for the organization. Use the `email` or `external_id` query parameters to filter results.
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="email" type="string">
+  Filter by an exact customer email address.
+</ParamField>
+
+<ParamField query="external_id" type="string">
+  Filter by your system's identifier for the customer.
+</ParamField>
+
+<ParamField query="skip" type="integer">
+  Number of records to skip for pagination. Defaults to `0`.
+</ParamField>
+
+<ParamField query="take" type="integer">
+  Maximum number of records to return. Defaults to `10`.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  `"Successfully fetched customers"`.
+</ResponseField>
+
+<ResponseField name="result" type="array">
+  Array of customer objects. Each item contains the same fields as the Create Customer response.
+</ResponseField>
+
+### Example
+
+```bash
+curl --request GET \
+  --url 'https://your-qpon-host/api/organizations/ORG_ID/customers?skip=0&take=20&email=alice%40example.com'
+```
+
+---
+
+## Fetch Customer
+
+`GET /api/organizations/{organization_id}/customers/{customer_id}`
+
+Retrieves a single customer record by its Qpon-assigned UUID.
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+<ParamField path="customer_id" type="string" required>
+  UUID of the customer to retrieve.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  `"Successfully fetched customer"`.
+</ResponseField>
+
+<ResponseField name="result" type="object">
+  <Expandable title="result">
+    <ResponseField name="customer_id" type="string">
+      UUID of the customer.
+    </ResponseField>
+    <ResponseField name="name" type="string">
+      Customer's display name.
+    </ResponseField>
+    <ResponseField name="email" type="string">
+      Customer's email address.
+    </ResponseField>
+    <ResponseField name="external_id" type="string">
+      Your system's identifier for this customer.
+    </ResponseField>
+    <ResponseField name="isd_code" type="string">
+      International subscriber dialing code.
+    </ResponseField>
+    <ResponseField name="phone" type="string">
+      Customer's phone number.
+    </ResponseField>
+    <ResponseField name="created_at" type="string">
+      ISO 8601 creation timestamp.
+    </ResponseField>
+    <ResponseField name="updated_at" type="string">
+      ISO 8601 last-updated timestamp.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example
+
+```bash
+curl --request GET \
+  --url https://your-qpon-host/api/organizations/ORG_ID/customers/CUSTOMER_ID
+```
+
+---
+
+## Update Customer
+
+`PATCH /api/organizations/{organization_id}/customers/{customer_id}`
+
+Partially updates a customer record. Only the fields you include in the request body are changed; omitted fields retain their current values.
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+<ParamField path="customer_id" type="string" required>
+  UUID of the customer to update.
+</ParamField>
+
+### Request Body
+
+All fields are optional. Provide only the fields you want to change.
+
+<ParamField body="@entity" type="string">
+  Must be `"org.quicko.qpon.customer"` when provided.
+</ParamField>
+
+<ParamField body="name" type="string">
+  Updated display name.
+</ParamField>
+
+<ParamField body="email" type="string">
+  Updated email address.
+</ParamField>
+
+<ParamField body="external_id" type="string">
+  Updated external identifier.
+</ParamField>
+
+<ParamField body="isd_code" type="string">
+  Updated ISD / country calling code.
+</ParamField>
+
+<ParamField body="phone" type="string">
+  Updated phone number.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  `"Successfully updated customer"`.
+</ResponseField>
+
+<ResponseField name="result" type="object">
+  The full updated customer object (same shape as Fetch Customer).
+</ResponseField>
+
+### Example
+
+```bash
+curl --request PATCH \
+  --url https://your-qpon-host/api/organizations/ORG_ID/customers/CUSTOMER_ID \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "@entity": "org.quicko.qpon.customer",
+    "name": "Alice B. Sharma"
+  }'
+```
+
+---
+
+## Delete Customer
+
+`DELETE /api/organizations/{organization_id}/customers/{customer_id}`
+
+Permanently removes a customer record from the organization. This action cannot be undone.
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+<ParamField path="customer_id" type="string" required>
+  UUID of the customer to delete.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  `"Successfully deleted customer"`.
+</ResponseField>
+
+<ResponseField name="result" type="object">
+  Details about the deleted record.
+</ResponseField>
+
+### Example
+
+```bash
+curl --request DELETE \
+  --url https://your-qpon-host/api/organizations/ORG_ID/customers/CUSTOMER_ID
+```
+
+---
+
+## Download Customer Sales Report
+
+`GET /api/organizations/{organization_id}/customers/reports`
+
+Streams a CSV file summarising redemption activity aggregated by customer. The file is named `customer_sales_report.csv` and is served with `Content-Type: text/csv`.
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="from" type="string">
+  Start date for the report window in `YYYY-MM-DD` format (inclusive).
+</ParamField>
+
+<ParamField query="to" type="string">
+  End date for the report window in `YYYY-MM-DD` format (inclusive).
+</ParamField>
+
+### Response
+
+Returns a binary CSV file download.
+
+| Header | Value |
+|---|---|
+| `Content-Type` | `text/csv` |
+| `Content-Disposition` | `attachment; filename=customer_sales_report.csv` |
+
+### Example
+
+```bash
+curl --request GET \
+  --url 'https://your-qpon-host/api/organizations/ORG_ID/customers/reports?from=2024-01-01&to=2024-03-31' \
+  --output customer_sales_report.csv
+```

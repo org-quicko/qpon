@@ -1,0 +1,283 @@
+---
+title: "Download CSV Reports and Query Redemption Data in Qpon"
+sidebarTitle: "Reports"
+description: "Qpon provides CSV export endpoints for redemptions, item-wise sales, and customer-wise sales. Filter by date range and download programmatically."
+---
+
+Qpon exposes two categories of reporting endpoints: **CSV export** endpoints that stream downloadable files suitable for spreadsheet analysis, and **JSON summary** endpoints that return aggregated statistics for use in dashboards or analytics pipelines.
+
+---
+
+## CSV export reports
+
+All CSV endpoints stream the response directly. Use `curl -o <filename>` to save the file locally, or pipe the response into your data pipeline.
+
+### 1. Redemption report
+
+Returns every individual redemption event within the specified date range.
+
+```http
+GET /api/organizations/{organization_id}/redemptions/reports
+```
+
+**Query parameters**
+
+| Parameter | Type   | Description                                               |
+| --------- | ------ | --------------------------------------------------------- |
+| `from`    | string | Start date in `YYYY-MM-DD` format (inclusive, optional)   |
+| `to`      | string | End date in `YYYY-MM-DD` format (inclusive, optional)     |
+
+**Response headers**
+
+```http
+Content-Type: text/csv
+Content-Disposition: attachment; filename=redemption_report.csv
+```
+
+```bash
+curl -o redemption_report.csv \
+  "https://your-qpon-host/api/organizations/org_abc123/redemptions/reports?from=2024-01-01&to=2024-12-31" \
+  -H "x-api-key: qpk_live_xxxxxxxxxxxxxxxx" \
+  -H "x-api-secret: qps_live_yyyyyyyyyyyyyyyy"
+```
+
+---
+
+### 2. Item sales report
+
+Returns aggregated redemption data grouped by item for the specified date range.
+
+```http
+GET /api/organizations/{organization_id}/items/reports
+```
+
+**Query parameters**
+
+| Parameter | Type   | Description                                               |
+| --------- | ------ | --------------------------------------------------------- |
+| `from`    | string | Start date in `YYYY-MM-DD` format (inclusive, optional)   |
+| `to`      | string | End date in `YYYY-MM-DD` format (inclusive, optional)     |
+
+**Response headers**
+
+```http
+Content-Type: text/csv
+Content-Disposition: attachment; filename=item_sales_report.csv
+```
+
+```bash
+curl -o item_sales_report.csv \
+  "https://your-qpon-host/api/organizations/org_abc123/items/reports?from=2024-01-01&to=2024-12-31" \
+  -H "x-api-key: qpk_live_xxxxxxxxxxxxxxxx" \
+  -H "x-api-secret: qps_live_yyyyyyyyyyyyyyyy"
+```
+
+---
+
+### 3. Customer sales report
+
+Returns aggregated redemption data grouped by customer for the specified date range.
+
+```http
+GET /api/organizations/{organization_id}/customers/reports
+```
+
+**Query parameters**
+
+| Parameter | Type   | Description                                               |
+| --------- | ------ | --------------------------------------------------------- |
+| `from`    | string | Start date in `YYYY-MM-DD` format (inclusive, optional)   |
+| `to`      | string | End date in `YYYY-MM-DD` format (inclusive, optional)     |
+
+**Response headers**
+
+```http
+Content-Type: text/csv
+Content-Disposition: attachment; filename=customer_sales_report.csv
+```
+
+```bash
+curl -o customer_sales_report.csv \
+  "https://your-qpon-host/api/organizations/org_abc123/customers/reports?from=2024-01-01&to=2024-12-31" \
+  -H "x-api-key: qpk_live_xxxxxxxxxxxxxxxx" \
+  -H "x-api-secret: qps_live_yyyyyyyyyyyyyyyy"
+```
+
+---
+
+## Fetching redemptions via API (JSON)
+
+For programmatic access to redemption records — for example, to populate an in-house analytics database — use the JSON redemptions endpoint. It supports rich filtering and pagination.
+
+```http
+GET /api/organizations/{organization_id}/redemptions
+```
+
+**Query parameters**
+
+| Parameter        | Type   | Description                                              |
+| ---------------- | ------ | -------------------------------------------------------- |
+| `coupon_id`      | UUID   | Filter to a specific coupon (optional)                   |
+| `campaign_id`    | UUID   | Filter to a specific campaign (optional)                 |
+| `coupon_code_id` | UUID   | Filter to a specific coupon code (optional)              |
+| `customer_email` | string | Filter by customer email address (optional)              |
+| `from`           | string | Start date `YYYY-MM-DD` (optional)                       |
+| `to`             | string | End date `YYYY-MM-DD` (optional)                         |
+| `skip`           | number | Number of records to skip (pagination offset)            |
+| `take`           | number | Maximum records to return (page size)                    |
+| `sort_by`        | string | Field name to sort by (optional)                         |
+| `sort_order`     | string | `asc` or `desc` (optional)                              |
+
+```bash
+curl "https://your-qpon-host/api/organizations/org_abc123/redemptions?from=2024-06-01&to=2024-06-30&take=50&sort_by=created_at&sort_order=desc" \
+  -H "x-api-key: qpk_live_xxxxxxxxxxxxxxxx" \
+  -H "x-api-secret: qps_live_yyyyyyyyyyyyyyyy"
+```
+
+**Response**
+
+```json
+{
+  "message": "Successfully fetched redemptions",
+  "result": [
+    {
+      "redemption_id": "a1b2c3d4-...",
+      "code": "SAVE20",
+      "discount": 1000,
+      "base_order_value": 5000,
+      "external_customer_id": "usr_456",
+      "external_item_id": "prod_123",
+      "created_at": "2024-06-15T14:30:00.000Z"
+    }
+  ]
+}
+```
+
+---
+
+## Analytics summary endpoints (JSON)
+
+These endpoints return pre-aggregated statistics backed by materialized views. They are optimized for dashboard widgets and do not require client-side aggregation.
+
+### Organization summary
+
+Returns overall statistics for the organization: total redemption count and amount, and counts of active/inactive coupons, campaigns, and coupon codes.
+
+```http
+GET /api/organizations/{organization_id}/summary
+```
+
+```bash
+curl "https://your-qpon-host/api/organizations/org_abc123/summary" \
+  -H "x-api-key: qpk_live_xxxxxxxxxxxxxxxx" \
+  -H "x-api-secret: qps_live_yyyyyyyyyyyyyyyy"
+```
+
+**Response fields**
+
+| Field                    | Description                                    |
+| ------------------------ | ---------------------------------------------- |
+| `total_redemption_count` | Total number of redemptions ever recorded      |
+| `total_redemption_amount`| Sum of all discount values applied             |
+| `active_coupon_count`    | Number of currently active coupons             |
+| `inactive_coupon_count`  | Number of inactive/archived coupons            |
+| `active_campaign_count`  | Number of currently active campaigns           |
+| `inactive_campaign_count`| Number of inactive/archived campaigns          |
+| `active_coupon_code_count`| Number of currently active coupon codes       |
+
+---
+
+### Day-wise sales summary
+
+Returns a time-series breakdown of redemptions aggregated by day. Ideal for trend charts on a reporting dashboard.
+
+```http
+GET /api/organizations/{organization_id}/sales/summary
+```
+
+**Query parameters**
+
+| Parameter    | Type   | Description                                              |
+| ------------ | ------ | -------------------------------------------------------- |
+| `start_date` | string | Start date in `YYYY-MM-DD` format (optional)             |
+| `end_date`   | string | End date in `YYYY-MM-DD` format (optional)               |
+
+```bash
+curl "https://your-qpon-host/api/organizations/org_abc123/sales/summary?start_date=2024-01-01&end_date=2024-12-31" \
+  -H "x-api-key: qpk_live_xxxxxxxxxxxxxxxx" \
+  -H "x-api-secret: qps_live_yyyyyyyyyyyyyyyy"
+```
+
+---
+
+### Item-wise redemption summary
+
+Returns a ranked breakdown of redemptions by item — useful for identifying your most discounted products.
+
+```http
+GET /api/organizations/{organization_id}/items/summary
+```
+
+**Query parameters**
+
+| Parameter    | Type   | Description                                              |
+| ------------ | ------ | -------------------------------------------------------- |
+| `start_date` | string | Start date in `YYYY-MM-DD` format (optional)             |
+| `end_date`   | string | End date in `YYYY-MM-DD` format (optional)               |
+
+```bash
+curl "https://your-qpon-host/api/organizations/org_abc123/items/summary?start_date=2024-01-01&end_date=2024-12-31" \
+  -H "x-api-key: qpk_live_xxxxxxxxxxxxxxxx" \
+  -H "x-api-secret: qps_live_yyyyyyyyyyyyyyyy"
+```
+
+---
+
+### Coupon-code-wise redemption summary
+
+Returns a ranked breakdown of redemptions by individual coupon code — useful for comparing campaign performance.
+
+```http
+GET /api/organizations/{organization_id}/coupon_codes/summary
+```
+
+**Query parameters**
+
+| Parameter    | Type   | Description                                              |
+| ------------ | ------ | -------------------------------------------------------- |
+| `start_date` | string | Start date in `YYYY-MM-DD` format (optional)             |
+| `end_date`   | string | End date in `YYYY-MM-DD` format (optional)               |
+| `take`       | number | Maximum number of coupon codes to return (optional)      |
+
+```bash
+curl "https://your-qpon-host/api/organizations/org_abc123/coupon_codes/summary?start_date=2024-01-01&end_date=2024-12-31&take=10" \
+  -H "x-api-key: qpk_live_xxxxxxxxxxxxxxxx" \
+  -H "x-api-secret: qps_live_yyyyyyyyyyyyyyyy"
+```
+
+---
+
+## Downloading all three CSV reports at once
+
+You can use a simple script to pull all three export files in one go:
+
+```bash
+ORG="org_abc123"
+HOST="https://your-qpon-host"
+FROM="2024-01-01"
+TO="2024-12-31"
+KEY="qpk_live_xxxxxxxxxxxxxxxx"
+SECRET="qps_live_yyyyyyyyyyyyyyyy"
+
+curl -o redemption_report.csv \
+  "$HOST/api/organizations/$ORG/redemptions/reports?from=$FROM&to=$TO" \
+  -H "x-api-key: $KEY" -H "x-api-secret: $SECRET"
+
+curl -o item_sales_report.csv \
+  "$HOST/api/organizations/$ORG/items/reports?from=$FROM&to=$TO" \
+  -H "x-api-key: $KEY" -H "x-api-secret: $SECRET"
+
+curl -o customer_sales_report.csv \
+  "$HOST/api/organizations/$ORG/customers/reports?from=$FROM&to=$TO" \
+  -H "x-api-key: $KEY" -H "x-api-secret: $SECRET"
+```

@@ -1,0 +1,474 @@
+---
+title: "Organizations API — Create and Manage Organizations"
+sidebarTitle: "Organizations"
+description: "Create and manage Qpon organizations via REST. Every coupon, campaign, and code belongs to one org. Supports external_id for cross-system tenant mapping."
+---
+
+Organizations are the top-level tenants in Qpon. Every coupon, campaign, coupon code, customer, and redemption record belongs to exactly one organization. Use `external_id` to map a Qpon organization to an entity in your own system.
+
+---
+
+## Create Organization
+
+Creates a new organization tenant.
+
+**`POST /api/organizations`**
+
+### Request Body
+
+<ParamField body="@entity" type="string" required>
+  Must be `"org.quicko.qpon.organization"`.
+</ParamField>
+
+<ParamField body="name" type="string" required>
+  Human-readable name for the organization (must be unique).
+</ParamField>
+
+<ParamField body="currency" type="string" required>
+  ISO 4217 currency code for this organization, e.g. `"INR"` or `"USD"`.
+</ParamField>
+
+<ParamField body="external_id" type="string">
+  Optional identifier from your own system. Useful for multi-tenant mapping.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+<ResponseField name="result" type="object">
+  <Expandable title="result">
+    <ResponseField name="@entity" type="string">
+      Always `"org.quicko.qpon.organization"`.
+    </ResponseField>
+    <ResponseField name="organization_id" type="string">
+      UUID of the newly created organization.
+    </ResponseField>
+    <ResponseField name="name" type="string">
+      Name of the organization.
+    </ResponseField>
+    <ResponseField name="currency" type="string">
+      Currency code associated with the organization.
+    </ResponseField>
+    <ResponseField name="external_id" type="string">
+      External identifier, if provided.
+    </ResponseField>
+    <ResponseField name="created_at" type="string">
+      ISO 8601 timestamp of creation.
+    </ResponseField>
+    <ResponseField name="updated_at" type="string">
+      ISO 8601 timestamp of last update.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example
+
+```bash
+curl -X POST https://your-qpon-host/api/organizations \
+  -H "Content-Type: application/json" \
+  -d '{
+    "@entity": "org.quicko.qpon.organization",
+    "name": "Acme Corp",
+    "currency": "USD",
+    "external_id": "acme-tenant-001"
+  }'
+```
+
+---
+
+## Fetch Organizations
+
+Returns a paginated, filterable list of organizations.
+
+**`GET /api/organizations`**
+
+### Query Parameters
+
+<ParamField query="external_id" type="string">
+  Filter by the organization's `external_id`.
+</ParamField>
+
+<ParamField query="name" type="string">
+  Filter organizations whose name contains this string.
+</ParamField>
+
+<ParamField query="sort_by" type="string">
+  Field name to sort results by (e.g. `"name"`, `"created_at"`).
+</ParamField>
+
+<ParamField query="sort_order" type="string">
+  Sort direction: `"asc"` or `"desc"`. Defaults to `"desc"`.
+</ParamField>
+
+<ParamField query="take" type="number">
+  Maximum number of records to return (page size).
+</ParamField>
+
+<ParamField query="skip" type="number">
+  Number of records to skip (offset for pagination).
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+<ResponseField name="result" type="array">
+  Array of organization objects. Each object contains the same fields as the Create Organization response.
+</ResponseField>
+
+### Example
+
+```bash
+curl -X GET "https://your-qpon-host/api/organizations?name=Acme&sort_by=created_at&sort_order=desc&take=20&skip=0" \
+  -H "Content-Type: application/json"
+```
+
+---
+
+## Fetch Organization
+
+Retrieves a single organization by its ID.
+
+**`GET /api/organizations/{organization_id}`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization to fetch.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+<ResponseField name="result" type="object">
+  <Expandable title="result">
+    <ResponseField name="@entity" type="string">
+      Always `"org.quicko.qpon.organization"`.
+    </ResponseField>
+    <ResponseField name="organization_id" type="string">
+      UUID of the organization.
+    </ResponseField>
+    <ResponseField name="name" type="string">
+      Name of the organization.
+    </ResponseField>
+    <ResponseField name="currency" type="string">
+      Currency code associated with the organization.
+    </ResponseField>
+    <ResponseField name="external_id" type="string">
+      External identifier, if set.
+    </ResponseField>
+    <ResponseField name="created_at" type="string">
+      ISO 8601 timestamp of creation.
+    </ResponseField>
+    <ResponseField name="updated_at" type="string">
+      ISO 8601 timestamp of last update.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example
+
+```bash
+curl -X GET https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801 \
+  -H "Content-Type: application/json"
+```
+
+---
+
+## Update Organization
+
+Partially updates an organization's fields. All body fields are optional.
+
+**`PATCH /api/organizations/{organization_id}`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization to update.
+</ParamField>
+
+### Request Body
+
+<ParamField body="@entity" type="string" required>
+  Must be `"org.quicko.qpon.organization"`.
+</ParamField>
+
+<ParamField body="name" type="string">
+  Updated name for the organization.
+</ParamField>
+
+<ParamField body="currency" type="string">
+  Updated ISO 4217 currency code.
+</ParamField>
+
+<ParamField body="external_id" type="string">
+  Updated external identifier.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+<ResponseField name="result" type="object">
+  The updated organization object with all fields (same shape as Fetch Organization).
+</ResponseField>
+
+### Example
+
+```bash
+curl -X PATCH https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "@entity": "org.quicko.qpon.organization",
+    "name": "Acme Corp (Updated)",
+    "currency": "EUR"
+  }'
+```
+
+---
+
+## Delete Organization
+
+Permanently deletes an organization and all of its associated data.
+
+**`DELETE /api/organizations/{organization_id}`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization to delete.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+<ResponseField name="result" type="object">
+  Details of the deleted organization record.
+</ResponseField>
+
+### Example
+
+```bash
+curl -X DELETE https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801 \
+  -H "Content-Type: application/json"
+```
+
+---
+
+## Fetch Organization Summary
+
+Returns aggregated counts and statistics for a single organization, including total coupons, campaigns, and coupon codes.
+
+**`GET /api/organizations/{organization_id}/summary`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+<ResponseField name="result" type="object">
+  <Expandable title="result">
+    <ResponseField name="organization_id" type="string">
+      UUID of the organization.
+    </ResponseField>
+    <ResponseField name="total_coupons" type="number">
+      Total number of coupons in this organization.
+    </ResponseField>
+    <ResponseField name="active_coupons" type="number">
+      Number of currently active coupons.
+    </ResponseField>
+    <ResponseField name="total_campaigns" type="number">
+      Total number of campaigns across all coupons.
+    </ResponseField>
+    <ResponseField name="total_coupon_codes" type="number">
+      Total number of coupon codes issued.
+    </ResponseField>
+    <ResponseField name="total_redemptions" type="number">
+      Total number of redemptions recorded.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example
+
+```bash
+curl -X GET https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/summary \
+  -H "Content-Type: application/json"
+```
+
+---
+
+## Fetch Day-wise Redemption Summary
+
+Returns a day-by-day breakdown of redemptions (sales) for an organization within a date range.
+
+**`GET /api/organizations/{organization_id}/sales/summary`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="start_date" type="string">
+  Start of the date range in `YYYY-MM-DD` format (inclusive).
+</ParamField>
+
+<ParamField query="end_date" type="string">
+  End of the date range in `YYYY-MM-DD` format (inclusive).
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+<ResponseField name="result" type="array">
+  <Expandable title="result[]">
+    <ResponseField name="date" type="string">
+      The calendar date in `YYYY-MM-DD` format.
+    </ResponseField>
+    <ResponseField name="total_redemptions" type="number">
+      Number of redemptions on this date.
+    </ResponseField>
+    <ResponseField name="total_discount" type="number">
+      Aggregate discount amount applied on this date.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example
+
+```bash
+curl -X GET "https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/sales/summary?start_date=2025-01-01&end_date=2025-01-31" \
+  -H "Content-Type: application/json"
+```
+
+---
+
+## Fetch Item-wise Redemption Summary
+
+Returns a redemption breakdown grouped by item, useful for understanding which products drive the most coupon usage.
+
+**`GET /api/organizations/{organization_id}/items/summary`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="start_date" type="string">
+  Start of the date range in `YYYY-MM-DD` format (inclusive).
+</ParamField>
+
+<ParamField query="end_date" type="string">
+  End of the date range in `YYYY-MM-DD` format (inclusive).
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+<ResponseField name="result" type="array">
+  <Expandable title="result[]">
+    <ResponseField name="external_item_id" type="string">
+      External identifier of the item.
+    </ResponseField>
+    <ResponseField name="total_redemptions" type="number">
+      Total number of redemptions for this item.
+    </ResponseField>
+    <ResponseField name="total_discount" type="number">
+      Aggregate discount amount applied to this item.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example
+
+```bash
+curl -X GET "https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/items/summary?start_date=2025-01-01&end_date=2025-01-31" \
+  -H "Content-Type: application/json"
+```
+
+---
+
+## Fetch Coupon-code-wise Redemption Summary
+
+Returns a redemption breakdown grouped by individual coupon code. Returns the top codes by redemption volume for the given window.
+
+**`GET /api/organizations/{organization_id}/coupon_codes/summary`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="start_date" type="string">
+  Start of the date range in `YYYY-MM-DD` format (inclusive).
+</ParamField>
+
+<ParamField query="end_date" type="string">
+  End of the date range in `YYYY-MM-DD` format (inclusive).
+</ParamField>
+
+<ParamField query="take" type="number">
+  Maximum number of coupon code records to return. Defaults to the top 5.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+<ResponseField name="result" type="array">
+  <Expandable title="result[]">
+    <ResponseField name="code" type="string">
+      The coupon code string (e.g. `"SAVE20"`).
+    </ResponseField>
+    <ResponseField name="total_redemptions" type="number">
+      Total number of redemptions for this code.
+    </ResponseField>
+    <ResponseField name="total_discount" type="number">
+      Aggregate discount amount applied through this code.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example
+
+```bash
+curl -X GET "https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/coupon_codes/summary?start_date=2025-01-01&end_date=2025-01-31&take=10" \
+  -H "Content-Type: application/json"
+```

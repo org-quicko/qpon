@@ -1,0 +1,153 @@
+---
+title: "Qpon Coupons: Discount Templates and Item Constraints"
+sidebarTitle: "Coupons"
+description: "Coupons define the discount template — type, value, and item scope. Learn how percentage and fixed discounts work and how item constraints limit scope."
+---
+
+## What Is a Coupon?
+
+A **coupon** is the discount template — the rule that says *how much* to discount and *what* it applies to. Coupons do not contain codes that customers type; they define the discount logic that campaigns and coupon codes inherit.
+
+Think of it this way: a coupon is the blueprint, a campaign is the deployment window, and coupon codes are the individual keys that unlock the discount.
+
+---
+
+## Fields
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `coupon_id` | UUID | auto | Primary key, generated automatically. |
+| `name` | string | ✅ | Human-readable label for this coupon (e.g. `"Summer 10% Off"`). |
+| `discount_type` | enum | ✅ | Either `percentage` or `fixed`. See [Discount Types](#discount-types). |
+| `discount_value` | number | ✅ | The magnitude of the discount. Meaning depends on `discount_type`. |
+| `discount_upto` | number | optional | Maximum discount amount, used as a cap on percentage discounts. See [Capping Percentage Discounts](#capping-percentage-discounts). |
+| `item_constraint` | enum | ✅ | Either `all` or `specific`. Controls which items this coupon applies to. |
+| `status` | enum | auto | One of `active`, `inactive`, or `archive`. Defaults to `active`. |
+| `created_at` | timestamp | auto | Creation timestamp (with time zone). |
+| `updated_at` | timestamp | auto | Last modification timestamp (with time zone). |
+
+---
+
+## Discount Types
+
+The `discount_type` field accepts one of two values from `discountTypeEnum`:
+
+<AccordionGroup>
+  <Accordion title="percentage">
+    Deducts a percentage of the order or item price.
+
+    - `discount_value` is interpreted as a percentage (e.g. `10` = 10 %).
+    - Optionally, set `discount_upto` to cap the maximum amount deducted — useful when a high-value order would otherwise yield a very large discount.
+
+    **Example:** `discount_type: "percentage"`, `discount_value: 20`, `discount_upto: 50` — grants 20 % off, but the discount will never exceed the organization's currency equivalent of 50.
+  </Accordion>
+  <Accordion title="fixed">
+    Deducts a flat amount from the order or item price.
+
+    - `discount_value` is the exact currency amount to deduct.
+    - `discount_upto` is not meaningful for fixed discounts and should be omitted.
+
+    **Example:** `discount_type: "fixed"`, `discount_value: 15` — grants a flat 15-unit discount (in the organization's configured currency).
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Capping Percentage Discounts
+
+For `percentage` discounts, `discount_upto` acts as a ceiling on the computed discount amount.
+
+```text
+effective_discount = MIN(order_value × (discount_value / 100), discount_upto)
+```
+
+| `order_value` | `discount_value` | `discount_upto` | Effective discount |
+|---|---|---|---|
+| 100 | 20 | 50 | 20 |
+| 300 | 20 | 50 | 50 |
+| 1000 | 20 | 50 | 50 |
+
+If `discount_upto` is not set, the full percentage applies regardless of order size.
+
+---
+
+## Item Constraint
+
+The `item_constraint` field, drawn from `itemConstraintEnum`, controls which items in the organization's catalog this coupon can discount.
+
+| Value | Behavior |
+|---|---|
+| `all` | The coupon applies to every item in the organization. No additional configuration needed. |
+| `specific` | The coupon only applies to items explicitly listed in the `coupon_items` association table. You must add item associations after creating the coupon. |
+
+<Note>
+  When `item_constraint` is `specific` and no items have been associated, the coupon effectively applies to nothing. Always add at least one item association when using the `specific` constraint.
+</Note>
+
+---
+
+## Status Lifecycle
+
+Coupons follow a linear status progression using `statusEnum`:
+
+```text
+active  ──►  inactive  ──►  archive
+```
+
+| Status | Value | Meaning |
+|---|---|---|
+| Active | `active` | The coupon is live. Campaigns and codes built on this coupon can be used for redemptions. |
+| Inactive | `inactive` | The coupon is paused. Existing codes cannot be redeemed until the coupon is re-activated. |
+| Archive | `archive` | The coupon is permanently retired. Archived coupons are excluded from active lookups and offer resolution. |
+
+<Warning>
+  Archiving a coupon is intended to be a terminal state. Once archived, a coupon and all its associated campaigns and coupon codes will no longer appear in offer resolution results.
+</Warning>
+
+---
+
+## Coupon as a Template
+
+A coupon is deliberately kept separate from the codes customers actually type. This separation allows:
+
+- **Multiple campaigns** to reuse the same discount rule (e.g., the same 10 % coupon powers a Q1 campaign, a loyalty campaign, and a referral campaign).
+- **Centralized updates**: changing a coupon's `item_constraint` or deactivating it affects all campaigns and codes under it at once.
+- **Clear reporting**: redemption totals can be rolled up by coupon, by campaign, or by individual code.
+
+---
+
+## Example Coupon Payload
+
+```json
+{
+  "@entity": "org.quicko.qpon.coupon",
+  "name": "Flat 15 Off",
+  "discount_type": "fixed",
+  "discount_value": 15,
+  "item_constraint": "all"
+}
+```
+
+```json
+{
+  "@entity": "org.quicko.qpon.coupon",
+  "name": "20% Off Electronics (Max $50)",
+  "discount_type": "percentage",
+  "discount_value": 20,
+  "discount_upto": 50,
+  "item_constraint": "specific"
+}
+```
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Campaigns" icon="megaphone" href="/concepts/campaigns">
+    Group coupon codes under a coupon with optional budgets and lifecycle control.
+  </Card>
+  <Card title="Coupon Codes" icon="ticket" href="/concepts/coupon-codes">
+    Create the redeemable strings that customers apply at checkout.
+  </Card>
+</CardGroup>

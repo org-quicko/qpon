@@ -1,0 +1,101 @@
+---
+title: "@org-quicko/qpon-client: TypeScript Client Overview"
+sidebarTitle: "Overview"
+description: "The Qpon TypeScript client provides auto-generated, Zod-validated methods for every API resource. Use it in Node.js backends or TypeScript projects."
+---
+
+`@org-quicko/qpon-client` is the official TypeScript SDK for the Qpon coupon and promotions API. It ships as a dual ESM/CJS package with full TypeScript types, Zod-validated responses, and Axios-powered HTTP — everything you need to manage coupons, campaigns, redemptions, and more from a Node.js backend.
+
+## What is `@org-quicko/qpon-client`?
+
+`@org-quicko/qpon-client` is the official TypeScript client SDK for the Qpon REST API. It is auto-generated directly from the Qpon OpenAPI specification and published on npm, giving you a fully typed, always-up-to-date interface for every API resource.
+
+### Key capabilities
+
+| Capability | Details |
+|---|---|
+| **Typed request/response objects** | Every method parameter and return type is a first-class TypeScript interface. Your editor catches mistakes at compile time, not at runtime. |
+| **Zod runtime validation** | Response bodies are validated against Zod schemas before being returned, so malformed data from the server is surfaced immediately. |
+| **Axios under the hood** | Requests are made with Axios, which brings wide compatibility, a mature interceptor system, and easy testability. |
+| **ESM + CJS dual build** | Ships both an ESM module (`dist/esm/index.js`) and a CommonJS bundle (`dist/cjs/index.cjs`) — works in any modern Node.js toolchain. |
+| **Bundled types** | TypeScript declarations ship alongside the build at `dist/types/index.d.ts`. No separate `@types` package is needed. |
+| **Custom interceptors** | Pass arrays of request and response interceptors to the constructor for logging, tracing, encryption, or retry logic. |
+
+### Requirements
+
+- **Node.js >= 18** (as declared in the `engines` field of `package.json`)
+- TypeScript 5.x is recommended but not required
+
+---
+
+## The `Qpon` class
+
+All API operations are accessed through an instance of the `Qpon` class. After constructing it with your credentials and base URL, each resource is available as a typed sub-client on the corresponding property:
+
+```typescript
+import { Qpon, QponCredentials } from '@org-quicko/qpon-client';
+
+const credentials = new QponCredentials('your-api-key', 'your-api-secret');
+const qpon = new Qpon(credentials, 'https://your-qpon-instance.example.com');
+
+// Each resource is ready to use
+const coupon = await qpon.COUPONS.fetchCoupon(organizationId, couponId);
+```
+
+---
+
+## Resource clients
+
+Every property on the `Qpon` instance is an independent, typed client for a specific API domain. Each client handles authentication headers, query parameter serialisation, and typed error throwing automatically.
+
+<CardGroup cols={2}>
+  <Card title="ORGANIZATIONS" icon="building">
+    Create, fetch, update, and delete Qpon organizations. The top-level tenant resource that scopes all other data.
+  </Card>
+  <Card title="USERS" icon="user">
+    Manage users belonging to an organization, including creation and lookup.
+  </Card>
+  <Card title="CUSTOMERS" icon="users">
+    Manage end-customers (buyers) within an organization. Supports create, fetch, update, delete, and upsert by external ID.
+  </Card>
+  <Card title="COUPONS" icon="tag">
+    Full CRUD for coupons, plus lifecycle actions (`deactivate`, `reactivate`) and summary reports. Supports filtering by status, discount type, and item constraint.
+  </Card>
+  <Card title="OFFERS" icon="percent">
+    Resolve which discounts apply at checkout. Pass a coupon code, customer ID, and item ID to get the applicable discount type and value before committing a redemption.
+  </Card>
+  <Card title="REDEMPTIONS" icon="receipt">
+    Record that a customer has redeemed a coupon code. Also provides paginated redemption history, filterable by coupon, campaign, coupon code, or customer email.
+  </Card>
+  <Card title="COUPONITEM" icon="box">
+    Associate specific catalog items with a coupon when `item_constraint` is set to `"specific"`.
+  </Card>
+  <Card title="CAMPAIGN" icon="bullhorn">
+    Group coupon codes into named campaigns with an optional budget cap. Full CRUD and activate/deactivate lifecycle.
+  </Card>
+  <Card title="COUPONCODE" icon="barcode">
+    Create and manage individual coupon codes under a campaign. Supports public/private visibility, expiry, redemption limits, and per-customer constraints.
+  </Card>
+  <Card title="CUSTOMERCOUPONCODE" icon="id-card">
+    Assign private coupon codes to specific customers or remove those assignments.
+  </Card>
+  <Card title="ITEM" icon="cube">
+    Manage catalog items referenced in coupons and redemptions. Supports upsert by external ID for seamless sync with your product catalog.
+  </Card>
+  <Card title="APIKEYS" icon="key">
+    Manage API keys for programmatic access to your Qpon organization.
+  </Card>
+</CardGroup>
+
+---
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Installation" icon="download" href="/sdk/installation">
+    Add `@org-quicko/qpon-client` to your project with npm, yarn, or pnpm.
+  </Card>
+  <Card title="Usage" icon="code" href="/sdk/usage">
+    Instantiate the client, authenticate, and explore code examples for coupons, campaigns, redemptions, and more.
+  </Card>
+</CardGroup>
