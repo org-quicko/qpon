@@ -1,0 +1,85 @@
+---
+title: "Qpon: Open-Source Self-Hosted Coupon Management Platform"
+sidebarTitle: "Introduction"
+description: "Qpon is open-source, self-hosted coupon software. Create coupons, campaigns, and coupon codes, track redemptions with a REST API and Angular dashboard."
+---
+
+Qpon is an open-source, self-hosted coupon management platform built for e-commerce teams, SaaS products, and marketing engineers who need full control over their promotional workflows. Rather than depending on a third-party service, Qpon gives you a production-ready REST API, a built-in Angular dashboard, and a TypeScript client library — all running on your own infrastructure, backed by PostgreSQL.
+
+## What is Qpon?
+
+At its core, Qpon is a coupon framework: a structured system for creating discount rules, grouping them into campaigns, generating coupon codes for end users, and tracking every redemption. The platform is built on **NestJS** (backend), **PostgreSQL** (persistence via TypeORM), and **Angular** (frontend dashboard), and is distributed as a single Docker image that bundles both the API and the frontend.
+
+Whether you're running a flash sale, a referral program, or a long-term loyalty scheme, Qpon provides the primitives to model it — without locking your data behind a SaaS vendor.
+
+## Key Features
+
+<CardGroup cols={2}>
+  <Card title="Multi-Organization Support" icon="building">
+    Manage multiple organizations within a single Qpon instance. Each organization has its own coupons, campaigns, and member roles, making Qpon suitable for agencies and multi-brand operations.
+  </Card>
+  <Card title="Role-Based Access Control" icon="shield-halved">
+    Fine-grained, role-based permissions ensure that team members only access what they need. Secure API endpoints are enforced at the service layer using CASL.
+  </Card>
+  <Card title="Flexible Discount Types" icon="tag">
+    Apply **percentage-based** or **fixed-amount** discounts. Attach item constraints to target all products, specific categories, or individual SKUs — giving you precise control over promotion scope.
+  </Card>
+  <Card title="Campaigns with Budgets" icon="chart-line">
+    Group related coupons into campaigns with defined budgets, date ranges, and usage limits. Track spend and redemption velocity in real time from the dashboard.
+  </Card>
+  <Card title="Coupon Codes & Offers API" icon="barcode">
+    Generate human-readable coupon codes tied to your coupons. Expose a lightweight Offers API so your storefront or mobile app can fetch available promotions for a given user or cart.
+  </Card>
+  <Card title="Redemption Tracking" icon="clock-rotate-left">
+    Every redemption is recorded with a full audit trail — who redeemed it, when, and against which order — so you can measure campaign performance and prevent abuse.
+  </Card>
+  <Card title="TypeScript SDK" icon="code">
+    The `lib/client` library (`@org-quicko/qpon-client`) provides a fully-typed TypeScript client for integrating Qpon's API into your Node.js backend or frontend application without writing raw HTTP calls.
+  </Card>
+  <Card title="Docker-Ready Deployment" icon="docker">
+    A single `docker compose up -d` command pulls `labsatquicko/qpon:latest` and a Postgres 17 sidecar, applies database migrations automatically, and serves the app on port 3000.
+  </Card>
+</CardGroup>
+
+## Tech Stack
+
+| Layer      | Technology                                            |
+| ---------- | ----------------------------------------------------- |
+| Backend    | [NestJS](https://nestjs.com/) (Node.js, TypeScript)   |
+| Database   | [PostgreSQL 17](https://www.postgresql.org/)          |
+| ORM        | [TypeORM](https://typeorm.io/)                        |
+| Frontend   | [Angular](https://angular.dev/)                       |
+| Auth       | JWT (`@nestjs/jwt`) + Bcrypt password hashing         |
+| Permissions| [CASL](https://casl.js.org/) ability-based access control |
+| Packaging  | Docker multi-stage build (Node 22 Alpine)             |
+
+## Project Structure
+
+```
+qpon/
+├── api/          # NestJS backend — REST API, auth, migrations, services
+├── frontend/     # Angular dashboard — campaigns, coupons, redemptions UI
+├── lib/
+│   ├── core/         # @org-quicko/qpon-core — Qpon-specific TypeScript entities
+│   ├── client/       # @org-quicko/qpon-client — TypeScript API client SDK
+│   └── sheet-core/   # @org-quicko/qpon-sheet-core — spreadsheet export entities
+├── common/       # Shared resources (ER diagrams, DB schema)
+└── resources/    # Global assets (Postman collections)
+```
+
+- **`api/`** — The heart of the platform. Contains all NestJS modules, controllers, services, guards, and TypeORM migration files. Serves both the REST API under `/api` and the Angular static build on `/`.
+- **`frontend/`** — The Angular single-page application used to manage organizations, campaigns, coupons, and view redemption reports.
+- **`lib/core`** — Qpon-specific TypeScript entities (`@org-quicko/qpon-core`) shared across the API and client packages.
+- **`lib/client`** — A typed HTTP client library that wraps Qpon's REST endpoints, designed to be imported directly into your application code.
+- **`lib/sheet-core`** — Entity definitions used for structured data exports (CSV/XLSX) of coupon and redemption data.
+
+## Get Started
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Deploy Qpon with Docker Compose and make your first API call in under 5 minutes.
+  </Card>
+  <Card title="API Reference" icon="book-open" href="/api-reference">
+    Explore the full REST API — coupons, campaigns, codes, redemptions, and more.
+  </Card>
+</CardGroup>

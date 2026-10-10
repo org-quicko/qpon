@@ -1,0 +1,88 @@
+---
+title: "Qpon Organizations: Tenants, Roles, and External IDs"
+sidebarTitle: "Organizations"
+description: "Every Qpon resource lives inside an organization. Learn organization fields, the five role-based access levels, and the external ID mapping pattern."
+---
+
+## What Is an Organization?
+
+An **organization** is the root-level tenant in Qpon. Every coupon, campaign, coupon code, customer, item, and redemption belongs to exactly one organization. Resources cannot be shared across organizations, and deleting an organization cascades the deletion to all of its child resources.
+
+If you are building a SaaS product where each merchant has their own discount catalog, each merchant maps to one Qpon organization.
+
+---
+
+## Fields
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `organization_id` | UUID | auto | Primary key, generated automatically. |
+| `name` | string | ✅ | Human-readable display name for the organization. |
+| `currency` | string | ✅ | ISO 4217 currency code (e.g. `USD`, `EUR`, `INR`) used for fixed discount values. |
+| `external_id` | string | optional | Your own system's identifier for this tenant — see [External IDs](#external-id-mapping) below. |
+| `created_at` | timestamp | auto | When the organization was created (with time zone). |
+| `updated_at` | timestamp | auto | Last modification timestamp (with time zone). |
+
+---
+
+## Role-Based Access Control
+
+Every user who can access an organization is assigned a **role**. Roles are defined by the `roleEnum`:
+
+| Role | Value | Description |
+|---|---|---|
+| `super_admin` | `super_admin` | Full control over the organization and all its resources, including user management and destructive operations. |
+| `admin` | `admin` | Can create, update, and delete coupons, campaigns, coupon codes, customers, and items. Can manage other users below their own privilege level. |
+| `editor` | `editor` | Can create and update coupons, campaigns, and coupon codes, but cannot delete resources or manage users. |
+| `viewer` | `viewer` | Read-only access. Can list and inspect all resources but cannot make any changes. |
+| `regular` | `regular` | Limited access role, typically used for end-user API integrations that only need to perform lookups (e.g., querying offers at checkout). |
+
+<Tip>
+  Assign the `viewer` or `regular` role to API keys used by your storefront or checkout service. Reserve `admin` and `super_admin` for your internal tooling and dashboard users.
+</Tip>
+
+---
+
+## External ID Mapping
+
+The `external_id` field on an organization lets you bind a Qpon organization to a tenant in your own system without storing Qpon's UUID in your database.
+
+**Example scenario:** Your platform uses `merchant_id = "M-99123"` to identify a merchant. When you create the Qpon organization, set `external_id = "M-99123"`. You can then look up the organization by your own ID rather than Qpon's internal `organization_id`.
+
+```json
+{
+  "name": "Acme Store",
+  "currency": "USD",
+  "external_id": "M-99123"
+}
+```
+
+The same `external_id` pattern is available on **campaigns**, **customers**, and **items**, letting you maintain consistent cross-system references throughout the entire resource hierarchy.
+
+---
+
+## Relationships
+
+An organization owns and provides the scoping boundary for all of these resource types:
+
+- **Coupons** — discount templates belonging to this org
+- **Campaigns** — distribution windows linked to org coupons
+- **Coupon Codes** — redeemable strings under org campaigns
+- **Customers** — buyer profiles registered to this org
+- **Items** — product/SKU records for this org
+- **Redemptions** — historical records of code uses within this org
+
+All of these are created under an organization's namespace and are never shared with other organizations.
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Coupons" icon="tag" href="/concepts/coupons">
+    Create discount templates inside your organization.
+  </Card>
+  <Card title="Data Model" icon="diagram-project" href="/concepts/data-model">
+    See how organizations fit into the full resource hierarchy.
+  </Card>
+</CardGroup>

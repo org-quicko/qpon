@@ -1,0 +1,112 @@
+---
+title: "Install the Qpon TypeScript Client: npm, yarn, pnpm"
+sidebarTitle: "Installation"
+description: "Add @org-quicko/qpon-client to your Node.js or TypeScript project using npm, yarn, or pnpm. Includes ESM and CJS builds. Requires Node.js 18 or later."
+---
+
+This page walks you through adding `@org-quicko/qpon-client` to your project, choosing the right import style, and confirming the installation compiles correctly in TypeScript.
+
+## Prerequisites
+
+- **Node.js >= 18** — the SDK uses modern `fetch`-compatible networking primitives and is tested against Node.js 18 and later, as declared in the `engines` field of the package.
+
+---
+
+## Install the package
+
+<CodeGroup>
+
+```bash npm
+npm install @org-quicko/qpon-client
+```
+
+```bash yarn
+yarn add @org-quicko/qpon-client
+```
+
+```bash pnpm
+pnpm add @org-quicko/qpon-client
+```
+
+</CodeGroup>
+
+---
+
+## Peer dependencies
+
+`@org-quicko/qpon-client` bundles its own copies of `axios` and `zod` as regular (non-peer) dependencies, so **you do not need to install them separately**. The versions in use are:
+
+| Package | Version range |
+|---|---|
+| `axios` | `^1.13.6` |
+| `zod` | `^3.24.0` |
+
+If your project also depends on `axios` or `zod` at a compatible version, Node.js module resolution will share the same instance. If you require a different major version in your own code, both copies will coexist harmlessly.
+
+---
+
+## Import styles
+
+The package ships a dual build — ESM for modern bundlers and Node.js with `"type": "module"`, and CommonJS for traditional `require`-based setups.
+
+<CodeGroup>
+
+```typescript ESM
+import { Qpon, QponCredentials } from '@org-quicko/qpon-client';
+```
+
+```javascript CJS
+const { Qpon, QponCredentials } = require('@org-quicko/qpon-client');
+```
+
+</CodeGroup>
+
+The correct entry point is selected automatically via the `exports` field in the package manifest:
+
+```json
+{
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.cjs",
+      "types": "./dist/types/index.d.ts"
+    }
+  }
+}
+```
+
+---
+
+## TypeScript setup
+
+The package ships its own TypeScript declarations at `dist/types/index.d.ts`. No `@types/qpon-client` package exists or is needed — types are resolved automatically by TypeScript through the `exports.types` field above.
+
+There is no special `tsconfig.json` configuration required. The SDK is compatible with any `moduleResolution` setting that supports `exports` fields (`"bundler"`, `"node16"`, or `"nodenext"` are all fine).
+
+<Note>
+  If you are using `"moduleResolution": "node"` (the legacy default), TypeScript may not resolve the `exports` field correctly. Upgrading to `"moduleResolution": "node16"` or `"bundler"` is recommended for new projects.
+</Note>
+
+---
+
+## Verify the installation
+
+After installing, confirm that TypeScript can resolve the types and that the import compiles without errors:
+
+```typescript
+import { Qpon, QponCredentials } from '@org-quicko/qpon-client';
+
+// If this compiles, the SDK is correctly installed
+const credentials = new QponCredentials('test-key', 'test-secret');
+const qpon = new Qpon(credentials, 'http://localhost:3000');
+
+console.log('Qpon client ready:', typeof qpon.COUPONS.fetchCoupon);
+```
+
+---
+
+## Next steps
+
+<Card title="Usage" icon="code" href="/sdk/usage">
+  Learn how to instantiate the client, authenticate with API keys, and call methods for coupons, campaigns, coupon codes, redemptions, customers, and items.
+</Card>

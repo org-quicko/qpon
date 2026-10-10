@@ -1,0 +1,544 @@
+---
+title: "Coupon Codes API — Create and Manage Promotional Codes"
+sidebarTitle: "Coupon Codes"
+description: "Create and manage coupon codes within a campaign. Set visibility, duration, redemption limits, and customer constraints. Supports code lookup for checkout."
+---
+
+A **Coupon Code** is the customer-facing promotional string (e.g. `"SAVE20"`) that gets applied at checkout. Each code belongs to a campaign and carries its own configuration for duration, visibility, redemption limits, and customer eligibility. When a code reaches its `max_redemptions` it transitions to `redeemed`, and when `expires_at` passes it transitions to `expired`.
+
+**Coupon code status values:** `active` | `inactive` | `expired` | `redeemed` | `archive`
+
+**Visibility values:** `public` | `private`
+
+**Duration type values:** `limited` | `forever`
+
+**Customer constraint values:** `all` | `specific`
+
+---
+
+## Create Coupon Code
+
+Creates a new coupon code within a campaign.
+
+**`POST /api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+<ParamField path="coupon_id" type="string" required>
+  UUID of the coupon.
+</ParamField>
+
+<ParamField path="campaign_id" type="string" required>
+  UUID of the campaign this code belongs to.
+</ParamField>
+
+### Request Body
+
+<ParamField body="@entity" type="string" required>
+  Must be `"org.quicko.qpon.coupon_code"`.
+</ParamField>
+
+<ParamField body="code" type="string" required>
+  The promotional code string customers will enter at checkout (e.g. `"SAVE20"`). Must be unique within the organization.
+</ParamField>
+
+<ParamField body="description" type="string">
+  Optional human-readable description of what this code offers.
+</ParamField>
+
+<ParamField body="customer_constraint" type="string" required>
+  Controls which customers can redeem this code. One of:
+  - `"all"` — any customer may use this code.
+  - `"specific"` — only customers explicitly linked to this code may redeem it.
+</ParamField>
+
+<ParamField body="max_redemptions" type="number">
+  Total number of times this code can be redeemed across all customers. When this count is reached, the code status transitions to `redeemed`. Omit for unlimited redemptions.
+</ParamField>
+
+<ParamField body="max_redemption_per_customer" type="number">
+  Maximum number of times a single customer may redeem this code. Omit for no per-customer limit.
+</ParamField>
+
+<ParamField body="minimum_amount" type="number">
+  Minimum order/transaction amount required for this code to be applicable.
+</ParamField>
+
+<ParamField body="visibility" type="string" required>
+  Whether the code appears in public-facing listings. One of:
+  - `"public"` — visible to all customers.
+  - `"private"` — hidden; typically distributed directly (e.g. via email).
+</ParamField>
+
+<ParamField body="duration_type" type="string" required>
+  Whether this code has an expiry. One of:
+  - `"limited"` — expires at the datetime specified in `expires_at`.
+  - `"forever"` — never expires (unless manually deactivated or redeemed out).
+</ParamField>
+
+<ParamField body="expires_at" type="string">
+  ISO 8601 datetime string at which the code expires. **Required** when `duration_type` is `"limited"`.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+<ResponseField name="result" type="object">
+  <Expandable title="result">
+    <ResponseField name="@entity" type="string">
+      Always `"org.quicko.qpon.coupon_code"`.
+    </ResponseField>
+    <ResponseField name="coupon_code_id" type="string">
+      UUID of the newly created coupon code.
+    </ResponseField>
+    <ResponseField name="code" type="string">
+      The promotional code string.
+    </ResponseField>
+    <ResponseField name="description" type="string">
+      Description, if provided.
+    </ResponseField>
+    <ResponseField name="customer_constraint" type="string">
+      `"all"` or `"specific"`.
+    </ResponseField>
+    <ResponseField name="max_redemptions" type="number">
+      Total redemption limit, if set.
+    </ResponseField>
+    <ResponseField name="max_redemption_per_customer" type="number">
+      Per-customer redemption limit, if set.
+    </ResponseField>
+    <ResponseField name="minimum_amount" type="number">
+      Minimum transaction amount, if set.
+    </ResponseField>
+    <ResponseField name="visibility" type="string">
+      `"public"` or `"private"`.
+    </ResponseField>
+    <ResponseField name="duration_type" type="string">
+      `"limited"` or `"forever"`.
+    </ResponseField>
+    <ResponseField name="expires_at" type="string">
+      Expiry datetime, if `duration_type` is `"limited"`.
+    </ResponseField>
+    <ResponseField name="redemption_count" type="number">
+      Number of times this code has been redeemed so far.
+    </ResponseField>
+    <ResponseField name="status" type="string">
+      Current status: `"active"`, `"inactive"`, `"expired"`, `"redeemed"`, or `"archive"`.
+    </ResponseField>
+    <ResponseField name="created_at" type="string">
+      ISO 8601 timestamp of creation.
+    </ResponseField>
+    <ResponseField name="updated_at" type="string">
+      ISO 8601 timestamp of last update.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example
+
+```bash
+curl -X POST https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/coupons/f1a2b3c4-0000-0000-0000-000000000001/campaigns/c9a8b7c6-0000-0000-0000-000000000002/coupon-codes \
+  -H "Content-Type: application/json" \
+  -d '{
+    "@entity": "org.quicko.qpon.coupon_code",
+    "code": "SAVE20",
+    "description": "Save 20% on your next order",
+    "customer_constraint": "all",
+    "max_redemptions": 1000,
+    "max_redemption_per_customer": 1,
+    "minimum_amount": 500,
+    "visibility": "public",
+    "duration_type": "limited",
+    "expires_at": "2025-12-31T23:59:59.000Z"
+  }'
+```
+
+---
+
+## Fetch Coupon Codes
+
+Returns a paginated, filterable list of coupon codes within a campaign.
+
+**`GET /api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+<ParamField path="coupon_id" type="string" required>
+  UUID of the coupon.
+</ParamField>
+
+<ParamField path="campaign_id" type="string" required>
+  UUID of the campaign.
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="code" type="string">
+  Filter by the exact or partial code string.
+</ParamField>
+
+<ParamField query="status" type="string">
+  Filter by code status: `"active"`, `"inactive"`, `"expired"`, `"redeemed"`, or `"archive"`.
+</ParamField>
+
+<ParamField query="visibility" type="string">
+  Filter by visibility: `"public"` or `"private"`.
+</ParamField>
+
+<ParamField query="external_customer_id" type="string">
+  Filter codes assigned to a specific customer identified by their external ID.
+</ParamField>
+
+<ParamField query="duration_type" type="string">
+  Filter by duration type: `"limited"` or `"forever"`.
+</ParamField>
+
+<ParamField query="sort_by" type="string">
+  Field name to sort results by (e.g. `"created_at"`, `"redemption_count"`).
+</ParamField>
+
+<ParamField query="sort_order" type="string">
+  Sort direction: `"asc"` or `"desc"`. Defaults to `"desc"`.
+</ParamField>
+
+<ParamField query="take" type="number">
+  Maximum number of records to return (page size).
+</ParamField>
+
+<ParamField query="skip" type="number">
+  Number of records to skip (offset for pagination).
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+<ResponseField name="result" type="array">
+  Array of coupon code objects, each with the same fields as the Create Coupon Code response.
+</ResponseField>
+
+### Example
+
+```bash
+curl -X GET "https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/coupons/f1a2b3c4-0000-0000-0000-000000000001/campaigns/c9a8b7c6-0000-0000-0000-000000000002/coupon-codes?status=active&visibility=public&sort_by=created_at&sort_order=desc&take=20&skip=0" \
+  -H "Content-Type: application/json"
+```
+
+---
+
+## Fetch Coupon Code
+
+Retrieves a single coupon code by its ID.
+
+**`GET /api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+<ParamField path="coupon_id" type="string" required>
+  UUID of the coupon.
+</ParamField>
+
+<ParamField path="campaign_id" type="string" required>
+  UUID of the campaign.
+</ParamField>
+
+<ParamField path="coupon_code_id" type="string" required>
+  UUID of the coupon code to fetch.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+<ResponseField name="result" type="object">
+  The coupon code object with all fields (same shape as Create Coupon Code response).
+</ResponseField>
+
+### Example
+
+```bash
+curl -X GET https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/coupons/f1a2b3c4-0000-0000-0000-000000000001/campaigns/c9a8b7c6-0000-0000-0000-000000000002/coupon-codes/d5e6f7a8-0000-0000-0000-000000000003 \
+  -H "Content-Type: application/json"
+```
+
+---
+
+## Update Coupon Code
+
+Partially updates a coupon code. All body fields are optional.
+
+**`PATCH /api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+<ParamField path="coupon_id" type="string" required>
+  UUID of the coupon.
+</ParamField>
+
+<ParamField path="campaign_id" type="string" required>
+  UUID of the campaign.
+</ParamField>
+
+<ParamField path="coupon_code_id" type="string" required>
+  UUID of the coupon code to update.
+</ParamField>
+
+### Request Body
+
+<ParamField body="@entity" type="string" required>
+  Must be `"org.quicko.qpon.coupon_code"`.
+</ParamField>
+
+<ParamField body="code" type="string">
+  Updated promotional code string.
+</ParamField>
+
+<ParamField body="description" type="string">
+  Updated description.
+</ParamField>
+
+<ParamField body="customer_constraint" type="string">
+  Updated customer constraint: `"all"` or `"specific"`.
+</ParamField>
+
+<ParamField body="max_redemptions" type="number">
+  Updated total redemption limit.
+</ParamField>
+
+<ParamField body="max_redemption_per_customer" type="number">
+  Updated per-customer redemption limit.
+</ParamField>
+
+<ParamField body="minimum_amount" type="number">
+  Updated minimum transaction amount.
+</ParamField>
+
+<ParamField body="visibility" type="string">
+  Updated visibility: `"public"` or `"private"`.
+</ParamField>
+
+<ParamField body="duration_type" type="string">
+  Updated duration type: `"limited"` or `"forever"`.
+</ParamField>
+
+<ParamField body="expires_at" type="string">
+  Updated expiry datetime (ISO 8601). Required if changing `duration_type` to `"limited"`.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+<ResponseField name="result" type="object">
+  The updated coupon code object with all fields.
+</ResponseField>
+
+### Example
+
+```bash
+curl -X PATCH https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/coupons/f1a2b3c4-0000-0000-0000-000000000001/campaigns/c9a8b7c6-0000-0000-0000-000000000002/coupon-codes/d5e6f7a8-0000-0000-0000-000000000003 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "@entity": "org.quicko.qpon.coupon_code",
+    "max_redemptions": 2000,
+    "expires_at": "2026-01-31T23:59:59.000Z"
+  }'
+```
+
+---
+
+## Delete Coupon Code
+
+Permanently deletes a coupon code.
+
+**`DELETE /api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+<ParamField path="coupon_id" type="string" required>
+  UUID of the coupon.
+</ParamField>
+
+<ParamField path="campaign_id" type="string" required>
+  UUID of the campaign.
+</ParamField>
+
+<ParamField path="coupon_code_id" type="string" required>
+  UUID of the coupon code to delete.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+### Example
+
+```bash
+curl -X DELETE https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/coupons/f1a2b3c4-0000-0000-0000-000000000001/campaigns/c9a8b7c6-0000-0000-0000-000000000002/coupon-codes/d5e6f7a8-0000-0000-0000-000000000003 \
+  -H "Content-Type: application/json"
+```
+
+---
+
+## Deactivate Coupon Code
+
+Transitions a coupon code from `active` to `inactive`, preventing customers from redeeming it.
+
+**`PATCH /api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/deactivate`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+<ParamField path="coupon_id" type="string" required>
+  UUID of the coupon.
+</ParamField>
+
+<ParamField path="campaign_id" type="string" required>
+  UUID of the campaign.
+</ParamField>
+
+<ParamField path="coupon_code_id" type="string" required>
+  UUID of the coupon code to deactivate.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+### Example
+
+```bash
+curl -X PATCH https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/coupons/f1a2b3c4-0000-0000-0000-000000000001/campaigns/c9a8b7c6-0000-0000-0000-000000000002/coupon-codes/d5e6f7a8-0000-0000-0000-000000000003/deactivate \
+  -H "Content-Type: application/json"
+```
+
+---
+
+## Reactivate Coupon Code
+
+Transitions a coupon code from `inactive` back to `active`, allowing customers to redeem it again.
+
+**`PATCH /api/organizations/{organization_id}/coupons/{coupon_id}/campaigns/{campaign_id}/coupon-codes/{coupon_code_id}/reactivate`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+<ParamField path="coupon_id" type="string" required>
+  UUID of the coupon.
+</ParamField>
+
+<ParamField path="campaign_id" type="string" required>
+  UUID of the campaign.
+</ParamField>
+
+<ParamField path="coupon_code_id" type="string" required>
+  UUID of the coupon code to reactivate.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+### Example
+
+```bash
+curl -X PATCH https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/coupons/f1a2b3c4-0000-0000-0000-000000000001/campaigns/c9a8b7c6-0000-0000-0000-000000000002/coupon-codes/d5e6f7a8-0000-0000-0000-000000000003/reactivate \
+  -H "Content-Type: application/json"
+```
+
+---
+
+## Fetch Coupon Codes by Code String
+
+Searches for coupon codes across all campaigns of an organization by the promotional code string. Useful for checkout-time validation. Archived codes are excluded from results.
+
+**`GET /api/organizations/{organization_id}/coupon-codes`**
+
+<Note>
+  This endpoint accepts an optional `x-accept-type` header. Set it to `application/json;format=sheet-json` to receive a spreadsheet-compatible flat format.
+</Note>
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization to search within.
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="code" type="string">
+  The promotional code string to look up (e.g. `"SAVE20"`).
+</ParamField>
+
+<ParamField query="status" type="string">
+  Filter by code status: `"active"`, `"inactive"`, `"expired"`, or `"redeemed"`. `"archive"` is always excluded.
+</ParamField>
+
+<ParamField query="customer_id" type="string">
+  Filter codes associated with a specific customer by their external customer ID.
+</ParamField>
+
+<ParamField query="take" type="number">
+  Maximum number of records to return (page size).
+</ParamField>
+
+<ParamField query="skip" type="number">
+  Number of records to skip (offset for pagination).
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+<ResponseField name="result" type="array">
+  Array of matching coupon code objects. Each object contains the same fields as the Create Coupon Code response, plus associated coupon and campaign details.
+</ResponseField>
+
+### Example
+
+```bash
+curl -X GET "https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/coupon-codes?code=SAVE20&status=active&take=10&skip=0" \
+  -H "Content-Type: application/json"
+```

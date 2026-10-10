@@ -1,0 +1,247 @@
+---
+title: "Sync Your Product Catalog and Customer Records into Qpon"
+sidebarTitle: "Customers & Items"
+description: "Register items and customers in Qpon using external IDs to map records back to your system. Upsert endpoints make catalog and customer syncs idempotent."
+---
+
+Before a coupon code can be redeemed, Qpon needs to know about two things from your system: the **item** being purchased and the **customer** making the purchase. Both resources support an `external_id` field so you can map Qpon records back to your own database IDs without storing Qpon's UUIDs.
+
+<Tip>
+  Use the upsert endpoints (`PUT .../upsert`) for ongoing catalog and customer syncs. Upsert is idempotent — it creates the record on first call and updates it on subsequent calls, so you can run it safely on every deploy or scheduled sync without worrying about duplicate records.
+</Tip>
+
+---
+
+## Items — your product catalog
+
+An **item** represents a product, plan, or category in your system that you want to link to coupons. For example, if you sell a "Pro Plan" SaaS subscription, you register it as an item so you can create coupons that only apply to that plan.
+
+### Item fields
+
+| Field           | Type   | Description                                                   |
+| --------------- | ------ | ------------------------------------------------------------- |
+| `@entity`       | string | Always `"org.quicko.qpon.item"` — identifies the resource type |
+| `item_id`       | UUID   | Qpon-assigned identifier (returned on creation)               |
+| `name`          | string | Human-readable name for the item                              |
+| `description`   | string | Optional description of the item                              |
+| `external_id`   | string | **Your** SKU or product ID — used to link back to your system |
+| `custom_fields` | object | Optional free-form key/value metadata                         |
+
+<Steps>
+  <Step title="Register an item">
+    Create a new item by `POST`ing to the items endpoint. The `external_id` should match the product or SKU identifier used in your own database.
+
+    ```http
+    POST /api/organizations/{organization_id}/items
+    ```
+
+    ```bash
+    curl -X POST https://your-qpon-host/api/organizations/org_abc123/items \
+      -H "Content-Type: application/json" \
+      -H "x-api-key: qpk_live_xxxxxxxxxxxxxxxx" \
+      -H "x-api-secret: qps_live_yyyyyyyyyyyyyyyy" \
+      -d '{
+        "@entity": "org.quicko.qpon.item",
+        "name": "Pro Plan",
+        "description": "Monthly Pro subscription",
+        "external_id": "prod_123"
+      }'
+    ```
+
+    **Response**
+
+    ```json
+    {
+      "message": "Successfully created item",
+      "result": {
+        "@entity": "org.quicko.qpon.item",
+        "item_id": "3f2e1d4c-...",
+        "name": "Pro Plan",
+        "description": "Monthly Pro subscription",
+        "external_id": "prod_123",
+        "created_at": "2024-06-01T10:00:00.000Z",
+        "updated_at": "2024-06-01T10:00:00.000Z"
+      }
+    }
+    ```
+  </Step>
+
+  <Step title="Upsert an item (recommended for syncs)">
+    Use the upsert endpoint to keep your catalog in sync. If an item with the given `external_id` already exists, it is updated; otherwise it is created.
+
+    ```http
+    PUT /api/organizations/{organization_id}/items/upsert
+    ```
+
+    ```bash
+    curl -X PUT https://your-qpon-host/api/organizations/org_abc123/items/upsert \
+      -H "Content-Type: application/json" \
+      -H "x-api-key: qpk_live_xxxxxxxxxxxxxxxx" \
+      -H "x-api-secret: qps_live_yyyyyyyyyyyyyyyy" \
+      -d '{
+        "@entity": "org.quicko.qpon.item",
+        "name": "Pro Plan — Updated",
+        "external_id": "prod_123"
+      }'
+    ```
+  </Step>
+
+  <Step title="Fetch items">
+    Retrieve all items for an organization. Supports filtering by `name` or `external_id` and pagination with `skip` / `take`.
+
+    ```http
+    GET /api/organizations/{organization_id}/items
+    ```
+
+    **Query parameters**
+
+    | Parameter     | Description                                  |
+    | ------------- | -------------------------------------------- |
+    | `name`        | Filter by item name (optional)               |
+    | `external_id` | Filter by your external ID (optional)        |
+    | `skip`        | Number of records to skip for pagination     |
+    | `take`        | Maximum number of records to return          |
+
+    ```bash
+    curl "https://your-qpon-host/api/organizations/org_abc123/items?external_id=prod_123" \
+      -H "x-api-key: qpk_live_xxxxxxxxxxxxxxxx" \
+      -H "x-api-secret: qps_live_yyyyyyyyyyyyyyyy"
+    ```
+  </Step>
+
+  <Step title="Fetch a single item">
+    ```http
+    GET /api/organizations/{organization_id}/items/{item_id}
+    ```
+
+    ```bash
+    curl "https://your-qpon-host/api/organizations/org_abc123/items/3f2e1d4c-..." \
+      -H "x-api-key: qpk_live_xxxxxxxxxxxxxxxx" \
+      -H "x-api-secret: qps_live_yyyyyyyyyyyyyyyy"
+    ```
+  </Step>
+</Steps>
+
+---
+
+## Customers — your end users
+
+A **customer** represents an end user who can redeem coupon codes. Registering customers in Qpon lets you enforce per-customer redemption limits and build customer-specific offers.
+
+### Customer fields
+
+| Field         | Type   | Description                                                     |
+| ------------- | ------ | --------------------------------------------------------------- |
+| `@entity`     | string | Always `"org.quicko.qpon.customer"`                             |
+| `customer_id` | UUID   | Qpon-assigned identifier (returned on creation)                 |
+| `name`        | string | Customer's full name                                            |
+| `email`       | string | Customer's email address                                        |
+| `external_id` | string | **Your** user/account ID — used to link back to your system     |
+| `isd_code`    | string | Optional international dialing code (e.g., `"+1"`)             |
+| `phone`       | string | Optional phone number                                           |
+
+<Steps>
+  <Step title="Register a customer">
+    ```http
+    POST /api/organizations/{organization_id}/customers
+    ```
+
+    ```bash
+    curl -X POST https://your-qpon-host/api/organizations/org_abc123/customers \
+      -H "Content-Type: application/json" \
+      -H "x-api-key: qpk_live_xxxxxxxxxxxxxxxx" \
+      -H "x-api-secret: qps_live_yyyyyyyyyyyyyyyy" \
+      -d '{
+        "@entity": "org.quicko.qpon.customer",
+        "email": "jane@example.com",
+        "external_id": "usr_456",
+        "name": "Jane Doe"
+      }'
+    ```
+
+    **Response**
+
+    ```json
+    {
+      "message": "Successfully created customer",
+      "result": {
+        "@entity": "org.quicko.qpon.customer",
+        "customer_id": "7a8b9c0d-...",
+        "name": "Jane Doe",
+        "email": "jane@example.com",
+        "external_id": "usr_456",
+        "created_at": "2024-06-01T10:00:00.000Z",
+        "updated_at": "2024-06-01T10:00:00.000Z"
+      }
+    }
+    ```
+  </Step>
+
+  <Step title="Upsert a customer (recommended for syncs)">
+    Creates or updates the customer record matched by `external_id`. Safe to call on every user login or account update.
+
+    ```http
+    PUT /api/organizations/{organization_id}/customers/upsert
+    ```
+
+    ```bash
+    curl -X PUT https://your-qpon-host/api/organizations/org_abc123/customers/upsert \
+      -H "Content-Type: application/json" \
+      -H "x-api-key: qpk_live_xxxxxxxxxxxxxxxx" \
+      -H "x-api-secret: qps_live_yyyyyyyyyyyyyyyy" \
+      -d '{
+        "@entity": "org.quicko.qpon.customer",
+        "email": "jane@example.com",
+        "external_id": "usr_456",
+        "name": "Jane Doe"
+      }'
+    ```
+  </Step>
+
+  <Step title="Fetch all customers">
+    ```http
+    GET /api/organizations/{organization_id}/customers
+    ```
+
+    **Query parameters**
+
+    | Parameter     | Description                               |
+    | ------------- | ----------------------------------------- |
+    | `email`       | Filter by customer email (optional)       |
+    | `external_id` | Filter by your external user ID (optional)|
+    | `skip`        | Pagination offset                         |
+    | `take`        | Page size                                 |
+
+    ```bash
+    curl "https://your-qpon-host/api/organizations/org_abc123/customers?external_id=usr_456" \
+      -H "x-api-key: qpk_live_xxxxxxxxxxxxxxxx" \
+      -H "x-api-secret: qps_live_yyyyyyyyyyyyyyyy"
+    ```
+  </Step>
+
+  <Step title="Fetch a single customer">
+    ```http
+    GET /api/organizations/{organization_id}/customers/{customer_id}
+    ```
+
+    ```bash
+    curl "https://your-qpon-host/api/organizations/org_abc123/customers/7a8b9c0d-..." \
+      -H "x-api-key: qpk_live_xxxxxxxxxxxxxxxx" \
+      -H "x-api-secret: qps_live_yyyyyyyyyyyyyyyy"
+    ```
+  </Step>
+</Steps>
+
+---
+
+## Using `external_id` to avoid storing Qpon UUIDs
+
+Qpon assigns its own UUIDs (`item_id`, `customer_id`) to every record, but the redemption and offer APIs also accept your own identifiers via `external_item_id` and `external_customer_id`.
+
+**The recommended pattern:**
+
+1. When registering an item, set `external_id` to your product's SKU or database ID (e.g., `prod_123`).
+2. When registering a customer, set `external_id` to your user ID (e.g., `usr_456`).
+3. At checkout, pass `external_item_id=prod_123` and `external_customer_id=usr_456` directly to the offer validation and redemption endpoints — no lookup of Qpon UUIDs required.
+
+This keeps your integration stateless: your backend never needs to persist a mapping table between your IDs and Qpon's UUIDs.

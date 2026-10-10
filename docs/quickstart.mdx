@@ -1,0 +1,171 @@
+---
+title: "Quickstart: Deploy Qpon and Create Your First Coupon"
+sidebarTitle: "Quickstart"
+description: "Deploy Qpon with Docker Compose, complete first-time setup, authenticate, and make your first coupon creation API call in under 5 minutes."
+---
+
+This guide walks you from zero to a running Qpon instance with a coupon created via the REST API. You'll need about five minutes and a machine with Docker installed.
+
+<Note>
+  All authenticated Qpon API endpoints require a valid JWT in the `Authorization` header. Use the format `Authorization: Bearer <token>` on every request after login.
+</Note>
+
+<Steps>
+
+  <Step title="Prerequisites">
+    Ensure the following are installed before you begin:
+
+    | Requirement | Minimum version | Notes |
+    | ----------- | --------------- | ----- |
+    | **Node.js** | 20.x            | Required only for manual setup or SDK use — not needed for Docker |
+    | **Docker**  | 24.x+           | Includes Docker Compose v2 (`docker compose`) |
+
+    Verify your Docker installation:
+
+    ```bash
+    docker --version
+    docker compose version
+    ```
+  </Step>
+
+  <Step title="Download and start Qpon with Docker Compose">
+    Pull the official `docker-compose.yml` from the Qpon repository, then spin up the application and its PostgreSQL database in the background:
+
+    ```bash
+    # Download the compose file
+    curl -LO https://github.com/org-quicko/qpon/raw/main/docker-compose.yml
+    ```
+
+    Before starting, create a `.env` file in the same directory with your environment values:
+
+    ```bash
+    # .env
+    DB_USERNAME=qpon_user
+    DB_PASSWORD=strongpassword
+    DB_NAME=qpon_db
+    DB_HOST=db
+    JWT_SECRET=replace-with-a-long-random-secret
+    SALT_ROUNDS=10
+    ```
+
+    Now bring the services up:
+
+    ```bash
+    docker compose up -d
+    ```
+
+    Docker will pull `labsatquicko/qpon:latest` and `postgres:17`, run database migrations automatically, and start the app on **port 3000**. You can tail the logs to confirm everything started cleanly:
+
+    ```bash
+    docker compose logs -f app
+    ```
+
+    Once you see the NestJS bootstrap message, the API is ready.
+  </Step>
+
+  <Step title="Complete first-time setup">
+    Open your browser and navigate to:
+
+    ```
+    http://localhost:3000/setup
+    ```
+
+    The setup wizard will guide you through creating:
+
+    1. **Super Admin account** — the root administrator user with access to all organizations.
+    2. **First organization** — every coupon and campaign in Qpon belongs to an organization. Give it a name that matches your brand or project.
+
+    Once setup is complete you'll be redirected to the dashboard login screen. You'll use the super admin credentials in the next step.
+  </Step>
+
+  <Step title="Obtain a JWT token">
+    All write operations on the Qpon API require a JWT bearer token. Obtain one by posting your credentials to the login endpoint:
+
+    ```bash
+    curl -s -X POST http://localhost:3000/api/users/login \
+      -H "Content-Type: application/json" \
+      -d '{
+        "email": "admin@example.com",
+        "password": "yourpassword"
+      }'
+    ```
+
+    A successful response returns a token:
+
+    ```json
+    {
+      "data": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      }
+    }
+    ```
+
+    Export it for use in subsequent requests:
+
+    ```bash
+    export TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    ```
+
+    <Note>
+      Tokens are signed using the `JWT_SECRET` you set in your `.env` file. Keep that secret safe and rotate it if it is ever exposed. Use `Authorization: Bearer <token>` on all authenticated endpoints.
+    </Note>
+  </Step>
+
+  <Step title="Create your first coupon">
+    With your token and organization ID in hand (visible in the dashboard URL after setup, e.g. `http://localhost:3000/organizations/<organization_id>`), create a coupon:
+
+    ```bash
+    curl -s -X POST \
+      http://localhost:3000/api/organizations/{organization_id}/coupons \
+      -H "Content-Type: application/json" \
+      -H "Authorization: Bearer $TOKEN" \
+      -d '{
+        "@entity": "org.quicko.qpon.coupon",
+        "name": "Summer Sale",
+        "discount_type": "percentage",
+        "discount_value": 20,
+        "item_constraint": "all"
+      }'
+    ```
+
+    **Request body fields:**
+
+    | Field             | Type     | Description                                                           |
+    | ----------------- | -------- | --------------------------------------------------------------------- |
+    | `@entity`         | `string` | Entity namespace — always `org.quicko.qpon.coupon` for coupons        |
+    | `name`            | `string` | A human-readable name for the coupon                                  |
+    | `discount_type`   | `string` | `"percentage"` for a percent-off discount, `"fixed"` for a flat amount|
+    | `discount_value`  | `number` | The magnitude of the discount (e.g. `20` = 20% off)                  |
+    | `item_constraint` | `string` | `"all"` to apply to every item; can also target specific categories or products |
+  </Step>
+
+  <Step title="Review the success response">
+    On success, the API returns the newly created coupon with its assigned ID and metadata:
+
+    ```json
+    {
+      "data": {
+        "@entity": "org.quicko.qpon.coupon",
+        "id": "c1a2b3d4-e5f6-7890-abcd-ef1234567890",
+        "name": "Summer Sale",
+        "discount_type": "percentage",
+        "discount_value": 20,
+        "item_constraint": "all",
+        "status": "active",
+        "created_at": "2025-01-15T10:30:00.000Z",
+        "updated_at": "2025-01-15T10:30:00.000Z"
+      }
+    }
+    ```
+
+    Save the `id` — you'll use it when creating coupon codes, attaching the coupon to a campaign, or querying redemptions. You can also view and manage the coupon from the Qpon dashboard at `http://localhost:3000`.
+  </Step>
+
+</Steps>
+
+## Next Steps
+
+- **Create coupon codes** — Generate shareable codes tied to your new coupon via `POST /api/organizations/{organization_id}/coupons/{coupon_id}/coupon-codes`.
+- **Build a campaign** — Group coupons under a campaign with a budget and date range via `POST /api/organizations/{organization_id}/campaigns`.
+- **Track redemptions** — Query redemption history via `GET /api/organizations/{organization_id}/coupons/{coupon_id}/redemptions`.
+- **Explore the API reference** — See the [full API reference](/api-reference) for all available endpoints.

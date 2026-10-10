@@ -1,0 +1,228 @@
+---
+title: "Deploy Qpon with Docker Compose or Manual Server Setup"
+sidebarTitle: "Deployment"
+description: "Run Qpon in production using Docker Compose or set up the NestJS API and Angular frontend manually. Covers all environment variables and database setup."
+---
+
+Qpon supports two deployment paths: the recommended **Docker Compose** approach that bundles the app and database in a single command, or a **manual setup** for developers who want to run the API and frontend directly on their host machine.
+
+<Tabs>
+
+  <Tab title="Docker Compose (Recommended)">
+
+    ## Docker Compose
+
+    The official Docker image `labsatquicko/qpon:latest` is a multi-stage build that combines the compiled NestJS API and the pre-built Angular static files into a single Node 22 Alpine container. A separate `postgres:17` service is managed by Compose.
+
+    ### docker-compose.yml
+
+    ```yaml
+    services:
+      app:
+        image: labsatquicko/qpon:latest
+        container_name: qpon_app
+        ports:
+          - "3000:3000"
+        restart: unless-stopped
+        env_file:
+          - .env
+        environment:
+          - PORT=3000
+          - DB_PORT=5432
+          - DB_USERNAME=${DB_USERNAME}
+          - DB_PASSWORD=${DB_PASSWORD}
+          - DB_NAME=${DB_NAME}
+          - DB_HOST=${DB_HOST}
+          - JWT_SECRET=${JWT_SECRET}
+          - SALT_ROUNDS=${SALT_ROUNDS}
+          - NODE_ENV=production
+        depends_on:
+          - db
+        networks:
+          - qpon
+
+      db:
+        image: postgres:17
+        container_name: qpon_db
+        environment:
+          - POSTGRES_USER=${DB_USERNAME}
+          - POSTGRES_PASSWORD=${DB_PASSWORD}
+          - POSTGRES_DB=${DB_NAME}
+        volumes:
+          - postgres_data:/var/lib/postgresql/data
+        ports:
+          - "127.0.0.1:5432:5432"
+        restart: unless-stopped
+        networks:
+          - qpon
+        healthcheck:
+          test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_NAME}"]
+          interval: 10s
+          timeout: 5s
+          retries: 5
+
+    networks:
+      qpon:
+        driver: bridge
+
+    volumes:
+      postgres_data:
+    ```
+
+    The PostgreSQL port is bound to `127.0.0.1` by default — it is not exposed to the public network. If you need external access to Postgres (e.g. from a database GUI), change it to `0.0.0.0:5432:5432`.
+
+    ### Environment Variables
+
+    All variables are read from a `.env` file in the same directory as `docker-compose.yml`. Create the file before running Compose:
+
+    | Variable      | Description                                           | Example                        |
+    | ------------- | ----------------------------------------------------- | ------------------------------ |
+    | `DB_USERNAME` | PostgreSQL username                                   | `qpon_user`                    |
+    | `DB_PASSWORD` | PostgreSQL password                                   | `strongpassword`               |
+    | `DB_NAME`     | PostgreSQL database name                              | `qpon_db`                      |
+    | `DB_HOST`     | Hostname of the database service                      | `db` (use `db` for Docker)     |
+    | `JWT_SECRET`  | Secret key used to sign and verify JWT tokens         | `a-long-random-string`         |
+    | `SALT_ROUNDS` | Number of bcrypt rounds used to hash passwords        | `10`                           |
+    | `PORT`        | Port the NestJS app listens on (set in Compose)       | `3000`                         |
+    | `DB_PORT`     | PostgreSQL port (set in Compose)                      | `5432`                         |
+    | `NODE_ENV`    | Node environment (set in Compose)                     | `production`                   |
+
+    <Warning>
+      Set `JWT_SECRET` to a long, cryptographically random string in production. Anyone who obtains this value can forge valid authentication tokens and gain full access to your Qpon instance. Generate one with `openssl rand -hex 64` and never commit it to source control.
+    </Warning>
+
+    ### Steps
+
+    **1. Download the Compose file:**
+
+    ```bash
+    curl -LO https://github.com/org-quicko/qpon/raw/main/docker-compose.yml
+    ```
+
+    **2. Create your `.env` file:**
+
+    ```bash
+    # .env
+    DB_USERNAME=qpon_user
+    DB_PASSWORD=strongpassword
+    DB_NAME=qpon_db
+    DB_HOST=db
+    JWT_SECRET=replace-with-a-long-random-secret
+    SALT_ROUNDS=10
+    ```
+
+    **3. Start the services:**
+
+    ```bash
+    docker compose up -d
+    ```
+
+    Docker Compose will:
+    - Pull `labsatquicko/qpon:latest` and `postgres:17`
+    - Start the database and wait for its healthcheck to pass
+    - Run database migrations automatically on container startup
+    - Serve the application on **http://localhost:3000**
+
+    **4. Verify the deployment:**
+
+    ```bash
+    docker compose ps        # both services should show "running"
+    docker compose logs app  # check for NestJS bootstrap output
+    ```
+
+  </Tab>
+
+  <Tab title="Manual Setup">
+
+    ## Manual Setup
+
+    Use this approach when you want to run the backend and frontend directly on your host machine — for example, during active development or when deploying to a server without Docker.
+
+    ### Prerequisites
+
+    - **Node.js** 20.x or later
+    - **PostgreSQL** 14 or later (running and accessible)
+    - **Angular CLI** — install globally with `npm install -g @angular/cli`
+
+    ### Environment Variables
+
+    Create a `.env` file inside the `api/` directory with your database and JWT configuration:
+
+    ```bash
+    # api/.env
+    DB_USERNAME=qpon_user
+    DB_PASSWORD=strongpassword
+    DB_NAME=qpon_db
+    DB_HOST=localhost
+    DB_PORT=5432
+    JWT_SECRET=replace-with-a-long-random-secret
+    SALT_ROUNDS=10
+    PORT=3000
+    NODE_ENV=development
+    ```
+
+    <Warning>
+      Set `JWT_SECRET` to a long, cryptographically random string in production. Generate one with `openssl rand -hex 64` and never commit it to source control.
+    </Warning>
+
+    ### Backend (NestJS API)
+
+    ```bash
+    cd api
+    npm install
+    npm run start:dev
+    ```
+
+    - `npm run start:dev` starts NestJS in watch mode (auto-restarts on file changes).
+    - For production, build first and then run the compiled output:
+
+      ```bash
+      npm run build
+      npm run start:prod
+      ```
+
+    - **Schema synchronization:** when `NODE_ENV` is not `production`, TypeORM automatically synchronizes the database schema on startup (`synchronize: true`). No manual migration step is needed for local development. In production, set `NODE_ENV=production` and use the `db:migration-run` npm script (or rely on the Docker image's `db-migrate.sh` entrypoint) to apply migrations.
+    - The API will be available at `http://localhost:3000/api`.
+
+    ### Frontend (Angular)
+
+    ```bash
+    cd frontend
+    npm install --legacy-peer-deps
+    ng serve
+    ```
+
+    - The `--legacy-peer-deps` flag is required to resolve peer dependency conflicts in the current Angular version.
+    - The Angular dev server starts on `http://localhost:4200` by default and proxies API requests to the NestJS backend.
+    - For a production build that can be served as static files:
+
+      ```bash
+      npm run build
+      ```
+
+      Output is written to `dist/frontend/browser/`. Serve it with any static file server or configure NestJS to serve it directly (as the Docker image does).
+
+  </Tab>
+
+</Tabs>
+
+## First-Time Setup
+
+Regardless of the deployment method, the first time you start Qpon you must create a super admin account and an initial organization before using the API or dashboard.
+
+Visit:
+
+```
+http://localhost:3000/setup
+```
+
+The setup page is only shown when no super admin exists. Complete the form to create:
+
+1. **Super Admin** — the root user account with full platform access.
+2. **Organization** — the top-level container for all coupons, campaigns, and members.
+
+Once submitted, the setup route is disabled and you'll be redirected to the login screen. Use the credentials you created to log in and obtain a JWT for API access.
+
+<Note>
+  If the setup page is not accessible, check that the application started successfully with `docker compose logs app` (Docker) or by inspecting your terminal output (manual). The NestJS logger prints a direct link to `localhost:3000/setup` if no super admin is detected on startup.
+</Note>

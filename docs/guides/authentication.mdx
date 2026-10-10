@@ -1,0 +1,152 @@
+---
+title: "How to Authenticate Your API Requests to the Qpon API"
+sidebarTitle: "Authentication"
+description: "Qpon supports two authentication methods: JWT bearer tokens for user sessions and API key pairs for server-to-server integrations. Learn how to use both."
+---
+
+Every request to the Qpon API (except `POST /api/users/login`) must be authenticated. Qpon supports two mechanisms: **JWT bearer tokens** for user-facing sessions and **API key pairs** for backend service integrations. The server automatically selects the right authentication strategy based on the headers present in the request.
+
+<Tabs>
+  <Tab title="JWT Authentication">
+    ## JWT Authentication
+
+    JWT tokens are issued after a successful login. They are the right choice for any flow that involves a human user — such as your dashboard, admin console, or any front-end that logs in with an email and password.
+
+    ### Step 1 — Log in and receive a token
+
+    Send the user's credentials to the login endpoint. This route is public (no prior authentication required).
+
+    ```http
+    POST /api/users/login
+    ```
+
+    **Request body**
+
+    | Field      | Type   | Required | Description                  |
+    | ---------- | ------ | -------- | ---------------------------- |
+    | `email`    | string | ✓        | The user's email address     |
+    | `password` | string | ✓        | The user's account password  |
+
+    ```bash
+    curl -X POST https://your-qpon-host/api/users/login \
+      -H "Content-Type: application/json" \
+      -d '{
+        "email": "admin@example.com",
+        "password": "s3cur3P@ssword"
+      }'
+    ```
+
+    **Response**
+
+    ```json
+    {
+      "message": "Successfully logged in user",
+      "result": {
+        "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      }
+    }
+    ```
+
+    ### Step 2 — Attach the token to subsequent requests
+
+    Pass the token in the `Authorization` header using the `Bearer` scheme on every protected request.
+
+    ```bash
+    curl https://your-qpon-host/api/organizations/{organization_id}/customers \
+      -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    ```
+
+    <Note>
+      JWT tokens are signed with the `JWT_SECRET` environment variable configured on your Qpon server. Use a long, randomly generated secret in production — a weak secret allows tokens to be forged. Rotate it periodically and redeploy to invalidate all existing sessions.
+    </Note>
+  </Tab>
+
+  <Tab title="API Key Authentication">
+    ## API Key Authentication
+
+    API key pairs consist of a **key** and a **secret** tied to an organization. They are designed for server-to-server calls where no user session exists — such as a checkout service recording a redemption, a backend sync job, or a webhook processor.
+
+    ### Step 1 — Create an API key
+
+    You must be authenticated as a JWT user (with sufficient permissions) to create an API key for an organization.
+
+    ```http
+    POST /api/organizations/{organization_id}/api-keys
+    ```
+
+    ```bash
+    curl -X POST https://your-qpon-host/api/organizations/org_abc123/api-keys \
+      -H "Authorization: Bearer <your-jwt-token>"
+    ```
+
+    **Response**
+
+    ```json
+    {
+      "message": "Successfully created api key",
+      "result": {
+        "key": "qpk_live_xxxxxxxxxxxxxxxx",
+        "secret": "qps_live_yyyyyyyyyyyyyyyy"
+      }
+    }
+    ```
+
+    <Note>
+      Store the `secret` securely immediately after creation — it is not retrievable again. If the secret is lost, generate a new API key pair.
+    </Note>
+
+    ### Step 2 — Fetch an existing API key
+
+    To retrieve the key (not the secret) associated with an organization:
+
+    ```http
+    GET /api/organizations/{organization_id}/api-keys
+    ```
+
+    ```bash
+    curl https://your-qpon-host/api/organizations/org_abc123/api-keys \
+      -H "Authorization: Bearer <your-jwt-token>"
+    ```
+
+    ### Step 3 — Make API requests using the key pair
+
+    Pass both the key and the secret as request headers. Do **not** include an `Authorization: Bearer` header when using API key authentication.
+
+    | Header         | Value                      |
+    | -------------- | -------------------------- |
+    | `x-api-key`    | The key from Step 1        |
+    | `x-api-secret` | The secret from Step 1     |
+
+    ```bash
+    curl -X POST https://your-qpon-host/api/organizations/org_abc123/coupon-codes/redeem \
+      -H "Content-Type: application/json" \
+      -H "x-api-key: qpk_live_xxxxxxxxxxxxxxxx" \
+      -H "x-api-secret: qps_live_yyyyyyyyyyyyyyyy" \
+      -d '{
+        "@entity": "org.quicko.qpon.redemption",
+        "code": "SAVE20",
+        "base_order_value": 5000,
+        "discount": 1000,
+        "external_customer_id": "usr_456",
+        "external_item_id": "prod_123"
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+---
+
+## Which method should I use?
+
+| Scenario                                          | Recommended method |
+| ------------------------------------------------- | ------------------ |
+| Admin dashboard or user-facing web app            | JWT Bearer token   |
+| Backend checkout service recording a redemption   | API key pair       |
+| Automated catalog sync (items / customers)        | API key pair       |
+| Webhook processor or cron job                     | API key pair       |
+| One-off manual API call during development        | JWT Bearer token   |
+
+**Key rules of thumb:**
+- Use **JWT** when a human has authenticated with their email and password and you have a live session.
+- Use **API keys** for any machine-to-machine call — they are stateless, do not expire on their own, and require no login step.
+- Never expose your API key secret or JWT secret in client-side code or public repositories.

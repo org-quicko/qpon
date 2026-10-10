@@ -1,0 +1,198 @@
+---
+title: "Offers: Resolving Applicable Discounts in Real Time"
+sidebarTitle: "Offers"
+description: "The Offers API resolves the best applicable discount for a given customer and item combination, letting you show personalized promotions at checkout."
+---
+
+## What Is an Offer?
+
+An **offer** is a computed, read-only view that tells you which active coupon codes are applicable to a specific customer and item at a given moment. You never create, update, or delete offers — they are resolved dynamically from the current state of your coupons, campaigns, coupon codes, customers, and items.
+
+Think of the Offers API as the "checkout question": *"Given this customer and this item, what discounts can I apply right now?"*
+
+---
+
+## How Offer Resolution Works
+
+Qpon materializes offers through a PostgreSQL view (`offer`) that joins across the full resource hierarchy in real time. The view's WHERE clause enforces two hard conditions:
+
+1. **The coupon code must be active** — `cc.status = 'active'`
+2. **The code must not be expired** — `cc.expires_at > now() OR cc.expires_at IS NULL`
+
+Beyond these base filters, the API layer applies your query parameters (customer, item, organization) to narrow the results to the codes that are genuinely usable in the current context.
+
+The resolution path for a single offer row is:
+
+```text
+Coupon  ──►  Campaign  ──►  Coupon Code
+   │                              │
+   └── item_constraint            └── customer_constraint
+   └── discount_type              └── visibility
+   └── discount_value             └── minimum_amount
+   └── discount_upto              └── expires_at
+         │                              │
+         └────────────────────────────► Offer row
+                  (joined with Customer and Item via external_ids)
+```
+
+---
+
+## Offer Fields
+
+The resolved offer view exposes the following fields:
+
+| Field | Source | Description |
+|---|---|---|
+| `coupon_code_id` | `coupon_code` | Internal ID of the matching coupon code. |
+| `code` | `coupon_code` | The promotional string to display or apply (e.g. `"SUMMER20"`). |
+| `discount_type` | `coupon` | `percentage` or `fixed`. |
+| `discount_value` | `coupon` | Magnitude of the discount. |
+| `discount_upto` | `coupon` | Maximum discount cap (percentage discounts only). |
+| `item_constraint` | `coupon` | `all` or `specific` — whether the coupon applies to all items or a restricted set. |
+| `customer_constraint` | `coupon_code` | `all` or `specific` — whether the code is open to all customers or restricted. |
+| `minimum_amount` | `coupon_code` | Minimum order value required to apply the code. |
+| `max_redemption_per_customer` | `coupon_code` | How many times this customer can use the code. |
+| `visibility` | `coupon_code` | `public` or `private`. |
+| `expires_at` | `coupon_code` | Expiry timestamp if the code has a limited duration. |
+| `external_item_id` | `item` | Your system's item identifier. |
+| `external_customer_id` | `customer` | Your system's customer identifier. |
+| `external_campaign_id` | `campaign` | Your system's campaign identifier. |
+| `item_id` | `item` | Internal Qpon ID of the matched item. |
+| `customer_id` | `customer` | Internal Qpon ID of the matched customer. |
+| `coupon_code_status` | `coupon_code` | Always `active` in results (the view filters out inactive/expired codes). |
+| `organization_id` | `coupon` | The organization this offer belongs to. |
+| `coupon_id` | `coupon` | The coupon providing the discount rule. |
+| `campaign_id` | `campaign` | The campaign distributing this code. |
+| `created_at` | view | Timestamp when the offer row was resolved (`now()` at query time). |
+| `updated_at` | view | High-resolution timestamp of resolution (`clock_timestamp()` at query time). |
+
+---
+
+## API Endpoints
+
+### List All Applicable Offers
+
+```text
+GET /organizations/{organization_id}/offers
+     ?external_customer_id={your_customer_id}
+     &external_item_id={your_item_id}
+```
+
+Returns all active coupon codes that are currently applicable to the specified customer and item. Use this endpoint to display a list of available promotions on a product page or cart.
+
+**Example response:**
+```json
+[
+  {
+    "coupon_code_id": "3f9e1a2b-...",
+    "code": "SUMMER20",
+    "discount_type": "percentage",
+    "discount_value": 20,
+    "discount_upto": 50,
+    "minimum_amount": null,
+    "expires_at": "2025-08-31T23:59:59Z",
+    "visibility": "public",
+    "customer_constraint": "all"
+  },
+  {
+    "coupon_code_id": "8c7d4e3f-...",
+    "code": "LOYAL15",
+    "discount_type": "fixed",
+    "discount_value": 15,
+    "discount_upto": null,
+    "minimum_amount": 75,
+    "expires_at": null,
+    "visibility": "private",
+    "customer_constraint": "specific"
+  }
+]
+```
+
+### Fetch a Single Offer by Code
+
+```text
+GET /organizations/{organization_id}/offer
+     ?external_customer_id={your_customer_id}
+     &external_item_id={your_item_id}
+     &code={coupon_code_string}
+```
+
+Validates a specific code against the customer and item context. Use this endpoint when a customer manually enters a code at checkout — it confirms whether the code is valid and returns the discount details if so.
+
+**If valid:** Returns the offer row with full discount details.  
+**If invalid:** Returns an error indicating why the code cannot be applied (not found, expired, customer not eligible, item not applicable, etc.).
+
+---
+
+## Typical Checkout Integration
+
+The recommended pattern for integrating the Offers API into a checkout flow:
+
+```text
+1. Customer views product page
+        │
+        ▼
+2. Call GET /offers with external_customer_id + external_item_id
+        │
+        ▼
+3. Display available promotions (public codes + private codes for this customer)
+        │
+        ▼
+4. Customer selects or enters a code
+        │
+        ▼
+5. Call GET /offer with the specific code to validate and get discount details
+        │
+        ▼
+6. Apply discount_value (respecting discount_upto and minimum_amount)
+        │
+        ▼
+7. Customer confirms order
+        │
+        ▼
+8. Call POST /redemptions to record the use
+```
+
+<Tip>
+  Always call `GET /offer` (single validation) immediately before recording a redemption. The offers view reflects the state at query time — if a code was exhausted by another customer between steps 3 and 7, step 5 will correctly reject it.
+</Tip>
+
+---
+
+## Offer Resolution Rules Summary
+
+When determining whether a coupon code appears in an offer result, Qpon checks each of the following conditions. All must be satisfied for the code to be included:
+
+| Condition | Check |
+|---|---|
+| Code is active | `coupon_code.status = 'active'` |
+| Code is not expired | `expires_at > now()` or `expires_at IS NULL` |
+| Customer is eligible | `customer_constraint = 'all'` OR customer is in `customer_coupon_code` for this code |
+| Item is eligible | `item_constraint = 'all'` OR item is in `coupon_items` for this coupon |
+| Campaign is active | Campaign status must be `active` (exhausted/inactive campaigns do not yield valid offers) |
+
+---
+
+## Offers vs. Redemptions
+
+| | Offer | Redemption |
+|---|---|---|
+| **Nature** | Read-only, computed view | Persisted write record |
+| **Purpose** | "Can I apply this discount?" | "I applied this discount" |
+| **Created by** | Qpon automatically | Your API call to `POST /redemptions` |
+| **Mutable** | No | No (immutable history) |
+
+Offers answer the question; redemptions record the answer.
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Coupon Codes" icon="ticket" href="/concepts/coupon-codes">
+    Understand visibility, duration, and constraint settings that feed into offer resolution.
+  </Card>
+  <Card title="Data Model" icon="diagram-project" href="/concepts/data-model">
+    See how offers fit into the full Qpon resource hierarchy.
+  </Card>
+</CardGroup>

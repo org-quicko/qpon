@@ -1,0 +1,480 @@
+---
+title: "Coupons API — Manage Discount Templates and Lifecycle"
+sidebarTitle: "Coupons"
+description: "REST endpoints for creating, listing, updating, and managing coupon lifecycle. Coupons define discount type, value, and item scope for campaigns."
+---
+
+A **Coupon** is a reusable discount template scoped to an organization. It defines how a discount is calculated (`discount_type`, `discount_value`) and which items it applies to (`item_constraint`). Campaigns are created under coupons to distribute them as actual coupon codes.
+
+**Coupon status values:** `active` | `inactive` | `archive`
+
+**Discount types:** `percentage` | `fixed`
+
+**Item constraint values:** `all` | `specific`
+
+---
+
+## Create Coupon
+
+Creates a new coupon under an organization.
+
+**`POST /api/organizations/{organization_id}/coupons`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization that will own this coupon.
+</ParamField>
+
+### Request Body
+
+<ParamField body="@entity" type="string" required>
+  Must be `"org.quicko.qpon.coupon"`.
+</ParamField>
+
+<ParamField body="name" type="string" required>
+  Human-readable name for the coupon (e.g. `"Summer Sale 20% Off"`).
+</ParamField>
+
+<ParamField body="discount_type" type="string" required>
+  How the discount is computed. One of:
+  - `"percentage"` — deducts a percentage of the item price.
+  - `"fixed"` — deducts a fixed monetary amount.
+</ParamField>
+
+<ParamField body="discount_value" type="number" required>
+  Numeric magnitude of the discount. For `percentage`, this is a value between `0` and `100`. For `fixed`, this is the currency amount to deduct.
+</ParamField>
+
+<ParamField body="discount_upto" type="number">
+  Maximum discount cap in currency units. Only meaningful when `discount_type` is `"percentage"`. For example, a 20% discount capped at ₹200.
+</ParamField>
+
+<ParamField body="item_constraint" type="string" required>
+  Defines which items the coupon applies to. One of:
+  - `"all"` — applies to every item in the order.
+  - `"specific"` — applies only to items explicitly listed under this coupon.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+<ResponseField name="result" type="object">
+  <Expandable title="result">
+    <ResponseField name="@entity" type="string">
+      Always `"org.quicko.qpon.coupon"`.
+    </ResponseField>
+    <ResponseField name="coupon_id" type="string">
+      UUID of the newly created coupon.
+    </ResponseField>
+    <ResponseField name="name" type="string">
+      Name of the coupon.
+    </ResponseField>
+    <ResponseField name="discount_type" type="string">
+      `"percentage"` or `"fixed"`.
+    </ResponseField>
+    <ResponseField name="discount_value" type="number">
+      Magnitude of the discount.
+    </ResponseField>
+    <ResponseField name="discount_upto" type="number">
+      Discount cap, if set.
+    </ResponseField>
+    <ResponseField name="item_constraint" type="string">
+      `"all"` or `"specific"`.
+    </ResponseField>
+    <ResponseField name="status" type="string">
+      Initial status of the coupon. One of `"active"`, `"inactive"`, `"archive"`.
+    </ResponseField>
+    <ResponseField name="created_at" type="string">
+      ISO 8601 timestamp of creation.
+    </ResponseField>
+    <ResponseField name="updated_at" type="string">
+      ISO 8601 timestamp of last update.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example
+
+```bash
+curl -X POST https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/coupons \
+  -H "Content-Type: application/json" \
+  -d '{
+    "@entity": "org.quicko.qpon.coupon",
+    "name": "Summer Sale 20% Off",
+    "discount_type": "percentage",
+    "discount_value": 20,
+    "discount_upto": 200,
+    "item_constraint": "all"
+  }'
+```
+
+---
+
+## Fetch Coupons
+
+Returns a paginated, filterable list of coupons for an organization.
+
+**`GET /api/organizations/{organization_id}/coupons`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="status" type="string">
+  Filter by coupon status: `"active"`, `"inactive"`, or `"archive"`.
+</ParamField>
+
+<ParamField query="discount_type" type="string">
+  Filter by discount type: `"percentage"` or `"fixed"`.
+</ParamField>
+
+<ParamField query="external_item_id" type="string">
+  Filter coupons that are associated with a specific external item ID.
+</ParamField>
+
+<ParamField query="name" type="string">
+  Filter coupons whose name contains this string.
+</ParamField>
+
+<ParamField query="item_constraint" type="string">
+  Filter by item constraint: `"all"` or `"specific"`.
+</ParamField>
+
+<ParamField query="sort_by" type="string">
+  Field name to sort results by (e.g. `"name"`, `"created_at"`).
+</ParamField>
+
+<ParamField query="sort_order" type="string">
+  Sort direction: `"asc"` or `"desc"`. Defaults to `"desc"`.
+</ParamField>
+
+<ParamField query="take" type="number">
+  Maximum number of records to return (page size).
+</ParamField>
+
+<ParamField query="skip" type="number">
+  Number of records to skip (offset for pagination).
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+<ResponseField name="result" type="array">
+  Array of coupon objects, each with the same fields as the Create Coupon response.
+</ResponseField>
+
+### Example
+
+```bash
+curl -X GET "https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/coupons?status=active&discount_type=percentage&sort_by=created_at&sort_order=desc&take=20&skip=0" \
+  -H "Content-Type: application/json"
+```
+
+---
+
+## Fetch Coupon
+
+Retrieves a single coupon by its ID.
+
+**`GET /api/organizations/{organization_id}/coupons/{coupon_id}`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+<ParamField path="coupon_id" type="string" required>
+  UUID of the coupon to fetch.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+<ResponseField name="result" type="object">
+  The coupon object with all fields (same shape as Create Coupon response).
+</ResponseField>
+
+### Example
+
+```bash
+curl -X GET https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/coupons/f1a2b3c4-0000-0000-0000-000000000001 \
+  -H "Content-Type: application/json"
+```
+
+---
+
+## Update Coupon
+
+Partially updates a coupon. Only `name`, `discount_upto`, and `item_constraint` can be modified after creation.
+
+**`PATCH /api/organizations/{organization_id}/coupons/{coupon_id}`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+<ParamField path="coupon_id" type="string" required>
+  UUID of the coupon to update.
+</ParamField>
+
+### Request Body
+
+<ParamField body="@entity" type="string" required>
+  Must be `"org.quicko.qpon.coupon"`.
+</ParamField>
+
+<ParamField body="name" type="string">
+  Updated coupon name.
+</ParamField>
+
+<ParamField body="discount_upto" type="number">
+  Updated discount cap for percentage-type coupons.
+</ParamField>
+
+<ParamField body="item_constraint" type="string">
+  Updated item constraint: `"all"` or `"specific"`.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+<ResponseField name="result" type="object">
+  The updated coupon object with all fields.
+</ResponseField>
+
+### Example
+
+```bash
+curl -X PATCH https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/coupons/f1a2b3c4-0000-0000-0000-000000000001 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "@entity": "org.quicko.qpon.coupon",
+    "name": "Summer Sale 25% Off",
+    "discount_upto": 250
+  }'
+```
+
+---
+
+## Delete Coupon
+
+Permanently deletes a coupon and all its associated campaigns and coupon codes.
+
+**`DELETE /api/organizations/{organization_id}/coupons/{coupon_id}`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+<ParamField path="coupon_id" type="string" required>
+  UUID of the coupon to delete.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+### Example
+
+```bash
+curl -X DELETE https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/coupons/f1a2b3c4-0000-0000-0000-000000000001 \
+  -H "Content-Type: application/json"
+```
+
+---
+
+## Deactivate Coupon
+
+Transitions a coupon from `active` to `inactive`, preventing its codes from being redeemed.
+
+**`POST /api/organizations/{organization_id}/coupons/{coupon_id}/deactivate`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+<ParamField path="coupon_id" type="string" required>
+  UUID of the coupon to deactivate.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+### Example
+
+```bash
+curl -X POST https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/coupons/f1a2b3c4-0000-0000-0000-000000000001/deactivate \
+  -H "Content-Type: application/json"
+```
+
+---
+
+## Reactivate Coupon
+
+Transitions a coupon from `inactive` back to `active`, re-enabling its codes for redemption.
+
+**`POST /api/organizations/{organization_id}/coupons/{coupon_id}/reactivate`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+<ParamField path="coupon_id" type="string" required>
+  UUID of the coupon to reactivate.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+### Example
+
+```bash
+curl -X POST https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/coupons/f1a2b3c4-0000-0000-0000-000000000001/reactivate \
+  -H "Content-Type: application/json"
+```
+
+---
+
+## Fetch Coupons Summary
+
+Returns aggregated summary statistics for all coupons in an organization. Optionally filter by a specific coupon ID.
+
+**`GET /api/organizations/{organization_id}/coupons/summary`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="coupon_id" type="string">
+  Optional. Filter results to a specific coupon UUID.
+</ParamField>
+
+<ParamField query="skip" type="number">
+  Number of records to skip (offset for pagination).
+</ParamField>
+
+<ParamField query="take" type="number">
+  Maximum number of summary records to return.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+<ResponseField name="result" type="array">
+  <Expandable title="result[]">
+    <ResponseField name="coupon_id" type="string">
+      UUID of the coupon.
+    </ResponseField>
+    <ResponseField name="name" type="string">
+      Name of the coupon.
+    </ResponseField>
+    <ResponseField name="total_campaigns" type="number">
+      Total number of campaigns created under this coupon.
+    </ResponseField>
+    <ResponseField name="total_coupon_codes" type="number">
+      Total number of coupon codes issued.
+    </ResponseField>
+    <ResponseField name="total_redemptions" type="number">
+      Total redemption count across all codes.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example
+
+```bash
+curl -X GET "https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/coupons/summary?take=10&skip=0" \
+  -H "Content-Type: application/json"
+```
+
+---
+
+## Fetch Coupon Summary
+
+Returns aggregated summary statistics for a single coupon.
+
+**`GET /api/organizations/{organization_id}/coupons/{coupon_id}/summary`**
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+<ParamField path="coupon_id" type="string" required>
+  UUID of the coupon.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  Human-readable confirmation message.
+</ResponseField>
+
+<ResponseField name="result" type="object">
+  <Expandable title="result">
+    <ResponseField name="coupon_id" type="string">
+      UUID of the coupon.
+    </ResponseField>
+    <ResponseField name="name" type="string">
+      Name of the coupon.
+    </ResponseField>
+    <ResponseField name="total_campaigns" type="number">
+      Total number of campaigns under this coupon.
+    </ResponseField>
+    <ResponseField name="total_coupon_codes" type="number">
+      Total number of coupon codes issued.
+    </ResponseField>
+    <ResponseField name="total_redemptions" type="number">
+      Total redemption count for this coupon.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example
+
+```bash
+curl -X GET https://your-qpon-host/api/organizations/b3d79ec7-ef8a-4992-b627-adcb1fbc1801/coupons/f1a2b3c4-0000-0000-0000-000000000001/summary \
+  -H "Content-Type: application/json"
+```

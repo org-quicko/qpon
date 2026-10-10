@@ -1,0 +1,250 @@
+---
+title: "Offers API — Resolve Applicable Discounts at Checkout"
+sidebarTitle: "Offers"
+description: "Read-only endpoints for resolving active discounts. Use GET /offer to validate a coupon code at checkout or GET /offers to list all available promotions."
+---
+
+The Offers API is a read-only surface that exposes the active coupon codes available in your organization as a materialised view. Two endpoints cover the two main checkout scenarios:
+
+- **`GET /offers`** — list every active offer applicable to a specific customer/item pair (e.g. to render a "available coupons" panel).
+- **`GET /offer`** — validate and resolve a single coupon code a customer has typed in (e.g. before showing the discounted price at checkout).
+
+<Tip>
+Always call `GET /offer` with the customer's `external_customer_id` and the item's `external_item_id` **before** displaying a discounted price to the user. This ensures the code is still active, hasn't expired, and hasn't already been exhausted for that customer. Only proceed to the Redemptions API after a successful `200` response from this endpoint.
+</Tip>
+
+---
+
+## Fetch Offers
+
+`GET /api/organizations/{organization_id}/offers`
+
+Returns a paginated list of all active offers for the organization, optionally filtered by item, customer, and discount type. Use this endpoint to populate a "choose a coupon" picker in your UI.
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="external_item_id" type="string">
+  Filter offers to those applicable to a specific item, identified by your catalog's `external_id` for that item.
+</ParamField>
+
+<ParamField query="external_customer_id" type="string">
+  Filter offers to those applicable to a specific customer, identified by your system's `external_id` for that customer.
+</ParamField>
+
+<ParamField query="discount_type" type="string">
+  Filter by discount type. Accepted values: `"percentage"` or `"fixed"`.
+</ParamField>
+
+<ParamField query="sort" type="string">
+  Sort order for the results. Accepted values: `"ASC"` or `"DESC"`.
+</ParamField>
+
+<ParamField query="skip" type="integer">
+  Number of records to skip for pagination. Defaults to `0`.
+</ParamField>
+
+<ParamField query="take" type="integer">
+  Maximum number of records to return. Defaults to `10`.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  `"Successfully fetched offers"`.
+</ResponseField>
+
+<ResponseField name="result" type="array">
+  <Expandable title="Offer object">
+    <ResponseField name="organization_id" type="string">
+      UUID of the organization that owns this offer.
+    </ResponseField>
+    <ResponseField name="coupon_id" type="string">
+      UUID of the parent coupon.
+    </ResponseField>
+    <ResponseField name="campaign_id" type="string">
+      UUID of the campaign this coupon code belongs to.
+    </ResponseField>
+    <ResponseField name="coupon_code_id" type="string">
+      UUID of the specific coupon code record.
+    </ResponseField>
+    <ResponseField name="code" type="string">
+      The coupon code string the customer enters at checkout (e.g. `"SUMMER20"`).
+    </ResponseField>
+    <ResponseField name="discount_type" type="string">
+      How the discount is calculated. Either `"percentage"` or `"fixed"`.
+    </ResponseField>
+    <ResponseField name="discount_value" type="number">
+      The magnitude of the discount. For `percentage` this is the percent off (e.g. `20` for 20%); for `fixed` this is the absolute amount off in your currency.
+    </ResponseField>
+    <ResponseField name="discount_upto" type="number">
+      Maximum discount amount cap (relevant for `percentage` type). `null` if uncapped.
+    </ResponseField>
+    <ResponseField name="item_constraint" type="string">
+      Whether the coupon is restricted to specific items. Reflects the `item_constraint` enum value.
+    </ResponseField>
+    <ResponseField name="customer_constraint" type="string">
+      Whether the coupon is restricted to specific customers. Reflects the `customer_constraint` enum value.
+    </ResponseField>
+    <ResponseField name="minimum_amount" type="number">
+      Minimum order value required for the coupon to be applicable.
+    </ResponseField>
+    <ResponseField name="max_redemption_per_customer" type="number">
+      How many times a single customer can redeem this code.
+    </ResponseField>
+    <ResponseField name="visibility" type="string">
+      Whether the coupon is publicly visible or restricted. Reflects the `visibility` enum value.
+    </ResponseField>
+    <ResponseField name="item_id" type="string">
+      Qpon UUID of the item this offer is scoped to, if any.
+    </ResponseField>
+    <ResponseField name="customer_id" type="string">
+      Qpon UUID of the customer this code is assigned to, if any.
+    </ResponseField>
+    <ResponseField name="external_item_id" type="string">
+      Your catalog's `external_id` for the item this offer is scoped to, if any.
+    </ResponseField>
+    <ResponseField name="external_customer_id" type="string">
+      Your system's `external_id` for the customer this code is assigned to, if any.
+    </ResponseField>
+    <ResponseField name="external_campaign_id" type="string">
+      Your system's `external_id` for the parent campaign, if set.
+    </ResponseField>
+    <ResponseField name="coupon_code_status" type="string">
+      Current status of the coupon code (e.g. `"active"`).
+    </ResponseField>
+    <ResponseField name="expires_at" type="string">
+      ISO 8601 timestamp after which the code is no longer valid. `null` if the code never expires.
+    </ResponseField>
+    <ResponseField name="created_at" type="string">
+      ISO 8601 timestamp of when the view record was generated.
+    </ResponseField>
+    <ResponseField name="updated_at" type="string">
+      ISO 8601 timestamp of the most recent update.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example
+
+```bash
+curl --request GET \
+  --url 'https://your-qpon-host/api/organizations/ORG_ID/offers?external_customer_id=usr_a1b2c3d4&external_item_id=sku_premium_monthly&discount_type=percentage&sort=DESC&skip=0&take=10'
+```
+
+---
+
+## Fetch Offer
+
+`GET /api/organizations/{organization_id}/offer`
+
+Validates a single coupon code and returns its discount details if it is active and applicable for the given customer and item. This is the core validation call you should make at checkout before applying a discount.
+
+### Path Parameters
+
+<ParamField path="organization_id" type="string" required>
+  UUID of the organization.
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="code" type="string" required>
+  The coupon code string the customer entered (e.g. `"SUMMER20"`).
+</ParamField>
+
+<ParamField query="external_customer_id" type="string" required>
+  Your system's identifier for the customer attempting to redeem the code.
+</ParamField>
+
+<ParamField query="external_item_id" type="string" required>
+  Your catalog's identifier for the item being purchased.
+</ParamField>
+
+### Response Fields
+
+<ResponseField name="message" type="string">
+  `"Successfully fetched offer"`.
+</ResponseField>
+
+<ResponseField name="result" type="object">
+  <Expandable title="Offer object">
+    <ResponseField name="organization_id" type="string">
+      UUID of the organization that owns this offer.
+    </ResponseField>
+    <ResponseField name="coupon_id" type="string">
+      UUID of the parent coupon.
+    </ResponseField>
+    <ResponseField name="campaign_id" type="string">
+      UUID of the campaign this coupon code belongs to.
+    </ResponseField>
+    <ResponseField name="coupon_code_id" type="string">
+      UUID of the specific coupon code record.
+    </ResponseField>
+    <ResponseField name="code" type="string">
+      The validated coupon code string.
+    </ResponseField>
+    <ResponseField name="discount_type" type="string">
+      `"percentage"` or `"fixed"`.
+    </ResponseField>
+    <ResponseField name="discount_value" type="number">
+      Magnitude of the discount (percent or absolute amount, depending on `discount_type`).
+    </ResponseField>
+    <ResponseField name="discount_upto" type="number">
+      Maximum discount cap for percentage codes. `null` if uncapped.
+    </ResponseField>
+    <ResponseField name="item_constraint" type="string">
+      Whether the coupon is restricted to specific items. Reflects the `item_constraint` enum value.
+    </ResponseField>
+    <ResponseField name="customer_constraint" type="string">
+      Whether the coupon is restricted to specific customers. Reflects the `customer_constraint` enum value.
+    </ResponseField>
+    <ResponseField name="minimum_amount" type="number">
+      Minimum order value required for the code to be valid.
+    </ResponseField>
+    <ResponseField name="max_redemption_per_customer" type="number">
+      Maximum number of times this customer can redeem the code.
+    </ResponseField>
+    <ResponseField name="visibility" type="string">
+      Whether the coupon is publicly visible or restricted. Reflects the `visibility` enum value.
+    </ResponseField>
+    <ResponseField name="item_id" type="string">
+      Qpon UUID of the item this offer is scoped to, if any.
+    </ResponseField>
+    <ResponseField name="customer_id" type="string">
+      Qpon UUID of the customer this code is assigned to, if any.
+    </ResponseField>
+    <ResponseField name="external_item_id" type="string">
+      The item `external_id` matched against.
+    </ResponseField>
+    <ResponseField name="external_customer_id" type="string">
+      The customer `external_id` matched against.
+    </ResponseField>
+    <ResponseField name="external_campaign_id" type="string">
+      Your system's `external_id` for the parent campaign, if set.
+    </ResponseField>
+    <ResponseField name="coupon_code_status" type="string">
+      Current status of the coupon code — will be `"active"` for a valid offer.
+    </ResponseField>
+    <ResponseField name="expires_at" type="string">
+      ISO 8601 expiry timestamp. `null` if the code never expires.
+    </ResponseField>
+    <ResponseField name="created_at" type="string">
+      ISO 8601 timestamp of when the view record was generated.
+    </ResponseField>
+    <ResponseField name="updated_at" type="string">
+      ISO 8601 timestamp of the most recent update.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example
+
+```bash
+curl --request GET \
+  --url 'https://your-qpon-host/api/organizations/ORG_ID/offer?code=SUMMER20&external_customer_id=usr_a1b2c3d4&external_item_id=sku_premium_monthly'
+```

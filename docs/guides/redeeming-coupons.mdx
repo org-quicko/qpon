@@ -1,0 +1,180 @@
+---
+title: "Integrate Coupon Code Redemptions into Your Checkout"
+sidebarTitle: "Redeeming Coupons"
+description: "Integrate Qpon redemptions into your checkout: validate the coupon code before payment and record the redemption after a successful transaction."
+---
+
+Qpon's redemption flow is a two-step process: first **validate** the coupon code and retrieve the discount details, then **record** the redemption once the order is successfully placed. Separating these two API calls lets you show the customer the discount before they pay and ensures the redemption is only committed after payment succeeds.
+
+<Warning>
+  Always record the redemption **after** a successful payment confirmation. Calling the redeem endpoint before payment processing can consume a one-time coupon code even if the order ultimately fails or is abandoned.
+</Warning>
+
+---
+
+## Full checkout redemption flow
+
+<Steps>
+  <Step title="Customer enters a coupon code at checkout">
+    Your checkout UI accepts a coupon code string from the customer (e.g., `SAVE20`). Pass this code — along with the customer's and item's external IDs — to the offer endpoint in the next step.
+  </Step>
+
+  <Step title="Validate the code and fetch the discount">
+    Call the offer endpoint to check whether the code is valid for this customer and item combination. This endpoint returns the full offer details without consuming the code.
+
+    ```http
+    GET /api/organizations/{organization_id}/offer
+    ```
+
+    **Query parameters**
+
+    | Parameter              | Required | Description                                            |
+    | ---------------------- | -------- | ------------------------------------------------------ |
+    | `code`                 | ✓        | The coupon code string entered by the customer         |
+    | `external_customer_id` | ✓        | Your user ID for the customer (`external_id` on the customer record) |
+    | `external_item_id`     | ✓        | Your SKU/product ID for the item being purchased       |
+
+    ```bash
+    curl "https://your-qpon-host/api/organizations/org_abc123/offer?code=SAVE20&external_customer_id=usr_456&external_item_id=prod_123" \
+      -H "x-api-key: qpk_live_xxxxxxxxxxxxxxxx" \
+      -H "x-api-secret: qps_live_yyyyyyyyyyyyyyyy"
+    ```
+
+    **Response**
+
+    ```json
+    {
+      "message": "Successfully fetched offer",
+      "result": {
+        "code": "SAVE20",
+        "discount_type": "percentage",
+        "discount_value": 20,
+        "discount_upto": 500,
+        "minimum_amount": 1000,
+        "max_redemption_per_customer": 1,
+        "customer_constraint": "all",
+        "item_constraint": "specific",
+        "expires_at": "2024-12-31T23:59:59.000Z",
+        "coupon_code_status": "active",
+        "external_item_id": "prod_123",
+        "external_customer_id": "usr_456"
+      }
+    }
+    ```
+
+    **Key offer fields**
+
+    | Field                        | Type    | Description                                                                         |
+    | ---------------------------- | ------- | ----------------------------------------------------------------------------------- |
+    | `discount_type`              | string  | `"percentage"` — discount as a % of order value; `"fixed"` — flat currency amount  |
+    | `discount_value`             | number  | The discount magnitude (percentage points or currency units)                        |
+    | `discount_upto`              | number  | Maximum discount cap for percentage discounts (0 = no cap)                          |
+    | `minimum_amount`             | number  | Minimum order value required to apply this code                                     |
+    | `max_redemption_per_customer`| number  | Maximum number of times this customer can redeem this code                          |
+    | `expires_at`                 | string  | ISO 8601 timestamp when the code expires (`null` = never expires)                  |
+    | `coupon_code_status`         | string  | Must be `"active"` for the code to be redeemable                                   |
+  </Step>
+
+  <Step title="Apply the discount in your application logic">
+    Use the offer response to calculate the final order amount before presenting it to the customer:
+
+    - **Percentage discount:** `discount = min(order_total × discount_value / 100, discount_upto)` (skip the `min` if `discount_upto` is 0)
+    - **Fixed discount:** `discount = discount_value`
+    - **Check minimum order:** Reject the code if `order_total < minimum_amount`.
+
+    Display the calculated saving to the customer on your checkout summary page.
+  </Step>
+
+  <Step title="Process payment">
+    Complete your normal payment flow. Only proceed to the next step after receiving a successful payment confirmation from your payment provider.
+  </Step>
+
+  <Step title="Record the redemption">
+    After a confirmed payment, call the redeem endpoint to mark the coupon code as used. This decrements the available redemption count and enforces per-customer limits.
+
+    ```http
+    POST /api/organizations/{organization_id}/coupon-codes/redeem
+    ```
+
+    **Request body**
+
+    | Field                  | Type   | Required | Description                                                     |
+    | ---------------------- | ------ | -------- | --------------------------------------------------------------- |
+    | `@entity`              | string | ✓        | Always `"org.quicko.qpon.redemption"`                           |
+    | `code`                 | string | ✓        | The coupon code string                                          |
+    | `base_order_value`     | number | ✓        | The order total before discount (in your smallest currency unit)|
+    | `discount`             | number | ✓        | The actual discount amount applied to the order                 |
+    | `external_customer_id` | string | ✓        | Your user ID for the customer                                   |
+    | `external_item_id`     | string | ✓        | Your SKU/product ID for the item                                |
+    | `external_id`          | string |          | Optional — your own order/transaction ID for reference          |
+
+    ```bash
+    curl -X POST https://your-qpon-host/api/organizations/org_abc123/coupon-codes/redeem \
+      -H "Content-Type: application/json" \
+      -H "x-api-key: qpk_live_xxxxxxxxxxxxxxxx" \
+      -H "x-api-secret: qps_live_yyyyyyyyyyyyyyyy" \
+      -d '{
+        "@entity": "org.quicko.qpon.redemption",
+        "code": "SAVE20",
+        "base_order_value": 5000,
+        "discount": 1000,
+        "external_customer_id": "usr_456",
+        "external_item_id": "prod_123",
+        "external_id": "order_789"
+      }'
+    ```
+  </Step>
+
+  <Step title="Handle the response">
+    A successful redemption returns HTTP 200:
+
+    ```json
+    {
+      "message": "Successfully redemmed coupon code"
+    }
+    ```
+
+    If the request fails, handle the error before completing the order flow (see the error handling section below).
+  </Step>
+</Steps>
+
+---
+
+## Error handling
+
+The offer and redeem endpoints return structured error responses. Common failure scenarios:
+
+| Scenario                                    | Likely HTTP status | What to do                                                          |
+| ------------------------------------------- | ------------------ | ------------------------------------------------------------------- |
+| Code does not exist                         | 404 Not Found      | Inform the customer the code is invalid                             |
+| Code is expired (`expires_at` in the past)  | 400 Bad Request    | Inform the customer the code has expired                            |
+| Code status is not `active`                 | 400 Bad Request    | Inform the customer the code is no longer available                 |
+| Customer has exhausted their per-customer limit | 400 Bad Request | Inform the customer they have already used this code                |
+| Order total is below `minimum_amount`       | 400 Bad Request    | Inform the customer the minimum order value has not been reached    |
+| Item does not match the code's item constraint | 400 Bad Request | Inform the customer the code is not valid for this product         |
+
+**Example error response**
+
+```json
+{
+  "statusCode": 400,
+  "message": "Coupon code is not valid for this customer or item",
+  "error": "Bad Request"
+}
+```
+
+**Idempotency note:** Do not call `POST .../coupon-codes/redeem` more than once for the same order. There is no built-in idempotency key — duplicate calls for the same customer and code will count as separate redemptions against the customer's limit. Use your own order state machine to ensure the redeem call is made exactly once per successfully paid order.
+
+---
+
+## Per-customer redemption limits
+
+When a coupon code has `max_redemption_per_customer` set to a value greater than `0`, Qpon tracks how many times each customer has redeemed that specific code and rejects the redemption once the limit is reached.
+
+- **`max_redemption_per_customer: 1`** — classic single-use per customer (most common for promotional codes)
+- **`max_redemption_per_customer: 3`** — customer can redeem up to three times (useful for loyalty rewards)
+- **`max_redemption_per_customer: 0`** — no per-customer limit enforced
+
+The current usage count is evaluated at redemption time. If the limit has already been reached when `POST .../coupon-codes/redeem` is called, the request returns a 400 error and the redemption is not recorded.
+
+You can pre-check this before presenting the redemption option to the customer by inspecting `max_redemption_per_customer` in the offer response and comparing it against your own redemption records — or simply rely on Qpon to enforce it and handle the 400 gracefully.
