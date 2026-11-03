@@ -1,4 +1,4 @@
-name: Publish core to npm
+name: Publish libs to npm
 
 on:
   push:
@@ -6,15 +6,20 @@ on:
       - main
     paths:
       - 'lib/core/**'
+      - 'lib/client/**'
   workflow_dispatch:
 
 jobs:
-  publish-core:
-    name: Build & Publish qpon-core
+  publish:
+    name: Build & Publish ${{ matrix.lib }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        lib: [core, client]
     defaults:
       run:
-        working-directory: lib/core
+        working-directory: lib/${{ matrix.lib }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
